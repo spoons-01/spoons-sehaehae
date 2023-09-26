@@ -1,0 +1,133 @@
+a{
+    text-decoration: none;
+    color: black;
+}
+
+#nav::-webkit-scrollbar {
+    display: none;
+}
+body{margin: 0;}
+
+li{list-style-type: none;}
+
+ul{padding: 0;}
+
+#nav{
+    width: 250px;
+    height: 100vh;
+    border-right: 1px solid black;
+    position: fixed;
+    overflow: auto;
+}
+
+.bar>li {
+    line-height: 50px;
+}
+
+
+/*---------------nav bar top---------------*/
+.manager{
+    text-align: center;
+    padding-top: 20px;
+}
+
+.bar {
+    height: 0;
+    /*ul의 높이를 안보이게 처리*/
+    overflow: hidden;
+}
+
+.bar > li{
+    border-top: 1px solid rgba(0, 0, 0, 0.185);
+
+    position: relative;
+    width: 200px;
+    overflow: visible;
+
+}
+
+.bar > li:hover{
+    background-color: #020c132a;
+    overflow: visible;
+}
+
+.menu > li:hover {
+    background-color: #4b93ff2f;
+    transition-duration: 0.5s;
+}
+
+.menu > li:not(:hover) {
+    transition: 0.5s ease-out;
+}
+
+.box{
+    border-top: 1px solid black;
+    padding-left: 20px;
+}
+
+.last_box{
+    border-bottom: 1px solid black;
+}
+
+
+
+/* --------- 서브메뉴 li한개의 높이 ------------*/
+
+
+.menu>li:hover .member {
+    height: 153px;
+    transition-duration: 1s;
+}
+.menu>li:hover .product {
+    height: 102px;
+    transition-duration: 1s;
+}
+.menu>li:hover .order {
+    height: 351px;
+    transition-duration: 1s;
+}
+.menu>li:hover .cancell {
+    height: 102px;
+    transition-duration: 1s;
+}
+.menu>li:hover .calculate {
+    height: 51px;
+    transition-duration: 1s;
+}
+.menu>li:hover .board {
+    height: 204px;
+    transition-duration: 1s;
+}
+.menu>li:hover .statistics {
+    height: 204px;
+    transition-duration: 1s;
+}
+.menu>li:hover .service {
+    height: 51px;
+    transition-duration: 1s;
+}
+
+/*-----------------  화살표 ---------------*/
+
+h4{
+    display: flex;
+    display: inline-flex;
+}
+
+.down{
+    display: inline-flex;
+    float:right;
+    margin-top: 20px;
+    margin-right: 10px;
+}
+
+/*---------------nav bar top---------------*/
+header{
+    display: flex;
+    width: 100vh;
+    height: 100px;
+    margin-left: 250px;
+    padding: 40px;
+    vertical-align: middle;
+    justify-content: space-between;
+}
