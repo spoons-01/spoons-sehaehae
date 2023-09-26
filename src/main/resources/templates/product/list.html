@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/productList.css" rel="stylesheet" type="text/css">
+    <title>Document</title>
+</head>
+<body>
+<header style="background-color: blue;" >헤더</header>
+<div id="productlist">
+    <div id="page1">
+        <ul id="header">
+            <li>&#60;</li>
+            <li>ALL</li>
+            <li>의류</li>
+            <li>아우터</li>
+            <li>악세사리</li>
+            <li>신발</li>
+            <li>침구</li>
+            <li>가방</li>
+            <li>리빙</li>
+            <li>가죽/모피</li>
+            <li>펫</li>
+            <li>&#62;</li>
+        </ul>
+        <div id="line"></div>
+        <div class="search">
+            <select>
+                <option value="category" >카테고리</option>
+                <option value="name" >상품명</option>
+            </select>
+            <input type="text" name="search">
+        </div>
+    </div>
+    <div id="container">
+        <nav id="subp">
+            <div class="outer">
+                <p class="menu">의류</p>
+                <ul class="subproduct up">
+                    <li>티셔츠</li>
+                    <li>맨투맨</li>
+                    <li>와이셔츠</li>
+                    <li>후드티</li>
+                </ul>
+            </div>
+            <div class="outer">
+                <p class="menu">아우터</p>
+                <ul class="subproduct up">
+                    <li>패딩</li>
+                    <li>경량패딩</li>
+                    <li>자켓</li>
+                </ul>
+            </div>
+            <div class="outer">
+                <p class="menu">악세사리</p>
+                <ul class="subproduct up">
+                    <li>넥타이</li>
+                    <li>장갑</li>
+                    <li>3333</li>
+                    <li>4444</li>
+                </ul>
+            </div>
+            <div class="outer">
+                <p> 신발</p>
+            </div>
+            <div class="outer">
+                <p>침구</p>
+            </div>
+            <div class="outer">
+                <p>가방</p>
+            </div>
+            <div class="outer">
+                <p>펫</p>
+            </div>
+        </nav>
+
+        <div class="imgcontainer">
+            <div id="images">
+                <img class="image" src="../../img/tshirt.png" onclick="location.href='/product/detail'">
+                <div class="product">
+                    <p>티셔츠</p>
+                    <p>2000원</p>
+                </div>
+            </div>
+            <div id="images">
+                <img class="image" src="../../img/tshirt.png">
+                <div class="product">
+                    <p>티셔츠</p>
+                    <p>2000원</p>
+                </div>
+            </div>
+            <div id="images">
+                <img class="image" src="../img/tshirt.png">
+                <div class="product">
+                    <p>티셔츠</p>
+                    <p>2000원</p>
+                </div>
+            </div>
+            <div id="images">
+                <img class="image" src="../img/tshirt.png">
+                <div class="product">
+                    <p>티셔츠</p>
+                    <p>2000원</p>
+                </div>
+            </div>
+            <div id="images">
+                <img class="image" src="../img/tshirt.png">
+                <div class="product">
+                    <p>티셔츠</p>
+                    <p>2000원</p>
+                </div>
+            </div>
+            <div id="images">
+                <img class="image" src="../img/tshirt.png">
+                <div class="product">
+                    <p>티셔츠</p>
+                    <p>2000원</p>
+                </div>
+            </div>
+            <div id="images">
+                <img class="image" src="../img/tshirt.png">
+                <div class="product">
+                    <p>티셔츠</p>
+                    <p>2000원</p>
+                </div>
+            </div>
+            <div id="images">
+                <img class="image" src="../img/tshirt.png">
+                <div class="product">
+                    <p>티셔츠</p>
+                    <p>2000원</p>
+                </div>
+            </div>
+            <div id="images">
+                <img class="image" src="../img/tshirt.png">
+                <div class="product">
+                    <p>티셔츠</p>
+                    <p>2000원</p>
+                </div>
+            </div>
+            <div id="images">
+                <img class="image" src="../img/tshirt.png">
+                <div class="product">
+                    <p>티셔츠</p>
+                    <p>2000원</p>
+                </div>
+            </div>
+            <div id="images">
+                <img class="image" src="../img/tshirt.png">
+                <div class="product">
+                    <p>티셔츠</p>
+                    <p>2000원</p>
+                </div>
+            </div>
+            <div id="images">
+                <img class="image" src="../img/tshirt.png">
+                <div class="product">
+                    <p>티셔츠</p>
+                    <p>2000원</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const $subbar = document.querySelectorAll(".subproduct");
+    const $menu = document.querySelectorAll(".menu");
+    var subToggle=true;
+
+    $menu.forEach((menu)=>{
+        menu.addEventListener("click",function(){
+            const index = Array.from($menu).indexOf(this);
+            if(subToggle){
+                $subbar[index].style.display="block";
+                $subbar[index].classList.remove("up");
+                $subbar[index].classList.add("down");
+                subToggle= !subToggle;
+            }else{
+                $subbar[index].style.display="none";
+                $subbar[index].classList.add("up");
+                $subbar[index].classList.remove("down");
+                subToggle= !subToggle;
+            }
+        })
+    })
+</script>
+</body>
+</html>

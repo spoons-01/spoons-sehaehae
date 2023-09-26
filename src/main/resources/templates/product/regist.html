@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/css/productRegist.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<p class="asdasd">신규 상품 등록</p>
+<div class="head"></div>
+<span class="a"></span>
+<span class="b">기본정보</span>
+<div class="info">
+<form class="insert" method="post" action="/product/regist">
+    <table>
+        <tr>
+            <td>상품명</td>
+            <td><input type="text" name="name"></td>
+        </tr>
+        <tr>
+            <td>카테고리</td>
+            <td><select>
+                <option>의류</option>
+                <option>침구류</option>
+                <option>아우터</option>
+            </select></td>
+        </tr>
+        <tr>
+            <td>일반 가격</td>
+            <td><input type="number" name="price"> </td>
+        </tr>
+        <tr>
+            <td>프리미엄 가격</td>
+            <td><input type="number" name="premiunPrice"> </td>
+        </tr>
+        <tr>
+            <td>이미지</td>
+            <td><input type="file" name="productImage" formenctype="multipart/form-data"></td>
+        </tr>
+        <tr>
+            <td>사용가능여부</td>
+            <td><select name="useableStatus">
+                <option value="Y">Y</option>
+                <option value="N">N</option>
+            </select></td>
+        </tr>
+    </table>
+    <button type="submit" class="regist">등록하기</button>
+    <button class="rollback">취소하기</button>
+    </form>
+
+    </div>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+@charset "UTF-8";   /* 인코딩 문자 깨짐 방지 */
+ul{
+    list-style: none;
+}
+#productlist{
+    width: 1300px;
+    margin: 0 auto;
+    text-align: center;
+}
+#header {
+    display: flex;
+    column-gap: 30px;
+    font-size: 30px;
+    justify-content: center;
+    text-align: center;
+    font-weight: bolder;
+}
+#header li:hover{
+    color: blue;
+}
+#line{
+    border: black 1px solid;
+    width: 1150px;
+    margin: -15px 95px;
+}
+
+#container{
+    display: flex;
+}
+#images{
+    height: 5px;
+}
+
+#images img{
+    width: 180px;
+    height: 150px;
+}
+.product{
+    text-align: left;
+    line-height: 5px;
+}
+.imgcontainer{
+    margin-left: 55px;
+    margin-top:  30px;
+    display: grid;
+    grid-template-columns: 180px 180px 180px 180px;
+    height: 700px;
+    column-gap: 50px;
+}
+.search{
+    margin-top: 35px;
+    margin-left: 750px;
+}
+.subproduct{
+    margin-top: -17px;
+
+}
+
+.subproduct li{
+    font-size: 20px;
+    overflow: hidden;
+    text-align: right;
+    padding-right: 30px;
+
+}
+
+.subproduct li:hover{
+    color: blue;
+}
+
+.subproduct.up{
+    display: none;
+    height: 0px;
+    animation-name: slide_up;
+}
+.subproduct.down{
+    height:120px;
+    animation-name:slide_down;
+    animation-duration:1s;
+}
+#subp{
+    border-right: 1px solid black;
+    width: 250px;
+    margin-top: -45px;
+    padding-top: 45px;
+}
+#subp p{
+    font-size: 25px;
+    padding-right: 30px;
+    font-weight: bold;
+}
+.outer{
+    text-align: right;
+    margin-top: -15px ;
+    justify-content: space-between;
+}
+
+.outer p:after{
+    border-bottom: 1px black solid;
+
+}
+@keyframes slide_up{
+    0%{
+        height:120px;
+    }
+    100%{
+        height:0px;
+    }
+}
+
+@keyframes slide_down{
+    0%{
+        height:0px;
+    }
+    100%{
+        height:120px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
