@@ -77,14 +77,14 @@
 
         <div class="imgcontainer">
             <div id="images">
-                <img class="image" src="../../img/tshirt.png" onclick="location.href='/product/detail'">
+                <img class="image" src="../img/tshirt.png" onclick="location.href='/product/detail'">
                 <div class="product">
                     <p>티셔츠</p>
                     <p>2000원</p>
                 </div>
             </div>
             <div id="images">
-                <img class="image" src="../../img/tshirt.png">
+                <img class="image" src="../img/tshirt.png">
                 <div class="product">
                     <p>티셔츠</p>
                     <p>2000원</p>
@@ -167,21 +167,21 @@
 <script>
     const $subbar = document.querySelectorAll(".subproduct");
     const $menu = document.querySelectorAll(".menu");
-    var subToggle=true;
+    var subToggle=[true,true,true,true,true,true,true];
 
     $menu.forEach((menu)=>{
         menu.addEventListener("click",function(){
             const index = Array.from($menu).indexOf(this);
-            if(subToggle){
+            if(subToggle[index]){
                 $subbar[index].style.display="block";
                 $subbar[index].classList.remove("up");
                 $subbar[index].classList.add("down");
-                subToggle= !subToggle;
+                subToggle[index]= !subToggle[index];
             }else{
                 $subbar[index].style.display="none";
                 $subbar[index].classList.add("up");
                 $subbar[index].classList.remove("down");
-                subToggle= !subToggle;
+                subToggle[index]= !subToggle[index];
             }
         })
     })

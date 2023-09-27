@@ -1,23 +1,37 @@
+@font-face {
+    font-family: 'GangwonState';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/GangwonState.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+.bigcontainer{
+}
+.container p:first-child{
+    font-family:'GangwonState';
+}
 .container1{
+    font-family:'GangwonState';
     display: flex;
     column-gap: 950px;
     margin-left: 350px;
-    margin-top: 30px;
-    height: 130px;
+    margin-top: 10px;
+    height: 120px;
 }
 .container1 p:last-child{
+    margin-top: 50px;
     height: 33px;
-    margin-top: 75px;
-    border-bottom: 2px solid black;
+    border-bottom: 1px solid black;
     font-size: 25px;
     font-weight: bold;
 
 }
 
 .bigcontainer{
-    border: 3px solid #B4B4B4;
-    width: 1100px;
-    margin: 30px auto;
+    background: #EFEFEF;
+    height: 300vh;
+    padding-top: 30px;
 }
 
 .container5{
@@ -29,31 +43,271 @@
     font-size: 30px;
 }
 
-.info{
-    border: 2px solid #B4B4B4;
-    margin: 90px auto;
+
+
+.container{
+    border: 1px solid #B4B4B4;
+    width: 700px;
+    height: 275px;
+    border-radius: 10px;
+    background: white;
+    margin: 70px 370px;
+}
+
+
+.a p:first-child{
+    font-size: 30px;
+    margin-left: 30px;
+}
+.a table{
+    text-align: left;
+    font-size: 18px;
+    margin-top: 30px;
+    margin-left: 40px;
+    line-height: 62px;
+}
+
+
+.a input[type='text']{
+    height: 43px;
+    width: 410px;
+    margin-left: 75px;
+    border: 1px solid #B4B4B4;
+    border-radius: 8px;
+    font-size: 20px;
+    padding: 1px;
+    padding-left: 20px;
+}
+
+.container2{
+    border-radius: 10px;
+    border: 1px solid #B4B4B4;
+    width: 700px;
+    height: 600px;
+    background: white;
+    margin: -50px 370px;
+}
+.c2he{
+    font-family: 'GangwonState';
+    font-size: 30px;
+    display: flex;
+    column-gap: 470px;
+    padding-left: 30px;
+    height: 80px;
+}
+.c2he p:nth-child(2){
+    font-size: 20px;
+    border: 1px solid black;
+    padding: 10px;
+    height: 20px;
+    text-align: center;
+    margin-top: 20px;
+    border-radius: 7px;
+}
+.info2{
+    font-family: 'GangwonState';
+    padding-left: 40px;
+    font-size: 20px;
+    line-height: 10px;
+
+}
+
+.request{
+    font-family: 'GangwonState';
+    font-size: 23px;
+    padding-left: 30px;
+    padding-top:8px;
+}
+.request input[type='text']{
+    margin-top: -53px;
+    margin-left: 15px;
+    height: 43px;
+    width: 540px;
+    border: 1px solid #B4B4B4;
+    border-radius: 8px;
+    font-size: 18px;
+    padding: 2px;
+    padding-left: 20px;
+}
+
+.file{
+  padding-top: 17px;
+}
+
+.image{
+display: flex;
+padding-top: 20px;
+column-gap: 93px;
+    margin-left: 30px;
+}
+.image p:first-child{
+    font-family: 'GangwonState';
+    font-size: 20px;
+}
+
+.replaceimage{
+    width: 230px;
+    height: 200px;
+    background: #B4B4B4;
+    margin-top: -10px;
+    margin-left: 30px;
+}
+.ta{
+    font-size: 13px;
+    margin-left: 30px;
+    margin-top: 0px;
+
+}
+
+.container3{
+    border-radius: 10px;
+    border: 1px solid #B4B4B4;
     width: 700px;
     height: 200px;
-    font-size: 25px;
-    font-weight: bold;
-    padding-left: 60px;
-    padding-top: 5px;
-}
-.info table{
-    text-align: right;
-    font-size: 20px;
-    margin-top: 30px;
+    background: white;
+    margin: 70px 370px;
 }
 
-
-.info input[type='text']{
-    height: 20px;
-    margin-left: 20px;
+.container3 p:first-child{
+    font-family: 'GangwonState';
+    font-size: 30px;
+    display: flex;
+    column-gap: 470px;
+    padding-left: 30px;
+    height: 80px;
 }
-.info th{
-    background-color: bisque;
-}
+.pay{
+    display: flex;
+    justify-content: space-around;
 
-.outer{
+}
+.pay p{
+    width: 130px;
+    height: 130px;
     border: 1px solid black;
 }
+
+.date{
+    margin-top: -50px;
+    margin-left: 50px;
+}
+.date span{
+    font-size: 20px;
+
+}
+
+.date input{
+    margin-left: 20px;
+    height: 30px;
+    font-size: 20px;
+}
+
+.aaaaa{
+    margin-top: 13px;
+}
+
+.container4{
+    border-radius: 10px;
+    border: 1px solid #B4B4B4;
+    width: 700px;
+    height: 700px;
+    background: white;
+    margin: -50px 370px;
+}
+.cc{
+    font-family: 'GangwonState';
+    font-size: 30px;
+    padding-left: 30px;
+    height: 80px;
+}
+.container4 table{
+    margin-top: -20px;
+    margin-left: 50px;
+    font-size: 23px;
+    line-height: 30px;
+}
+.dd{
+    margin-left: 40px;
+    font-size: 20px;
+}
+
+
+.container4 table td:nth-child(2){
+    padding-left: 40px;
+}
+
+.point{
+    margin-left: 10px;
+}
+.coupon{
+    margin-left: 130px;
+}
+.big{
+
+    display: flex;
+    background: #EFEFEF;
+}
+.order{
+    border-radius: 10px;
+    border: 1px #B4B4B4 solid;
+    margin-top: 100px;
+    margin-left: -300px;
+    width: 500px;
+    background: white;
+    height: 700px;
+
+}
+.z{
+    font-family: 'GangwonState';
+    font-size: 30px;
+    padding-left: 30px;
+    height: 80px;
+}
+.order img{
+    width: 130px;
+}
+.pdinfo{
+    display: flex;
+    height: 130px;
+    margin-left: 40px;
+}
+.iinfo p:first-child{
+    font-size: 22px;
+    margin-top: -6px;
+    margin-left: 20px;
+}
+.nnn{
+    margin-left: 20px;
+    font-size: 15px;
+    line-height: 5px;
+}
+.nnn input,select{
+    margin-top: 20px;
+}
+.nnn input{
+    width: 30px;
+}
+.nnn select{
+    margin-left: 20px;
+}
+.regist, .rollback{
+    display: inline-block;
+    width: 150px;
+    padding: 20px 0px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.regist{
+    background: #0038FF;
+    color: white;
+    margin-top: 50px;
+    margin-left: 180px;
+    border: none;
+
+}
+.rollback{
+    border: 1px solid black;
+    margin-left: 30px;
+}
+

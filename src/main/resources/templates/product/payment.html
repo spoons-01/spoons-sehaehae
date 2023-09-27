@@ -7,43 +7,145 @@
   <title>Document</title>
 </head>
 <body>
-<header style="background-color: blue;" >헤더</header>
-<div class="container1">
-  <p style="font-size: 40px; font-weight: bold;">주문/결제</p>
+<header style="background-color: blue; margin-top: 0px;" >헤더</header>
+<div class="container1" style="margin-top: 0px;">
+  <p style="font-size: 40px;">주문/결제</p>
   <p>가격표</p>
 </div>
 
-<div class="bigcontainer">
 
-  <div class="info">
+<div class="big">
+<div class="bigcontainer">
+  <div class="container a">
+    <div class="info1">
     <p>주문자 정보</p>
     <table>
       <tr>
-        <th>이름</th>
+        <td>이름</td>
         <td><input type="text"></td>
       </tr>
-      <tr>
-        <th>연락처</th>
+      <tr class="r">
+        <td>연락처</td>
         <td><input type="text"></td>
       </tr>
     </table>
+    </div>
   </div>
 
-  <div class="address outer">
+  <div class="container2">
+    <div class="c2he">
     <p>배송지</p>
+    <p>주소변경</p>
+    </div>
+    <div class="info2">
+      <p>종로구 인사동 12길 12 대일빌딩 301호</p>
+      <p>홍길동 010-1234-5678</p>
+    </div>
+
+    <div class="request">
+    <p>요청사항 :</p>
+    <input type="text" name="request" placeholder="문 앞에 놔주세요">
+    </div>
+
+    <div class="image">
+      <p>사진추가</p>
+      <input type="file" accept="image/png" formenctype="multipart/form-data" class="file">
+    </div>
+    <div class="replaceimage">
+      1
+    </div>
+    <p class="ta">세탁물 사진을 보내주시면 더욱 쉽게 수거해갈 수 있습니다</p>
+  </div>
+  <div class="container3">
+    <p>일정선택</p>
+    <div class="date">
+    <span>수거 :</span><input type="datetime-local"><br>
+      <div class="aaaaa">
+    <span>배송 :</span><input type="datetime-local" required data-placeholder="날짜선택">
+      </div>
+    </div>
+  </div>
+  <div class="container4">
+    <p class="cc">결제정보</p>
+
     <table>
       <tr>
-        <td>종로구 인사동12길 12 대일빌딩</td>
-        <td>301호</td>
+        <td>총가격</td>
+        <td>12,000원</td>
       </tr>
       <tr>
-        <td>
-          홍길동 010-1234-5678
-        </td>
+        <td>쿠폰</td>
+        <td>신규가입쿠폰</td>
+        <td><button class="coupon">쿠폰변경</button></td>
+      </tr>
+      <tr>
+        <td>배송비</td>
+        <td>3,000원</td>
+      </tr>
+      <tr>
+        <td>포인트</td>
+        <td>0원</td>
+        <td>1500원보유<button class="point">전액사용</button></td>
+      </tr>
+      <tr>
+        <td>총 결제금액</td>
+        <td>13,200원</td>
       </tr>
     </table>
+    <p class="dd">결제수단</p>
+    <div class="pay">
+      <p>카카오페이</p>
+      <p>네이버페이</p>
+      <p>신용카드</p>
+    </div>
+    <div>
+      <button type="submit" class="regist">등록하기</button>
+      <button class="rollback">취소하기</button>
+    </div>
   </div>
-
 </div>
+  <div class="order">
+    <p class="z">상품정보</p>
+    <div class="pdinfo">
+    <img src="/resource/images/tshirt.png">
+      <div class="iinfo">
+      <p>티셔츠</p>
+        <div class="nnn"><span></span>
+      <p>천연세제 사용</p>
+      <p>프리미엄케어</p>
+        <span><input type="number"></span><span><select><option>천연세제 사용</option></select> </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const $imagebox = document.querySelector(".replaceimage");
+  const $file = document.querySelector(".file");
+  const reader = new FileReader();
+  $file.addEventListener("change",()=>{
+    if($file){
+      reader.readAsDataURL($file.files[0]);
+      reader.onload = function(){
+        $imagebox.innerHTML = `<img src="${reader.result}" style="width:230px; height:200px">`
+      }
+
+    }
+  })
+
+  // if($file) {
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL($file.files[0]);
+  //   reader.onload = function () {
+  //     console.log(reader.result);
+  //   }
+  // }
+
+
+
+
+</script>
+
 </body>
 </html>
