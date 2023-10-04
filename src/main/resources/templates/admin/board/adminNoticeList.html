@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/aminMainNav.css" rel="stylesheet" type="text/css">
+    <link href="/css/adminBoardNotice.css" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <title>Title</title>
+</head>
+<body>
+    <div th:replace="/admin/common/nav :: nav"></div>
+    <header>
+        <div class="breadcrumb" id="breadcrumb">
+            <!-- 브레드크럼을 동적으로 생성할 요소 -->
+        </div>
+<!--        <h3>통계분석 &gt 회원통계</h3>-->
+        <h3 id="login">로그인(로그아웃)</h3>
+    </header>
+
+    <div id="outerDiv" class="adminNotice">
+        <div class="adminNoticename">
+            <h2>공지사항</h2>
+        </div>
+
+            <table id="adminNoticeList">
+                <tr class="notice-list-head">
+                    <th class="th1">NO</th>
+                    <th class="th2">제목</th>
+                    <th class="th3">첨부파일</th>
+                    <th class="th4">등록일</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>샘플</td>
+                    <td>📄</td>
+                    <td>2023-09-28</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>샘플</td>
+                    <td>📄</td>
+                    <td>2023-09-28</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>샘플</td>
+                    <td>📄</td>
+                    <td>2023-09-28</td>
+                </tr>
+<!--                <tr th:each="notice : ${ noticeList }" th:onclick="|location.href='notice/detail?no=${notice.no}'|">&ndash;&gt;-->
+<!--                                    <td th:text="${ notice.no }"></td>-->
+<!--                                    <td th:text="${ notice.name }"></td>-->
+<!--                                    <td th:text="${ notice.file }"></td>-->
+<!--                                    <td th:text="${ notice.createdDate}"></td>-->
+<!--                                </tr>-->
+            </table>
+
+    </div>
+    <div class="noticeDML">
+        <button type="button" id="writeNotice">작성하기</button>
+        <button type="button" id="modifiedNotice">수정하기</button>
+        <button type="button" id="deletedNotice">삭제하기</button>
+    </div>
+
+
+    <script>
+        // 현재 페이지의 경로 정보
+        var currentPagePath = ["게시판", "공지사항"];
+
+        // 브레드크럼 업데이트 함수
+        function updateBreadcrumb() {
+            var breadcrumbContainer = document.getElementById("breadcrumb");
+            breadcrumbContainer.innerHTML = ""; // 브레드크럼 초기화
+
+            // 현재 페이지 경로를 반복하여 브레드크럼에 추가
+            for (var i = 0; i < currentPagePath.length; i++) {
+                var breadcrumbLink = document.createElement("a");
+                breadcrumbLink.href = "/admin/board/adminNotice"; // 링크 주소는 여기서 설정
+                breadcrumbLink.innerText = currentPagePath[i];
+
+                // 링크를 브레드크럼에 추가
+                breadcrumbContainer.appendChild(breadcrumbLink);
+
+                // 경로 구분을 추가 (">" 문자)
+                if (i < currentPagePath.length - 1) {
+                    var separator = document.createTextNode(" > ");
+                    breadcrumbContainer.appendChild(separator);
+                }
+            }
+        }
+
+        // 페이지 로드 시 브레드크럼 업데이트 실행
+        window.onload = function () {
+            updateBreadcrumb();
+        };
+    </script>
+
+
+
+</body>
+</html>

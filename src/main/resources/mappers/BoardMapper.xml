@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spoons.sehaehae.board.dao.BoardMapper">
+
+<!--    <resultMap id="generalNoticeResultMap" type="com.spoons.sehaehae.board.dto.NoticeDTO">-->
+<!--        <id property="no" column="NOTICE_NO"/>-->
+<!--        <result property="title" column="NOTICE_TITLE"/>-->
+<!--        <result property="body" column="NOTICE_BODY"/>-->
+<!--        <result property="createdDate" column="NOTICE_CREATED_DATE"/>-->
+<!--        <result property="count" column="NOTICE_COUNT"/>-->
+<!--        <result property="writerNo" column="NOTICE_WRITER_NO"/>-->
+<!--        <result property="status" column="NOTICE_STATUS"/>-->
+<!--        <result property="deleteDate" column="NOTICE_DELETE_DATE"/>-->
+<!--        <result property="modifiedDate" column="NOTICE_MODIFIED_DATE"/>-->
+
+<!--        <association property="writer" resultMap="memberResultMap"/>-->
+<!--    </resultMap>-->
+
+<!--    <resultMap id="memberResultMap" type="com.spoons.sehaehae.member.dto.MemberDTO">-->
+<!--        <id property="memberno" column="MEMBER_NO"/>-->
+<!--        <result property="memberId" column="ID"/>-->
+<!--        <result property="memberPwd" column="PASSWORD"/>-->
+<!--        <result property="name" column="NAME"/>-->
+<!--        <result property="nickname" column="NICKNAME"/>-->
+<!--        <result property="phone" column="PHONE_NUMBER"/>-->
+<!--        <result property="birthday" column="BIRTHDAY"/>-->
+<!--        <result property="gender" column="GENDER"/>-->
+<!--        <result property="address" column="ADDRESS"/>-->
+<!--        <result property="subscriptionDate" column="SUBSCRIPTION_DATE"/>-->
+<!--        <result property="profilePhoto" column="PROFILE_PHOTO"/>-->
+<!--        <result property="referralCode" column="REFERRAL_CODE"/>-->
+<!--        <result property="memberStatus" column="MEMBER_STATUS"/>-->
+
+<!--    </resultMap>-->
+
+    <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
+        SELECT
+               COUNT(*)
+          FROM TBL_NOTICE
+
+    </select>
+</mapper>
