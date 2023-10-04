@@ -15,6 +15,7 @@ public class NoticeDTO {
     private String body;
     private Date createdDate;
     private int count;
+    private Long noticeWriterNo;
     private MemberDTO writer;
     private String status;
     private Date deleteDate;

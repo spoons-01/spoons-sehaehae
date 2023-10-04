@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/aminMainNav.css" rel="stylesheet" type="text/css">
+    <link href="/css/adminBoardNotice.css" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <title>Title</title>
+</head>
+<body>
+    <div th:replace="/admin/common/nav :: nav"></div>
+    <header>
+        <div class="breadcrumb" id="breadcrumb">
+            <!-- 브레드크럼을 동적으로 생성할 요소 -->
+        </div>
+        <!--        <h3>통계분석 &gt 회원통계</h3>-->
+        <h3 id="login">로그인(로그아웃)</h3>
+    </header>
+
+    <div class="details">
+
+        <table>
+            <tr class="detail-name">
+                <td ><p th:text="${ notice.title }"></p></td>
+            </tr>
+            <tr class="detail-date">
+                <td><p th:text="${ notice.createdDate }"></p></td>
+            </tr>
+            <tr class="detail-body">
+                <td><textarea name="body" cols="60" rows="15"
+                                    readonly th:text="${ notice.body }">
+                                    </textarea></td>
+            </tr>
+        </table>
+    </div>
+    <div class="noticeDML">
+        <button type="button" id="noticeList" th:onclick="'location.href=\'/admin/board/adminNotice\''">목록으로</button>
+    </div>
+
+    <script>
+        // 현재 페이지의 경로 정보
+        var currentPagePath = ["게시판", "공지사항"];
+
+        // 브레드크럼 업데이트 함수
+        function updateBreadcrumb() {
+            var breadcrumbContainer = document.getElementById("breadcrumb");
+            breadcrumbContainer.innerHTML = ""; // 브레드크럼 초기화
+
+            // 현재 페이지 경로를 반복하여 브레드크럼에 추가
+            for (var i = 0; i < currentPagePath.length; i++) {
+                var breadcrumbLink = document.createElement("a");
+                breadcrumbLink.href = "/admin/board/adminNotice"; // 링크 주소는 여기서 설정
+                breadcrumbLink.innerText = currentPagePath[i];
+
+                // 링크를 브레드크럼에 추가
+                breadcrumbContainer.appendChild(breadcrumbLink);
+
+                // 경로 구분을 추가 (">" 문자)
+                if (i < currentPagePath.length - 1) {
+                    var separator = document.createTextNode(" > ");
+                    breadcrumbContainer.appendChild(separator);
+                }
+            }
+        }
+
+        // 페이지 로드 시 브레드크럼 업데이트 실행
+        window.onload = function () {
+            updateBreadcrumb();
+        };
+    </script>
+
+</body>
+</html>

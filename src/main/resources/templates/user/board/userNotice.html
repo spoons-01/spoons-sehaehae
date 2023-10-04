@@ -32,33 +32,19 @@
             <tr class="notice-list-head">
                 <th class="th1">NO</th>
                 <th class="th2">제목</th>
-                <th class="th3">첨부파일</th>
+                <th>조회수</th>
+                <th class="th3">작성자</th>
                 <th class="th4">등록일</th>
             </tr>
-            <tr>
-                <td>1</td>
-                <td>샘플</td>
-                <td>📄</td>
-                <td>2023-09-28</td>
+
+            <tr th:each="notice : ${ noticeList }">
+                <td th:text="${ notice.no }"></td>
+                <td th:text="${ notice.title }"></td>
+                <td th:text="${ notice.count }"></td>
+                <td th:text="${ notice.writer.nickname }"></td>
+                <td th:text="${ notice.createdDate}"></td>
             </tr>
-            <tr>
-                <td>2</td>
-                <td>샘플</td>
-                <td>📄</td>
-                <td>2023-09-28</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>샘플</td>
-                <td>📄</td>
-                <td>2023-09-28</td>
-            </tr>
-<!--            <tr th:each="notice : ${ noticeList }" th:onclick="|location.href='notice/detail?no=${notice.no}'|">-->
-<!--                <td th:text="${ notice.no }"></td>-->
-<!--                <td th:text="${ notice.name }"></td>-->
-<!--                <td th:text="${ notice.file }"></td>-->
-<!--                <td th:text="${ notice.createdDate}"></td>-->
-<!--            </tr>-->
+
         </table>
     </div>
 
