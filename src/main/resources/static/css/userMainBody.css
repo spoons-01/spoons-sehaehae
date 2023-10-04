@@ -167,21 +167,16 @@
     margin-top: 180px;
 }
 
-.tip-name h3 {
-    color: black;
-    font-size: 35px;
+.tip-name h2 {
     font-family: GANGWON STATE OTF;
-    font-weight: 400;
-    word-wrap: break-word;
 }
 
 .tip-name p {
     color: #4B93FF;
-    font-size: 25px;
     font-family: Istok Web;
     font-weight: 600;
     word-wrap: break-word;
-    height: 100%;
+    margin-top: 110px;
 }
 
 .tip-content h5 {

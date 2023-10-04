@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,9 +8,11 @@
     <link href="/css/userMainFooter.css" rel="stylesheet" type="text/css">
     <link href="/css/userMainBody.css" rel="stylesheet" type="text/css">
     <link href="https://unpkg.com/ress/dist/ress.min.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="/images/favicon.ico">
     <title>Title</title>
 </head>
 <body>
+
     <div th:replace="/user/common/header.html"></div>
 
     <div id="background">
@@ -70,8 +73,9 @@
 
 <!--    <div th:replace="/user/main/body2.html"></div>-->
     <div class="tip wrapper">
+
         <div class="tip-name">
-            <h3>세탁의 모든것, 세해 꿀팁!<img src="/images/lamp 1.png"></h3>
+            <h2>세탁의 모든것, 세해 꿀팁!💡</h2>
             <p>더보기</p>
         </div>
 
