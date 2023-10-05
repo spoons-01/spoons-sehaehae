@@ -9,7 +9,8 @@ import java.util.Date;
 public class CouponDTO {
     private Long cpCode;
     private String cpName;
-    private Date cpDuration;
     private Long cpRate;
+    private Date cpSdate;
+    private Date cpEdate;
 
 }

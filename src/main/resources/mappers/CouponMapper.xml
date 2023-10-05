@@ -7,16 +7,14 @@
     <resultMap type="com.spoons.sehaehae.admin.dto.CouponDTO" id="couponResultMap">
         <id property="cpCode" column="CP_CODE"/>
         <result property="cpName" column="CP_NAME"/>
-        <result property="cpDuration" column="CP_DURATION"/>
         <result property="cpRate" column="CP_RATE"/>
+        <result property="cpSdate" column="CP_SDATE"/>
+        <result property="cpEdate" column="CP_EDATE"/>
     </resultMap>
     
     <select id="selectCouponList" resultMap="couponResultMap">
         select
-            CP_CODE,
-            CP_NAME,
-            CP_DURATION,
-            CP_RATE
+            *
         from    TBL_CP
     </select>
 </mapper>
