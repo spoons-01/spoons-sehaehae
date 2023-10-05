@@ -149,9 +149,11 @@ public class ProductController {
 
     @GetMapping("/updateCart")
     public ResponseEntity<String> updateCart1(@RequestParam int amount, @RequestParam String productName){
+        int memberid = 1;
         System.out.println("amount : " + amount);
         System.out.println("productName : " + productName);
-//        productService.updateCartList(amount);
+        Map<String, String> updateCartMap = new HashMap<>();
+        updateCartMap.put()
         return ResponseEntity.ok("ddd");
     }
     @PostMapping("/deleteCart")
