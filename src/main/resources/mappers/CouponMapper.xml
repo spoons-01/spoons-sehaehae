@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spoons.sehaehae.admin.dao.CouponMapper">
+
+    <resultMap type="com.spoons.sehaehae.admin.dto.CouponDTO" id="couponResultMap">
+        <id property="cpCode" column="CP_CODE"/>
+        <result property="cpName" column="CP_NAME"/>
+        <result property="cpDuration" column="CP_DURATION"/>
+        <result property="cpRate" column="CP_RATE"/>
+    </resultMap>
+    
+    <select id="selectCouponList" resultMap="couponResultMap">
+        select
+            CP_CODE,
+            CP_NAME,
+            CP_DURATION,
+            CP_RATE
+        from    TBL_CP
+    </select>
+</mapper>
