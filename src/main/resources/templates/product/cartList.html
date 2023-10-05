@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/cart.css" rel="stylesheet" type="text/css">
+    <title>Document</title>
+</head>
+<body>
+<div class="container1">
+    <p style="font-size: 40px; font-weight: bold;">장바구니</p>
+    <p>가격표</p>
+</div>
+<div style="background:#EFEFEF; padding-top: 10px; margin-top: 20px; padding-bottom: 200px">
+    <div class="container2">
+        <input type="checkbox" value="c" class="dd" onclick="selectAll(this)">
+        <button type="button" id="selectAll">전체선택</button>
+        <button type="button" class="delete">선택삭제</button>
+    </div>
+    <th:block th:each="cart : ${cartList}">
+        <div class="container3">
+            <input type="checkbox" class="product" th:value="${cart.product.code}">
+            <img th:src="${cart.product.photo}" style="max-width: 1000px; height: 200px;">
+            <div>
+                <p id="name" th:text="${cart.product.name}"></p>
+                <p th:text="${cart.product.price}" id="pprice" style="display: none"></p>
+                <span th:if="${cart.useEco == 'Y'}">천연세제 사용</span><br>
+                <span th:if="${cart.usePremium == 'Y'}">프리미엄 케어</span>
+                <div class="gg">
+                    <input type="number" class="zz" value="1" MIN="1" max="99" th><select>
+                    <option selected>옵션선택</option>
+                    <option>천연세제 사용</option>
+                    <option>프리미엄케어</option>
+                </select><span style="margin-left: 120px; font-size: 30px; font-weight: bold;" id="totalPrice"
+                               th:text="${cart.product.price}"></span>
+                </div>
+            </div>
+        </div>
+    </th:block>
+
+    <div class="total">
+        <span>총 결제금액</span>
+        <span id="final" th:text="${#numbers.formatInteger(totalPrice,3,'COMMA')+'원'}"></span>
+        <span>+</span>
+        <span>배송비 3,000원</span>
+        <span id="final2" th:text="|= ${#numbers.formatInteger(totalPrice+3000,3,'COMMA')}원|"></span>
+        <button class="order">주문/결제</button>
+    </div>
+</div>
+<script>
+    const $box = document.querySelector(".dd"); //전체체크박스
+    const $product = document.querySelectorAll(".product"); //
+    const $prbt = document.querySelector("#selectAll");
+    $prbt.addEventListener("click", function () {
+        $box.checked = 'true';
+        selectAll($box);
+    })
+    function selectAll(selectAll) {
+        $product.forEach((box) => {
+            box.checked = selectAll.checked;
+        });
+    }
+
+    const $delete = document.querySelector(".delete");
+    const $checkbox = document.querySelectorAll('.product');
+    console.log($delete.dataset['cartNum']);
+    $delete.addEventListener("click", async function () {
+        const checkCnt = document.querySelectorAll("input[class='product']:checked").length;
+        if(checkCnt == 0 ){
+            alert("선택된 상품이 없습니다.");
+            location.href='/product/cartList'
+        }
+
+        let code = []
+        $checkbox.forEach((box) => {
+            if (box.checked) {
+                console.log(box.value);
+                code.push(box.value);
+            }
+        });
+
+        console.log(code);
+
+        const json = JSON.stringify(code);
+
+        const respone = await fetch("/product/deleteCart",{
+            method : 'POST',
+            headers : {
+                'Content-Type': 'application/json;charset=UTF-8'
+            },
+            body : json
+        });
+        const result = await respone.text();
+        console.log(result);
+
+
+    })
+
+    const $value = document.querySelectorAll(".zz");
+    const $total = document.querySelectorAll("#totalPrice");
+    const $final = document.querySelector("#final");
+    const $final2 = document.querySelector('#final2');
+
+    $value.forEach((list) => list.addEventListener("change", function () {
+        const index = Array.from($value).indexOf(this);
+        const body = list.value;
+        const price = document.querySelectorAll("#pprice")[index].textContent;
+        let ecoPrice = 0
+        let premiumPrice = 0
+
+        fetch('/product/getPrice?price=' + price + '&body=' + body + "&eco=" + ecoPrice + "&premium=" + premiumPrice)
+            .then(res => res.json())
+            .then(data => $total[index].textContent = (data))
+            .catch(error => console.log(error));
+    }))
+
+    $value.forEach((list) => list.addEventListener("focusout", function () {
+        let total = 0;
+        const index = Array.from($value).indexOf(this)
+        let value = list.value;
+        let productName = document.querySelectorAll("#name")[index].textContent;
+        $total.forEach((list)=> total += Number(list.textContent));
+        console.log(total)
+        fetch('/product/updateCart?amount=' + value +"&productName="+productName)
+            .then(res => res.json())
+            .then(z => console.log(z))
+            .catch(error=>console.log(error));
+
+        fetch('/product/totalPrice?total='+total)
+            .then(res => res.json())
+            .then(data => {
+                $final.textContent = data.toLocaleString('ko-KR')+"원";
+                $final2.textContent = '= ' +(data+3000).toLocaleString('ko-KR')+'원';
+            })
+            .catch(error => console.log(error));
+
+
+    }))
+    const $payment = document.querySelector(".order")
+    $payment.onclick = function(){
+        let totalPrice = 0;
+        $total.forEach((list) => totalPrice += Number(list.textContent));
+
+        location.href='/product/payment?totalPrice='+totalPrice
+    }
+</script>
+</body>
+</html>

@@ -73,7 +73,7 @@ public class ProductController {
     @GetMapping("/payment")
     public void payemnt(Model model, @RequestParam int totalPrice) {
         int memberCode = 1;
-        System.out.println(totalPrice);
+
        MemberDTO member = productService.selectMember(memberCode);
         model.addAttribute("member",member);
     }
@@ -82,7 +82,6 @@ public class ProductController {
     }
     @PostMapping("/categoryRegist")
     public String regist(@RequestParam String categoryName, RedirectAttributes rttr) {
-        System.out.println(categoryName);
         productService.registCategory(categoryName);
         rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("category.regist"));
 
@@ -110,9 +109,6 @@ public class ProductController {
     }
     @GetMapping("/getPrice")
     public ResponseEntity<Integer> getPrice(@RequestParam(required = false) int price, @RequestParam(required = false) int body,int eco, int premium){
-        System.out.println(price);
-        System.out.println(body);
-        productService.updateCartList(body);
         int total = (price * body)+eco+premium;
         return ResponseEntity.ok(total);
     }
@@ -141,7 +137,6 @@ public class ProductController {
             totalPrice += list.get(i).getProduct().getPrice();
         }
 
-        System.out.println(totalPrice);
         model.addAttribute("cartList",list);
         model.addAttribute("totalPrice",totalPrice);
     }
@@ -149,19 +144,20 @@ public class ProductController {
     @GetMapping("/selectAllCategory")
     public ResponseEntity<List<CategoryDTO>> selectCategory(){
         List<CategoryDTO> categoryList = productService.selectCategory();
-        System.out.println(categoryList);
         return  ResponseEntity.ok(categoryList);
     }
 
     @GetMapping("/updateCart")
-    public void updateCart(int body){
-        System.out.println("body : " + body);
-        productService.updateCartList(body);
+    public ResponseEntity<String> updateCart1(@RequestParam int amount, @RequestParam String productName){
+        System.out.println("amount : " + amount);
+        System.out.println("productName : " + productName);
+//        productService.updateCartList(amount);
+        return ResponseEntity.ok("ddd");
     }
     @PostMapping("/deleteCart")
     public @ResponseBody ResponseEntity<String> deleteCart(@RequestBody List<Integer> product){
         int userid = 1;
-        System.out.println(product);
+
         Map<String, Object> cartMap = new HashMap<>();
         cartMap.put("memberId",userid);
         cartMap.put("productList",product);

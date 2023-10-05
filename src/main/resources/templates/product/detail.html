@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/productDetail.css" rel="stylesheet" type="text/css">
+    <title>Document</title>
+</head>
+<body>
+
+<div class="page">
+
+    <div class="container">
+        <img th:src="${product.photo}">
+        <div class="info">
+            <p th:text="${product.name}" style="font-size: 30px;"></p>
+            <p th:text="${#numbers.formatInteger(product.price,3,'COMMA')}+'원 / '+ ${#numbers.formatInteger(product.premiumPrice,3,'COMMA')+'원'} "        style="font-size: 20px; margin-top: -30px;"></p>
+            <input type="checkbox" class="ecoCheckbox" value="useEco"><span class="cb">천연세제 사용(3000원)</span>
+            <br>
+            <input type="checkbox" class="premiumCheckbox" value="use"><span class="cb">프리미엄케어</span>
+            <br>
+            <input type="number" id="input1" value="1">
+            <span style="margin-left: 70px; font-size:30px;" id="totalPrice" th:text="${#numbers.formatInteger(product.price,3,'COMMA')+'원'}"></span>
+            <br>
+            <div class="button1">
+                <button class="bt" id="cart">장바구니</button>
+                <button class="bt">주문하기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page1">
+    <span class="list1">다른상품보기</span>
+    <div class="cover">
+        <div class="ct">
+            <span>&#60;</span>
+            <img src="/resource/images/tshirt.png">
+            <img src="/resource/images/tshirt.png">
+            <img src="/resource/images/tshirt.png">
+            <img src="/resource/images/tshirt.png">
+            <span>&#62;</span>
+        </div>
+    </div>
+</div>
+<script>
+    const $inputNumber = document.querySelector("input[type=number]")
+    const $totalPrice = document.querySelector("#totalPrice");
+    const $ecoCheckbox = document.querySelector(".ecoCheckbox");
+    const $premiumCheckbox = document.querySelector(".premiumCheckbox");
+    console.log($ecoCheckbox);
+    console.log($premiumCheckbox);
+    $inputNumber.onchange = change;
+    $ecoCheckbox.onchange = change;
+    $premiumCheckbox.onchange = change;
+        function change() {
+            const price = '[[${product.price}]]';
+            const body = $inputNumber.value;
+            let ecoPrice = 0
+            let premiumPrice = 0
+            if ($ecoCheckbox.checked) {
+                ecoPrice = 3000;
+            }
+            if ($premiumCheckbox.checked) {
+                premiumPrice = '[[${product.premiumPrice}]]'
+            }
+            fetch('/product/getPrice?price=' + price + '&body=' + body + "&eco=" + ecoPrice + "&premium=" + premiumPrice)
+                .then(res => res.json())
+                .then(data => $totalPrice.textContent = data.toLocaleString('ko-KR') + "원")
+                .catch(error => console.log(error))
+        }
+
+        const $cart = document.querySelector("#cart")
+        let useEco = '';
+        let usePremium = '';
+
+        console.log($cart);
+        $cart.onclick = function(){
+            if($ecoCheckbox.checked){
+                useEco = 'Y';
+            }else{
+                useEco='N';
+            }
+            if($premiumCheckbox.checked){
+                usePremium = 'Y';
+            }else{
+                usePremium = 'N';
+            }
+            const product = '[[${product.code}]]'
+            fetch("/product/addCart?product.code="+product+"&amount="+$inputNumber.value+"&useEco="+useEco+"&usePremium="+usePremium)
+                .then(res=>res.text())
+                .then(res=>alert(res))
+                .catch(error=>console.log(error))
+        }
+
+</script>
+</body>
+</html>
