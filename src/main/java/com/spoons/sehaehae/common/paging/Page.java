@@ -3,7 +3,7 @@ package com.spoons.sehaehae.common.paging;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Pagenation {
+public class Page {
     public static SelectCriteria getSelectCriteria(int page, int totalCount, int limit, int buttonAmount, Map<String, String> searchMap) {
 
         /* 총 페이지 수 계산 */

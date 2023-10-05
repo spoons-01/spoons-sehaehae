@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spoons.sehaehae.product.dao.ProductMapper">
+
+
+
+    <resultMap id="productResultMap" type="com.spoons.sehaehae.product.dto.ProductDTO">
+        <id property="code" column="PRODUCT_CODE"/>
+        <result property="name" column="PRODUCT_NAME"/>
+        <result property="price" column="PRODUCT_PRICE"/>
+        <result property="premiumPrice" column="PRODUCT_PREMIUM_PRICE"/>
+        <result property="useableStatus" column="USEABLE_STATUS"/>
+        <result property="ecoPrice" column="PRODUCT_ECO_PRICE"/>
+        <result property="registDate" column="REGIST_DATE"/>
+        <result property="modifyDate" column="MODIFY_DATE"/>
+        <result property="deleteDate" column="DELETE_DATE"/>
+        <result property="deleteStatus" column="DELETE_STATUS"/>
+        <result property="photo" column="PRODUCT_PHOTO"/>
+        <association property="category" resultMap="categoryResultMap"/>
+    </resultMap>
+
+    <resultMap id="categoryResultMap" type="com.spoons.sehaehae.product.dto.CategoryDTO">
+        <id column="CATEGORY_CODE" property="code"/>
+        <result column="CATEGORY_NAME" property="name"/>
+    </resultMap>
+
+    <resultMap id="cartResultMap" type="com.spoons.sehaehae.product.dto.CartDTO">
+        <id column="MEMBER_NO" property="member"/>
+        <result column="CART_AMOUNT" property="amount"/>
+        <result column="USE_ECO" property="useEco"/>
+        <result column="USE_PREMIUM" property="usePremium"/>
+        <association resultMap="productResultMap" property="product"/>
+    </resultMap>
+    <resultMap id="memberResultMap" type="com.spoons.sehaehae.member.dto.MemberDTO">
+        <id column="MEMBER_NO" property="no"/>
+        <result column="NAME" property="name"/>
+        <result column="PHONE_NUMBER" property="phone"/>
+        <result column="ADDRESS" property="address"/>
+        <result column="MY_POINT" property="point"/>
+    </resultMap>
+
+
+    <insert id="registCategory" parameterType="string">
+        INSERT INTO
+        TBL_CATEGORY
+        (CATEGORY_CODE, CATEGORY_NAME)
+        VALUES
+        (SEQ_PRODUCT_CATEGORY_NO.nextval,#{categoryName})
+    </insert>
+
+    <insert id="registProduct">
+        INSERT INTO
+        TBL_PRODUCT
+        (PRODUCT_CODE,PRODUCT_NAME,CATEGORY_CODE,PRODUCT_PRICE,PRODUCT_PREMIUM_PRICE,USEABLE_STATUS,REGIST_DATE,PRODUCT_PHOTO)
+        VALUES
+        (SEQ_PRODUCT_NO.NEXTVAL,#{name},#{category.code},#{price},#{premiumPrice},#{useableStatus},#{registDate},#{photo})
+    </insert>
+
+
+    <select id="selectProduct" resultMap="productResultMap">
+        SELECT
+        A.PRODUCT_NAME,
+        A.PRODUCT_CODE,
+        B.CATEGORY_NAME,
+        A.PRODUCT_PRICE,
+        A.PRODUCT_PREMIUM_PRICE,
+        A.PRODUCT_ECO_PRICE,
+        A.PRODUCT_PHOTO
+        FROM TBL_PRODUCT A
+        JOIN TBL_CATEGORY B ON(A.CATEGORY_CODE = B.CATEGORY_CODE)
+        WHERE USEABLE_STATUS = 'Y'
+        <if test="searchValue != null">
+            AND PRODUCT_NAME LIKE '%' || #{searchValue} || '%'
+        </if>
+        <if test="searchCondition != null">
+            AND CATEGORY_NAME = #{searchCondition}
+        </if>
+        ORDER BY PRODUCT_CODE
+    </select>
+    <select id="selectAllProduct" resultMap="productResultMap">
+        SELECT
+        A.PRODUCT_NAME,
+        A.PRODUCT_CODE,
+        B.CATEGORY_NAME,
+        A.PRODUCT_PRICE,
+        A.PRODUCT_PREMIUM_PRICE,
+        A.PRODUCT_ECO_PRICE,
+        A.PRODUCT_PHOTO
+        FROM TBL_PRODUCT A
+        JOIN TBL_CATEGORY B ON(A.CATEGORY_CODE = B.CATEGORY_CODE)
+        WHERE USEABLE_STATUS = 'Y'
+        ORDER BY PRODUCT_CODE
+    </select>
+
+    <select id="selectCategory" resultMap="categoryResultMap">
+        SELECT
+        *
+        FROM TBL_CATEGORY
+        ORDER BY CATEGORY_CODE
+    </select>
+
+    <select id="selectProductByCode" resultMap="productResultMap">
+        SELECT
+        *
+        FROM TBL_PRODUCT
+        WHERE PRODUCT_CODE = #{code}
+    </select>
+    <insert id="addCart" parameterType="com.spoons.sehaehae.product.dto.CartDTO">
+        INSERT INTO TBL_CART
+        (CART_AMOUNT, PRODUCT_CODE, MEMBER_NO,USE_ECO,USE_PREMIUM)
+        VALUES
+        (#{amount},#{product.code},#{member},#{useEco},#{usePremium})
+    </insert>
+
+    <select id="cartList" resultMap="cartResultMap">
+        SELECT
+        B.PRODUCT_CODE,
+        B.PRODUCT_NAME,
+        B.PRODUCT_PRICE,
+        B.PRODUCT_PREMIUM_PRICE,
+        B.PRODUCT_PHOTO,
+        A.CART_AMOUNT,
+        A.USE_PREMIUM,
+        A.USE_ECO
+        FROM TBL_CART A
+        JOIN TBL_PRODUCT B ON (A.PRODUCT_CODE = B.PRODUCT_CODE)
+        WHERE A.MEMBER_NO = #{i}
+    </select>
+
+    <select id="selectMember" resultMap="memberResultMap">
+        SELECT
+        MEMBER_NO,
+        NAME,
+        PHONE_NUMBER,
+        ADDRESS,
+        MY_POINT
+        FROM TBL_MEMBER
+        WHERE MEMBER_NO = #{memberCode}
+    </select>
+
+    <update id="updateCartList">
+        UPDATE TBL_CART
+        SET CART_AMOUNT = #{body}
+        WHERE PRODUCT_CODE = 1
+    </update>
+
+    <delete id="deleteCart">
+        DELETE FROM TBL_CART
+        WHERE MEMBER_NO = #{memberId}
+        AND PRODUCT_CODE IN <foreach collection="productList"  item="item" open="(" close=")" separator=",">#{item}</foreach>
+    </delete>
+</mapper>
