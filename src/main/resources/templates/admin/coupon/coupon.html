@@ -9,8 +9,11 @@
     <div class="coupon_container">
         <div class="coupon">
                 <h3 th:text="${coupon.cpName}"></h3>
-                <h3 th:text="${#dates.format(coupon.cpSdate,'yyyy-MM-dd')}+' ~ '+${#dates.format(coupon.cpEdate,'yyyy-MM-dd')}"></h3>
-                <h3 style="color: #4B93FF" th:text="${coupon.cpRate} + '%'"></h3>
+                <h5 th:text="${#dates.format(coupon.cpSdate,'yyyy-MM-dd')}+' ~ '+${#dates.format(coupon.cpEdate,'yyyy-MM-dd')}"></h5>
+                <h3 style="color: #4B93FF; text-align: right" th:text="${coupon.cpRate} + '%'"></h3>
+        </div>
+        <div>
+
         </div>
     </div>
 </body>

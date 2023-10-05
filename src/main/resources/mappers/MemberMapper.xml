@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spoons.sehaehae.admin.dao.MemberMapper">
+
+    <resultMap type="com.spoons.sehaehae.member.dto.MemberDTO" id="memberResultMap">
+        <id property="memberNo" column="MEMBER_NO"/>
+        <result property="memberId" column="ID"/>
+        <result property="memberPwd" column="PASSWORD"/>
+        <result property="name" column="NAME"/>
+        <result property="nickname" column="NICKNAME"/>
+        <result property="phone" column="PHONE_NUMBER"/>
+        <result property="birthday" column="BIRTHDAY"/>
+        <result property="gender" column="GENDER"/>
+        <result property="address" column="ADDRESS"/>
+        <result property="subscriptionDate" column="SUBSCRIPTION_DATE"/>
+        <result property="profilePhoto" column="PROFILE_PHOTO"/>
+        <result property="referralCode" column="REFERRAL_CODE"/>
+        <result property="memberStatus" column="MEMBER_STATUS"/>
+    </resultMap>
+
+    <select id="selectMemberList" resultMap="memberResultMap">
+        select
+            *
+        from    TBL_MEMBER
+    </select>
+</mapper>
