@@ -172,10 +172,21 @@ header{
     margin-right: 0;
 }
 
-
-.container{
+/*------------------------------------------------------------------------------------------*/
+.container {
     border: black 1px solid;
     width: 1350px; height: 700px;
     margin-left: 400px; margin-top: 20px;
 }
+    .chart_container{
+        display: grid;
+        grid-template-columns: 1fr 1fr; gap: 10px 100px;
+        /*border: black 1px solid;*/
+        width: 1450px; height: 700px;
+        margin-left: 350px; margin-top: 20px;
+}
+    #current_date{
+        margin-right: 100px; margin-top: 20px;
+        text-align: right;
+    }
 
