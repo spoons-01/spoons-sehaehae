@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="stylesheet" type="text/css">
+    <!--    <link href="/css/adminMainNav.css" rel="stylesheet" type="text/css">-->
+    <link href="/css/adminBoardNotice.css" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="/javaScript/event.js" type="text/javascript"></script>
+
+    <title>Title</title>
+</head>
+<body>
+<div th:replace="admin/common/nav.html"></div>
+<header>
+    <div class="breadcrumb" id="breadcrumb">
+        <!-- 브레드크럼을 동적으로 생성할 요소 -->
+    </div>
+    <!--        <h3>통계분석 &gt 회원통계</h3>-->
+    <h3 id="login">로그인(로그아웃)</h3>
+</header>
+
+<div class="details">
+<!--    <form taction="/admin/board/update/(no=${notice.no})" method="post">-->
+    <form action="/admin/board/update" method="post">
+        <table>
+<!--            <tr>-->
+<!--                <td th:text="${ notice.no }"></td>-->
+<!--            </tr>-->
+            <tr class="detail-name">
+                <td>제목</td>
+                <td ><input th:value="${ notice.title }"></input></td>
+            </tr>
+            <tr class="detail-body">
+                <td>내용</td>
+                <td><textarea name="body" cols="60" rows="15"
+                               th:text="${ notice.body }">
+                                    </textarea></td>
+            </tr>
+        </table>
+        <br>
+        <div class="noticeDML2">
+            <button type="submit">수정하기</button>
+            <button type="button" th:onclick="'location.href=\'/admin/board/adminNotice\''">취소하기</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="stylesheet" type="text/css">-->
+<!--    &lt;!&ndash;    <link href="/css/adminMainNav.css" rel="stylesheet" type="text/css">&ndash;&gt;-->
+<!--    <link href="/css/adminBoardNotice.css" rel="stylesheet" type="text/css">-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>-->
+<!--    <script src="/javaScript/event.js" type="text/javascript"></script>-->
+<!--    <title>Title</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div th:replace="/admin/common/nav"></div>-->
+<!--<header>-->
+<!--    <div class="breadcrumb" id="breadcrumb">-->
+<!--        &lt;!&ndash; 브레드크럼을 동적으로 생성할 요소 &ndash;&gt;-->
+<!--    </div>-->
+<!--    &lt;!&ndash;        <h3>통계분석 &gt 회원통계</h3>&ndash;&gt;-->
+<!--    <h3 id="login">로그인(로그아웃)</h3>-->
+<!--</header>-->
+
+<!--<div class="update">-->
+<!--    <form id="noticeUpdateForm" method="post">-->
+<!--        <table>-->
+<!--            <tr class="detail-name">-->
+<!--                <td ><input type="text" id="title" th:if="${notice != null}" th:value="${ notice.title }"></input></td>-->
+<!--            </tr>-->
+<!--            <tr class="detail-date">-->
+<!--                <td><p th:if="${notice != null}" th:text="${ notice.createdDate }"></p></td>-->
+<!--            </tr>-->
+<!--            <tr class="detail-body">-->
+<!--                <td><textarea title="내용" name="body" cols="60" rows="15"-->
+<!--                              th:if="${notice != null}"  th:text="${ notice.body }">-->
+<!--                                        </textarea></td>-->
+<!--            </tr>-->
+<!--        </table>-->
+<!--        <div class="noticeDML2">-->
+<!--            <button type="submit">수정하기</button>-->
+<!--            <button type="button" th:onclick="'location.href=\'/admin/board/adminNotice\''">취소하기</button>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="stylesheet" type="text/css">-->
+<!--    &lt;!&ndash;    <link href="/css/adminMainNav.css" rel="stylesheet" type="text/css">&ndash;&gt;-->
+<!--    <link href="/css/adminBoardNotice.css" rel="stylesheet" type="text/css">-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>-->
+<!--    <script src="/javaScript/event.js" type="text/javascript"></script>-->
+
+<!--    <title>Title</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div th:replace="admin/common/nav.html"></div>-->
+<!--<header>-->
+<!--    <div class="breadcrumb" id="breadcrumb">-->
+<!--        &lt;!&ndash; 브레드크럼을 동적으로 생성할 요소 &ndash;&gt;-->
+<!--    </div>-->
+<!--    &lt;!&ndash;        <h3>통계분석 &gt 회원통계</h3>&ndash;&gt;-->
+<!--    <h3 id="login">로그인(로그아웃)</h3>-->
+<!--</header>-->
+
+<!--<div class="update">-->
+<!--    <form id="noticeUpdateForm" action="/admin/board/adminNoticeUpdate" method="post">-->
+<!--        <table>-->
+<!--            <tr>-->
+<!--                <td>제목</td>-->
+<!--                <td colspan="3"><input type="text" name="title" class="regist-name" th:value="${ notice.title }"></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>내용</td>-->
+<!--                <td colspan="3"><input type="text" name="body" class="regist-body" th:value="${ notice.body}"></td>-->
+<!--            </tr>-->
+<!--        </table>-->
+<!--        <br>-->
+<!--        <div class="noticeDML2">-->
+<!--            <button type="submit">수정하기</button>-->
+<!--            <button type="button" th:onclick="'location.href=\'/admin/board/adminNotice\''">취소하기</button>-->
+<!--        </div>-->
+
+<!--    </form>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->

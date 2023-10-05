@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://unpkg.com/ress/dist/ress.min.css" rel="stylesheet" type="text/css">
-    <link href="/css/aminMainNav.css" rel="stylesheet" type="text/css">
+<!--    <link href="/css/adminMainNav.css" rel="stylesheet" type="text/css">-->
     <link href="/css/adminBoardNotice.css" rel="stylesheet" type="text/css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/javaScript/event.js" type="text/javascript"></script>
     <title>Title</title>
 </head>
 <body>
-    <div th:replace="/admin/common/nav :: nav"></div>
+    <div th:replace="admin/common/nav.html"></div>
     <header>
         <div class="breadcrumb" id="breadcrumb">
             <!-- 브레드크럼을 동적으로 생성할 요소 -->
@@ -26,6 +28,7 @@
 
             <table id="adminNoticeList">
                 <tr class="notice-list-head">
+<!--                    <th><input type="checkbox" name="selectAll">전체선택</th>-->
                     <th class="th1">NO</th>
                     <th class="th2">제목</th>
                     <th>조회수</th>
@@ -33,21 +36,30 @@
                     <th class="th4">등록일</th>
                 </tr>
 
-                <tr th:each="notice : ${ noticeList }" th:onclick="|location.href='/admin/board/adminNoticeDetail?no=${notice.no}'|">
+                <tr th:each="notice : ${ noticeList }" >
+<!--                                    <td><input type="checkbox" name="noticeCheckbox" value="${notice.no}"/></td>-->
                                     <td th:text="${ notice.no }"></td>
-                                    <td th:text="${ notice.title }"></td>
+                                    <td th:text="${ notice.title }" th:onclick="|location.href='/admin/board/adminNoticeView?no=${notice.no}'|"></td>
                                     <td th:text="${ notice.count }"></td>
                                     <td th:text="${ notice.writer.nickname }"></td>
                                     <td th:text="${ notice.createdDate}"></td>
                 </tr>
             </table>
-
     </div>
     <div class="noticeDML">
-        <button type="button" id="writeNotice">작성하기</button>
-        <button type="button" id="modifiedNotice">수정하기</button>
-        <button type="button" id="deletedNotice">삭제하기</button>
+        <button type="button" id="writeNotice" th:onclick="'location.href=\'/admin/board/adminNoticeRegist\''">작성하기</button>
     </div>
+
+<!--&lt;!&ndash;    <div class="noticeDML">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <button type="button" id="selectAll">전체선택/해제</button>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--        <div>-->
+<!--            <button type="button" id="writeNotice" th:onclick="'location.href=\'/admin/board/adminNoticeRegist\''">작성하기</button>-->
+<!--            <button type="button" id="modifiedNotice">수정하기</button>-->
+<!--            <button type="button" id="deletedNotice">삭제하기</button>-->
+<!--        </div>-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
 
     <!-- 페이징 바 -->
     <div id="paging" class="pagingbar">
@@ -113,39 +125,6 @@
         </th:block>
 
     </div>
-
-
-    <script>
-        // 현재 페이지의 경로 정보
-        var currentPagePath = ["게시판", "공지사항"];
-
-        // 브레드크럼 업데이트 함수
-        function updateBreadcrumb() {
-            var breadcrumbContainer = document.getElementById("breadcrumb");
-            breadcrumbContainer.innerHTML = ""; // 브레드크럼 초기화
-
-            // 현재 페이지 경로를 반복하여 브레드크럼에 추가
-            for (var i = 0; i < currentPagePath.length; i++) {
-                var breadcrumbLink = document.createElement("a");
-                breadcrumbLink.href = "/admin/board/adminNotice"; // 링크 주소는 여기서 설정
-                breadcrumbLink.innerText = currentPagePath[i];
-
-                // 링크를 브레드크럼에 추가
-                breadcrumbContainer.appendChild(breadcrumbLink);
-
-                // 경로 구분을 추가 (">" 문자)
-                if (i < currentPagePath.length - 1) {
-                    var separator = document.createTextNode(" > ");
-                    breadcrumbContainer.appendChild(separator);
-                }
-            }
-        }
-
-        // 페이지 로드 시 브레드크럼 업데이트 실행
-        window.onload = function () {
-            updateBreadcrumb();
-        };
-    </script>
 
 
 

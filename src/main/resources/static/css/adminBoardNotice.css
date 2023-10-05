@@ -46,7 +46,7 @@
 }
 
 .th1 {
-    width: 100px;
+    width: 80px;
 }
 
 .th2 {
@@ -64,11 +64,14 @@
 /* 버튼들 ------------------------------------------------*/
 
 .noticeDML {
-    float: right;
     margin-right: 290px;
+    float: right;
+    /*display: flex;*/
+    /*justify-content: space-between;*/
+    /*margin-left: 550px;*/
 }
 
-.noticeDML button {
+.noticeDML button{
     width: 80px;
     height: 35px;
     background: #E7E3DF;
@@ -77,6 +80,15 @@
     font-size: 15px;
     /*font-weight: 100;*/
     /*word-wrap: break-word*/
+}
+
+.noticeDML a {
+
+    background: #E7E3DF;
+    border-radius: 20px;
+    color: #4E4D4D;
+    font-size: 15px;
+    padding: 10px;
 }
 
 /* 상단바 경로 -------------------------------------------------------*/
@@ -154,4 +166,60 @@
 .golist {
     float: none;
     text-align: center;
+}
+
+/* 공지사항 글 작성 -----------------------------------------------------------------------*/
+
+.regist {
+    margin: 100px 530px; /* 가운데 정렬을 위한 마진 설정 */
+    margin-bottom: 10px;
+    /*text-align: center; !* 내용을 수평으로 가운데 정렬 *!*/
+    padding: 20px; /* 내용 주변 여백 설정 */
+    border: 1px solid black;
+    width: 1100px;
+    height: auto;
+}
+
+.regist table {
+    border-collapse: collapse;
+
+}
+
+.regist td {
+    border-top: 1px solid black;
+    color: black;
+    font-size: 20px;
+    font-family: Inter;
+    font-weight: 300;
+    word-wrap: break-word;
+}
+
+.regist-name {
+    border: 1px solid black;
+    width: 450px;
+    margin-left: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.regist-body {
+    border: 1px solid black;
+    width: 900px;
+    margin-left: 30px;
+    margin-top: 10px;
+
+    /*resize: none;*/
+}
+
+.noticeDML2 {
+    text-align: center;
+}
+
+.noticeDML2 button {
+    width: 80px;
+    height: 35px;
+    background: #E7E3DF;
+    border-radius: 20px;
+    color: #4E4D4D;
+    font-size: 15px;
 }

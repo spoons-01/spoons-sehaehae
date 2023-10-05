@@ -16,4 +16,12 @@ public interface BoardMapper {
     void incrementNoticeCount(Long no);
 
     NoticeDTO selectNoticeDetail(Long no);
+
+    void insertNotice(NoticeDTO notice);
+
+    void deleteNotice(Integer id);
+
+    int updateNotice(NoticeDTO updatedNotice);
+
+//    int updateNotice(Long no);
 }

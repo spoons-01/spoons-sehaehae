@@ -123,4 +123,44 @@
          AND A.NOTICE_NO = #{ no }
     </select>
 
+    <insert id="insertNotice">
+        INSERT
+        INTO TBL_NOTICE A
+        (
+          A.NOTICE_NO
+        , A.NOTICE_TITLE
+        , A.NOTICE_BODY
+        , A.NOTICE_CREATED_DATE
+        , A.NOTICE_COUNT
+        , A.NOTICE_WRITER_NO
+        , A.NOTICE_STATUS
+        )
+        VALUES
+        (
+        SEQ_NOTICE_NO.NEXTVAL
+        , #{ title }
+        , #{ body }
+        , SYSDATE
+        , 0
+        , 1
+<!--        , #{ writer.memberNo }-->
+        , 'Y'
+        )
+    </insert>
+
+    <update id="updateNotice">
+        UPDATE TBL_NOTICE
+        SET NOTICE_TITLE = #{ title }
+          , NOTICE_BODY = #{ body }
+          , NOTICE_MODIFIED_DATE = SYSDATE
+        WHERE NOTICE_NO = #{ no }
+    </update>
+
+    <update id="deleteNotice">
+        UPDATE TBL_NOTICE
+        SET NOTICE_STATUS = 'N'
+        WHERE NOTICE_STATUS = 'Y'
+        AND NOTICE_NO = #{ NO }
+    </update>
+
 </mapper>

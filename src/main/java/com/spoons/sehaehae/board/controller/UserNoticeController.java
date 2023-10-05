@@ -13,11 +13,11 @@ import java.util.Map;
 @Slf4j
 @Controller
 @RequestMapping("/user/board")
-public class UserNoticeCotroller {
+public class UserNoticeController {
 
     public final BoardService boardService;
 
-    public UserNoticeCotroller(BoardService boardService) {
+    public UserNoticeController(BoardService boardService) {
         this.boardService = boardService;
     }
 

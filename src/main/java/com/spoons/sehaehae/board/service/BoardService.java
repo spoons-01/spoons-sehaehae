@@ -57,4 +57,21 @@ public class BoardService {
         /* 게시글 상세 내용 조회 후 리턴 */
         return boardMapper.selectNoticeDetail(no);
     }
+
+    @Transactional
+    public void registNotice(NoticeDTO notice) {
+
+        boardMapper.insertNotice(notice);
+    }
+
+    @Transactional
+    public void deleteNotice(Integer id) {
+        boardMapper.deleteNotice(id);
+    }
+
+
+    public void modifyNotice(NoticeDTO modifynotice) {
+
+        boardMapper.updateNotice(modifynotice);
+    }
 }
