@@ -1,4 +1,4 @@
 package com.spoons.sehaehae.admin.service;
 
-public class SampleService {
+public class MemberService {
 }

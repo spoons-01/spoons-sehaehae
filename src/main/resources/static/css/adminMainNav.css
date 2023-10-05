@@ -190,3 +190,19 @@ header{
         text-align: right;
     }
 
+
+    .coupon_container{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr;
+        padding: 20px;
+        gap: 20px 20px;
+        border: black 1px solid;
+        width: 1350px; height: 700px;
+        margin-left: 400px; margin-top: 20px;
+    }
+    .coupon{
+        border: #4B93FF solid 1px;
+        box-shadow: 2px 4px 12px rgba(0,0,0,.08);
+    }
+
