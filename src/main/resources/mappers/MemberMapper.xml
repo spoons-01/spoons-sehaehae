@@ -25,4 +25,11 @@
             *
         from    TBL_MEMBER
     </select>
+    
+    <select id="genderChart" resultType="int">
+        select
+            COUNT(*)
+        from TBL_MEMBER
+        where GENDER = 'F'
+    </select>
 </mapper>

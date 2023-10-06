@@ -214,6 +214,8 @@ header{
     thead{
         background: #4B93FF;
         color: #FFF;
-
+    }
+    td{
+        border-bottom: 1px solid black; border-right: 1px solid black;
     }
 

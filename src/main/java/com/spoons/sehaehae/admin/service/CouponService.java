@@ -5,12 +5,14 @@ import com.spoons.sehaehae.admin.dto.CouponDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class CouponService {
     private final CouponMapper couponMapper;
     public CouponService(CouponMapper couponMapper){this.couponMapper=couponMapper;}
-    public CouponDTO selectCouponList() {
+    public List<CouponDTO> selectCouponList() {
         return couponMapper.selectCouponList();
     }
 }

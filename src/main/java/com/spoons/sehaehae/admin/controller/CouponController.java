@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 @Controller
 public class CouponController {
     private final CouponService couponService;
@@ -13,7 +15,7 @@ public class CouponController {
     @GetMapping("/coupon")
     public String getCouponList(Model model){
 
-        CouponDTO couponList = couponService.selectCouponList();
+        List<CouponDTO> couponList = couponService.selectCouponList();
         model.addAttribute("coupon", couponList);
 
         return "/admin/coupon/coupon";
