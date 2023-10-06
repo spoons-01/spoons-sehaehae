@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:replace="admin/common/nav.html"></div>
+    <div class="coupon_container">
+        <div style="cursor: pointer" class="coupon openModal" th:each="coupon : ${coupon}">
+            <ul>
+                <li style="font-size: 24px" th:text="${coupon.cpName}"></li>
+                <li style="font-size: 15px" th:text="${#dates.format(coupon.cpSdate,'yyyy-MM-dd')}+' ~ '+${#dates.format(coupon.cpEdate,'yyyy-MM-dd')}"></li>
+                <li style="font-size: 24px; color: #4B93FF; text-align: right" th:text="${coupon.cpRate} + '%'"></li>
+            </ul>
+        </div>
+        <div class="coupon" id="newCoupon">
+            <h1>+</h1>
+        </div>
+    </div>
+    <div class="modal">
+        <div class="modalBody">
+            <h1>쿠폰수정</h1>
+            <button class="closeModal">닫기</button>
+        </div>
+    </div>
+<script>
+    const modal = document.querySelector('.modal');
+    const openModal = document.querySelector('.openModal');
+    const closeModal = document.querySelector('.closeModal');
+    openModal.addEventListener("click",()=>{
+        modal.style.display="flex";
+    })
+    closeModal.addEventListener("click",()=>{
+        modal.style.display="none";
+    })
+</script>
+</body>
+</html>
