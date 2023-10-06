@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="stylesheet" type="text/css">
+<!--    <link href="/css/adminMainNav.css" rel="stylesheet" type="text/css">-->
+    <link href="/css/adminBoardNotice.css" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/javaScript/event.js" type="text/javascript"></script>
+    <title>Title</title>
+</head>
+<body>
+    <div th:replace="admin/common/nav.html"></div>
+    <header>
+        <div class="breadcrumb" id="breadcrumb">
+            <!-- 브레드크럼을 동적으로 생성할 요소 -->
+        </div>
+<!--        <h3>통계분석 &gt 회원통계</h3>-->
+        <h3 id="login">로그인(로그아웃)</h3>
+    </header>
+
+    <div id="outerDiv" class="adminNotice">
+        <div class="adminNoticename">
+            <h2>공지사항</h2>
+        </div>
+
+            <table id="adminNoticeList">
+                <tr class="notice-list-head">
+<!--                    <th><input type="checkbox" name="selectAll">전체선택</th>-->
+                    <th class="th1">NO</th>
+                    <th class="th2">제목</th>
+                    <th>조회수</th>
+                    <th class="th3">작성자</th>
+                    <th class="th4">등록일</th>
+                </tr>
+
+                <tr th:each="notice : ${ noticeList }" >
+<!--                                    <td><input type="checkbox" name="noticeCheckbox" value="${notice.no}"/></td>-->
+                                    <td th:text="${ notice.no }"></td>
+                                    <td th:text="${ notice.title }" th:onclick="|location.href='/admin/board/adminNoticeView?no=${notice.no}'|"></td>
+                                    <td th:text="${ notice.count }"></td>
+                                    <td th:text="${ notice.writer.nickname }"></td>
+                                    <td th:text="${ notice.createdDate}"></td>
+                </tr>
+            </table>
+    </div>
+    <div class="noticeDML">
+        <button type="button" id="writeNotice" th:onclick="'location.href=\'/admin/board/adminNoticeRegist\''">작성하기</button>
+    </div>
+
+    <!-- 페이징 바 -->
+    <div id="paging" class="pagingbar">
+
+        <th:block
+                th:if="${ paging.searchCondition != null and paging.searchValue != null }">
+            <!-- 맨 앞으로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/admin/board/adminNotice?page=1&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">&lt;&lt;</button>
+
+            <!-- 이전 페이지로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/admin/board/adminNotice?page=' + @{${paging.page - 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                    th:disabled="${ paging.page <= 1 }">&lt;</button>
+
+            <!-- 숫자 버튼 -->
+
+            <th:block
+                    th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
+                <button
+                        th:onclick="'location.href=\'/admin/board/adminNotice?page=' + @{${page}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                        th:text="${ page }" th:disabled="${ paging.page eq page }">
+                </button>
+            </th:block>
+
+            <!-- 다음 페이지로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/admin/board/adminNotice?page=' + @{${paging.page + 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                    th:disabled="${ paging.page >= paging.maxPage }">></button>
+
+            <!-- 맨 끝으로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/admin/board/adminNotice?page=' + @{${paging.maxPage}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">>></button>
+
+        </th:block>
+
+        <th:block
+                th:if="${ paging.searchCondition == null  || paging.searchValue == null }">
+            <!-- 맨 앞으로 이동 -->
+            <button th:onclick="'location.href=\'/admin/board/adminNotice?page=1\''">&lt;&lt;</button>
+
+            <!-- 이전 페이지로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/admin/board/adminNotice?page=' + @{${paging.page - 1}} + '\''"
+                    th:disabled="${ paging.page <= 1 }">&lt;</button>
+
+            <!-- 숫자 버튼 -->
+            <th:block
+                    th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
+                <button
+                        th:onclick="'location.href=\'/admin/board/adminNotice?page=' + @{${page}} + '\''"
+                        th:text="${ page }" th:disabled="${ paging.page eq page }">
+                </button>
+            </th:block>
+
+            <!-- 다음 페이지로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/admin/board/adminNotice?page=' + @{${paging.page + 1}} + '\''"
+                    th:disabled="${ paging.page >= paging.maxPage }">></button>
+
+            <!-- 맨 끝으로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/admin/board/adminNotice?page=' + @{${paging.maxPage}} + '\''">>></button>
+        </th:block>
+
+    </div>
+
+
+
+</body>
+</html>

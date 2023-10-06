@@ -1,0 +1,238 @@
+@charset "UTF-8";
+@font-face {
+    font-family: 'GangwonState';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/GangwonState.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+html {
+    font-size: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    font-family: Istok Web;
+}
+
+img {
+    max-width: 100%;
+}
+
+
+/* 공지 사항 ---------------------------------------------------*/
+.notice a{
+    color: #4B93FF;
+    font-family: Inter;
+    font-weight: 800;
+    text-decoration: underline;
+    word-wrap: break-word;
+}
+
+.notice-name {
+    margin-top: 90px;
+
+}
+
+h3 {
+    text-align: center;
+    color: #000000;
+    font-size: 50px;
+    font-family: GANGWON STATE;
+    font-weight: 400;
+    word-wrap: break-word;
+}
+
+.notice-nav {
+    text-align: center;
+    margin-top: 60px;
+    margin-right: 30px;
+}
+
+.notice-nav li {
+    display: inline-block;
+    color: black;
+    font-size: 20px;
+    font-family: Inter;
+    font-weight: 800;
+    word-wrap: break-word;
+    margin-left: 30px;
+}
+/* 테이블 디자인 --------------------------*/
+
+.notice-list {
+    margin-top: 100px;
+}
+
+.notice-list table {
+    border-top:4px solid black;
+    margin-left:auto;
+    margin-right:auto;
+    margin-bottom: 50px;
+    border-spacing: 80px 20px;
+    border-collapse: collapse;
+    width: 70%;  /* 화면에서 표가 차지하는 비율*/
+}
+
+.notice-list table,td,th {
+    border-bottom:1px solid black;
+}
+
+.notice-list td {
+    text-align: center;
+    padding: 5px;
+}
+
+.notice-list-head th{
+    padding: 10px;
+}
+
+.th1 {
+    width: 150px;
+}
+
+.th3 {
+    width: 100px;
+}
+
+.th4 {
+    width: 220px;
+}
+.notice-list-head {
+    background-color: rgba(75, 147, 255, 0.50);
+    font-weight: 400;
+    word-wrap: break-word;
+}
+/* 페이징 -------------------------------------------------------------*/
+.pagingbar {
+    margin-top: 90px;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.pagingbar button {
+    /*border: 1px solid black;*/
+    /*border-radius: 2px;*/
+    font-size: 15px;
+    font-family: Inter;
+    font-weight: 800;
+    word-wrap: break-word;
+    width: 25px;
+    height: 25px;
+}
+
+.pagingbar123 button {
+    border: none;
+}
+
+.pagingbar123 button:hover {
+    color: rgba(246, 157, 53, 1) ;
+}
+
+
+/* 검색하기 --------------------------------------------------------------- */
+.searchNotice{
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.searchNotice-form {
+    display: flex; /* 요소들을 가로로 나열하기 위해 추가 */
+    align-items: center; /* 가운데 정렬을 위해 추가 */
+}
+
+.searchNotice-form select{
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-right: 10px; /* select와 input 사이의 간격을 조절 */
+    padding: 5px;
+    appearance: auto; /* 기본 설정값 가져오기*/
+}
+
+.searchNotice-input {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.searchNotice img {
+    width: 15px;
+    height: 15px;
+}
+
+/* 공지사항 디테일 ------------------------------------------------------------- */
+
+.details table {
+    margin-left: auto;
+    margin-right:auto;
+    margin-top: 105px;
+    width: 1100px;
+}
+
+.details td {
+    border-bottom: none;
+}
+
+.detail-name {
+    font-size: 45px;
+    font-family: Inter;
+    font-weight: 400;
+    word-wrap: break-word;
+    text-align: left;
+}
+
+.detail-date {
+    color: #8E8585;
+    font-size: 20px;
+    font-family: Inter;
+    font-weight: 400;
+    word-wrap: break-word;
+}
+
+.detail-date td {
+    line-height: 5rem;
+}
+
+.detail-body {
+    text-align: center;
+}
+
+.detail-body textarea {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.detail-body td {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    line-height: 30px;
+}
+
+/* 목록으로 ----------------------------*/
+.backlist {
+    display: flex;
+    justify-content: center;
+    margin-top: 55px;
+    margin-bottom: 50px;
+}
+
+.backlistbutton {
+    width: 140px;
+    height: 40px;
+    background: rgba(75, 147, 255, 1);
+    border-radius: 10px;
+    border: 1px black solid;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    font-family: Inter;
+    font-weight: 600;
+    word-wrap: break-word;
+}
+
