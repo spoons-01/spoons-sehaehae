@@ -1,5 +1,6 @@
 package com.spoons.sehaehae.board.controller;
 
+import com.spoons.sehaehae.board.dto.NoticeDTO;
 import com.spoons.sehaehae.board.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -27,9 +28,6 @@ public class UserNoticeController {
                             @RequestParam(required = false) String searchValue,
                             Model model) {
 
-        log.info("noticeList page : {}", page);
-        log.info("noticeList searchCondition : {}", searchCondition);
-        log.info("noticeList searchValue : {}", searchValue);
 
         Map<String, String> searchMap = new HashMap<>();
         searchMap.put("searchCondition", searchCondition);
@@ -41,12 +39,14 @@ public class UserNoticeController {
 
         return "/user/board/userNotice";
     }
+    @GetMapping("/userNoticeView")
+    public String getNoticeView(@RequestParam Long no, Model model){
 
+        NoticeDTO noticeDetail = boardService.selectNoticeDetail(no);
 
-    @GetMapping("/userNoticeDetails")
-    public String getBoardDetail(){
+        model.addAttribute("notice", noticeDetail);
 
-
-        return "/user/board/userNoticeDetails";
+        return "/user/board/userNoticeView";
     }
+
 }
