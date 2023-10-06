@@ -206,3 +206,14 @@ header{
         box-shadow: 2px 4px 12px rgba(0,0,0,.08);
     }
 
+    table{
+        border: 1px black solid;
+        margin-left: 400px; margin-top: 20px;
+        width: 1350px;
+    }
+    thead{
+        background: #4B93FF;
+        color: #FFF;
+
+    }
+

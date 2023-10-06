@@ -6,9 +6,8 @@
 </head>
 <body>
     <div th:replace="/admin/common/nav.html"></div>
-    <div class="container">
         <table>
-            <tr>
+            <thead>
             <th>이름</th>
             <th>아이디</th>
             <th>닉네임</th>
@@ -17,8 +16,8 @@
             <th>성별</th>
             <th>주소</th>
             <th>가입일</th>
-            </tr>
-            <tr>
+            </thead>
+            <tr th:each="member : ${member}">
                 <td th:text="${member.name}"></td>
                 <td th:text="${member.memberId}"></td>
                 <td th:text="${member.nickname}"></td>
@@ -29,6 +28,5 @@
                 <td th:text="${#dates.format(member.subscriptionDate,'yyyy-MM-dd')}"></td>
             </tr>
         </table>
-    </div>
 </body>
 </html>

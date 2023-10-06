@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 @Controller
 public class MemberController {
     private final MemberService memberService;
@@ -15,7 +17,7 @@ public class MemberController {
     @GetMapping("/member")
     public String MemberList(Model model){
 
-        MemberDTO memberList = memberService.selectMemberList();
+        List<MemberDTO> memberList = memberService.selectMemberList();
         model.addAttribute("member", memberList);
 
 
