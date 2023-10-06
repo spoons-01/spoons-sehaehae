@@ -97,7 +97,9 @@ public class AdminNoticeController {
     }
 
     @PostMapping("/update")
-    public String modifyNorice(NoticeDTO modifynotice ) {
+    public String modifyNotice(@RequestParam("no") Long no,
+                               @ModelAttribute("modifynotice") NoticeDTO modifynotice ) {
+
 
         boardService.modifyNotice(modifynotice);
 

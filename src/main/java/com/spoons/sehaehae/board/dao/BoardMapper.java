@@ -1,6 +1,7 @@
 package com.spoons.sehaehae.board.dao;
 
 import com.spoons.sehaehae.board.dto.NoticeDTO;
+import com.spoons.sehaehae.board.dto.QnaDTO;
 import com.spoons.sehaehae.common.paging.SelectCriteria;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -22,6 +23,10 @@ public interface BoardMapper {
     void deleteNotice(Integer id);
 
     int updateNotice(NoticeDTO updatedNotice);
+
+    int qnaTotalCount(Map<String, String> searchMap);
+
+    List<QnaDTO> selectQnaList(SelectCriteria selectCriteria);
 
 //    int updateNotice(Long no);
 }

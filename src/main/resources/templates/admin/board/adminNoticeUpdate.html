@@ -24,13 +24,14 @@
 <div class="details">
 <!--    <form taction="/admin/board/update/(no=${notice.no})" method="post">-->
     <form action="/admin/board/update" method="post">
+        <input type="hidden" name="no" th:value="${ notice.no }" />
         <table>
 <!--            <tr>-->
 <!--                <td th:text="${ notice.no }"></td>-->
 <!--            </tr>-->
             <tr class="detail-name">
                 <td>제목</td>
-                <td ><input th:value="${ notice.title }"></input></td>
+                <td ><input name="title" th:value="${ notice.title }"></input></td>
             </tr>
             <tr class="detail-body">
                 <td>내용</td>

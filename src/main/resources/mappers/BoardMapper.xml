@@ -4,6 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spoons.sehaehae.board.dao.BoardMapper">
 
+    <!-- 공지사항 -->
     <resultMap id="generalNoticeResultMap" type="com.spoons.sehaehae.board.dto.NoticeDTO">
         <id property="no" column="NOTICE_NO"/>
         <result property="title" column="NOTICE_TITLE"/>
@@ -32,9 +33,30 @@
         <result property="profilePhoto" column="PROFILE_PHOTO"/>
         <result property="referralCode" column="REFERRAL_CODE"/>
         <result property="memberStatus" column="MEMBER_STATUS"/>
-
     </resultMap>
 
+    <!-- 자주하는 질문 -->
+    <resultMap id="qnaBoardResultMap" type="com.spoons.sehaehae.board.dto.QnaDTO">
+        <id property="no" column="QNA_NO"/>
+        <result property="categoryNo" column="CATEGORY_NO"/>
+        <result property="adminNo" column="ADMIN_NO"/>
+        <result property="title" column="QNA_TITLE"/>
+        <result property="body" column="QNA_BODY"/>
+        <result property="createdDate" column="QNA_CREATED_DATE"/>
+        <result property="status" column="QNA_STATUS"/>
+        <result property="modifiedDate" column="QNA_MODIFIED_DATE"/>
+        <result property="deleteDate" column="QNA_DELETE_DATE"/>
+
+        <association property="writer" resultMap="memberResultMap"/>
+        <association property="category" resultMap="categoryResultMap"/>
+    </resultMap>
+
+    <resultMap id="categoryResultMap" type="com.spoons.sehaehae.board.dto.BoardCategoryDTO">
+        <id property="no" column="CATEGORY_NO"/>
+        <result property="name" column="CATEGORY_NAME"/>
+    </resultMap>
+
+<!-- 공지사항 -->
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
                COUNT(*)
@@ -85,7 +107,7 @@
             <if test="searchCondition == 'title'">
                 C.NOTICE_TITLE LIKE '%' || #{ searchValue } || '%'
             </if>
-            <if test="searchCondition == 'content'">
+            <if test="searchCondition == 'body'">
                 C.NOTICE_BODY LIKE '%' || #{ searchValue } || '%'
             </if>
             AND C.NOTICE_STATUS = 'Y'
@@ -160,7 +182,81 @@
         UPDATE TBL_NOTICE
         SET NOTICE_STATUS = 'N'
         WHERE NOTICE_STATUS = 'Y'
-        AND NOTICE_NO = #{ NO }
+        AND NOTICE_NO = #{ no }
     </update>
 
+    <!-- 자주하는 질문 -->
+    <select id="qnaTotalCount" resultType="_int" parameterType="hashmap">
+        SELECT
+        COUNT(*)
+        FROM TBL_QNA
+    </select>
+
+    <select id="selectQnaList" resultMap="qnaBoardResultMap">
+        SELECT
+          A.QNA_NO
+        , A.CATEGORY_NO
+        , D.CATEGORY_NAME
+        , A.ADMIN_NO
+        , E.NICKNAME
+        , A.QNA_TITLE
+        , A.QNA_BODY
+        , A.QNA_CREATED_DATE
+        , A.QNA_STATUS
+        , A.QNA_MODIFIED_DATE
+        , A.QNA_DELETE_DATE
+            FROM (SELECT
+            ROWNUM RNUM
+            , B.QNA_NO
+            , B.CATEGORY_NO
+            , B.ADMIN_NO
+            , B.QNA_TITLE
+            , B.QNA_BODY
+            , B.QNA_CREATED_DATE
+            , B.QNA_STATUS
+            , B.QNA_MODIFIED_DATE
+            , B.QNA_DELETE_DATE
+        FROM(SELECT
+                      C.QNA_NO
+                    , C.CATEGORY_NO
+                    , C.ADMIN_NO
+                    , C.QNA_TITLE
+                    , C.QNA_BODY
+                    , C.QNA_CREATED_DATE
+                    , C.QNA_STATUS
+                    , C.QNA_MODIFIED_DATE
+                    , C.QNA_DELETE_DATE
+                    FROM TBL_QNA C
+        <if test="searchCondition == 'category'">
+            JOIN TBL_BOARD_CATEGORY D ON(C.CATEGORY_NO = D.CATEGORY_NO)
+        </if>
+        <if test="searchCondition == 'writer'">
+            JOIN TBL_MEMBER D ON(C.ADMIN_NO == D.MEMBER_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'category'">
+                D.CATEGORY_NAME = #{ searchValue }
+            </if>
+            <if test="searchCondition == 'writer'">
+                D.NICKNAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'title'">
+                C.QNA_TITLE LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'body'">
+                C.QNA_BODY LIKE '%' || #{ searchValue } || '%'
+            </if>
+            AND C.QNA_STATUS = 'Y'
+        </where>
+        ORDER BY C.QNA_NO DESC
+        ) B
+        <![CDATA[
+                  WHERE ROWNUM <= #{ endRow }
+                  ]]>
+        ) A
+        JOIN TBL_BOARD_CATEGORY D ON (A.CATEGORY_NO = D.CATEGORY_NO)
+        JOIN TBL_MEMBER E ON(A.ADMIN_NO = E.MEMBER_NO)
+        WHERE A.RNUM >= #{ startRow }
+        ORDER BY 1 DESC
+    </select>
 </mapper>
