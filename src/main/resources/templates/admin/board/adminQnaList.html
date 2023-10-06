@@ -39,14 +39,15 @@
         <tr th:each="qna : ${ qnaList }" >
             <td th:text="${ qna.no }"></td>
             <td th:text="${ qna.category.name }"></td>
-            <td th:text="${ qna.title }" th:onclick="|location.href='/admin/board/detail?no=${qna.no}'|"></td>
+            <td th:text="${ qna.title }" th:onclick="|location.href='/admin/board/adminQnaView?no=${qna.no}'|"></td>
             <td th:text="${ qna.writer.nickname }"></td>
             <td th:text="${ qna.createdDate}"></td>
         </tr>
     </table>
 </div>
 <div class="noticeDML">
-    <button type="button" id="writeNotice" th:onclick="'location.href=\'/admin/board/adminQnaRegist\''">작성하기</button>
+<!--    <button type="button" id="writeNotice" th:onclick="'location.href=\'/admin/board/adminQnaRegist\''">작성하기</button>-->
+    <button id="btn-modal">작성하기</button>
 </div>
 
 <!-- 페이징 바-->
@@ -113,6 +114,47 @@
     </th:block>
 
 </div>
+
+<!-- 모달창 -->
+<div id="modal" class="modal-overlay">
+    <div class="modal-detail">
+    <div class="title">
+        <h3 >자주하는 질문 등록</h3>
+        <div class="close-area">X</div>
+    </div>
+    <form id="qnaForm" action="/admin/board/adminQna" method="post">
+        <div class="content">
+        <table class="modal-table">
+            <tr>
+                <td class="modal-td">카테고리</td>
+                <td><select name="categoryNo" class="modal-category">
+                    <option value="7">수거·배송 관련 문의</option>
+                    <option value="8">결제 관련 문의</option>
+                    <option value="9">서비스 이용 관련 문의</option>
+                    <option value="10">서비스·세탁 관련 문의</option>
+                    <option value="11">기타 문의</option>
+                    <option value="12">로그인 문의</option>
+                </select> </td>
+            </tr>
+            <tr>
+                <td class="modal-td">제목</td>
+                <td colspan="3"><input type="text" name="title" class="regist-name"></td>
+            </tr>
+            <tr>
+                <td class="modal-td">내용</td>
+                <td colspan="3"><textarea name="body" cols="60" rows="15" class="regist-body"></textarea></td>
+            </tr>
+        </table>
+        <br>
+        <div class="noticeDML2">
+            <button type="submit">등록하기</button>
+<!--            <button type="button" th:onclick="'location.href=\'/admin/board/adminQna\''">취소하기</button>-->
+        </div>
+        </div>
+    </form>
+    </div>
+</div>
+
 
 
 

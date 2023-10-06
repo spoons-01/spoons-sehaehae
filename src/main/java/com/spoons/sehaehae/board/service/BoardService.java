@@ -27,6 +27,7 @@ public class BoardService {
     }
 
 
+    /* 공지사항 */
     public Map<String, Object> selectNoticeList(Map<String, String> searchMap, int page) {
 
         /* 1. 전체 게시글 수 확인 ( 검색어가 있는 경우 포함) => 페이징 처리를 위해 */
@@ -76,6 +77,8 @@ public class BoardService {
         boardMapper.updateNotice(modifynotice);
     }
 
+    /* 자주하는 질문 */
+
     public Map<String, Object> selectQnaList(Map<String, String> searchMap, int page) {
 
         /* 1. 전체 게시글 수 확인 ( 검색어가 있는 경우 포함) => 페이징 처리를 위해 */
@@ -94,5 +97,26 @@ public class BoardService {
         anqListAndPaging.put("qnaList", qnaList);
 
         return anqListAndPaging;
+    }
+
+    public QnaDTO selectQnaView(Long no) {
+
+        /* 게시글 상세 내용 조회 후 리턴 */
+        return boardMapper.selectQnaView(no);
+    }
+
+    public void registQna(QnaDTO qna) {
+
+        boardMapper.insertQna(qna);
+    }
+
+    public void deleteQna(Integer id) {
+
+        boardMapper.deleteQna(id);
+    }
+
+    public void modifyQna(QnaDTO modifyQna) {
+
+        boardMapper.updateQna(modifyQna);
     }
 }

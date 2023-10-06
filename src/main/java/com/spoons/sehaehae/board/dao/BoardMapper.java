@@ -28,5 +28,11 @@ public interface BoardMapper {
 
     List<QnaDTO> selectQnaList(SelectCriteria selectCriteria);
 
-//    int updateNotice(Long no);
+    QnaDTO selectQnaView(Long no);
+
+    void insertQna(QnaDTO qna);
+
+    void deleteQna(Integer id);
+
+    void updateQna(QnaDTO modifyQna);
 }

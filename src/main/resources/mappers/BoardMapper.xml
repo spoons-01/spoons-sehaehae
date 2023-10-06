@@ -259,4 +259,60 @@
         WHERE A.RNUM >= #{ startRow }
         ORDER BY 1 DESC
     </select>
+
+    <select id="selectQnaView" resultMap="qnaBoardResultMap">
+        SELECT
+        A.QNA_NO
+        , C.CATEGORY_NAME
+        , B.MEMBER_NO
+        , B.NICKNAME
+        , A.QNA_TITLE
+        , A.QNA_BODY
+        , A.QNA_CREATED_DATE
+        FROM TBL_QNA A
+        JOIN TBL_MEMBER B ON (A.ADMIN_NO = B.MEMBER_NO)
+        JOIN TBL_BOARD_CATEGORY C ON (A.CATEGORY_NO = C.CATEGORY_NO)
+        WHERE A.QNA_STATUS = 'Y'
+        AND A.QNA_NO = #{ no }
+    </select>
+
+    <insert id="insertQna">
+        INSERT
+        INTO TBL_QNA A
+        (
+        A.QNA_NO
+        , A.CATEGORY_NO
+        , A.ADMIN_NO
+        , A.QNA_TITLE
+        , A.QNA_BODY
+        , A.QNA_CREATED_DATE
+        , A.QNA_STATUS
+        )
+        VALUES
+        (
+        SEQ_QNA_NO.NEXTVAL
+        , #{ categoryNo }
+        , 1
+        , #{ title }
+        , #{ body }
+        , SYSDATE
+        , 'Y'
+        )
+    </insert>
+
+    <update id="updateQna">
+        UPDATE TBL_QNA
+        SET CATEGORY_NO = #{ categoryNo }
+        , QNA_TITLE = #{ title }
+        , QNA_BODY = #{ body }
+        , QNA_MODIFIED_DATE = SYSDATE
+        WHERE QNA_NO = #{ no }
+    </update>
+
+    <update id="deleteQna">
+        UPDATE TBL_QNA
+        SET QNA_STATUS = 'N'
+        WHERE QNA_STATUS = 'Y'
+        AND QNA_NO = #{ no }
+    </update>
 </mapper>
