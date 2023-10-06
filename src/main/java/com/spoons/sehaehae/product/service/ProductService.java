@@ -4,6 +4,7 @@ import com.spoons.sehaehae.member.dto.MemberDTO;
 import com.spoons.sehaehae.product.dao.ProductMapper;
 import com.spoons.sehaehae.product.dto.CartDTO;
 import com.spoons.sehaehae.product.dto.CategoryDTO;
+import com.spoons.sehaehae.product.dto.OrderDTO;
 import com.spoons.sehaehae.product.dto.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,8 +57,8 @@ public class ProductService {
         return productMapper.selectMember(memberCode);
     }
 
-    public void updateCartList(int body) {
-        productMapper.updateCartList(body);
+    public void updateCartList(Map<String,Object> updateMap) {
+        productMapper.updateCartList(updateMap);
     }
 
     public List<ProductDTO> selectAllproduct() {
@@ -68,5 +69,8 @@ public class ProductService {
     public void deleteCart(Map<String,Object> product) {
 
         productMapper.deleteCart(product);
+    }
+
+    public void addOrder(OrderDTO order) {
     }
 }

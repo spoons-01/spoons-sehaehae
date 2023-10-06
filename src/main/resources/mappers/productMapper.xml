@@ -142,8 +142,9 @@
 
     <update id="updateCartList">
         UPDATE TBL_CART
-        SET CART_AMOUNT = #{body}
-        WHERE PRODUCT_CODE = 1
+        SET CART_AMOUNT = #{amount}
+        WHERE PRODUCT_CODE = #{productCode}
+        AND MEMBER_NO = #{memberId}
     </update>
 
     <delete id="deleteCart">

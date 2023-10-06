@@ -28,7 +28,7 @@ public interface ProductMapper {
 
     MemberDTO selectMember(int memberCode);
 
-    void updateCartList(int body);
+    void updateCartList(Map<String,Object> updateMap);
 
     List<ProductDTO> selectAllProduct();
 

@@ -3,6 +3,7 @@ package com.spoons.sehaehae.product.controller;
 import com.spoons.sehaehae.member.dto.MemberDTO;
 import com.spoons.sehaehae.product.dto.CartDTO;
 import com.spoons.sehaehae.product.dto.CategoryDTO;
+import com.spoons.sehaehae.product.dto.OrderDTO;
 import com.spoons.sehaehae.product.dto.ProductDTO;
 import com.spoons.sehaehae.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -73,9 +75,13 @@ public class ProductController {
     @GetMapping("/payment")
     public void payemnt(Model model, @RequestParam int totalPrice) {
         int memberCode = 1;
+        System.out.println(totalPrice);
+        MemberDTO member = productService.selectMember(memberCode);
+        List<CartDTO> cart = productService.cartList(memberCode);
 
-       MemberDTO member = productService.selectMember(memberCode);
+        model.addAttribute("totalPrice",totalPrice);
         model.addAttribute("member",member);
+        model.addAttribute("cartList",cart);
     }
     @GetMapping("/categoryRegist")
     public void categoryRegist() {
@@ -133,6 +139,7 @@ public class ProductController {
         List<CartDTO> list = productService.cartList(a);
         int totalPrice = 0;
 
+        System.out.println(list);
         for(int i=0 ; list.size()>i; i++){
             totalPrice += list.get(i).getProduct().getPrice();
         }
@@ -148,12 +155,15 @@ public class ProductController {
     }
 
     @GetMapping("/updateCart")
-    public ResponseEntity<String> updateCart1(@RequestParam int amount, @RequestParam String productName){
+    public ResponseEntity<String> updateCart1(@RequestParam int amount, @RequestParam String productCode){
         int memberid = 1;
         System.out.println("amount : " + amount);
-        System.out.println("productName : " + productName);
-        Map<String, String> updateCartMap = new HashMap<>();
-        updateCartMap.put()
+        System.out.println("productCode : " + productCode);
+        Map<String, Object> updateCartMap = new HashMap<>();
+        updateCartMap.put("amount",amount);
+        updateCartMap.put("productCode",productCode);
+        updateCartMap.put("memberId",memberid);
+        productService.updateCartList(updateCartMap);
         return ResponseEntity.ok("ddd");
     }
     @PostMapping("/deleteCart")
@@ -167,7 +177,41 @@ public class ProductController {
         return ResponseEntity.ok("삭제완료");
     }
 
+    @GetMapping("/finalPrice")
+    public ResponseEntity<Integer> abc(int point, int totalPrice){
 
+        int finalPrice = totalPrice - point;
+
+        return ResponseEntity.ok(finalPrice);
+    }
+    @PostMapping("/complete")
+    public String complete(@ModelAttribute OrderDTO order, MultipartFile photo){
+        Date date= new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        String code = simpleDateFormat.format(date);
+        int memberId = 1;
+        order.setCode(code+"abcd");
+        order.setDate(new Date());
+        order.setMember(memberId);
+        String originalName = photo.getOriginalFilename();
+        String fileUploadDir = IMG_DIR + "resource/images";
+        File dir = new File(fileUploadDir);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        try {
+            if (photo.getSize() > 0) {
+                photo.transferTo(new File(fileUploadDir +"/"+ originalName));
+                order.setImage("/resource/images/"+originalName);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(order);
+        productService.addOrder(order);
+
+        return "redirect:/";
+    }
 
 
 
