@@ -7,32 +7,86 @@
 <body>
     <div th:replace="admin/common/nav.html"></div>
     <div class="coupon_container">
-        <div style="cursor: pointer" class="coupon openModal" th:each="coupon : ${coupon}">
+        <div style="cursor: pointer" class="coupon openModal" th:each="coupon : ${coupon}" >
             <ul>
                 <li style="font-size: 24px" th:text="${coupon.cpName}"></li>
                 <li style="font-size: 15px" th:text="${#dates.format(coupon.cpSdate,'yyyy-MM-dd')}+' ~ '+${#dates.format(coupon.cpEdate,'yyyy-MM-dd')}"></li>
                 <li style="font-size: 24px; color: #4B93FF; text-align: right" th:text="${coupon.cpRate} + '%'"></li>
             </ul>
         </div>
-        <div class="coupon" id="newCoupon">
+        <div class="coupon openModal2" id="newCoupon">
             <h1>+</h1>
         </div>
     </div>
-    <div class="modal">
+    <div class="modal update">
         <div class="modalBody">
             <h1>쿠폰수정</h1>
-            <button class="closeModal">닫기</button>
+            <div>
+                <form id="boardRegistForm" action="/board/regist" method="post">
+                    <table style="margin: auto;">
+                        <tr>
+                            <td>쿠폰명</td>
+                            <td colspan="3"><input type="text" name="title"></td>
+                        </tr>
+                        <tr>
+                            <td>기간</td>
+                            <td>시작일<input type="date"> ~ 종료일<input type="date"></td>
+                        </tr>
+                        <tr>
+                            <td>할인율</td>
+                            <td><input type="number">%</td>
+                        </tr>
+                    </table>
+                    <br>
+                    <div align="center">
+                        <button type="button" th:onclick="'location.href=\'/coupon/list\''">
+                            닫기</button>
+                        <button type="submit">수정</button>
+                        <button type="submit">삭제</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal insert">
+        <div class="modalBody">
+            <h1>쿠폰생성</h1>
+            <div>
+                <form id="boardRegistForm2" action="/coupon/insert" method="post">
+                    <table style="margin: auto;">
+                        <tr>
+                            <td>쿠폰명</td>
+                            <td colspan="3"><input type="text" name="cpName"></td>
+                        </tr>
+                        <tr>
+                            <td>기간</td>
+                            <td>시작일<input type="date" name="cpSdate"> ~ 종료일<input type="date" name="cpEdate"></td>
+                        </tr>
+                        <tr>
+                            <td>할인율</td>
+                            <td><input type="number" name="cpRate">%</td>
+                        </tr>
+                    </table>
+                    <br>
+                    <div align="center">
+                        <button type="button" th:onclick="'location.href=\'/coupon/list\''">
+                            닫기</button>
+                        <button type="submit">생성</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 <script>
-    const modal = document.querySelector('.modal');
+    const update = document.querySelector('.update');
+    const insert = document.querySelector('.insert');
     const openModal = document.querySelector('.openModal');
-    const closeModal = document.querySelector('.closeModal');
+    const openModal2 = document.querySelector('.openModal2');
     openModal.addEventListener("click",()=>{
-        modal.style.display="flex";
+        update.style.display="flex";
     })
-    closeModal.addEventListener("click",()=>{
-        modal.style.display="none";
+    openModal2.addEventListener("click",()=>{
+        insert.style.display="flex";
     })
 </script>
 </body>

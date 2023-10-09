@@ -15,4 +15,8 @@ public class CouponService {
     public List<CouponDTO> selectCouponList() {
         return couponMapper.selectCouponList();
     }
+
+    public void registCoupon(CouponDTO coupon) {
+        couponMapper.insertCoupon(coupon);
+    }
 }

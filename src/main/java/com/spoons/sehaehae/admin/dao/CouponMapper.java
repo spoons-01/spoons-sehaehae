@@ -8,4 +8,6 @@ import java.util.List;
 @Mapper
 public interface CouponMapper {
     List<CouponDTO> selectCouponList();
+
+    void insertCoupon(CouponDTO coupon);
 }

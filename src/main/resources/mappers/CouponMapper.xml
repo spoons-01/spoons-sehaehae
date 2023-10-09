@@ -17,4 +17,27 @@
             *
         from    TBL_CP
     </select>
+
+    <insert id="insertCoupon">
+        insert
+        into TBL_CP
+        (
+            CP_CODE,
+            CP_NAME,
+            CP_RATE,
+            CP_SDATE,
+            CP_EDATE
+        )
+        values
+        (
+         SEQ_CP_CODE.NEXTVAL,
+         #{cpName},
+         #{cpRate},
+         #{cpSdate},
+         #{cpEdate}
+        )
+    </insert>
+    <delete id="deleteCoupon">
+        delete
+    </delete>
 </mapper>

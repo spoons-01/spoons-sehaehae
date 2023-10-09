@@ -24,8 +24,11 @@ public class CouponController {
 
         return "/admin/coupon/couponlist";
     }
-    @GetMapping("/regist")
-    public String registCoupon(Model model){
-        return "/admin/coupon/couponRegist";
+    @PostMapping("/insert")
+    public String registCoupon(CouponDTO coupon){
+
+        couponService.registCoupon(coupon);
+
+        return "redirect:/admin/coupon/couponlist";
     }
 }
