@@ -39,20 +39,20 @@ public class ProductController {
 
     @GetMapping("/list")
     public void productList(Model model,
-                            @RequestParam (required = false)String searchValue,
-                            @RequestParam (required = false)String searchCondition,
-                            @RequestParam (defaultValue = "1") int page) {
+                            @RequestParam(required = false) String searchValue,
+                            @RequestParam(required = false) String searchCondition,
+                            @RequestParam(defaultValue = "1") int page) {
 
         Map<String, String> searchMap = new HashMap<>();
-        searchMap.put("searchValue",searchValue);
-        searchMap.put("searchCondition",searchCondition);
+        searchMap.put("searchValue", searchValue);
+        searchMap.put("searchCondition", searchCondition);
 
         List<ProductDTO> productList = productService.selectProduct(searchMap);
         List<CategoryDTO> categoryList = productService.selectCategory();
         List<ProductDTO> selectAllProduct = productService.selectAllproduct();
-        model.addAttribute("productList",productList);
-        model.addAttribute("categoryList",categoryList);
-        model.addAttribute("allProduct",selectAllProduct);
+        model.addAttribute("productList", productList);
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("allProduct", selectAllProduct);
     }
 
     @GetMapping("/productRegist")
@@ -62,16 +62,18 @@ public class ProductController {
 
     @GetMapping("/detail")
     public void productDetail(@RequestParam int code, Model model) {
-       ProductDTO product=  productService.selectProductByCode(code);
-        model.addAttribute("product",product);
+        ProductDTO product = productService.selectProductByCode(code);
+        model.addAttribute("product", product);
     }
+
     @GetMapping("/cart")
     public void cart(Model model) {
         int i = 1;
         List<CartDTO> cartList = productService.cartList(i);
         model.addAttribute("cartList", cartList);
-        model.addAttribute("price",3000);
+        model.addAttribute("price", 3000);
     }
+
     @GetMapping("/payment")
     public void payemnt(Model model, @RequestParam int totalPrice) {
         int memberCode = 1;
@@ -79,13 +81,15 @@ public class ProductController {
         MemberDTO member = productService.selectMember(memberCode);
         List<CartDTO> cart = productService.cartList(memberCode);
 
-        model.addAttribute("totalPrice",totalPrice);
-        model.addAttribute("member",member);
-        model.addAttribute("cartList",cart);
+        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("member", member);
+        model.addAttribute("cartList", cart);
     }
+
     @GetMapping("/categoryRegist")
     public void categoryRegist() {
     }
+
     @PostMapping("/categoryRegist")
     public String regist(@RequestParam String categoryName, RedirectAttributes rttr) {
         productService.registCategory(categoryName);
@@ -93,8 +97,9 @@ public class ProductController {
 
         return "redirect:/product/list";
     }
+
     @PostMapping("/regist")
-    public String productRegist(@ModelAttribute ProductDTO product, @RequestParam(value = "productImage", required = false) MultipartFile productImage) {
+    public String productRegist(RedirectAttributes rttr, @ModelAttribute ProductDTO product, @RequestParam(value = "productImage", required = false) MultipartFile productImage) {
         product.setRegistDate(new Date());
         String originalName = productImage.getOriginalFilename();
         String fileUploadDir = IMG_DIR + "resource/images";
@@ -104,93 +109,113 @@ public class ProductController {
         }
         try {
             if (productImage.getSize() > 0) {
-                productImage.transferTo(new File(fileUploadDir +"/"+ originalName));
-                product.setPhoto("/resource/images/"+originalName);
+                productImage.transferTo(new File(fileUploadDir + "/" + originalName));
+                product.setPhoto("/resource/images/" + originalName);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         productService.registProduct(product);
-        return "redirect:/product/list";
+        rttr.addFlashAttribute("message",messageSourceAccessor.getMessage("product.regist"));
+        return "redirect:/product/listAdmin";
     }
+
     @GetMapping("/getPrice")
-    public ResponseEntity<Integer> getPrice(@RequestParam(required = false) int price, @RequestParam(required = false) int body,int eco, int premium){
-        int total = (price * body)+eco+premium;
+    public ResponseEntity<Integer> getPrice(@RequestParam(required = false) int price, @RequestParam(required = false) int body, int eco, int premium) {
+
+        int total = (price * body) + eco + premium;
         return ResponseEntity.ok(total);
     }
 
     @GetMapping("/addCart")
-    public ResponseEntity<String> addCart(@ModelAttribute CartDTO cart){
+    public ResponseEntity<String> addCart(@ModelAttribute CartDTO cart) {
         cart.setMember(1);
         productService.addCart(cart);
         return ResponseEntity.ok("장바구니에 추가됨");
     }
+
     @GetMapping("/totalPrice")
-    public ResponseEntity<Integer> totalPrice(int total){
+    public ResponseEntity<Integer> totalPrice(int total) {
 
         return ResponseEntity.ok(total);
     }
+
     @GetMapping("/admin")
-    public void admin(){}
+    public void admin() {
+    }
 
     @GetMapping("/cartList")
-    public void cartList(Model model){
+    public void cartList(Model model) {
         int a = 1;
         List<CartDTO> list = productService.cartList(a);
         int totalPrice = 0;
 
         System.out.println(list);
-        for(int i=0 ; list.size()>i; i++){
-            totalPrice += list.get(i).getProduct().getPrice();
+
+
+        for (int i = 0; list.size() > i; i++) {
+            totalPrice += list.get(i).getProduct().getPrice() * list.get(i).getAmount();
+            if(list.get(i).getUseEco().equals("Y")){
+                totalPrice += 3000;
+            }
+            if(list.get(i).getUsePremium().equals("Y")){
+                totalPrice += list.get(i).getProduct().getPremiumPrice();
+            }
         }
 
-        model.addAttribute("cartList",list);
-        model.addAttribute("totalPrice",totalPrice);
+        model.addAttribute("cartList", list);
+        model.addAttribute("totalPrice", totalPrice);
     }
 
     @GetMapping("/selectAllCategory")
-    public ResponseEntity<List<CategoryDTO>> selectCategory(){
+    public ResponseEntity<List<CategoryDTO>> selectCategory() {
         List<CategoryDTO> categoryList = productService.selectCategory();
-        return  ResponseEntity.ok(categoryList);
+        return ResponseEntity.ok(categoryList);
     }
 
     @GetMapping("/updateCart")
-    public ResponseEntity<String> updateCart1(@RequestParam int amount, @RequestParam String productCode){
+    public ResponseEntity<String> updateCart1(@RequestParam int amount, @RequestParam String productCode) {
         int memberid = 1;
         System.out.println("amount : " + amount);
         System.out.println("productCode : " + productCode);
         Map<String, Object> updateCartMap = new HashMap<>();
-        updateCartMap.put("amount",amount);
-        updateCartMap.put("productCode",productCode);
-        updateCartMap.put("memberId",memberid);
+        updateCartMap.put("amount", amount);
+        updateCartMap.put("productCode", productCode);
+        updateCartMap.put("memberId", memberid);
         productService.updateCartList(updateCartMap);
         return ResponseEntity.ok("ddd");
     }
+
     @PostMapping("/deleteCart")
-    public @ResponseBody ResponseEntity<String> deleteCart(@RequestBody List<Integer> product){
+    public @ResponseBody ResponseEntity<String> deleteCart(@RequestBody List<Integer> product) {
         int userid = 1;
 
         Map<String, Object> cartMap = new HashMap<>();
-        cartMap.put("memberId",userid);
-        cartMap.put("productList",product);
+        cartMap.put("memberId", userid);
+        cartMap.put("productList", product);
         productService.deleteCart(cartMap);
         return ResponseEntity.ok("삭제완료");
     }
 
     @GetMapping("/finalPrice")
-    public ResponseEntity<Integer> abc(int point, int totalPrice){
+    public ResponseEntity<Integer> abc(int point, int totalPrice) {
 
         int finalPrice = totalPrice - point;
 
         return ResponseEntity.ok(finalPrice);
     }
+
     @PostMapping("/complete")
-    public String complete(@ModelAttribute OrderDTO order, MultipartFile photo){
-        Date date= new Date();
+    public String complete(@ModelAttribute OrderDTO order, MultipartFile photo, Model model, RedirectAttributes rttr) {
+        Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-        String code = simpleDateFormat.format(date);
         int memberId = 1;
-        order.setCode(code+"abcd");
+        int discount = (order.getPrice() + 3000) - order.getTotalPrice();
+        String uuid = UUID.randomUUID().toString().substring(0,4);
+        String code = simpleDateFormat.format(date) + uuid;
+
+        order.setDiscount(discount);
+        order.setCode(code);
         order.setDate(new Date());
         order.setMember(memberId);
         String originalName = photo.getOriginalFilename();
@@ -201,18 +226,70 @@ public class ProductController {
         }
         try {
             if (photo.getSize() > 0) {
-                photo.transferTo(new File(fileUploadDir +"/"+ originalName));
-                order.setImage("/resource/images/"+originalName);
+                photo.transferTo(new File(fileUploadDir + "/" + originalName));
+                order.setImage("/resource/images/" + originalName);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         System.out.println(order);
         productService.addOrder(order);
+        model.addAttribute(code);
 
-        return "redirect:/";
+        return "redirect:/product/ordercomplete?code="+code;
+    }
+    @GetMapping("/ordercomplete")
+    public void orderComplete(RedirectAttributes rttr, String code){
+        rttr.addAttribute("code", code);
     }
 
 
+    @GetMapping("/listAdmin")
+    public void listAdmin(Model model){
+        List<ProductDTO> productList = productService.selectAllproductAdmin();
+        System.out.println(productList);
+        model.addAttribute("productList",productList);
+    }
 
+    @GetMapping("/productModify")
+    public void modify(int code,Model model){
+       ProductDTO product = productService.selectProductByCode(code);
+       model.addAttribute("product",product);
+    }
+    @PostMapping("/modify")
+    public String productModify(ProductDTO product, MultipartFile productImage,RedirectAttributes rttr){
+        product.setModifyDate(new Date());
+        String imageName = productImage.getOriginalFilename();
+        String fileUploadDir = IMG_DIR + "resource/images";
+        File dir = new File(fileUploadDir);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        try {
+            if (productImage.getSize() > 0) {
+                productImage.transferTo(new File(fileUploadDir + "/" + imageName));
+                product.setPhoto("/resource/images/" + imageName);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(product);
+        productService.modifyProduct(product);
+
+        rttr.addFlashAttribute("message",messageSourceAccessor.getMessage("product.regist"));
+        return "redirect:/product/listAdmin";
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<String> delete(@RequestBody List<Integer> productCode){
+        System.out.println(productCode);
+
+        Map<String,List<Integer>> productMap = new HashMap<>();
+        productMap.put("productMap",productCode);
+        productService.deleteProduct(productMap);
+
+
+
+        return ResponseEntity.ok("삭제가 완료되었습니다.");
+    }
 }

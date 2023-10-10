@@ -175,7 +175,6 @@
 
     console.log($payemthod);
     $regist.onclick = function () {
-
         if ($kakao.checked) {
             kakaopay();
 
@@ -207,7 +206,7 @@
         IMP.request_pay({
             pg: "kakaopay.TC0ONETIME",
             pay_method: "kakaopay",
-            merchant_uid: "adfa313122sadfafda3131231232c1313131fd113221231233123",
+            merchant_uid: new Date(),
             name: "의류",
             amount: totalPrice,
             buyer_email: 'email@naver.com',

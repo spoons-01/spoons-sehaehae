@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/css/productRegist.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<p class="asdasd">상품 정보 변경</p>
+<div class="head"></div>
+<span class="a"></span>
+<span class="b">기본정보</span>
+<div class="info">
+    <form class="insert" method="post" action="/product/modify" enctype="multipart/form-data">
+        <table>
+            <input type="number" th:value="${product.code}" name="code" style="display:none">
+            <tr>
+                <td>상품명</td>
+                <td><input type="text" name="name" th:value="${product.name}"></td>
+            </tr>
+            <tr>
+                <td>카테고리</td>
+                <td><select name="category.code" id="category">
+                </select></td>
+            </tr>
+            <tr>
+                <td>일반 가격</td>
+                <td><input type="number" name="price" th:value="${product.price}"> </td>
+            </tr>
+            <tr>
+                <td>프리미엄 가격</td>
+                <td><input type="number" name="premiumPrice" th:value="${product.premiumPrice}"></td>
+            </tr>
+            <tr>
+                <td>이미지</td>
+                <td><input type="file" name="productImage" accept="image/png"></td>
+            </tr>
+            <tr>
+                <td>사용가능여부</td>
+                <td><select name="useableStatus">
+                    <option value="Y">Y</option>
+                    <option value="N">N</option>
+                </select></td>
+            </tr>
+        </table>
+        <button type="submit" class="regist">등록하기</button>
+        <button class="rollback">취소하기</button>
+    </form>
+
+</div>
+
+
+<script>
+    const $category = document.querySelector("#category");
+    console.log($category);
+    window.onload = function(){
+        fetch("/product/selectAllCategory")
+            .then(res=>res.json())
+            .then(data => data.forEach((list)=>{
+                const $option = document.createElement("option");
+                $option.textContent = list.name;
+                $option.value = list.code;
+                $category.appendChild($option);
+            }))
+    }
+</script>
+
+</body>
+</html>
+</body>
+</html>

@@ -23,17 +23,20 @@
             <img th:src="${cart.product.photo}" style="max-width: 1000px; height: 200px;">
             <div>
                 <p id="name" th:text="${cart.product.name}"></p>
+                <p th:text="|${cart.product.price}원 / ${cart.product.premiumPrice}원|"></p>
                 <p th:text="${cart.product.price}" id="pprice" style="display: none"></p>
-                <span th:if="${cart.useEco == 'Y'}">천연세제 사용</span><br>
-                <span th:if="${cart.usePremium == 'Y'}">프리미엄 케어</span>
+                <th:block th:if="${cart.useEco == 'Y'}"><span>천연세제 사용</span><button id="deleteEco">x</button></th:block><br>
+                <th:block th:if="${cart.usePremium == 'Y'}"><span>프리미엄케어 추가</span><button id="deletePremium">x</button></th:block><br>
+
                 <span id="code" th:text="${cart.product.code}" style="display: none"></span>
                 <div class="gg">
                     <input type="number" class="zz" th:value="${cart.amount}" MIN="1" max="99" th><select>
                     <option selected>옵션선택</option>
                     <option>천연세제 사용</option>
                     <option>프리미엄케어</option>
-                </select><span style="margin-left: 120px; font-size: 30px; font-weight: bold;" id="totalPrice"
-                               th:text="${cart.product.price}* ${cart.amount}"></span>
+                </select>
+                    <span style="margin-left: 120px; font-size: 30px; font-weight: bold;" id="totalPrice"
+                               th:text="${cart.product.price}*${cart.amount}"></span>
                 </div>
             </div>
         </div>
@@ -103,11 +106,17 @@
     const $final2 = document.querySelector('#final2');
 
     $value.forEach((list) => list.addEventListener("change", function () {
+
         const index = Array.from($value).indexOf(this);
         const body = list.value;
+        const cartList = '[[${cartList}]]'
+        console.log(cartList)
         const price = document.querySelectorAll("#pprice")[index].textContent;
         let ecoPrice = 0
         let premiumPrice = 0
+        if(cartList[index].useEco === 'Y'){
+            ecoPrice = 3000;
+        }
 
         fetch('/product/getPrice?price=' + price + '&body=' + body + "&eco=" + ecoPrice + "&premium=" + premiumPrice)
             .then(res => res.json())
@@ -144,6 +153,19 @@
 
         location.href = '/product/payment?totalPrice=' + totalPrice
     }
+
+
+    const $deleteEco = document.querySelectorAll("#deleteEco");
+    const $deletePremium = document.querySelectorAll("#deletePremium");
+
+
+    $deletePremium.forEach((bt)=>{
+        bt.addEventListener("click",function(){
+
+        })
+    })
+
+
 </script>
 </body>
 </html>

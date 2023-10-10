@@ -72,5 +72,20 @@ public class ProductService {
     }
 
     public void addOrder(OrderDTO order) {
+
+        productMapper.registOrder(order);
+    }
+
+    public void modifyProduct(ProductDTO product) {
+        productMapper.modifyProduct(product);
+    }
+
+
+    public void deleteProduct(Map<String,List<Integer>> productMap) {
+        productMapper.deleteProduct(productMap);
+    }
+
+    public List<ProductDTO> selectAllproductAdmin() {
+        return productMapper.selectAllproductAdmin();
     }
 }

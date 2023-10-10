@@ -5,7 +5,6 @@
 <mapper namespace="com.spoons.sehaehae.product.dao.ProductMapper">
 
 
-
     <resultMap id="productResultMap" type="com.spoons.sehaehae.product.dto.ProductDTO">
         <id property="code" column="PRODUCT_CODE"/>
         <result property="name" column="PRODUCT_NAME"/>
@@ -150,6 +149,58 @@
     <delete id="deleteCart">
         DELETE FROM TBL_CART
         WHERE MEMBER_NO = #{memberId}
-        AND PRODUCT_CODE IN <foreach collection="productList"  item="item" open="(" close=")" separator=",">#{item}</foreach>
+        AND PRODUCT_CODE IN
+        <foreach collection="productList" item="item" open="(" close=")" separator=",">#{item}</foreach>
     </delete>
+
+    <insert id="registOrder">
+        INSERT INTO TBL_ORDER
+        (ORDER_CODE, ORDER_DATE, ORDER_REQUEST, ORDER_PRICE, ORDER_DISCOUNT, ORDER_TOTAL_PRICE,
+        MEMBER_NO,INPUT_ADDRESS,CP_CODE,USE_POINT,COLLECTION_DATE,DELIVERY_DATE,ORDER_IMAGE,ORDER_STATUS)
+        VALUES
+        (#{code},#{date},#{request},#{price},#{discount},#{totalPrice},#{member},#{address},#{coupon},#{usePoint},#{collectionDate},#{deliveryDate},#{image},'Y')
+    </insert>
+
+    <update id="modifyProduct">
+        UPDATE TBL_PRODUCT
+        SET
+        PRODUCT_NAME = #{name},
+        CATEGORY_CODE = #{category.code},
+        PRODUCT_PRICE = #{price},
+        PRODUCT_PREMIUM_PRICE = #{premiumPrice},
+        USEABLE_STATUS = #{useableStatus},
+        <if test=" photo != null">
+        PRODUCT_PHOTO = #{photo},
+        </if>
+        MODIFY_DATE = #{modifyDate}
+        WHERE PRODUCT_CODE = #{code}
+    </update>
+
+    <update id="deleteProduct">
+        UPDATE TBL_PRODUCT
+        SET DELETE_STATUS = 'Y'
+        WHERE PRODUCT_CODE IN <foreach collection="productMap" item="item" open="(" separator="," close=")">#{item}</foreach>
+    </update>
+
+    <select id="selectAllproductAdmin" resultMap="productResultMap">
+        SELECT
+        ROWNUM,
+        A.PRODUCT_NAME,
+        A.PRODUCT_CODE,
+        B.CATEGORY_NAME,
+        A.PRODUCT_PRICE,
+        A.PRODUCT_PREMIUM_PRICE,
+        A.PRODUCT_ECO_PRICE,
+        A.PRODUCT_PHOTO
+        FROM TBL_PRODUCT A
+        JOIN TBL_CATEGORY B ON(A.CATEGORY_CODE = B.CATEGORY_CODE)
+        WHERE DELETE_STATUS = 'N'
+        <if test="searchValue != null">
+            AND PRODUCT_NAME LIKE '%' || #{searchValue} || '%'
+        </if>
+        <if test="searchCondition != null">
+            AND CATEGORY_NAME = #{searchCondition}
+        </if>
+        ORDER BY PRODUCT_CODE
+    </select>
 </mapper>
