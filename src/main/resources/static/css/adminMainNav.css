@@ -250,6 +250,7 @@ tr:nth-child(even) td {
 }
 .update{display: none;}
 .insert{display: none;}
+.openmodal{display: none;}
 .modalBody{
     position: absolute;
     top: 50%;

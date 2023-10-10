@@ -7,9 +7,8 @@
 <body>
     <div th:replace="admin/common/nav.html"></div>
     <div class="coupon_container">
-        <div style="cursor: pointer" class="coupon openModal" th:each="coupon, couponStat : ${coupon}">
+        <div style="cursor: pointer" class="coupon" th:each="coupon : ${coupon}" onclick="modalevent(this)">
             <ul>
-                <li th:text="${couponStat.index}"></li>
                 <li style="font-size: 24px" th:text="${coupon.cpName}"></li>
                 <li style="font-size: 15px" th:text="${#dates.format(coupon.cpSdate,'yyyy-MM-dd')}+' ~ '+${#dates.format(coupon.cpEdate,'yyyy-MM-dd')}"></li>
                 <li style="font-size: 24px; color: #4B93FF; text-align: right" th:text="${coupon.cpRate} + '%'"></li>
@@ -25,10 +24,10 @@
             <h1>쿠폰수정</h1>
             <div>
                 <form id="boardRegistForm" action="/coupon/list" method="post">
-                    <table style="margin: auto;">
+                    <table style="width: 1200px; margin: 0">
                         <tr>
                             <td>쿠폰명</td>
-                            <td colspan="3"><input type="text" name="title" ></td>
+                            <td colspan="3"><input type="text" name="title"></td>
                         </tr>
                         <tr>
                             <td>기간</td>
@@ -55,7 +54,7 @@
             <h1>쿠폰생성</h1>
             <div>
                 <form id="boardRegistForm2" action="/coupon/insert" method="post">
-                    <table style="margin: auto;">
+                    <table style="width: 1200px; margin: 0">
                         <tr>
                             <td>쿠폰명</td>
                             <td colspan="3"><input type="text" name="cpName"></td>
@@ -80,15 +79,14 @@
         </div>
     </div>
 <script>
-    var bno = 0;
-    const update = document.querySelector('.update');
-    const insert = document.querySelector('.insert');
-    const openModal = document.querySelector('.openModal');
-    const openModal2 = document.querySelector('.openModal2');
-    openModal.addEventListener("click",()=>{
-        bno = this.value;
+    function modalevent(){
+        const update = document.querySelector('.update');
         update.style.display="flex";
-    })
+    }
+
+
+    const insert = document.querySelector('.insert');
+    const openModal2 = document.querySelector('.openModal2');
     openModal2.addEventListener("click",()=>{
         insert.style.display="flex";
     })

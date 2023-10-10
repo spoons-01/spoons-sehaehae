@@ -7,14 +7,16 @@ import com.spoons.sehaehae.member.dto.MemberDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
 @Controller
+@RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
     public MemberController(MemberService memberService){this.memberService=memberService;}
-    @GetMapping("/member")
+    @GetMapping("/list")
     public String MemberList(Model model){
 
         List<MemberDTO> memberList = memberService.selectMemberList();
