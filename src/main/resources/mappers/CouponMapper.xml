@@ -37,7 +37,21 @@
          #{cpEdate}
         )
     </insert>
+
+    <update id="updateCoupon">
+        update TBL_CP
+        set
+                CP_NAME=#{cpName},
+                CP_RATE=#{cpRate},
+                CP_SDATE=#{cpSdate},
+                CP_EDATE=#{cpEdate}
+
+    </update>
+
+
     <delete id="deleteCoupon">
         delete
+        from    TBL_CP
+        where   CP_CODE=#{cpCode}
     </delete>
 </mapper>

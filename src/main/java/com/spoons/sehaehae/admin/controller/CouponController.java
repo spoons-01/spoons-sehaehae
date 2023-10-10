@@ -2,12 +2,10 @@ package com.spoons.sehaehae.admin.controller;
 
 import com.spoons.sehaehae.admin.dto.CouponDTO;
 import com.spoons.sehaehae.admin.service.CouponService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,13 +20,19 @@ public class CouponController {
         List<CouponDTO> couponList = couponService.selectCouponList();
         model.addAttribute("coupon", couponList);
 
-        return "/admin/coupon/couponlist";
+        return "/admin/coupon/couponList";
     }
+
     @PostMapping("/insert")
-    public String registCoupon(CouponDTO coupon){
-
-        couponService.registCoupon(coupon);
-
-        return "redirect:/admin/coupon/couponlist";
+    public String insertCoupon(CouponDTO coupon){
+        couponService.insertCoupon(coupon);
+        return "redirect:/coupon/list";
     }
+    @PostMapping("/update")
+    public String updateCoupon(CouponDTO coupon){
+        couponService.updateCoupon(coupon);
+        return "redirect:/coupon/list";
+    }
+
+
 }

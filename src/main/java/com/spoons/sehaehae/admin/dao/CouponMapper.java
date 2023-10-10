@@ -10,4 +10,8 @@ public interface CouponMapper {
     List<CouponDTO> selectCouponList();
 
     void insertCoupon(CouponDTO coupon);
+
+    void updateCoupon(CouponDTO coupon);
+
+    void deleteCoupon(CouponDTO removeCoupon);
 }

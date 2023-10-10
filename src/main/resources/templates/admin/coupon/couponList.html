@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>서비스관리 | 쿠폰관리</title>
 </head>
 <body>
     <div th:replace="admin/common/nav.html"></div>
     <div class="coupon_container">
-        <div style="cursor: pointer" class="coupon" th:each="coupon : ${coupon}" onclick="modalevent(this)">
+        <div style="cursor: pointer" class="coupon" th:each="coupon : ${coupon}" onclick="couponModal(this)">
             <ul>
                 <li style="font-size: 24px" th:text="${coupon.cpName}"></li>
                 <li style="font-size: 15px" th:text="${#dates.format(coupon.cpSdate,'yyyy-MM-dd')}+' ~ '+${#dates.format(coupon.cpEdate,'yyyy-MM-dd')}"></li>
@@ -23,19 +23,19 @@
         <div class="modalBody">
             <h1>쿠폰수정</h1>
             <div>
-                <form id="boardRegistForm" action="/coupon/list" method="post">
+                <form id="couponUpdate" action="/coupon/update" method="post">
                     <table style="width: 1200px; margin: 0">
                         <tr>
                             <td>쿠폰명</td>
-                            <td colspan="3"><input type="text" name="title"></td>
+                            <td colspan="3"><input type="text" name="cpName"></td>
                         </tr>
                         <tr>
                             <td>기간</td>
-                            <td>시작일<input type="date"> ~ 종료일<input type="date"></td>
+                            <td>시작일<input type="Date" name="cpSdate"> ~ 종료일<input type="Date" name="cpEdate"></td>
                         </tr>
                         <tr>
                             <td>할인율</td>
-                            <td><input type="number">%</td>
+                            <td><input type="number" name="cpRate">%</td>
                         </tr>
                     </table>
                     <br>
@@ -43,17 +43,19 @@
                         <button type="button" th:onclick="'location.href=\'/coupon/list\''">
                             닫기</button>
                         <button type="submit">수정</button>
-                        <button type="submit">삭제</button>
+                        <button type="button">삭제</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+
     <div class="modal insert">
         <div class="modalBody">
             <h1>쿠폰생성</h1>
             <div>
-                <form id="boardRegistForm2" action="/coupon/insert" method="post">
+                <form id="couponInsert" action="/coupon/insert" method="post">
                     <table style="width: 1200px; margin: 0">
                         <tr>
                             <td>쿠폰명</td>
@@ -79,11 +81,10 @@
         </div>
     </div>
 <script>
-    function modalevent(){
-        const update = document.querySelector('.update');
-        update.style.display="flex";
+    function couponModal(){
+        const update = document.querySelector('.update')
+        update.style.display="flex"
     }
-
 
     const insert = document.querySelector('.insert');
     const openModal2 = document.querySelector('.openModal2');

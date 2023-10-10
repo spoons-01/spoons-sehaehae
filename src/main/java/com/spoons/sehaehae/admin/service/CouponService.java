@@ -16,7 +16,15 @@ public class CouponService {
         return couponMapper.selectCouponList();
     }
 
-    public void registCoupon(CouponDTO coupon) {
+    public void insertCoupon(CouponDTO coupon) {
         couponMapper.insertCoupon(coupon);
+    }
+
+    public void removeCoupon(CouponDTO removeCoupon) {
+        couponMapper.deleteCoupon(removeCoupon);
+    }
+
+    public void updateCoupon(CouponDTO coupon) {
+        couponMapper.updateCoupon(coupon);
     }
 }
