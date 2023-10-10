@@ -92,11 +92,11 @@ public class BoardService {
         /* 3. 요청 페이지와 검색 기준에 맞는 게시글을 조회해온다. */
         List<QnaDTO> qnaList = boardMapper.selectQnaList(selectCriteria);
 
-        Map<String, Object> anqListAndPaging = new HashMap<>();
-        anqListAndPaging.put("paging", selectCriteria);
-        anqListAndPaging.put("qnaList", qnaList);
+        Map<String, Object> qnaListAndPaging = new HashMap<>();
+        qnaListAndPaging.put("paging", selectCriteria);
+        qnaListAndPaging.put("qnaList", qnaList);
 
-        return anqListAndPaging;
+        return qnaListAndPaging;
     }
 
     public QnaDTO selectQnaView(Long no) {
@@ -119,4 +119,7 @@ public class BoardService {
 
         boardMapper.updateQna(modifyQna);
     }
+
+
+
 }

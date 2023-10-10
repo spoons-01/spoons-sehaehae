@@ -60,7 +60,16 @@
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
                COUNT(*)
-          FROM TBL_NOTICE
+          FROM TBL_NOTICE A
+        <where>
+            <if test="searchCondition == 'title'">
+                A.NOTICE_TITLE LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'content'">
+                A.NOTICE_BODY LIKE '%' || #{ searchValue } || '%'
+            </if>
+            AND A.NOTICE_STATUS = 'Y'
+        </where>
     </select>
 
     <select id="selectNoticeList" resultMap="generalNoticeResultMap">
@@ -188,8 +197,23 @@
     <!-- 자주하는 질문 -->
     <select id="qnaTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
-        COUNT(*)
-        FROM TBL_QNA
+                COUNT(*)
+        FROM TBL_QNA A
+        <if test="searchCondition == 'category'">
+            JOIN TBL_BOARD_CATEGORY B ON(A.CATEGORY_NO = B.CATEGORY_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'category'">
+                B.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'title'">
+                A.QNA_TITLE LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'content'">
+                A.QNA_BODY LIKE '%' || #{ searchValue } || '%'
+            </if>
+            AND A.QNA_STATUS = 'Y'
+        </where>
     </select>
 
     <select id="selectQnaList" resultMap="qnaBoardResultMap">
@@ -230,15 +254,10 @@
         <if test="searchCondition == 'category'">
             JOIN TBL_BOARD_CATEGORY D ON(C.CATEGORY_NO = D.CATEGORY_NO)
         </if>
-        <if test="searchCondition == 'writer'">
-            JOIN TBL_MEMBER D ON(C.ADMIN_NO == D.MEMBER_NO)
-        </if>
         <where>
             <if test="searchCondition == 'category'">
-                D.CATEGORY_NAME = #{ searchValue }
-            </if>
-            <if test="searchCondition == 'writer'">
-                D.NICKNAME LIKE '%' || #{ searchValue } || '%'
+<!--                D.CATEGORY_NAME = #{ searchValue }-->
+                D.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
             <if test="searchCondition == 'title'">
                 C.QNA_TITLE LIKE '%' || #{ searchValue } || '%'
@@ -315,4 +334,5 @@
         WHERE QNA_STATUS = 'Y'
         AND QNA_NO = #{ no }
     </update>
+
 </mapper>

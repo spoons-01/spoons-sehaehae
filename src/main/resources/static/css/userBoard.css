@@ -135,7 +135,7 @@ h3 {
 /* 검색하기 --------------------------------------------------------------- */
 .searchNotice{
     text-align: center;
-    margin-top: 20px;
+    margin-top: 40px;
     margin-bottom: 50px;
     display: flex;
     justify-content: center;
@@ -235,4 +235,120 @@ h3 {
     font-weight: 600;
     word-wrap: break-word;
 }
+/* 자주하는 질문 -------------------------------------------------- */
+.categoryList {
+    margin-top: 50px;
+    margin-left: 400px;
+    margin-right: 400px;
+    display: flex;
+    justify-content: space-between;
 
+}
+
+/* 초기에 적용될 스타일 */
+.categoryList2 {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border: 1px black solid;
+    border-radius: 5px;
+    width: 160px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: NanumGothicOTF;
+    font-size: 25px;
+    font-weight: 400;
+    word-wrap: break-word;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s; /* 색상 변경에 트랜지션 효과 추가 */
+}
+
+/* 클릭한 div의 배경색과 텍스트 색상을 변경할 스타일 */
+.categoryList2.clicked  {
+    background: rgba(75, 147, 255, 0.60);
+    color: white;
+}
+
+/*.categoryList2 {*/
+/*    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);*/
+/*    border: 1px black solid;*/
+/*    border-radius: 5px;*/
+/*    width: 160px;*/
+/*    height: 100px;*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*}*/
+
+/*.categoryList2 {*/
+/*    font-family: NanumGothicOTF;*/
+/*    font-size: 25px;*/
+/*    font-weight: 400;*/
+/*    word-wrap: break-word;*/
+/*}*/
+
+/*.categoryList2.clicked {*/
+/*    color: white;*/
+/*    background: rgba(75, 147, 255, 0.60);*/
+/*}*/
+
+/* 아코디언 디자인 */
+.accordion {
+    max-width: 1200px;
+    margin: 50px auto;
+    border-top: 4px black solid;
+
+}
+
+.accordion-item {
+    border-radius: 30px;
+    border: 1px black solid;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.accordion-title {
+    width: 1100px;
+    padding: 10px;
+    cursor: pointer;
+    color: black;
+    font-size: 20px;
+    font-family: NanumGothicOTF;
+    font-weight: 600;
+    word-wrap: break-word;
+}
+
+.accordion-title1 {
+    border-radius: 25px;
+    background: rgba(75, 147, 255, 0.30);
+    display: flex;
+}
+
+.accordion-title1 span {
+    margin-left: 20px;
+    margin-top: 3px;
+    font-size: 25px;
+}
+
+.accordion-content {
+    padding: 10px;
+    display: none; /* 초기에는 내용을 숨김 */
+    font-family: NanumGothicOTF;
+    font-weight: 300;
+    margin-left: 30px;
+    margin-top: 50px;
+}
+
+.accordion-content1 {
+    display: flex;
+}
+
+.accordion-content1 span {
+    font-size: 20px;
+    margin-right: 20px;
+    font-weight: 300;
+}
+
+.accordion-content1 textarea {
+    margin-top: 4px;
+}

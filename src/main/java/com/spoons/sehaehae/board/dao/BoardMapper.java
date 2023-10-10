@@ -35,4 +35,6 @@ public interface BoardMapper {
     void deleteQna(Integer id);
 
     void updateQna(QnaDTO modifyQna);
+
+
 }

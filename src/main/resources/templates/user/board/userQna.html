@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/userBoard.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="/images/favicon.ico">
+<!--    <script src="/javaScript/event.js" type="text/javascript"></script>-->
+    <title>고객센터</title>
+</head>
+<body>
+
+<div th:replace="/user/common/header.html"></div>
+
+
+<div class="notice-name"></div>
+<h3>고객 센터</h3>
+</div>
+
+<div class="notice-nav">
+    <ul>
+        <li ><a href="/user/board/userNotice">공지사항</a></li>
+        <li class="notice"><a href="/user/board/userQna">자주하는 질문</a></li>
+        <li><a href="#">문의하기</a></li>
+    </ul>
+</div>
+
+<div class="searchNotice">
+    <form id="searchForm" action="/user/board/userQna" class="searchNotice-form">
+        <div>
+            <select  id="searchCondition" name="searchCondition">
+               <option value="category" th:selected="${ paging.searchCondition eq 'category'}">카테고리</option>
+                <option value="title" th:selected="${ paging.searchCondition eq 'title'}" selected>제목</option>
+                <option value="body" th:selected="${ paging.searchCondition eq 'body'}">내용</option>
+            </select>
+        </div>
+        <div class="searchNotice-input">
+            <input type="search" id="searchValue" name="searchValue" th:value="${ paging.searchValue }"
+                   size="25" placeholder="검색어 입력"/>
+            <button type="submit"><img src="/images/search.png"> </button>
+        </div>
+    </form>
+</div>
+
+<div class="categoryList">
+    <div class="categoryList2" >
+        <a href="/user/board/userQna?searchCondition=category&searchValue=수거">수거·배송<br>&nbsp;&nbsp;&nbsp; 관련</a></div>
+    <div class="categoryList2" >
+        <a  href="/user/board/userQna?searchCondition=category&searchValue=결제">결제 관련</a></div>
+    <div class="categoryList2" >
+        <a  href="/user/board/userQna?searchCondition=category&searchValue=이용">&nbsp;&nbsp;서비스<br> 이용 관련</a></div>
+    <div class="categoryList2" >
+        <a href="/user/board/userQna?searchCondition=category&searchValue=세탁">세탁 품질<br>&nbsp;&nbsp; 불만</a></div>
+    <div class="categoryList2">
+        <a href="/user/board/userQna?searchCondition=category&searchValue=기타">기타 문의</a></div>
+</div>
+
+    <div class="accordion">
+        <div th:each="qnaItem : ${qnaList}" class="accordion-item">
+            <div class="accordion-title1">
+            <span>Q</span>
+            <div class="accordion-title" th:text="${qnaItem.title}"></div>
+                <span>></span>
+            </div>
+
+            <div class="accordion-content">
+                <div class="accordion-content1">
+                <span>A</span>
+                <textarea cols="60" rows="15" th:text="${qnaItem.body}"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- 페이징 바-->
+<div id="paging" class="pagingbar">
+
+    <th:block
+            th:if="${ paging.searchCondition != null and paging.searchValue != null }">
+        <!-- 맨 앞으로 이동 -->
+        <button
+                th:onclick="'location.href=\'/user/board/userQna?page=1&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">&lt;&lt;</button>
+
+        <!-- 이전 페이지로 이동 -->
+        <button
+                th:onclick="'location.href=\'/user/board/userQna?page=' + @{${paging.page - 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                th:disabled="${ paging.page <= 1 }">&lt;</button>
+
+        <!-- 숫자 버튼 -->
+        <th:block
+                th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
+            <button
+                    th:onclick="'location.href=\'/user/board/userQna?page=' + @{${page}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                    th:text="${ page }" th:disabled="${ paging.page eq page }">
+            </button>
+        </th:block>
+
+        <!-- 다음 페이지로 이동 -->
+        <button
+                th:onclick="'location.href=\'/user/board/userQna?page=' + @{${paging.page + 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                th:disabled="${ paging.page >= paging.maxPage }">></button>
+
+        <!-- 맨 끝으로 이동 -->
+        <button
+                th:onclick="'location.href=\'/user/board/userQna?page=' + @{${paging.maxPage}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">>></button>
+
+    </th:block>
+
+    <th:block
+            th:if="${ paging.searchCondition == null  || paging.searchValue == null }">
+        <!-- 맨 앞으로 이동 -->
+        <button th:onclick="'location.href=\'/user/board/userQna?page=1\''">&lt;&lt;</button>
+
+        <!-- 이전 페이지로 이동 -->
+        <button
+                th:onclick="'location.href=\'/user/board/userQna?page=' + @{${paging.page - 1}} + '\''"
+                th:disabled="${ paging.page <= 1 }">&lt;</button>
+
+        <!-- 숫자 버튼 -->
+        <th:block
+                th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
+            <button
+                    th:onclick="'location.href=\'/user/board/userQna?page=' + @{${page}} + '\''"
+                    th:text="${ page }" th:disabled="${ paging.page eq page }">
+            </button>
+        </th:block>
+
+        <!-- 다음 페이지로 이동 -->
+        <button
+                th:onclick="'location.href=\'/user/board/userQna?page=' + @{${paging.page + 1}} + '\''"
+                th:disabled="${ paging.page >= paging.maxPage }">></button>
+
+        <!-- 맨 끝으로 이동 -->
+        <button
+                th:onclick="'location.href=\'/user/board/userQna?page=' + @{${paging.maxPage}} + '\''">>></button>
+    </th:block>
+
+</div>
+<!--<div th:replace="/user/common/footer.html"></div>-->
+
+<script>
+    // 모든 categoryList2 요소를 가져옵니다.
+    var categoryList2Items = document.querySelectorAll('.categoryList2');
+
+    // 각각의 categoryList2 요소에 클릭 이벤트를 추가합니다.
+    categoryList2Items.forEach(function(item) {
+        item.addEventListener('click', function() {
+            // 클릭한 요소에 clicked 클래스를 추가하여 스타일을 변경합니다.
+            this.classList.toggle('clicked');
+        });
+    })
+
+</script>
+</body>
+</html>

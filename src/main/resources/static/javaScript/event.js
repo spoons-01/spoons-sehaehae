@@ -13,7 +13,6 @@ window.onload = function () {
             location.href = "/admin/board/adminNoticeUpdate";
         }
     }
-}
 
 /* 경로 ----------------------------------------------- */
 // 현재 페이지의 경로 정보
@@ -46,8 +45,46 @@ window.onload = function () {
     updateBreadcrumb();
 };
 
+/* 아코디언 */
+
+    const accordionItems = document.querySelectorAll(".accordion-item");
+
+    accordionItems.forEach((item) => {
+        const title = item.querySelector(".accordion-title");
+        const content = item.querySelector(".accordion-content");
+
+        title.addEventListener("click", () => {
+            // 클릭한 아이템의 내용을 열거나 닫음
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+
+            // 다른 아이템의 내용을 닫음
+            accordionItems.forEach((otherItem) => {
+                if (otherItem !== item) {
+                    otherItem.querySelector(".accordion-content").style.display = "none";
+                }
+            });
+        });
+    });
+
+
+/* 클릭시 색상 변경 */
+
+// 모든 categoryList2 요소를 가져옵니다.
+var categoryList2Items = document.querySelectorAll('.categoryList2');
+
+// 각각의 categoryList2 요소에 클릭 이벤트를 추가합니다.
+categoryList2Items.forEach(function(item) {
+    item.addEventListener('click', function() {
+        // 클릭한 요소에 clicked 클래스를 추가하여 스타일을 변경합니다.
+        item.classList.toggle('clicked');
+    });
+});
+
 /* 모달창 이벤트 ------------------------------- */
-window.onload = function () {
     /* 모달 이벤트 */
     const loremIpsum = document.getElementById("lorem-ipsum")
     fetch("https://baconipsum.com/api/?type=all-meat&paras=200&format=html")
