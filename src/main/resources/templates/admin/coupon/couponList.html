@@ -7,8 +7,9 @@
 <body>
     <div th:replace="admin/common/nav.html"></div>
     <div class="coupon_container">
-        <div style="cursor: pointer" class="coupon" th:each="coupon : ${coupon}" onclick="couponModal(this)">
+        <div style="cursor: pointer" class="coupon" th:each="coupon : ${coupon}" th:attr="onclick=|couponModal('${coupon.cpCode}','${coupon.cpName}','${coupon.cpRate}','${coupon.cpSdate}','${coupon.cpEdate}')|">
             <ul>
+                <input type="hidden" th:value="${coupon.cpCode}">
                 <li style="font-size: 24px" th:text="${coupon.cpName}"></li>
                 <li style="font-size: 15px" th:text="${#dates.format(coupon.cpSdate,'yyyy-MM-dd')}+' ~ '+${#dates.format(coupon.cpEdate,'yyyy-MM-dd')}"></li>
                 <li style="font-size: 24px; color: #4B93FF; text-align: right" th:text="${coupon.cpRate} + '%'"></li>

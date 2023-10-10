@@ -45,7 +45,7 @@
                 CP_RATE=#{cpRate},
                 CP_SDATE=#{cpSdate},
                 CP_EDATE=#{cpEdate}
-
+        where   CP_CODE=#{cpCode}
     </update>
 
 
