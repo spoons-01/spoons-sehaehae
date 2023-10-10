@@ -78,10 +78,11 @@ public class ProductController {
     public void payemnt(Model model, @RequestParam int totalPrice) {
         int memberCode = 1;
         System.out.println(totalPrice);
+
         MemberDTO member = productService.selectMember(memberCode);
         List<CartDTO> cart = productService.cartList(memberCode);
 
-        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("totalPrice", totalPrice-3000);
         model.addAttribute("member", member);
         model.addAttribute("cartList", cart);
     }
@@ -246,8 +247,7 @@ public class ProductController {
 
     @GetMapping("/listAdmin")
     public void listAdmin(Model model){
-        List<ProductDTO> productList = productService.selectAllproductAdmin();
-        System.out.println(productList);
+        List<ProductDTO> productList = productService.selectAllproduct();
         model.addAttribute("productList",productList);
     }
 
@@ -287,7 +287,6 @@ public class ProductController {
         Map<String,List<Integer>> productMap = new HashMap<>();
         productMap.put("productMap",productCode);
         productService.deleteProduct(productMap);
-
 
 
         return ResponseEntity.ok("삭제가 완료되었습니다.");

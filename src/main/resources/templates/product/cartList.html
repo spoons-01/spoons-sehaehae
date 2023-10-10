@@ -19,24 +19,30 @@
     </div>
     <th:block th:each="cart : ${cartList}">
         <div class="container3">
-            <input type="checkbox" class="product" th:value="${cart.product.code}">
+            <input type="checkbox" class="productCode" th:value="${cart.product.code}">
             <img th:src="${cart.product.photo}" style="max-width: 1000px; height: 200px;">
             <div>
                 <p id="name" th:text="${cart.product.name}"></p>
                 <p th:text="|${cart.product.price}원 / ${cart.product.premiumPrice}원|"></p>
-                <p th:text="${cart.product.price}" id="pprice" style="display: none"></p>
-                <th:block th:if="${cart.useEco == 'Y'}"><span>천연세제 사용</span><button id="deleteEco">x</button></th:block><br>
-                <th:block th:if="${cart.usePremium == 'Y'}"><span>프리미엄케어 추가</span><button id="deletePremium">x</button></th:block><br>
+                <p th:text="${cart.product.price}" id="price" style="display: none"></p>
+                <th:block th:if="${cart.useEco == 'Y'}"><span>천연세제 사용</span>
+                    <button id="deleteEco">x</button>
+                </th:block>
+                <br>
+                <th:block th:if="${cart.usePremium == 'Y'}"><span>프리미엄케어 추가</span>
+                    <button id="deletePremium">x</button>
+                </th:block>
+                <br>
 
                 <span id="code" th:text="${cart.product.code}" style="display: none"></span>
                 <div class="gg">
-                    <input type="number" class="zz" th:value="${cart.amount}" MIN="1" max="99" th><select>
+                    <input type="number" class="amount" th:value="${cart.amount}" MIN="1" max="99" th><select>
                     <option selected>옵션선택</option>
                     <option>천연세제 사용</option>
                     <option>프리미엄케어</option>
                 </select>
                     <span style="margin-left: 120px; font-size: 30px; font-weight: bold;" id="totalPrice"
-                               th:text="${cart.product.price}*${cart.amount}"></span>
+                          th:text="${cart.product.price}*${cart.amount}"></span>
                 </div>
             </div>
         </div>
@@ -44,14 +50,44 @@
 
     <div class="total">
         <span>총 결제금액</span>
-        <span id="final" th:text="${#numbers.formatInteger(totalPrice,3,'COMMA')+'원'}"></span>
+        <span id="final1" th:text="${#numbers.formatInteger(totalPrice,3,'COMMA')+'원'}"></span>
         <span>+</span>
         <span>배송비 3,000원</span>
         <span id="final2" th:text="|= ${#numbers.formatInteger(totalPrice+3000,3,'COMMA')}원|"></span>
+        <span id="final3" th:text="totalPrice" style="display: none;"></span>
         <button class="order">주문/결제</button>
     </div>
 </div>
 <script>
+    const $amount = document.querySelectorAll(".amount");
+    const $price = document.querySelectorAll("#totalPrice");
+    const $finalPrice1 = document.querySelector("#final1");
+    const $finalPrice2 = document.querySelector("#final2");
+    const $finalPrice3 = document.querySelector("#final3");
+    const $price2 = document.querySelectorAll("#price")
+    const $productCode = document.querySelectorAll(".productCode")
+    console.log($productCode);
+    $amount.forEach((amount) => {
+        amount.addEventListener("change", function () {
+            const index = Array.from($amount).indexOf(this);
+            $price[index].textContent = this.value * Number($price2[index].textContent);
+            let totalprice = 0
+            $price.forEach((i)=> totalprice += Number(i.textContent))
+            $finalPrice1.textContent= totalprice.toLocaleString('ko-KR')+"원";
+            $finalPrice2.textContent = totalprice + 3000;
+            $finalPrice3.textContent = totalprice + 3000;
+        })
+    })
+    $amount.forEach((amount)=>{
+        amount.addEventListener("focusout",function(){
+            const index = Array.from($amount).indexOf(this);
+            fetch("/product/updateCart?amount=" + Number(this.value) + "&productCode=" + $productCode[index].value)
+                .then(res => res.text())
+                .then(res => console.log(res))
+                .catch(error => console.log(error))
+        })
+    })
+
     const $box = document.querySelector(".dd"); //전체체크박스
     const $product = document.querySelectorAll(".product"); //
     const $prbt = document.querySelector("#selectAll");
@@ -82,11 +118,8 @@
                 code.push(box.value);
             }
         });
-
         console.log(code);
-
         const json = JSON.stringify(code);
-
         const respone = await fetch("/product/deleteCart", {
             method: 'POST',
             headers: {
@@ -96,76 +129,12 @@
         });
         const result = await respone.text();
         console.log(result);
-
-
     })
 
-    const $value = document.querySelectorAll(".zz");
-    const $total = document.querySelectorAll("#totalPrice");
-    const $final = document.querySelector("#final");
-    const $final2 = document.querySelector('#final2');
-
-    $value.forEach((list) => list.addEventListener("change", function () {
-
-        const index = Array.from($value).indexOf(this);
-        const body = list.value;
-        const cartList = '[[${cartList}]]'
-        console.log(cartList)
-        const price = document.querySelectorAll("#pprice")[index].textContent;
-        let ecoPrice = 0
-        let premiumPrice = 0
-        if(cartList[index].useEco === 'Y'){
-            ecoPrice = 3000;
-        }
-
-        fetch('/product/getPrice?price=' + price + '&body=' + body + "&eco=" + ecoPrice + "&premium=" + premiumPrice)
-            .then(res => res.json())
-            .then(data => $total[index].textContent = (data))
-            .catch(error => console.log(error));
-    }))
-
-    $value.forEach((list) => list.addEventListener("focusout", function () {
-        let total = 0;
-        const index = Array.from($value).indexOf(this)
-        let value = list.value;
-        let productCode = document.querySelectorAll("#code")[index].textContent;
-        $total.forEach((list) => total += Number(list.textContent));
-        console.log(total)
-        fetch('/product/updateCart?amount=' + value + "&productCode=" + productCode)
-            .then(res => res.json())
-            .then(z => console.log(z))
-            .catch(error => console.log(error));
-
-        fetch('/product/totalPrice?total=' + total)
-            .then(res => res.json())
-            .then(data => {
-                $final.textContent = data.toLocaleString('ko-KR') + "원";
-                $final2.textContent = '= ' + (data + 3000).toLocaleString('ko-KR') + '원';
-            })
-            .catch(error => console.log(error));
-
-
-    }))
-    const $payment = document.querySelector(".order")
-    $payment.onclick = function () {
-        let totalPrice = 0;
-        $total.forEach((list) => totalPrice += Number(list.textContent));
-
-        location.href = '/product/payment?totalPrice=' + totalPrice
+    const $order = document.querySelector(".order");
+    $order.onclick = function(){
+        location.href = '/product/payment?totalPrice='+$finalPrice3.textContent
     }
-
-
-    const $deleteEco = document.querySelectorAll("#deleteEco");
-    const $deletePremium = document.querySelectorAll("#deletePremium");
-
-
-    $deletePremium.forEach((bt)=>{
-        bt.addEventListener("click",function(){
-
-        })
-    })
-
-
 </script>
 </body>
 </html>
