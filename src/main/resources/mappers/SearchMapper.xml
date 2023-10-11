@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spoons.sehaehae.admin.dao.SearchMapper">
+
+
+    <resultMap id="OrderResultMap" type="com.spoons.sehaehae.admin.dto.OrderDTO">
+        <id property="code" column="ORDER_CODE"/>
+        <result property="orderDate" column="ORDER_DATE"/>
+        <result property="orderRequest" column="ORDER_REQUEST"/>
+        <result property="orderPrice" column="ORDER_PRICE"/>
+        <result property="orderDiscount" column="ORDER_DISCOUNT"/>
+        <result property="memberCode" column="MEMBER_NO"/>
+        <result property="orderTotalPrice" column="ORDER_TOTAL_PRICE"/>
+        <result property="inputZipCode" column="INPUT_ZIP_CODE"/>
+        <result property="inputAddress" column="INPUT_ADDRESS"/>
+        <result property="InputAddress2" column="INPUT_ADDRESS2"/>
+        <result property="orderStatus" column="ORDER_STATUS"/>
+        <result property="usePoint" column="USE_POINT"/>
+        <result property="collectionDate" column="COLLECTION_DATE"/>
+        <result property="deliveryDate" column="DELIVERY_DATE"/>
+
+        <association property="member" resultMap="MemberResultMap"/>
+
+    </resultMap>
+
+    <resultMap id="MemberResultMap" type="com.spoons.sehaehae.admin.dto.MemberDTO">
+        <id property="memberNo" column="MEMBER_NO"/>
+        <result property="name" column="NAME"/>
+        <result property="phone" column="PHONE_NUMBER"/>
+    </resultMap>
+
+
+   <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
+    SELECT
+       COUNT(*)
+       FROM TBL_ORDER A
+       <if test="searchCondition == 'member'">
+           JOIN TBL_MEMBER B ON(A.MEMBER_NO = B.MEMBER_NO)
+       </if>
+       <where>
+           <if test="searchCondition == 'code'">
+               A.ORDER_CODE = #{searchValue}
+           </if>
+
+           <if test="searchCondition == 'member'">
+               B.NAME = #{searchValue} OR B.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'
+           </if>
+
+           <if test="searchCondition == 'orderStatus'">
+               A.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
+           </if>
+
+<!--           <if test="startDate != null and endDate != null">-->
+<!--               AND A.ORDER_DATE BETWEEN TO_DATE(#{startDate}, 'yyyy-MM-dd') AND TO_DATE(#{endDate}, 'yyyy-MM-dd')-->
+<!--           </if>-->
+
+       </where>
+    </select>
+
+    <select id="selectSearchList" resultMap="OrderResultMap">
+        SELECT
+         A.ORDER_CODE
+        , A.ORDER_DATE
+        , A.ORDER_REQUEST
+        , A.ORDER_PRICE
+        , A.ORDER_DISCOUNT
+        , A.ORDER_TOTAL_PRICE
+        , A.MEMBER_NO
+        , D.NAME
+        , D.PHONE_NUMBER
+        , A.INPUT_ZIP_CODE
+        , A.ORDER_STATUS
+      FROM (SELECT
+              ROWNUM RNUM
+              , B.ORDER_CODE
+              , B.ORDER_DATE
+              , B.ORDER_REQUEST
+              , B.ORDER_PRICE
+              , B.ORDER_DISCOUNT
+              , B.ORDER_TOTAL_PRICE
+              , B.MEMBER_NO
+              , B.INPUT_ZIP_CODE
+              , B.ORDER_STATUS
+              FROM ( SELECT
+                         C.ORDER_CODE
+                       , C.ORDER_DATE
+                       , C.ORDER_REQUEST
+                       , C.ORDER_PRICE
+                       , C.ORDER_DISCOUNT
+                       , C.ORDER_TOTAL_PRICE
+                       , C.MEMBER_NO
+                       , C.INPUT_ZIP_CODE
+                       , C.ORDER_STATUS
+                      FROM TBL_ORDER C
+                      <if test="searchCondition == 'member'">
+                          JOIN TBL_MEMBER D ON(C.MEMBER_NO = D.MEMBER_NO)
+                      </if>
+                      <where>
+                          <if test="searchCondition == 'code'">
+                              C.ORDER_CODE = #{searchValue}
+                          </if>
+
+                          <if test="searchCondition == 'member'">
+                              D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'
+                          </if>
+
+                          <if test="searchCondition == 'orderStatus'">
+                              C.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
+                          </if>
+
+<!--                          <if test="startDate != null and endDate != null">-->
+<!--                              AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate}, 'yyyy-MM-dd') AND TO_DATE(#{endDate}, 'yyyy-MM-dd')-->
+<!--                          </if>-->
+
+                      </where>
+                      ORDER BY C.ORDER_CODE DESC
+                      ) B
+                      <![CDATA[
+                                 WHERE ROWNUM <= #{endRow}
+                                 ]]>
+                      ) A
+                      JOIN TBL_MEMBER D ON (A.MEMBER_NO = D.MEMBER_NO)
+                      WHERE A.RNUM >= #{startRow}
+                      ORDER BY 1 DESC
+
+          </select>
+
+    <select id="selectSearchPaymentList" resultMap="OrderResultMap">
+        SELECT
+        A.ORDER_CODE
+        , A.ORDER_DATE
+        , A.ORDER_TOTAL_PRICE
+        , A.MEMBER_NO
+        , D.NAME
+        , D.PHONE_NUMBER
+        , A.INPUT_ZIP_CODE
+        , A.ORDER_STATUS
+        FROM (SELECT
+        ROWNUM RNUM
+        , B.ORDER_CODE
+        , B.ORDER_DATE
+        , B.ORDER_TOTAL_PRICE
+        , B.MEMBER_NO
+        , B.INPUT_ZIP_CODE
+        , B.ORDER_STATUS
+        FROM ( SELECT
+        C.ORDER_CODE
+        , C.ORDER_DATE
+        , C.ORDER_TOTAL_PRICE
+        , C.MEMBER_NO
+        , C.INPUT_ZIP_CODE
+        , C.ORDER_STATUS
+        FROM TBL_ORDER C
+        <if test="searchCondition == 'member'">
+            JOIN TBL_MEMBER D ON(C.MEMBER_NO = D.MEMBER_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'code'">
+                C.ORDER_CODE = #{searchValue}
+            </if>
+
+            <if test="searchCondition == 'member'">
+                D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'
+            </if>
+
+            <if test="searchCondition == 'orderStatus'">
+                C.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
+            </if>
+            AND C.ORDER_STATUS = '결제완료'
+        </where>
+        ORDER BY C.ORDER_CODE DESC
+        ) B
+        <![CDATA[
+                                 WHERE ROWNUM <= #{endRow}
+                                 ]]>
+        ) A
+        JOIN TBL_MEMBER D ON (A.MEMBER_NO = D.MEMBER_NO)
+        WHERE A.RNUM >= #{startRow}
+        ORDER BY 1 DESC
+
+    </select>
+
+    <update id="updateOrderStatus">
+        UPDATE TBL_ORDER
+        SET ORDER_STATUS = #{newStatus}
+        WHERE ORDER_CODE IN
+        <foreach collection="orderId" item="orderId" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </update>
+
+
+
+
+
+</mapper>
