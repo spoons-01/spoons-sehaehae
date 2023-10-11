@@ -126,7 +126,6 @@
     padding: 20px; /* 내용 주변 여백 설정 */
     border: 1px solid black;
     width: 1100px;
-    height: auto;
 }
 
 .detail-category p{
@@ -166,6 +165,11 @@
 .detail-body textarea {
     text-align: center;
     margin-top: 20px;
+    width: 1000px;
+    height: auto; /* 높이를 자동으로 조절 */
+    min-height: 100px; /* 최소 높이를 지정 (원하는 높이로 조정 가능) */
+    max-height: 1000px; /* 최대 높이를 지정 (원하는 높이로 조정 가능) */
+    resize: none; /* 크기 조절 비활성화 */
 }
 
 .golist {
@@ -265,7 +269,7 @@
 #modal .close-area {
     padding-right: 10px;
     cursor: pointer;
-    text-shadow: 1px 1px 2px gray;
+    text-shadow: 1px 1px 2px grey;
     color: black;
 }
 

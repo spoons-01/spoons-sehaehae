@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,10 +17,11 @@
 <div id="main-top" class="main-set">
     <header class="page-header wrapper">
         <div class="logo-header">
-            <a href="1_main.html">
+            <a href="/">
                 <img class="logo" src="/images/logo.png" alt="HOME">
             </a>
         </div>
+        <th:block sec:authorize="isAnonymous()">
         <nav>
             <ul class="main-nav">
                 <li><a href="2_login.html">
@@ -31,10 +35,16 @@
             </ul>
         </nav>
         <div>
-            <a href="6_mypage.html">
-                <img class="mypage" src="/images/mypage.png" alt="MYPAGE">
+            <a href="/user/member/mypage">
+                <th:block th:if="${ #authentication.principal.profilePhoto == null}">
+                    <img class="mypage" src="/images/smile.png" alt="MYPAGE">
+                </th:block>
+                <th:block th:if="${ #authentication.principal.profilePhoto != null}">
+                    <img class="mypage" th:src="${#authentication.principal.profilePhoto}" alt="MYPAGE">
+                </th:block>
             </a>
         </div>
+        </th:block>
     </header>
     <hr style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
 </div>

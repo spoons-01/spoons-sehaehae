@@ -18,7 +18,7 @@ import java.util.Map;
 @RequestMapping("/admin/board")
 public class AdminBoardController {
 
-    public final BoardService boardService;
+    private final BoardService boardService;
 
     public AdminBoardController(BoardService boardService) {
         this.boardService = boardService;
@@ -57,13 +57,13 @@ public class AdminBoardController {
     }
 
     @GetMapping("/adminNoticeRegist")
-    public String getRegistPage() {
-
+    public String getRegistPage(Model model) {
+        model.addAttribute("notice", new NoticeDTO());
         return "admin/board/adminNoticeRegist";
     }
 
     @PostMapping("/adminNoticeRegist")
-    public String registNotice(NoticeDTO notice, @AuthenticationPrincipal MemberDTO member) {
+    public String registNotice(@ModelAttribute NoticeDTO notice, @AuthenticationPrincipal MemberDTO member) {
 
         notice.setWriter(member);
         log.info("registNotice notice : {}", notice);

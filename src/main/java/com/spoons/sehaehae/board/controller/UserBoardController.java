@@ -20,11 +20,12 @@ import java.util.Map;
 @RequestMapping("/user/board")
 public class UserBoardController {
 
-    public final BoardService boardService;
+    private final BoardService boardService;
 
     public UserBoardController(BoardService boardService) {
         this.boardService = boardService;
     }
+
 
     List<BoardCategoryDTO> categoryList = new ArrayList<>();
     List<QnaDTO> qnaList = new ArrayList<>();
@@ -75,5 +76,18 @@ public class UserBoardController {
         return "user/board/userQna";
     }
 
+    /* 후기게시판 */
+
+//    @GetMapping("/userReview")
+//    public String getReview() {
+//
+//        return "user/board/userReview";
+//    }
+//
+//    @GetMapping("/userReview")
+//    public String getRegistReview() {
+//
+//        return "user/board/userReview";
+//    }
 
 }

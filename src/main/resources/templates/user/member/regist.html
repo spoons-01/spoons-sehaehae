@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta charset="UTF-8">
+    <!--    <script type="text/javascript" src="/js/event.js"></script>-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 | 세탁해병대</title>
+
+    <link href="/css/registstyle.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="/static/images/favicon.ico">
+    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="styles heet" type="text/css">
+    <link rel="stylesheet" href="/static/css/registstyle.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/regist.js"></script>
+</head>
+
+<body>
+<div class="wrapper">
+    <a href="/"> <img src="/images/logo.png"></a>
+</div>
+
+<!-- 회원가입 / SNS 가입 -->
+<div class="join">
+    <div class="wrapper2">
+        <h3>회원 가입</h3>
+    </div>
+    <div class="snsbox">
+        <h>SNS 계정으로 간편 회원가입</h>
+        <div class="sns">
+            <a href="#" class="sns-all"><img src="/images/kakao.png"></a>
+            <a href="#" class="sns-all"><img src="/images/naver.png"></a>
+            <a href="#" class="sns-all"><img src="/images/google.png"></a>
+            <a href="#" class="sns-all"><img src="/images/apple.png"></a>
+        </div>
+    </div>
+    <hr style="border-width: 1px 0 0 0; width:450px; color: #a0a0a0; margin-top: 20px;">
+</div>
+
+<form id="registForm" action="/user/member/regist" method="post">
+    <input type="text" id="emailAuthKey" name="emailAuthKey" value="" autocomplete="off"/>
+    <!-- 이메일 -->
+    <div class="wrapper2">
+        <h3>이메일</h3>
+    </div>
+    <div class="joinbox2">
+        <input type="email" id="memberId" name="memberId" class="input" placeholder="이메일을 입력해주세요." required>
+        <input type="button" class="btn" value="중복 확인" id="duplicationCheck">
+    </div>
+
+    <div class="joinbox2">
+        <input type="text" id="emailAuthVal" name="emailAuthVal" class="input" placeholder="이메일 인증을 입력해주세요.">
+        <button type="button" class="btn" id="btnEmailAuthReg">인증 발송</button>
+        <button type="button" class="btn" id="btnEmailAuthVal">인증 검증</button>
+    </div>
+
+    <!-- 비밀번호 -->
+    <div class="wrapper2">
+        <h3>비밀번호</h3>
+        <p>영문, 숫자, 특수문자를 포함한 8자 이상의 비밀번호를 입력해주세요.</p>
+    </div>
+    <div class="joinbox2">
+        <div class="password-container">
+            <input id="passwordInput" name="memberPwd" class="box" type="password" placeholder="비밀번호" required>
+            <p id="passwordMessage"></p>
+        </div>
+    </div>
+
+    <div class="wrapper2">
+        <h3>비밀번호 확인</h3>
+    </div>
+    <div class="joinbox2">
+        <div class="pwd-check-container">
+            <input id="passwordCheck" name="memberPwd2" class="box" type="password" placeholder="비밀번호 확인" required>
+            <p id="passwordCheckMessage"></p>
+        </div>
+    </div>
+
+    <!-- 이름 -->
+    <div class="wrapper2">
+        <h3>이름</h3>
+    </div>
+    <div class="joinbox2">
+        <div class="name-container">
+            <input id="nameInput" name="name" class="box" type="text" placeholder="이름을 입력해주세요." required>
+            <p id="nameCheckMessage"></p>
+        </div>
+    </div>
+
+    <!-- 별명 -->
+    <div class="wrapper2">
+        <h3>별명</h3>
+        <p>다른 유저와 겹치지 않도록 입력해주세요. (2~15자)</p>
+    </div>
+    <div class="joinbox2">
+        <div class="nickname-container">
+            <input id=nicknameInput name="nickname" class="box" type="text" placeholder="별명(2~15자)" required>
+            <p id="nicknameCheckMessage"></p>
+        </div>
+    </div>
+
+
+    </script>
+
+    <!-- 전화번호 입력 폼 -->
+    <div class="wrapper2">
+        <h3>전화번호</h3>
+    </div>
+
+    <div class="joinbox2">
+        <div class="phone-container">
+            <div class="text-button">
+                <input id="phoneInput" type="text" name="phone" placeholder="'-'없이 전화번호를 입력해주세요." required>
+                <input type="button" value="인증" id="phonebutton">
+            </div>
+            <p id="phoneCheckMessage"></p>
+        </div>
+    </div>
+
+    <!-- JavaScript (jQuery 사용) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#phoneButton").click(function (e) {
+                e.preventDefault();
+
+                var phoneNumber = $("#phoneInput").val();
+
+                // AJAX 요청 보내기
+                $.ajax({
+                    type: "POST",
+                    url: "/phoneAuth", // 서버의 요청 URL
+                    data: {tel: phoneNumber}, // 전화번호를 'tel' 매개변수로 전달
+                    success: function (response) {
+                        if (response) {
+                            $("#phoneCheckMessage").text("이미 가입된 전화번호입니다.");
+                        } else {
+                            $("#phoneCheckMessage").text("인증 코드를 전송했습니다.");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("AJAX 오류: " + status, error);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- 성별 라디오 버튼 -->
+    <div class="wrapper2">
+        <h3>성별</h3>
+    </div>
+    <div class="joinbox3 wrapper2">
+        <input type="radio" id="radio-g1" name="gender" value="M"><label for="radio-g1">남성</label>
+        <input type="radio" id="radio-g2" name="gender" value="F"><label for="radio-g2">여성</label>
+    </div>
+
+    <!-- 생년월일 입력 폼 -->
+    <div class="wrapper2">
+        <h3>생년월일</h3>
+    </div>
+    <div class="joinbox2">
+        <div class="pwd-check-container">
+            <input id="birthday" name="birthday" class="box" type="text" placeholder="MM-DD-YYYY 형식으로 작성해주세요." required>
+            <p id="birthdayCheckMessage"></p>
+        </div>
+    </div>
+
+    <!--
+    <div class="info" id="info__birth">
+        <select class="box" id="birth-year">
+            <option disabled selected>출생 연도</option>
+        </select>
+        <select class="box" id="birth-month">
+            <option disabled selected>월</option>
+        </select>
+        <select class="box" id="birth-day">
+            <option disabled selected>일</option>
+        </select>
+    </div>
+    -->
+
+    <!-- 주소 입력 폼 -->
+    <div class="wrapper2">
+        <h3>우편 번호</h3>
+    </div>
+    <div class="joinbox2">
+        <input type="text" name="zipCode" id="zipCode" placeholder="우편 번호 검색 후 입력">
+        <input type="button" value="검색" id="addressbutton">
+    </div>
+
+    <div class="wrapper2">
+        <h3>주소</h3>
+    </div>
+    <div class="joinbox2">
+        <input class="box" type="text" name="address1" id="address1" readonly>
+    </div>
+
+    <div class="wrapper2">
+        <h3>상세 주소</h3>
+    </div>
+    <div class="joinbox2">
+        <input class="box" type="text" name="address2" id="address2" placeholder="건물, 아파트, 동/호수 입력">
+    </div>
+
+    <!-- 약관 동의 -->
+    <div class="wrapper2">
+        <h3>약관동의</h3>
+    </div>
+    <div class="checkbox-container">
+        <div class="joinbox4">
+            <div class="checkbox_group">
+                <label>
+                    <input type="checkbox" id="check_all">
+                    전체 동의 <span class="grey2">선택항목 등에 대한 동의</span>
+                </label>
+                <hr class="line">
+                <label>
+                    <input type="checkbox" id="check_1" class="normal">
+                    만 14세 이상입니다 <span class="blue">(필수)</span>
+                </label>
+
+                <label>
+                    <input type="checkbox" id="check_2" class="normal">
+                    이용약관 <span class="blue">(필수)</span>
+                </label>
+
+                <label>
+                    <input type="checkbox" id="check_3" class="normal">
+                    개인정보수집 및 이용동의 <span class="blue">(필수)</span>
+                </label>
+
+                <label>
+                    <input type="checkbox" id="check_4" class="normal">
+                    개인정보 마케팅 활용 동의 <span class="grey">(선택)</span>
+                </label>
+
+                <label>
+                    <input type="checkbox" id="check_5" class="normal">
+                    이벤트, 쿠폰, 알림 메일 및 SMS 등 수신 <span class="grey">(선택)</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // 체크박스 전체 선택
+        $(".checkbox_group").on("click", "#check_all", function () {
+            var isChecked = $(this).is(":checked");
+            $(".checkbox_group .normal").prop("checked", isChecked);
+        });
+
+        // 개별 체크박스 클릭 시
+        $(".checkbox_group").on("click", ".normal", function () {
+            var isCheckedAll = true;
+
+            $(".checkbox_group .normal").each(function () {
+                isCheckedAll = isCheckedAll && $(this).is(":checked");
+            });
+
+            $("#check_all").prop("checked", isCheckedAll);
+        });
+
+        /* 필수 항목 미동의시 alert창 띄우는 코드 아직 미구현! */
+    </script>
+
+    <!-- 회원가입 제출 버튼 -->
+    <div class="buttoncenter2">
+        <button type="submit" class="button2">회원가입하기</button>
+    </div>
+    </div>
+</form>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+
+    const $addressbutton = document.getElementById("addressbutton");
+
+    $addressbutton.onclick = function () {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                document.getElementById("zipCode").value = data.zonecode;
+                document.getElementById("address1").value = data.address;
+                document.getElementById("address2").focus();
+            }
+        }).open();
+    }
+</script>
+
+<!-- 기존 회원 로그인 -->
+<div class="wrapper3">
+    <h>이미 아이디가 있으신가요?</h>
+    <a href="/user/member/login">로그인</a>
+</div>
+
+</body>
