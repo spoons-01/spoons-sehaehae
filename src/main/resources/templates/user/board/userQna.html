@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/userBoard.css" rel="stylesheet" type="text/css">
     <link rel="icon" href="/images/favicon.ico">
-<!--    <script src="/javaScript/event.js" type="text/javascript"></script>-->
+    <script src="/javaScript/event.js" type="text/javascript"></script>
     <title>고객센터</title>
 </head>
 <body>
@@ -43,7 +43,7 @@
     </form>
 </div>
 
-<div class="categoryList">
+<div class="categoryList" id="categoryList">
     <div class="categoryList2" >
         <a href="/user/board/userQna?searchCondition=category&searchValue=수거">수거·배송<br>&nbsp;&nbsp;&nbsp; 관련</a></div>
     <div class="categoryList2" >
@@ -137,20 +137,7 @@
     </th:block>
 
 </div>
-<!--<div th:replace="/user/common/footer.html"></div>-->
+<div th:replace="/user/common/footer.html"></div>
 
-<script>
-    // 모든 categoryList2 요소를 가져옵니다.
-    var categoryList2Items = document.querySelectorAll('.categoryList2');
-
-    // 각각의 categoryList2 요소에 클릭 이벤트를 추가합니다.
-    categoryList2Items.forEach(function(item) {
-        item.addEventListener('click', function() {
-            // 클릭한 요소에 clicked 클래스를 추가하여 스타일을 변경합니다.
-            this.classList.toggle('clicked');
-        });
-    })
-
-</script>
 </body>
 </html>

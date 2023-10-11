@@ -1,18 +1,18 @@
 window.onload = function () {
 
-    if (document.getElementById("writeNotice")) {
-        const $writeNotice = document.getElementById("writeNotice");
-        $writeNotice.onclick = function () {
-            location.href = "/admin/board/adminNoticeRegist";
-        }
-    }
-
-    if (document.getElementById("modifiedNotice")) {
-        const $modifiedNotice = document.getElementById("modifiedNotice");
-        $modifiedNotice.onclick = function () {
-            location.href = "/admin/board/adminNoticeUpdate";
-        }
-    }
+    // if (document.getElementById("writeNotice")) {
+    //     const $writeNotice = document.getElementById("writeNotice");
+    //     $writeNotice.onclick = function () {
+    //         location.href = "/admin/board/adminNoticeRegist";
+    //     }
+    // }
+    //
+    // if (document.getElementById("modifiedNotice")) {
+    //     const $modifiedNotice = document.getElementById("modifiedNotice");
+    //     $modifiedNotice.onclick = function () {
+    //         location.href = "/admin/board/adminNoticeUpdate";
+    //     }
+    // }
 
 /* 경로 ----------------------------------------------- */
 // 현재 페이지의 경로 정보
@@ -73,40 +73,25 @@ window.onload = function () {
 
 /* 클릭시 색상 변경 */
 
-// 모든 categoryList2 요소를 가져옵니다.
-var categoryList2Items = document.querySelectorAll('.categoryList2');
+    // 모든 categoryList2 요소를 가져옵니다.
+    var categoryList2Items = document.querySelectorAll('.categoryList2');
 
-// 각각의 categoryList2 요소에 클릭 이벤트를 추가합니다.
-categoryList2Items.forEach(function(item) {
-    item.addEventListener('click', function() {
-        // 클릭한 요소에 clicked 클래스를 추가하여 스타일을 변경합니다.
-        item.classList.toggle('clicked');
+    // 클릭 이벤트 핸들러 함수
+    function handleClick(event) {
+        // 선택된 카테고리의 스타일 변경
+        categoryList2Items.forEach(function(item) {
+            item.classList.remove("clicked");
+        });
+        event.currentTarget.classList.add("clicked");
+    }
+
+    // 각각의 categoryList2 요소에 클릭 이벤트 리스너 추가
+    categoryList2Items.forEach(function(item) {
+        item.addEventListener("click", handleClick);
     });
-});
+}
 
 /* 모달창 이벤트 ------------------------------- */
-    /* 모달 이벤트 */
-    const loremIpsum = document.getElementById("lorem-ipsum")
-    fetch("https://baconipsum.com/api/?type=all-meat&paras=200&format=html")
-        .then(response => response.text())
-        .then(result => loremIpsum.innerHTML = result)
-    /* 키는 이벤트 */
-    const modal = document.getElementById("modal")
-    const btnModal = document.getElementById("btn-modal")
-    btnModal.addEventListener("click", e => {
-        modal.style.display = "flex"
-    })
-    /* .close-area 이거 누르면 꺼짐 */
-    const closeBtn = modal.querySelector(".close-area")
-    closeBtn.addEventListener("click", e => {
-        modal.style.display = "none"
-    })
-    /* Esc 누르면 꺼지는 이벤트 */
-    window.addEventListener("keyup", e => {
-        if (modal.style.display === "flex" && e.key === "Escape") {
-            modal.style.display = "none"
-        }
-    })
-}
+
 
 
