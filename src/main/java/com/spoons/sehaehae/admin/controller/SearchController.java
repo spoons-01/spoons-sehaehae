@@ -73,7 +73,7 @@ public class SearchController {
         log.info("update: {}", update);
 
         if (update) {
-            return ResponseEntity.ok("ssuccess");
+            return ResponseEntity.ok("success");
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("주문 상태 업데이트에 실패했습니다.");
@@ -88,13 +88,47 @@ public class SearchController {
                                        @RequestParam(required = false) String searchCondition,
                                        @RequestParam(required = false) String searchValue, Model model) {
 
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+
+        Map<String, Object> searchListAndPaging = orderService.selectSearchCollectionList(searchMap, page);
+        model.addAttribute("paging", searchListAndPaging.get("paging"));
+        model.addAttribute("searchCollectionList", searchListAndPaging.get("searchCollectionList"));
+
         return "admin/orderManagement/collection-completed";
+    }
+
+
+    @PostMapping("/update-order-status2")
+    public ResponseEntity<String> updateOrderStatus2(@RequestParam(name = "orderId[]") Long[] orderId) {
+        log.info("{}", Arrays.toString(orderId));
+        String newStatus = "세탁완료"; // 이 부분은 고정된 값으로 설정하거나 요구사항에 따라 동적으로 처리해야 합니다.
+
+        boolean update = orderService.updateOrderStatus(orderId, newStatus);
+
+        log.info("update: {}", update);
+
+        if (update) {
+            return ResponseEntity.ok("success");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("주문 상태 업데이트에 실패했습니다.");
+        }
     }
 
     @GetMapping("/laundry-complete")
     public String selectlaundryList(@RequestParam(defaultValue = "1") int page,
                                        @RequestParam(required = false) String searchCondition,
                                        @RequestParam(required = false) String searchValue, Model model) {
+
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+
+        Map<String, Object> searchListAndPaging = orderService.selectSearchLaundryList(searchMap, page);
+        model.addAttribute("paging", searchListAndPaging.get("paging"));
+        model.addAttribute("searchLaundryList", searchListAndPaging.get("searchLaundryList"));
 
         return "admin/orderManagement/laundry-complete";
     }

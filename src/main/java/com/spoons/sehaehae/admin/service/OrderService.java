@@ -75,4 +75,39 @@ public class OrderService {
             return false;
         }
     }
+
+    public Map<String, Object> selectSearchCollectionList(Map<String, String> searchMap, int page) {
+        int totalCount = searchMapper.selectTotalCount(searchMap);
+
+        int limit = 10; //한 페이지에 보여줄 게시물의 수
+        int buttonAmount = 5; // 한 번에 보여질 페이징 버튼의 수
+        SelectCriteria selectCriteria = Pagenation.getSelectCriteria(page, totalCount, limit, buttonAmount, searchMap);
+
+        /* 요청 페이지와 검색 기준에 맞는 게시글 조회 */
+        List<OrderDTO> searchCollectionList = searchMapper.selectSearchCollectionList(selectCriteria);
+
+        Map<String, Object> searchListAndPaging = new HashMap<>();
+        searchListAndPaging.put("paging", selectCriteria);
+        searchListAndPaging.put("searchCollectionList", searchCollectionList);
+
+        return searchListAndPaging;
+    }
+
+    public Map<String, Object> selectSearchLaundryList(Map<String, String> searchMap, int page) {
+        int totalCount = searchMapper.selectTotalCount(searchMap);
+
+        int limit = 10; //한 페이지에 보여줄 게시물의 수
+        int buttonAmount = 5; // 한 번에 보여질 페이징 버튼의 수
+        SelectCriteria selectCriteria = Pagenation.getSelectCriteria(page, totalCount, limit, buttonAmount, searchMap);
+
+        /* 요청 페이지와 검색 기준에 맞는 게시글 조회 */
+        List<OrderDTO> searchLaundryList = searchMapper.selectSearchLaundryList(selectCriteria);
+
+        Map<String, Object> searchListAndPaging = new HashMap<>();
+        searchListAndPaging.put("paging", selectCriteria);
+        searchListAndPaging.put("searchLaundryList", searchLaundryList);
+
+        return searchListAndPaging;
+
+    }
 }

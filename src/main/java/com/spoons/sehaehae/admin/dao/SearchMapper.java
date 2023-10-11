@@ -17,4 +17,8 @@ public interface SearchMapper {
     List<OrderDTO> selectSearchPaymentList(SelectCriteria selectCriteria);
 
     int updateOrderStatus(Map<String, Object> updateStatus);
+
+    List<OrderDTO> selectSearchCollectionList(SelectCriteria selectCriteria);
+
+    List<OrderDTO> selectSearchLaundryList(SelectCriteria selectCriteria);
 }
