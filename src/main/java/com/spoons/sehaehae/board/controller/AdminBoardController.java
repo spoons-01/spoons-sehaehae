@@ -1,11 +1,11 @@
 package com.spoons.sehaehae.board.controller;
 
 import com.spoons.sehaehae.board.dto.NoticeDTO;
+import com.spoons.sehaehae.board.dto.QnaDTO;
 import com.spoons.sehaehae.board.service.BoardService;
 import com.spoons.sehaehae.member.dto.MemberDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +16,15 @@ import java.util.Map;
 @Slf4j
 @Controller
 @RequestMapping("/admin/board")
-public class AdminNoticeController {
+public class AdminBoardController {
 
-    public final BoardService boardService;
+    private final BoardService boardService;
 
-    public AdminNoticeController(BoardService boardService) {
+    public AdminBoardController(BoardService boardService) {
         this.boardService = boardService;
     }
 
+    /* 공지사항 */
     @GetMapping("/adminNotice")
     public String getNotice(@RequestParam(defaultValue = "1") int page,
                             @RequestParam(required = false) String searchCondition,
@@ -56,13 +57,13 @@ public class AdminNoticeController {
     }
 
     @GetMapping("/adminNoticeRegist")
-    public String getRegistPage() {
-
+    public String getRegistPage(Model model) {
+        model.addAttribute("notice", new NoticeDTO());
         return "admin/board/adminNoticeRegist";
     }
 
     @PostMapping("/adminNoticeRegist")
-    public String registNotice(NoticeDTO notice, @AuthenticationPrincipal MemberDTO member) {
+    public String registNotice(@ModelAttribute NoticeDTO notice, @AuthenticationPrincipal MemberDTO member) {
 
         notice.setWriter(member);
         log.info("registNotice notice : {}", notice);
@@ -88,7 +89,7 @@ public class AdminNoticeController {
 
     @GetMapping("/update")
     public String modifyPage(@RequestParam Long no,
-                               Model model) {
+                             Model model) {
 
         NoticeDTO noticeDetail = boardService.selectNoticeDetail(no);
         model.addAttribute("notice", noticeDetail);
@@ -106,38 +107,6 @@ public class AdminNoticeController {
         return "redirect:/admin/board/adminNotice";
     }
 
-
-//    @PostMapping("/update")
-//    public String modifyNotice(@PathVariable("no") Long no,
-//                               NoticeDTO updatedNotice) throws Exception {
-//
-//        NoticeDTO noticeTemp = boardService.selectNoticeDetail(no);
-////        boardService.modifyNotice(updatedNotice);
-//
-//        noticeTemp.setTitle(updatedNotice.getTitle());
-//        noticeTemp.setBody(updatedNotice.getBody());
-//
-//        boardService.registNotice(noticeTemp);
-//        return "redirect:/admin/board/adminNotice";
-//    }
-
-
-//    @PostMapping("/modify")
-//    public String noticeUpdate(Long no, NoticeDTO notice) throws Exception {
-//
-//        NoticeDTO noticeTemp = boardService.selectNoticeDetail(no);
-//
-//        noticeTemp.setTitle(notice.getTitle());
-//        noticeTemp.setBody(notice.getBody());
-//
-//        boardService.registNotice(noticeTemp);
-////        boardService.updateNotice(notice);
-//        return "redirect:/admin/board/adminNotice";
-//    }
-
-
-
-
     @GetMapping("/delete")
     public String deleteNotice(Integer id){
 
@@ -145,5 +114,58 @@ public class AdminNoticeController {
 
         return "redirect:/admin/board/adminNotice";
     }
+    /* 자주하는 질문 ---------- */
+    @GetMapping("/adminQna")
+    public String getQna(@RequestParam(defaultValue = "1")int page,
+                         @RequestParam(required = false) String searchCondition,
+                         @RequestParam(required = false)String searchValue,
+                         Model model){
 
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+
+        Map<String, Object> boardListAndPaging = boardService.selectQnaList(searchMap, page);
+        model.addAttribute("paging",boardListAndPaging.get("paging"));
+        model.addAttribute("qnaList", boardListAndPaging.get("qnaList"));
+
+        return "/admin/board/adminQnaList";
+    }
+
+    @GetMapping("/adminQnaView")
+    public String getQnaView(@RequestParam Long no, Model model){
+
+        QnaDTO qnaView = boardService.selectQnaView(no);
+        model.addAttribute("qna", qnaView);
+
+        return "admin/board/adminQnaView";
+    }
+
+    @PostMapping("/adminQna")
+    public String registQna(QnaDTO qna, @AuthenticationPrincipal MemberDTO member) {
+
+        qna.setWriter(member);
+
+        boardService.registQna(qna);
+
+        return "redirect:/admin/board/adminQna";
+    }
+
+    @PostMapping("/updateQna")
+    public String modifyQna(@RequestParam("no") Long no,
+                            @ModelAttribute("modifyQna") QnaDTO modifyQna) {
+
+
+        boardService.modifyQna(modifyQna);
+
+        return "redirect:/admin/board/adminQna";
+    }
+
+    @GetMapping("/deleteQna")
+    public String deleteQna(Integer id){
+
+        boardService.deleteQna(id);
+
+        return "redirect:/admin/board/adminQna";
+    }
 }
