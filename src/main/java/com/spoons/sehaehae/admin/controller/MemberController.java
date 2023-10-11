@@ -25,4 +25,9 @@ public class MemberController {
 
         return "/admin/member/memberList";
     }
+
+    @GetMapping("/message")
+    public String MemberMessage(){
+        return "admin/member/memberMessage";
+    }
 }
