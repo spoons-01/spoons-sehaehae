@@ -7,7 +7,7 @@
 <body>
     <div th:replace="admin/common/nav.html"></div>
     <div class="coupon_container">
-        <div style="cursor: pointer" class="coupon" th:each="coupon : ${coupon}" onclick="couponModal(coupon)">
+        <div style="cursor: pointer" class="coupon" th:each="coupon : ${coupon}" th:onclick="couponModal([[${coupon.cpCode}]])">
             <ul>
                 <li style="font-size: 24px" th:text="${coupon.cpName}"></li>
                 <li style="font-size: 15px" th:text="${#dates.format(coupon.cpSdate,'yyyy-MM-dd')}+' ~ '+${#dates.format(coupon.cpEdate,'yyyy-MM-dd')}"></li>
@@ -25,10 +25,10 @@
             <div>
                 <form id="couponUpdate" action="/coupon/update" method="post">
                     <table style="width: 1200px; margin: 0">
-                        <input type="text" name="cpCode" id="cpCode">
+                        <input type="hidden" name="cpCode" id="cpCode" value="">
                         <tr>
                             <td>쿠폰명</td>
-                            <td colspan="3"><input type="text" name="cpName" id="cpName" value=""></td>
+                            <td colspan="3"><input type="text" name="cpName" id="cpName"></td>
                         </tr>
                         <tr>
                             <td>기간</td>
@@ -85,7 +85,9 @@
     function couponModal(e){
         const update = document.querySelector('.update')
         update.style.display="flex"
-        $("cpCode").val(e.cpName)
+        document.getElementById("cpCode").value=e
+        function trans(e){$('#cpCode').value()}
+
     }
 
     const insert = document.querySelector('.insert');
