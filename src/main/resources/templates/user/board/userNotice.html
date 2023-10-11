@@ -4,65 +4,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!--    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="stylesheet" type="text/css">-->
-    <link href="/css/userBoardNotice.css" rel="stylesheet" type="text/css">
+    <!--    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="stylesheet" type="text/css">-->
+    <link href="/css/userBoard.css" rel="stylesheet" type="text/css">
     <link rel="icon" href="/images/favicon.ico">
     <title>고객센터</title>
 </head>
 <body>
 
-    <div th:replace="/user/common/header.html"></div>
+<div th:replace="/user/common/header.html"></div>
 
 
-    <div class="notice-name"></div>
-    <h3>고객 센터</h3>
-    </div>
+<div class="notice-name"></div>
+<h3>고객 센터</h3>
+</div>
 
-    <div class="notice-nav">
-        <ul>
-            <li class="notice"><a href="/user/board/userNotice">공지사항</a></li>
-            <li><a href="#">자주하는 질문</a></li>
-            <li><a href="#">문의하기</a></li>
-        </ul>
-    </div>
+<div class="notice-nav">
+    <ul>
+        <li class="board"><a href="/user/board/userNotice">공지사항</a></li>
+        <li><a href="/user/board/userQna">자주하는 질문</a></li>
+        <li ><a href="#">문의하기</a></li>
+    </ul>
+</div>
 
-    <div class="notice-list">
-        <table id="listArea">
-            <tr class="notice-list-head">
-                <th class="th1">NO</th>
-                <th class="th2">제목</th>
-                <th>조회수</th>
-                <th class="th3">작성자</th>
-                <th class="th4">등록일</th>
-            </tr>
+<div class="notice-list">
+    <table id="listArea">
+        <tr class="notice-list-head">
+            <th class="th1">NO</th>
+            <th class="th2">제목</th>
+            <th>조회수</th>
+            <th class="th3">작성자</th>
+            <th class="th4">등록일</th>
+        </tr>
 
-            <tr th:each="notice : ${ noticeList }">
-                <td th:text="${ notice.no }"></td>
-                <td th:onclick="|location.href='/user/board/userNoticeView?no=${notice.no}'|" th:text="${ notice.title }"></td>
-                <td th:text="${ notice.count }"></td>
-                <td th:text="${ notice.writer.nickname }"></td>
-                <td th:text="${ notice.createdDate}"></td>
-            </tr>
+        <tr th:each="notice : ${ noticeList }">
+            <td th:text="${ notice.no }"></td>
+            <td th:onclick="|location.href='/user/board/userNoticeView?no=${notice.no}'|" th:text="${ notice.title }"></td>
+            <td th:text="${ notice.count }"></td>
+            <td th:text="${ notice.writer.nickname }"></td>
+            <td th:text="${ notice.createdDate}"></td>
+        </tr>
 
-        </table>
-    </div>
+    </table>
+</div>
 
 
-    <div id="paging" class="pagingbar">
+<div id="paging" class="pagingbar">
 
-        <th:block
-                th:if="${ paging.searchCondition != null and paging.searchValue != null }">
-            <!-- 맨 앞으로 이동 -->
-            <button
-                    th:onclick="'location.href=\'/user/board/userNotice?page=1&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">&lt;&lt;</button>
+    <th:block
+            th:if="${ paging.searchCondition != null and paging.searchValue != null }">
+        <!-- 맨 앞으로 이동 -->
+        <button
+                th:onclick="'location.href=\'/user/board/userNotice?page=1&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">&lt;&lt;</button>
 
-            <!-- 이전 페이지로 이동 -->
-            <button
-                    th:onclick="'location.href=\'/user/board/userNotice?page=' + @{${paging.page - 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
-                    th:disabled="${ paging.page <= 1 }">&lt;</button>
+        <!-- 이전 페이지로 이동 -->
+        <button
+                th:onclick="'location.href=\'/user/board/userNotice?page=' + @{${paging.page - 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                th:disabled="${ paging.page <= 1 }">&lt;</button>
 
-            <!-- 숫자 버튼 -->
-            <span class="pagingbar123">
+        <!-- 숫자 버튼 -->
+        <span class="pagingbar123">
             <th:block
                     th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
                 <button
@@ -72,29 +72,29 @@
             </th:block>
             </span>
 
-            <!-- 다음 페이지로 이동 -->
-            <button
-                    th:onclick="'location.href=\'/user/board/userNotice?page=' + @{${paging.page + 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
-                    th:disabled="${ paging.page >= paging.maxPage }">></button>
+        <!-- 다음 페이지로 이동 -->
+        <button
+                th:onclick="'location.href=\'/user/board/userNotice?page=' + @{${paging.page + 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                th:disabled="${ paging.page >= paging.maxPage }">></button>
 
-            <!-- 맨 끝으로 이동 -->
-            <button
-                    th:onclick="'location.href=\'/user/board/userNotice?page=' + @{${paging.maxPage}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">>></button>
+        <!-- 맨 끝으로 이동 -->
+        <button
+                th:onclick="'location.href=\'/user/board/userNotice?page=' + @{${paging.maxPage}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">>></button>
 
-        </th:block>
+    </th:block>
 
-        <th:block
-                th:if="${ paging.searchCondition == null  || paging.searchValue == null }">
-            <!-- 맨 앞으로 이동 -->
-            <button th:onclick="'location.href=\'/user/board/userNotice?page=1\''">&lt;&lt;</button>
+    <th:block
+            th:if="${ paging.searchCondition == null  || paging.searchValue == null }">
+        <!-- 맨 앞으로 이동 -->
+        <button th:onclick="'location.href=\'/user/board/userNotice?page=1\''">&lt;&lt;</button>
 
-            <!-- 이전 페이지로 이동 -->
-            <button
-                    th:onclick="'location.href=\'/user/board/userNotice?page=' + @{${paging.page - 1}} + '\''"
-                    th:disabled="${ paging.page <= 1 }">&lt;</button>
+        <!-- 이전 페이지로 이동 -->
+        <button
+                th:onclick="'location.href=\'/user/board/userNotice?page=' + @{${paging.page - 1}} + '\''"
+                th:disabled="${ paging.page <= 1 }">&lt;</button>
 
-            <!-- 숫자 버튼 -->
-            <span class="pagingbar123">
+        <!-- 숫자 버튼 -->
+        <span class="pagingbar123">
             <th:block
                     th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
                 <button
@@ -103,36 +103,36 @@
                 </button>
             </th:block>
             </span>
-            <!-- 다음 페이지로 이동 -->
-            <button
-                    th:onclick="'location.href=\'/user/board/userNotice?page=' + @{${paging.page + 1}} + '\''"
-                    th:disabled="${ paging.page >= paging.maxPage }">></button>
+        <!-- 다음 페이지로 이동 -->
+        <button
+                th:onclick="'location.href=\'/user/board/userNotice?page=' + @{${paging.page + 1}} + '\''"
+                th:disabled="${ paging.page >= paging.maxPage }">></button>
 
-            <!-- 맨 끝으로 이동 -->
-            <button
-                    th:onclick="'location.href=\'/user/board/userNotice?page=' + @{${paging.maxPage}} + '\''">>></button>
-        </th:block>
-    </div>
+        <!-- 맨 끝으로 이동 -->
+        <button
+                th:onclick="'location.href=\'/user/board/userNotice?page=' + @{${paging.maxPage}} + '\''">>></button>
+    </th:block>
+</div>
 
-    <div class="searchNotice">
-        <form id="searchForm" action="/user/board/userNotice" class="searchNotice-form">
-            <div>
+<div class="searchNotice">
+    <form id="searchForm" action="/user/board/userNotice" class="searchNotice-form">
+        <div>
             <select  id="searchCondition" name="searchCondition">
-<!--                <option value="category" th:selected="${ paging.searchCondition eq 'category'}">카테고리</option>-->
-<!--                <option value="writer" th:selected="${ paging.searchCondition eq 'writer'}">작성자</option>-->
+                <!--                <option value="category" th:selected="${ paging.searchCondition eq 'category'}">카테고리</option>-->
+                <!--                <option value="writer" th:selected="${ paging.searchCondition eq 'writer'}">작성자</option>-->
                 <option value="title" th:selected="${ paging.searchCondition eq 'title'}" selected>제목</option>
                 <option value="content" th:selected="${ paging.searchCondition eq 'body'}">내용</option>
             </select>
-            </div>
-            <div class="searchNotice-input">
+        </div>
+        <div class="searchNotice-input">
             <input type="search" id="searchValue" name="searchValue" th:value="${ paging.searchValue }"
                    size="25" placeholder="검색어를 입력하세요"/>
             <button type="submit"><img src="/images/search.png"> </button>
-            </div>
-        </form>
-    </div>
+        </div>
+    </form>
+</div>
 
-    <div th:replace="/user/common/footer.html"></div>
+<div th:replace="/user/common/footer.html"></div>
 
 </body>
 </html>

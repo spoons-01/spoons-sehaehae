@@ -28,12 +28,28 @@
         <result property="phone" column="PHONE_NUMBER"/>
         <result property="birthday" column="BIRTHDAY"/>
         <result property="gender" column="GENDER"/>
-        <result property="address" column="ADDRESS"/>
+        <result property="zipCode" column="ZIPCODE"/>
         <result property="subscriptionDate" column="SUBSCRIPTION_DATE"/>
         <result property="profilePhoto" column="PROFILE_PHOTO"/>
         <result property="referralCode" column="REFERRAL_CODE"/>
         <result property="memberStatus" column="MEMBER_STATUS"/>
+        <result property="address1" column="ADDRESS1"/>
+        <result property="address2" column="ADDRESS2"/>
+<!--        <collection property="memberRoleList" resultMap="memberRoleResultMap"/>-->
+<!--        <collection property="memberLevelList" resultMap="memberLevelResultMap"/>-->
     </resultMap>
+
+<!--    <resultMap type="com.spoons.sehaehae.member.dto.MemberRoleDTO" id="memberRoleResultMap">-->
+<!--        <id property="memberNo" column="REF_MEMBER_NO"/>-->
+<!--        <id property="authorityCode" column="REF_AUTHORITY_CODE"/>-->
+<!--        <association property="authority" resultMap="authorityResultMap"/>-->
+<!--    </resultMap>-->
+
+<!--    <resultMap type="com.spoons.sehaehae.member.dto.MemberLevelDTO" id="memberLevelResultMap">-->
+<!--        <id property="memberNo" column="REF_MEMBER_NO2"/>-->
+<!--        <id property="membershipCode" column="REF_MEMBERSHIP_CODE"/>-->
+<!--        <association property="membership" resultMap="membershipResultMap"/>-->
+<!--    </resultMap>-->
 
     <!-- 자주하는 질문 -->
     <resultMap id="qnaBoardResultMap" type="com.spoons.sehaehae.board.dto.QnaDTO">
@@ -56,46 +72,55 @@
         <result property="name" column="CATEGORY_NAME"/>
     </resultMap>
 
-<!-- 공지사항 -->
+    <!-- 공지사항 -->
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
-               COUNT(*)
-          FROM TBL_NOTICE
+        COUNT(*)
+        FROM TBL_NOTICE A
+        <where>
+            <if test="searchCondition == 'title'">
+                A.NOTICE_TITLE LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'content'">
+                A.NOTICE_BODY LIKE '%' || #{ searchValue } || '%'
+            </if>
+            AND A.NOTICE_STATUS = 'Y'
+        </where>
     </select>
 
     <select id="selectNoticeList" resultMap="generalNoticeResultMap">
         SELECT
-               A.NOTICE_NO
-             , A.NOTICE_TITLE
-             , A.NOTICE_BODY
-             , A.NOTICE_CREATED_DATE
-             , A.NOTICE_COUNT
-             , A.NOTICE_WRITER_NO
-             , E.NICKNAME
-             , A.NOTICE_STATUS
-             , A.NOTICE_DELETE_DATE
-             , A.NOTICE_MODIFIED_DATE
-          FROM (SELECT
-                       ROWNUM RNUM
-                     , B.NOTICE_NO
-                     , B.NOTICE_TITLE
-                     , B.NOTICE_BODY
-                     , B.NOTICE_CREATED_DATE
-                     , B.NOTICE_COUNT
-                     , B.NOTICE_WRITER_NO
-                     , B.NOTICE_STATUS
-                     , B.NOTICE_DELETE_DATE
-                     , B.NOTICE_MODIFIED_DATE
+        A.NOTICE_NO
+        , A.NOTICE_TITLE
+        , A.NOTICE_BODY
+        , A.NOTICE_CREATED_DATE
+        , A.NOTICE_COUNT
+        , A.NOTICE_WRITER_NO
+        , E.NICKNAME
+        , A.NOTICE_STATUS
+        , A.NOTICE_DELETE_DATE
+        , A.NOTICE_MODIFIED_DATE
+        FROM (SELECT
+                ROWNUM RNUM
+                , B.NOTICE_NO
+                , B.NOTICE_TITLE
+                , B.NOTICE_BODY
+                , B.NOTICE_CREATED_DATE
+                , B.NOTICE_COUNT
+                , B.NOTICE_WRITER_NO
+                , B.NOTICE_STATUS
+                , B.NOTICE_DELETE_DATE
+                , B.NOTICE_MODIFIED_DATE
                 FROM(SELECT
-                              C.NOTICE_NO
-                            , C.NOTICE_TITLE
-                            , C.NOTICE_BODY
-                            , C.NOTICE_CREATED_DATE
-                            , C.NOTICE_COUNT
-                            , C.NOTICE_WRITER_NO
-                            , C.NOTICE_STATUS
-                            , C.NOTICE_DELETE_DATE
-                            , C.NOTICE_MODIFIED_DATE
+                        C.NOTICE_NO
+                        , C.NOTICE_TITLE
+                        , C.NOTICE_BODY
+                        , C.NOTICE_CREATED_DATE
+                        , C.NOTICE_COUNT
+                        , C.NOTICE_WRITER_NO
+                        , C.NOTICE_STATUS
+                        , C.NOTICE_DELETE_DATE
+                        , C.NOTICE_MODIFIED_DATE
                         FROM TBL_NOTICE C
         <if test="searchCondition == 'writer'">
             JOIN TBL_MEMBER D ON(C.NOTICE_WRITER_NO == D.MEMBER_NO)
@@ -125,31 +150,31 @@
 
     <update id="incrementNoticeCount">
         UPDATE
-            TBL_NOTICE A
-          SET A.NOTICE_COUNT = A.NOTICE_COUNT + 1
-         WHERE A.NOTICE_NO = #{ no }
+        TBL_NOTICE A
+        SET A.NOTICE_COUNT = A.NOTICE_COUNT + 1
+        WHERE A.NOTICE_NO = #{ no }
     </update>
 
     <select id="selectNoticeDetail" resultMap="generalNoticeResultMap">
         SELECT
-              A.NOTICE_NO
-            , A.NOTICE_TITLE
-            , A.NOTICE_BODY
-            , A.NOTICE_CREATED_DATE
-            , A.NOTICE_COUNT
-            , B.MEMBER_NO
-            , B.NICKNAME
+        A.NOTICE_NO
+        , A.NOTICE_TITLE
+        , A.NOTICE_BODY
+        , A.NOTICE_CREATED_DATE
+        , A.NOTICE_COUNT
+        , B.MEMBER_NO
+        , B.NICKNAME
         FROM TBL_NOTICE A
         JOIN TBL_MEMBER B ON (A.NOTICE_WRITER_NO = B.MEMBER_NO)
         WHERE A.NOTICE_STATUS = 'Y'
-         AND A.NOTICE_NO = #{ no }
+        AND A.NOTICE_NO = #{ no }
     </select>
 
     <insert id="insertNotice">
         INSERT
         INTO TBL_NOTICE A
         (
-          A.NOTICE_NO
+        A.NOTICE_NO
         , A.NOTICE_TITLE
         , A.NOTICE_BODY
         , A.NOTICE_CREATED_DATE
@@ -164,8 +189,8 @@
         , #{ body }
         , SYSDATE
         , 0
-        , 1
-<!--        , #{ writer.memberNo }-->
+        , 23
+        <!--        , #{ writer.memberNo }-->
         , 'Y'
         )
     </insert>
@@ -173,8 +198,8 @@
     <update id="updateNotice">
         UPDATE TBL_NOTICE
         SET NOTICE_TITLE = #{ title }
-          , NOTICE_BODY = #{ body }
-          , NOTICE_MODIFIED_DATE = SYSDATE
+        , NOTICE_BODY = #{ body }
+        , NOTICE_MODIFIED_DATE = SYSDATE
         WHERE NOTICE_NO = #{ no }
     </update>
 
@@ -189,12 +214,27 @@
     <select id="qnaTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
         COUNT(*)
-        FROM TBL_QNA
+        FROM TBL_QNA A
+        <if test="searchCondition == 'category'">
+            JOIN TBL_BOARD_CATEGORY B ON(A.CATEGORY_NO = B.CATEGORY_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'category'">
+                B.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'title'">
+                A.QNA_TITLE LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'content'">
+                A.QNA_BODY LIKE '%' || #{ searchValue } || '%'
+            </if>
+            AND A.QNA_STATUS = 'Y'
+        </where>
     </select>
 
     <select id="selectQnaList" resultMap="qnaBoardResultMap">
         SELECT
-          A.QNA_NO
+        A.QNA_NO
         , A.CATEGORY_NO
         , D.CATEGORY_NAME
         , A.ADMIN_NO
@@ -205,40 +245,35 @@
         , A.QNA_STATUS
         , A.QNA_MODIFIED_DATE
         , A.QNA_DELETE_DATE
-            FROM (SELECT
-            ROWNUM RNUM
-            , B.QNA_NO
-            , B.CATEGORY_NO
-            , B.ADMIN_NO
-            , B.QNA_TITLE
-            , B.QNA_BODY
-            , B.QNA_CREATED_DATE
-            , B.QNA_STATUS
-            , B.QNA_MODIFIED_DATE
-            , B.QNA_DELETE_DATE
+        FROM (SELECT
+        ROWNUM RNUM
+        , B.QNA_NO
+        , B.CATEGORY_NO
+        , B.ADMIN_NO
+        , B.QNA_TITLE
+        , B.QNA_BODY
+        , B.QNA_CREATED_DATE
+        , B.QNA_STATUS
+        , B.QNA_MODIFIED_DATE
+        , B.QNA_DELETE_DATE
         FROM(SELECT
-                      C.QNA_NO
-                    , C.CATEGORY_NO
-                    , C.ADMIN_NO
-                    , C.QNA_TITLE
-                    , C.QNA_BODY
-                    , C.QNA_CREATED_DATE
-                    , C.QNA_STATUS
-                    , C.QNA_MODIFIED_DATE
-                    , C.QNA_DELETE_DATE
-                    FROM TBL_QNA C
+        C.QNA_NO
+        , C.CATEGORY_NO
+        , C.ADMIN_NO
+        , C.QNA_TITLE
+        , C.QNA_BODY
+        , C.QNA_CREATED_DATE
+        , C.QNA_STATUS
+        , C.QNA_MODIFIED_DATE
+        , C.QNA_DELETE_DATE
+        FROM TBL_QNA C
         <if test="searchCondition == 'category'">
             JOIN TBL_BOARD_CATEGORY D ON(C.CATEGORY_NO = D.CATEGORY_NO)
         </if>
-        <if test="searchCondition == 'writer'">
-            JOIN TBL_MEMBER D ON(C.ADMIN_NO == D.MEMBER_NO)
-        </if>
         <where>
             <if test="searchCondition == 'category'">
-                D.CATEGORY_NAME = #{ searchValue }
-            </if>
-            <if test="searchCondition == 'writer'">
-                D.NICKNAME LIKE '%' || #{ searchValue } || '%'
+                <!--                D.CATEGORY_NAME = #{ searchValue }-->
+                D.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
             <if test="searchCondition == 'title'">
                 C.QNA_TITLE LIKE '%' || #{ searchValue } || '%'
@@ -259,4 +294,61 @@
         WHERE A.RNUM >= #{ startRow }
         ORDER BY 1 DESC
     </select>
+
+    <select id="selectQnaView" resultMap="qnaBoardResultMap">
+        SELECT
+        A.QNA_NO
+        , C.CATEGORY_NAME
+        , B.MEMBER_NO
+        , B.NICKNAME
+        , A.QNA_TITLE
+        , A.QNA_BODY
+        , A.QNA_CREATED_DATE
+        FROM TBL_QNA A
+        JOIN TBL_MEMBER B ON (A.ADMIN_NO = B.MEMBER_NO)
+        JOIN TBL_BOARD_CATEGORY C ON (A.CATEGORY_NO = C.CATEGORY_NO)
+        WHERE A.QNA_STATUS = 'Y'
+        AND A.QNA_NO = #{ no }
+    </select>
+
+    <insert id="insertQna">
+        INSERT
+        INTO TBL_QNA A
+        (
+        A.QNA_NO
+        , A.CATEGORY_NO
+        , A.ADMIN_NO
+        , A.QNA_TITLE
+        , A.QNA_BODY
+        , A.QNA_CREATED_DATE
+        , A.QNA_STATUS
+        )
+        VALUES
+        (
+        SEQ_QNA_NO.NEXTVAL
+        , #{ categoryNo }
+        , 23
+        , #{ title }
+        , #{ body }
+        , SYSDATE
+        , 'Y'
+        )
+    </insert>
+
+    <update id="updateQna">
+        UPDATE TBL_QNA
+        SET CATEGORY_NO = #{ categoryNo }
+        , QNA_TITLE = #{ title }
+        , QNA_BODY = #{ body }
+        , QNA_MODIFIED_DATE = SYSDATE
+        WHERE QNA_NO = #{ no }
+    </update>
+
+    <update id="deleteQna">
+        UPDATE TBL_QNA
+        SET QNA_STATUS = 'N'
+        WHERE QNA_STATUS = 'Y'
+        AND QNA_NO = #{ no }
+    </update>
+
 </mapper>

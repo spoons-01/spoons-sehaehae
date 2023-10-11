@@ -126,12 +126,16 @@
     padding: 20px; /* 내용 주변 여백 설정 */
     border: 1px solid black;
     width: 1100px;
-    height: auto;
+}
+
+.detail-category p{
+    margin-bottom: 30px;
+    text-decoration: underline;
 }
 .detail-name {
     margin-top: 10px;
     color: black;
-    font-size: 45px;
+    font-size: 40px;
     font-family: GANGWON STATE;
     font-weight: 400;
     line-height: 18px;
@@ -161,6 +165,11 @@
 .detail-body textarea {
     text-align: center;
     margin-top: 20px;
+    width: 1000px;
+    height: auto; /* 높이를 자동으로 조절 */
+    min-height: 100px; /* 최소 높이를 지정 (원하는 높이로 조정 가능) */
+    max-height: 1000px; /* 최대 높이를 지정 (원하는 높이로 조정 가능) */
+    resize: none; /* 크기 조절 비활성화 */
 }
 
 .golist {
@@ -200,6 +209,8 @@
     margin-left: 30px;
     margin-top: 10px;
     margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .regist-body {
@@ -207,7 +218,7 @@
     width: 900px;
     margin-left: 30px;
     margin-top: 10px;
-
+    border-radius: 5px;
     /*resize: none;*/
 }
 
@@ -222,4 +233,73 @@
     border-radius: 20px;
     color: #4E4D4D;
     font-size: 15px;
+}
+
+/* 모달창 -------------------------------------------------------------- */
+#modal.modal-overlay {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;   /* 페이지 위에 띄우기*/
+    border-radius: 10px;
+    background-color: white;
+    border: 1px solid black;
+    padding: 20px;
+    width: 1100px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.modal-detail {
+
+}
+#modal .title {
+    padding-left: 10px;
+    display: flex;
+    justify-content: space-between;
+    color: black;
+    background-color: rgba(217, 217, 217, 1);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+#modal .close-area {
+    padding-right: 10px;
+    cursor: pointer;
+    text-shadow: 1px 1px 2px grey;
+    color: black;
+}
+
+#modal .content {
+    margin-top: 20px;
+    padding: 0px 10px;
+    color: rgba(79, 75, 75, 1);
+}
+
+.modal-table {
+    border-collapse: collapse;
+    background-color: rgba(255, 251, 251, 1);
+    display: flex;
+    justify-content: center;
+    width: auto;
+}
+.modal-table td{
+    border-spacing: 20px 0;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 10px;
+}
+
+.modal-td {
+    text-align: center;
+}
+
+.modal-category {
+    margin-left: 30px;
+    appearance: auto;
+    border: 1px solid black;
+    border-radius: 5px;
 }
