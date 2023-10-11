@@ -6,12 +6,12 @@ spring:
     username: C##SPOONS
     password: SPOONS
 
-#  # file upload config
-#  servlet:
-#    multipart:
-#      max-file-size: 10MB
-#      max-request-size: 10MB
-#      location: C:/Lecture/spoons-sehaehae
+
+servlet:
+  multipart:
+    max-file-size: 10MB
+    max-request-size: 10MB
+    location: C:/Lecture/spoons-sehaehae
 
 #Mybatis config
 mybatis:
