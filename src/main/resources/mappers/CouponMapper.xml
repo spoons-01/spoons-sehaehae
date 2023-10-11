@@ -49,9 +49,4 @@
     </update>
 
 
-    <delete id="deleteCoupon">
-        delete
-        from    TBL_CP
-        where   CP_CODE=#{cpCode}
-    </delete>
 </mapper>
