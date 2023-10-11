@@ -25,7 +25,7 @@
 
     </resultMap>
 
-    <resultMap id="MemberResultMap" type="com.spoons.sehaehae.admin.dto.MemberDTO">
+    <resultMap id="MemberResultMap" type="com.spoons.sehaehae.member.dto.MemberDTO">
         <id property="memberNo" column="MEMBER_NO"/>
         <result property="name" column="NAME"/>
         <result property="phone" column="PHONE_NUMBER"/>

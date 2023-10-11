@@ -19,13 +19,15 @@ public class MemberDTO implements UserDetails {
     private String name;
     private String nickname;
     private int phone;
-    private Date birthday;
+    private String birthday;
     private char gender;
-    private String address;
+    private String zipCode;
     private Date subscriptionDate;
     private String profilePhoto;
     private String referralCode;
     private String memberStatus;
+    private String address1;
+    private String address2;
     private List<MemberRoleDTO> memberRoleList;
     private List<MemberLevelDTO> memberLevelList;
 

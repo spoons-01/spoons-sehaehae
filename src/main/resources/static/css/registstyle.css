@@ -1,0 +1,438 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'GangwonState';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/GangwonState.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NanumSquareNeo-Variable';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 기본 설정 -------------------------------------------------*/
+html {
+    font-size: 100%;
+}
+
+a {
+    text-decoration: none;
+    font-family: NanumSquareNeo-Variable;
+}
+
+img {
+    max-width: 100%;
+}
+
+h {
+    font-family: NanumSquareNeo-Variable;
+    font-size: 13px;
+}
+
+p {
+    font-family: NanumSquareNeo-Variable;
+    font-size: 13px;
+}
+
+h3 {
+    font-family: NanumSquareNeo-Variable;
+    font-size: 15px;
+}
+
+label {
+    font-family: NanumSquareNeo-Variable;
+}
+
+input {
+    padding-left: 10px;
+    font-family: NanumSquareNeo-Variable;
+}
+
+/*------------------------------------------------------------*/
+
+/* 래퍼 설정 */
+.wrapper {
+    max-width: 1400px;
+    margin: 80px auto;
+    padding: 0 4%;
+}
+
+
+/* 회원가입 글자, SNS 회원가입 --------------------------------*/
+.join {
+    text-align: center;
+    margin-top: 80px;
+}
+
+.wrapper2 {
+    max-width: 450px;
+    margin: auto;
+    text-align: left;
+}
+
+.join h3 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.snsbox {
+    margin-top: 30px;
+}
+
+.sns {
+    margin-top: 20px;
+}
+
+.sns-all {
+    display: inline-block;
+    transform: scale(0.9);
+}
+
+
+/* 회원가입 --------------------------------------------------*/
+/* email */
+
+.wrapper2 h3 {
+    margin-top: 40px;
+}
+
+.joinbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.write-email {
+    width: 132px;
+    height: 40px;
+    margin-right: 5px;
+    border-radius: 4px;
+    border: 1px solid #d9d6d6;
+    margin-right: 10px;
+}
+
+select.box,
+#domain-txt {
+    height: 45px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    border: 1px solid #d9d6d6;
+    color: #383838;
+    background-color: #ffffff;
+    font-family: 'Montserrat', 'Pretendard', sans-serif;
+    margin-left: 10px;
+}
+
+select.box {
+    width: 132px;
+}
+
+#domain-txt {
+    width: 130px;
+}
+
+/* email input 폼 */
+.input {
+    width: 350px;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid #d9d6d6;
+    margin-right: 13px;
+}
+
+/* 이메일 인증버튼 */
+.btn {
+    background-color: #4B93FF;
+    color: #ffffff;
+    font-size: 13px;
+    padding: 10px 10px;
+    border-radius: 7px;
+    border: none;
+    cursor: pointer;
+    font-family: NanumSquareNeo-Variable;
+    letter-spacing: 1px;
+    text-align: center;
+    min-width: 80px;
+    max-width: 100px;
+    margin-left: 13px;
+}
+/*!* 이메일 인증버튼 *!*/
+/*.button {*/
+/*    background-color: #f2f2f2;*/
+/*    border: 1px solid #bbbbbb;*/
+/*    color: #bbbbbb;*/
+/*    font-size: 16px;*/
+/*    padding: 13px 160px;*/
+/*    border-radius: 4px;*/
+/*    cursor: pointer;*/
+/*    font-family: NanumSquareNeo-Variable;*/
+/*    font-weight: 600;*/
+/*    letter-spacing: 1px;*/
+/*}*/
+
+.buttoncenter {
+    text-align: center;
+    margin: 20px 0px 80px 0px;
+}
+
+/* 비밀번호, 이름, 별병 -------------------------------------- */
+.joinbox2 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 55px;
+}
+
+.wrapper2 p {
+    margin-top: -2px;
+}
+
+
+.joinbox2 input.box {
+    width: 450px;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid #d9d6d6;
+}
+
+.password-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.pwd-check-container {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 비밀번호 일치할 때의 스타일 */
+.password-match {
+    color: #4B93FF;
+}
+
+/* 비밀번호 불일치할 때의 스타일 */
+.password-mismatch {
+    color: red;
+}
+
+
+/* 전화번호 --------------------------------------------------*/
+#phoneInput {
+    width: 350px;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid #d9d6d6;
+    margin-right: 13px;
+}
+
+#phonebutton {
+    background-color: #4B93FF;
+    color: #ffffff;
+    font-size: 13px;
+    padding: 10px 10px;
+    border-radius: 7px;
+    border: none;
+    cursor: pointer;
+    font-family: NanumSquareNeo-Variable;
+    letter-spacing: 1px;
+    text-align: center;
+    width: 80px;
+}
+
+.phone-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.text-button {
+    display: inline-block;
+}
+
+/* 성별 라디오버튼 -------------------------------------------*/
+.joinbox3 {
+    padding: 15px 10px;
+}
+
+.joinbox3 input[type=radio] {
+    display: none;
+}
+
+.joinbox3 input[type=radio]+label {
+    display: inline-block;
+    cursor: pointer;
+    height: 40px;
+    width: 120px;
+    border: 1px solid #c2c2c2;
+    border-radius: 3px;
+    line-height: 40px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.joinbox3 input[type=radio]+label {
+    background-color: #fff;
+    color: #676767;
+}
+
+.joinbox3 input[type=radio]:checked+label {
+    background-color: #4B93FF;
+    color: #fff;
+}
+
+/* 생년월일 --------------------------------------------------*/
+
+.info#info__birth {
+    display: flex;
+}
+
+.info#info__birth select {
+    margin-left: 7px;
+}
+
+.info#info__birth select:first-child {
+    margin-left: 0px;
+}
+
+.info#info__birth select::-webkit-scrollbar {
+    width: 10px;
+}
+
+.info#info__birth select::-webkit-scrollbar-thumb {
+    background-color: rgba(75, 147, 255);
+    border-radius: 3px;
+}
+
+.info#info__birth select::-webkit-scrollbar-track {
+    background-color: rgba(75, 147, 255, 30%);
+    border-radius: 6px;
+}
+
+.info select.box {
+    width: 150px;
+}
+
+/* 주소 찾기 -------------------------------------------------*/
+#zipCode {
+    width: 350px;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid #d9d6d6;
+    margin-right: 13px;
+}
+
+#addressbutton {
+    background-color: #4B93FF;
+    text-align: center;
+    border: none;
+    width: 85px;
+    color: #ffffff;
+    font-size: 13px;
+    padding: 10px 22px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-family: NanumSquareNeo-Variable;
+    letter-spacing: 1px;
+}
+
+/* 약관 동의 -------------------------------------------------*/
+.checkbox-container {
+    display: flex;
+    justify-content: center;
+}
+.joinbox4 {
+    width: 420px;
+    height: auto;
+    border-radius: 4px;
+    border: 1px solid #d9d6d6;
+    padding: 15px;
+}
+
+.checkbox_group {
+    display: flex;
+    flex-direction: column;
+    margin-top: 8px;
+}
+
+.checkbox_group label {
+    font-size: 13px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+/* 전체 동의 라벨 스타일 */
+.checkbox_group label:first-child {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.checkbox_group label input {
+    margin-right: 10px;
+}
+
+.blue {
+    color: rgba(75, 147, 255);
+}
+
+.grey {
+    color: #bbbbbb;
+}
+
+.grey2 {
+    color: #bbbbbb;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.line {
+    border-top: 1px solid #d9d6d6;
+    width: 413px;
+    margin-bottom: 20px;
+}
+
+input[type=checkbox] {
+    width: 17px;
+    height: 17px;
+}
+
+/* 회원가입 버튼 ---------------------------------------------*/
+
+.buttoncenter2 {
+    text-align: center;
+    margin-top: 40px;
+}
+.button2 {
+    background-color: rgba(75, 147, 255);
+    border: none;
+    color: #ffffff;
+    font-size: 16px;
+    padding: 13px 40px;
+    width: 450px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: GangwonState;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* 기존 회원 로그인 -----------------------------------------*/
+.wrapper3 {
+    margin: 40px 0px 150px 0px;
+    text-align: center;
+}
+
+.wrapper3 h {
+    color: #6f6f6f;
+}
+
+.wrapper3 a {
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+}
