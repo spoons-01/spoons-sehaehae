@@ -6,17 +6,19 @@ spring:
     username: C##SPOONS
     password: SPOONS
 
+
 servlet:
   multipart:
     max-file-size: 10MB
     max-request-size: 10MB
     location: C:/Lecture/spoons-sehaehae
 
-
-# Mybatis config
+#Mybatis config
 mybatis:
   mapper-locations: mappers/**/*.xml
 
-#image upload dir
-image:
-  image-dir: src/main/resources/upload/
+## image upload dir
+#image:
+#  image-dir: src/main/resources/upload
+
+

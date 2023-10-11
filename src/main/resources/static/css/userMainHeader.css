@@ -1,0 +1,123 @@
+@charset "UTF-8";
+@font-face {
+    font-family: 'GangwonState';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/GangwonState.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+html {
+    font-size: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* header ----------------------------------------------------------------- */
+
+/* 래퍼 설정 */
+.wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 4%;
+}
+
+/* logo */
+.logo {
+    margin-top: 30px
+}
+
+/* nav */
+.main-nav {
+    display: flex;
+    list-style-type: none;
+    margin-top: 37px;
+    margin-left: 550px;
+    justify-content: flex-end;
+    transform: scale(0.85);
+}
+
+.mypage {
+    margin-top: 26px;
+    margin-left: 30px;
+}
+
+.main-nav li {
+    margin-left: 36px;
+}
+
+.main-nav a {
+    color : #000000;
+}
+
+.main-nav a:hover {
+    color : #4B93FF;
+}
+
+/* 로고 - 네비 수평 정렬 */
+.page-header {
+    display: flex;
+}
+
+hr {
+    margin-top: 15px;
+}
+
+/* 헤더 상단 고정 */
+.main-set {
+    height: 50px;
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    padding-bottom: 90px;
+    z-index: 1;
+}
+
+/* 상단부 이미지 */
+#background {
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-image: url("../images/background3.png");
+    min-height: 100vh;
+}
+
+/* 세탁해병대 슬로건 */
+#background h1 {
+    margin: 200px 0px 0px 120px;
+    position: absolute;
+    color: #ffffff;
+    transform: scale(1.6);
+}
+
+/* 세탁해병대 */
+#background p {
+    color : #ffffff;
+    font-size: 90px;
+    font-family: GangwonState;
+    position: absolute;
+    margin-top: 500px;
+}
+
+/* 자세히보기 버튼 */
+.button {
+    background-color: #000000;
+    color : #ffffff;
+    font-size: 18px;
+    padding: 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    position: absolute;
+    margin-top: 650px;
+}
+
+h2 {
+    font-family: GangwonState;
+    margin-top: 100px;
+}
