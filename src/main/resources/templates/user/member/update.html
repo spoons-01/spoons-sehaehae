@@ -1,0 +1,195 @@
+<!DOCTYPE>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF- 8">
+    <!--    <script type="text/javascript" src="/js/event.js"></script>-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>설정 | 세탁해병대</title>
+    <link href="/css/updatestyle.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="/static/images/favicon.ico">
+    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="styles heet" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/update.js"></script>
+</head>
+
+<body>
+<!-- 헤더 -->
+<div th:replace="user/common/header.html"></div>
+<ul class="mypage-nav">
+    <a id="profile" href="/user/member/mypage">
+        <li>프로필</li>
+    </a>
+    <a id="mysehae" href="/user/member/mysehae">
+        <li>나의 세해</li>
+    </a>
+    <a is="setting" href="/user/member/update">
+        <li>설정</li>
+    </a>
+</ul>
+<hr class="line" style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
+
+<div class="box-wrapper">
+    <div class="bigbox">
+        <h3>회원정보수정</h3>
+        <form id=updateProfile action="/user/member/update" method="post" enctype="multipart/form-data">
+            <div class="box1">
+                <label>이메일</label>
+                <input type="email" class="emailbox" th:value="${ #authentication.principal.memberId }" readonly>
+            </div>
+            <div class="text-box">
+                <p>이메일을 변경하시려면 운영자에게 이메일을 보내주세요.</p>
+            </div>
+
+            <div class="box1">
+                <label>이름</label>
+                <input type="text" th:value="${ #authentication.principal.name }" readonly>
+            </div>
+            <div class="text-box">
+                <p>이름을 변경하시려면 운영자에게 이메일을 보내주세요.</p>
+            </div>
+
+            <div class="box">
+                <label for="nickname">별명</label>
+                <input type="text" name="nickname" id="nickname" th:value="${ #authentication.principal.nickname }">
+            </div>
+
+            <div class="box1">
+                <label for="birthday">생년월일</label>
+                <input type="text" name="birthday" id="birthday"
+                       th:value="${ #authentication.principal.birthday.substring(0,10)}">
+            </div>
+
+            <div class="box1">
+                <label for="phone">전화번호</label>
+                <input type="text" name="phone" id="phone" th:value="${ #authentication.principal.phone }">
+            </div>
+
+            <div class="box1">
+                <label for="zipCode">우편번호</label>
+                <input type="text" name="zipCode" id="zipCode" th:value="${ #authentication.principal.zipCode}"
+                       readonly>
+                <input type="button" value="검색" id="addressbutton">
+            </div>
+
+            <div class="box1">
+                <label for="address1">주소</label>
+                <input type="text" name="address1" id="address1" th:value="${ #authentication.principal.address1}"
+                       readonly>
+            </div>
+
+            <div class="box1">
+                <label for="address2">상세 주소</label>
+                <input type="text" name="address2" id="address2" th:value="${ #authentication.principal.address2} ">
+            </div>
+
+
+            <div class="box1">
+                <label>프로필 이미지</label>
+                <div class="image-area">
+                    <img id="profileImage" th:src="${#authentication.principal.profilePhoto}" src="/images/smile.png">
+                </div>
+            </div>
+
+            <div style="display: none">
+                <input type="file" id="attachImage" name="attachImage"
+                       accept="image/gif,immage/jpeg,image/png, image/jpg">
+            </div>
+
+            <div class="button-center">
+                <input type="submit" class="update-btn" value="수정하기">
+                <input type="button" value="탈퇴하기" class="delete-btn" id="deleteMember">
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+
+    const $addressbutton = document.getElementById("addressbutton");
+
+    $addressbutton.onclick = function () {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                document.getElementById("zipCode").value = data.zonecode;
+                document.getElementById("address1").value = data.address;
+                document.getElementById("address2").focus();
+            }
+        }).open();
+    }
+</script>
+
+
+<script th:inline="javascript">
+    var successMessage = '[[${message}]]';
+
+    if (successMessage && successMessage.trim().length > 0 && successMessage !== "null") {
+        alert(successMessage);
+    }
+</script>
+
+
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', function () {-->
+<!--    });-->
+
+<!--    document.querySelector('form').addEventListener('submit', function (event) {-->
+<!--        event.preventDefault();-->
+
+<!--        $.ajax({-->
+<!--            url: this.action,-->
+<!--            type: this.method,-->
+<!--            data: $(this).serialize(),-->
+<!--            success: function (response) {-->
+<!--                alert('회원 정보 수정에 성공하였습니다.');-->
+<!--                return "redirect:/user/member/update";-->
+<!--            },-->
+<!--            error: function () {-->
+<!--                alert('회원 정보 수정에 실패하였습니다.');-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
+<!-- 이미지 전송 -->
+<script>
+    (function () {
+        const imageArea = document.querySelector(".image-area");
+        const fileElement = document.querySelector("[type=file]");
+        const profileImage = document.querySelector("#profileImage"); // 프로필 이미지의 img 엘리먼트
+
+        /* div 클릭 시 open 함수 동작하여 input type=file 클릭 */
+        imageArea.addEventListener('click', open);
+        /* 파일 첨부가 발생하는 상황에 preview 함수 동작 */
+        fileElement.addEventListener('change', preview);
+
+        function open() {
+            fileElement.click();
+        }
+
+        function preview() {
+            console.log(this);
+            console.log(this.files, this.files[0]);
+            /* 첨부 된 파일이 존재한다면 */
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.readAsDataURL(this.files[0]);
+                /* 파일 로드 후 동작하는 이벤트 설정 */
+                reader.onload = function () {
+                    console.log(reader.result);
+                    // 이미지를 화면에 업데이트
+                    profileImage.src = reader.result;
+                }
+            }
+        }
+    })();
+</script>
+
+
+<!-- 푸터 -->
+<div th:replace="user/common/footer.html"></div>
+
+
+</html>
