@@ -310,4 +310,7 @@ column-gap: 93px;
     border: 1px solid black;
     margin-left: 30px;
 }
-
+.containerr{
+    display: flex;
+    height: 120%;
+}

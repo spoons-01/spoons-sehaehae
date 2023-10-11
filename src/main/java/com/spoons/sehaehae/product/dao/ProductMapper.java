@@ -1,5 +1,6 @@
 package com.spoons.sehaehae.product.dao;
 
+import com.spoons.sehaehae.common.paging.SelectCriteria;
 import com.spoons.sehaehae.member.dto.MemberDTO;
 import com.spoons.sehaehae.product.dto.*;
 import org.apache.ibatis.annotations.Mapper;
@@ -41,4 +42,6 @@ public interface ProductMapper {
     List<ProductDTO> selectAllproductAdmin();
 
     List<CouponDTO> selectCoupon(int memberId);
+
+    int selectProductCount();
 }

@@ -13,119 +13,126 @@
 </div>
 
 <div class="big">
-    <div class="bigcontainer">
-        <div class="container a">
+    <form method="post" action="/product/complete" id="submit" enctype="multipart/form-data">
+        <div class="containerr">
+        <div class="bigcontainer">
+            <div class="container a">
 
-            <div class="info1">
-                <p>주문자 정보</p>
+                <div class="info1">
+                    <p>주문자 정보</p>
+                    <table>
+                        <tr>
+                            <td>이름</td>
+                            <td><input type="text" value='${member.name}' id="name"></td>
+                        </tr>
+                        <tr class="r">
+                            <td>연락처</td>
+                            <td><input type="text" value="[[${member.name}]]" id="phone"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="container2">
+                <div class="c2he">
+                    <p>배송지</p>
+                    <p id="address">주소변경</p>
+                </div>
+                <div class="info2">
+                    <p th:text="${member.address}" id="zonecode"></p>
+                    <input type="text" name="address" style="display: none" th:value="${member.address}">
+                    <input type="text" name="address2" placeholder="상세주소"><br><br>
+                    <span th:text="${member.name}" id="name2"></span><span th:text="${member.phone}"
+                                                                           style="margin-left: 20px" id="phone2"></span>
+                </div>
+                <div class="request">
+                    <p>요청사항 :</p>
+                    <input id="orderrequest" type="text" name="request" placeholder="문 앞에 놔주세요">
+                </div>
+
+                <div class="image">
+                    <p>사진추가</p>
+                    <input type="file" accept="image/png" class="file" name="photo">
+                </div>
+                <div class="replaceimage">
+
+                </div>
+                <p class="ta">세탁물 사진을 보내주시면 더욱 쉽게 수거해갈 수 있습니다</p>
+            </div>
+            <div class="container3">
+                <p>일정선택</p>
+                <div class="date">
+                    <span>수거 :</span><input type="date" id="collection" name="collectionDate"><br>
+                    <div class="aaaaa">
+                        <span>배송 :</span><input type="date" required id="deliver" name="deliveryDate">
+                    </div>
+                </div>
+            </div>
+            <div class="container4">
+                <p class="cc">결제정보</p>
                 <table>
                     <tr>
-                        <td>이름</td>
-                        <td><input type="text" value='${member.name}' id="name"></td>
+                        <td>총 상품가격</td>
+                        <td th:text="|${#numbers.formatInteger(totalPrice,3,'COMMA')}원|"></td>
+                        <input type="number" style="display: none" th:value="${totalPrice}" name="price">
                     </tr>
-                    <tr class="r">
-                        <td>연락처</td>
-                        <td><input type="text" value="[[${member.name}]]" id="phone"></td>
+                    <tr>
+                        <td>쿠폰</td>
+                        <input name="coupon" id="usecoupon" style="display: none">
+                        <input type="number" name="rate" id="rate" style="display: none" value="0">
+                        <td><span id="couponName">선택된쿠폰없음</span></td>
+                        <td>
+                            <button type="button" class="coupon">쿠폰변경</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>배송비</td>
+                        <td>3,000원</td>
+                    </tr>
+                    <tr>
+                        <td>포인트</td>
+                        <td><input id="point" type="number" placeholder="사용금액 입력" name="usePoint" value="0"></td>
+                        <td th:text="${member.point}+'원 보유'"></td>
+                    </tr>
+                    <tr>
+                        <td>총 결제금액</td>
+                        <td id="finalPrice" th:text="${totalPrice}+3000"></td>
+                        <input type="number" name="totalPrice" id="finalPrice2" style="display: none">
                     </tr>
                 </table>
-            </div>
-        </div>
-        <form method="post" action="/product/complete" id="submit" enctype="multipart/form-data">
-        <div class="container2">
-            <div class="c2he">
-                <p>배송지</p>
-                <p id="address">주소변경</p>
-            </div>
-            <div class="info2">
-                <p th:text="${member.address}" id="zonecode" ></p>
-                <input type="text" name="address" style="display: none" th:value="${member.address}">
-                <span th:text="${member.name}"></span><span th:text="${member.phone}" style="margin-left: 20px"></span>
-            </div>
-            <div class="request">
-                <p>요청사항 :</p>
-                <input id="orderrequest" type="text" name="request" placeholder="문 앞에 놔주세요">
+                <p class="dd">결제수단</p>
+                <input type="radio" name="paay" value="kakao" id="kakao" class="paymethod"><label
+                    for="kakao">카카오페이</label>
+                <input type="radio" name="paay" value="naver" id="naver" class="paymethod"><label
+                    for="naver">네이버페이</label>
+                <input type="radio" name="paay" value="card" id="card" class="paymethod"><label for="card">카드</label>
+                <div>
+                    <input type="button" class="regist" value="결제하기"></input>
+                    <button class="rollback">취소하기</button>
+                </div>
             </div>
 
-            <div class="image">
-                <p>사진추가</p>
-                <input type="file" accept="image/png" class="file" name="photo">
-            </div>
-            <div class="replaceimage">
-
-            </div>
-            <p class="ta">세탁물 사진을 보내주시면 더욱 쉽게 수거해갈 수 있습니다</p>
         </div>
-        <div class="container3">
-            <p>일정선택</p>
-            <div class="date">
-                <span>수거 :</span><input type="date" id="collection" name="collectionDate"><br>
-                <div class="aaaaa">
-                    <span>배송 :</span><input type="date" required id="deliver" name="deliveryDate">
+
+        <div class="order">
+            <p class="z">상품정보</p>
+            <div class="pdinfo" th:each="list:${cartList}">
+                <input type="hidden" th:value="${list.product.code}" name="productCode">
+                <input type="hidden" th:value="${list.amount}" name="amount">
+                <img th:src="${list.product.photo}" style="max-width: 120px; max-height: 100px">
+                <div class="iinfo">
+                    <p th:text="${list.product.name}">티셔츠</p>
+                    <div class="nnn"><span></span>
+                        <p th:if="${list.useEco} == 'Y'">천연세제 사용</p>
+                        <p th:if="${list.usePremium} == 'Y'">프리미엄케어</p>
+                        <sapn type="number" th:text="|수량 : ${list.amount}|"></sapn>
+                        <span style="margin-left: 30px" th:text="(${list.product.price}*${list.amount})+'원'"></span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="container4">
-            <p class="cc">결제정보</p>
-
-            <table>
-                <tr>
-                    <td>총 상품가격</td>
-                    <td th:text="|${#numbers.formatInteger(totalPrice,3,'COMMA')}원|"></td>
-                    <input type="number" style="display: none" th:value="${totalPrice}" name="price">
-                </tr>
-                <tr>
-                    <td>쿠폰</td>
-                    <input name="usecoupon" id="usecoupon" style="display: none">
-                    <td><input type="number" name="rate" id="rate"> </td>
-                    <td>
-                        <button type="button" class="coupon">쿠폰변경</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>배송비</td>
-                    <td>3,000원</td>
-                </tr>
-                <tr>
-                    <td>포인트</td>
-                    <td><input id="point" type="number" placeholder="사용금액 입력" name="usePoint" value="0"></td>
-                    <td th:text="${member.point}+'원 보유'"></td>
-                </tr>
-                <tr>
-                    <td>총 결제금액</td>
-                    <td id="finalPrice" th:text="${totalPrice}+3000"></td>
-                    <input type="number" name="totalPrice" id="finalPrice2" style="display: none">
-                </tr>
-            </table>
-            <p class="dd">결제수단</p>
-            <input type="radio" name="paay" value="kakao" id="kakao" class="paymethod"><label for="kakao">카카오페이</label>
-            <input type="radio" name="paay" value="naver" id="naver" class="paymethod"><label for="naver">네이버페이</label>
-            <input type="radio" name="paay" value="card" id="card" class="paymethod"><label for="card">카드</label>
-
-            <div>
-                <input class="regist" value="결제하기"></input>
-                <button class="rollback">취소하기</button>
-            </div>
-
-
         </div>
-        </form>
-    </div>
-
-    <div class="order">
-        <p class="z">상품정보</p>
-        <div class="pdinfo" th:each="list:${cartList}">
-            <img th:src="${list.product.photo}" style="max-width: 120px; max-height: 100px">
-            <div class="iinfo">
-                <p th:text="${list.product.name}">티셔츠</p>
-                <div class="nnn"><span></span>
-                    <p th:if="${list.useEco} == 'Y'">천연세제 사용</p>
-                    <p th:if="${list.usePremium} == 'Y'">프리미엄케어</p>
-                    <sapn type="number" th:text="|수량 : ${list.amount}|"></sapn>
-                    <span style="margin-left: 30px" th:text="(${list.product.price}*${list.amount})+'원'"></span>
-                </div>
-            </div>
-        </div>
-    </div>
+    </form>
 </div>
 
 <script>
@@ -144,27 +151,27 @@
 
     const $name = document.querySelector("#name");
     const $phone = document.querySelector("#phone");
+    const $name2 = document.querySelector("#name2");
+    const $phone2 = document.querySelector("#phone2");
     $name.value = '[[${member.name}]]'
     $phone.value = '[[${member.phone}]]'
+
+    $name.oninput = function () {
+        $name2.textContent = $name.value;
+    }
+    $phone.oninput = function () {
+        $phone2.textContent = $phone.value;
+    }
+
+
     const $point = document.querySelector("#point")
     const point = '[[${member.point}]]'
     const $finalPrice = document.querySelector("#finalPrice")
-    const $finalPrice2= document.querySelector("#finalPrice2")
+    const $finalPrice2 = document.querySelector("#finalPrice2")
     console.log($point);
     console.log(point);
     const ttotalPrice = '[[${totalPrice}]]'
-    $point.addEventListener("change", function () {
-        // if ($point.value > point) {
-        //     alert("보유하신 포인트가 부족합니다.")
-        //     $point.value = point;
-        // }
-        fetch("/product/finalPrice?point=" + $point.value + "&totalPrice=" + ttotalPrice)
-            .then(res => res.text())
-            .then(re => $finalPrice.textContent = (Number(re) + 3000))
-            .then(r => $finalPrice2.value = Number(r))
-            .catch(error => console.log(error));
-        console.log($finalPrice.textContent);
-    })
+
 </script>
 <script type="text/javascript" src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script>
@@ -185,10 +192,12 @@
         }
     }
     console.log($regist)
+
     function naverpay(data) {
         location.href = '/'
         alert(123)
     }
+
     function card(data) {
         alert("카드")
     }
@@ -217,30 +226,32 @@
     }
 
     let openWin;
+    let $rate;
+
     const $coupon = document.querySelector(".coupon")
-    $coupon.onclick = function(){
+    $coupon.onclick = function () {
         //창 크기 지정
         var width = 500;
         var height = 500;
 
         //pc화면기준 가운데 정렬
-        var left = (window.screen.width / 2) - (width/2);
+        var left = (window.screen.width / 2) - (width / 2);
         var top = (window.screen.height / 4);
 
         //윈도우 속성 지정
-        var windowStatus = 'width='+width+', height='+height+', left='+left+', top='+top+', scrollbars=yes, status=yes, resizable=yes, titlebar=yes';
+        var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=yes, status=yes, resizable=yes, titlebar=yes';
 
 
         //연결하고싶은url
         const url = "/product/coupon";
         window.name = 'parentForm';
         openWin = window.open(url, "title", windowStatus);
-        openWin.addEventListener("beforeunload",function(){
-            const $rate = document.querySelector("#rate").value;
+        openWin.addEventListener("beforeunload", function () {
+            $rate = document.querySelector("#rate").value;
             const $usecoupon = document.querySelector("#usecoupon").value;
             console.log($rate);
             console.log($usecoupon);
-            fetch("/product/finalPrice?rate="+$rate+"&couponCode="+$usecoupon+"&totalPrice="+ttotalPrice)
+            fetch("/product/finalPrice?rate=" + $rate + "&couponCode=" + $usecoupon + "&totalPrice=" + ttotalPrice + "&point=" + $point.value)
                 .then(res => res.text())
                 .then(re => $finalPrice.textContent = (Number(re) + 3000))
                 .then(r => $finalPrice2.value = Number(r))
@@ -248,11 +259,36 @@
         })
     }
 
+    $point.addEventListener("change", function () {
 
+        $rate = document.querySelector("#rate").value;
+        console.log($point.value);
+        console.log($rate)
+        fetch("/product/finalPrice?point=" + $point.value + "&totalPrice=" + ttotalPrice + "&rate=" + $rate)
+            .then(res => res.text())
+            .then(re => $finalPrice.textContent = (Number(re) + 3000))
+            .then(r => $finalPrice2.value = Number(r))
+            .catch(error => console.log(error));
+        console.log($finalPrice.textContent);
+    })
 
 
 </script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
 
+    const $address = document.querySelector("#address");
+    const $zoneCode = document.querySelector("#zonecode");
+
+    $address.onclick = function () {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                $zoneCode.textContent = data.address
+            }
+        }).open();
+
+    }
+</script>
 
 </body>
 </html>

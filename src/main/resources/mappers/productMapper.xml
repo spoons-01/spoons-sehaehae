@@ -207,4 +207,12 @@
         CP_RATE
         FROM TBL_CP
     </select>
+
+    <select id="selectProductCount">
+        SELECT
+        count(*)
+        FROM TBL_PRODUCT
+        WHERE USEABLE_STATUS = 'Y'
+        AND DELETE_STATUS = 'N'
+    </select>
 </mapper>

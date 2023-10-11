@@ -1,5 +1,6 @@
 package com.spoons.sehaehae.product.service;
 
+import com.spoons.sehaehae.common.paging.SelectCriteria;
 import com.spoons.sehaehae.member.dto.MemberDTO;
 import com.spoons.sehaehae.product.dao.ProductMapper;
 import com.spoons.sehaehae.product.dto.*;
@@ -89,5 +90,17 @@ public class ProductService {
     public List<CouponDTO> selectCoupon(int memberId) {
 
        return productMapper.selectCoupon(memberId);
+    }
+
+    public Map<String, Object> selectAllproduct1(int page) {
+        int totalCount = productMapper.selectProductCount();
+        int limit = 10;
+        int buttonAmount = 5;
+        SelectCriteria selectCriteria = Pagenation.getSelectCriteria(page,limit,buttonAmount, totalCount);
+        System.out.println(totalCount);
+
+
+
+        return null;
     }
 }

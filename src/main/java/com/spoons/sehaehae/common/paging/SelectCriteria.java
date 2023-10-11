@@ -1,12 +1,9 @@
 package com.spoons.sehaehae.common.paging;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-@Getter @Setter @ToString @AllArgsConstructor
+@Getter @Setter @ToString @AllArgsConstructor @NoArgsConstructor
 public class SelectCriteria {
     private int page;
     private int totalCount;
@@ -17,7 +14,7 @@ public class SelectCriteria {
     private int endPage;
     private int startRow;
     private int endRow;
-    private String searchCondition;
     private String searchValue;
+    private String searchCondition;
 
 }

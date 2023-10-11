@@ -1,5 +1,6 @@
 package com.spoons.sehaehae.product.controller;
 
+import com.spoons.sehaehae.common.paging.SelectCriteria;
 import com.spoons.sehaehae.member.dto.MemberDTO;
 import com.spoons.sehaehae.product.dto.*;
 import com.spoons.sehaehae.product.service.ProductService;
@@ -37,8 +38,9 @@ public class ProductController {
     @GetMapping("/list")
     public void productList(Model model,
                             @RequestParam(required = false) String searchValue,
-                            @RequestParam(required = false) String searchCondition,
-                            @RequestParam(defaultValue = "1") int page) {
+                            @RequestParam(required = false) String searchCondition
+                            ) {
+        SelectCriteria selectCriteria = new SelectCriteria();
 
         Map<String, String> searchMap = new HashMap<>();
         searchMap.put("searchValue", searchValue);
@@ -59,6 +61,7 @@ public class ProductController {
     @GetMapping("/detail")
     public void productDetail(@RequestParam int code, Model model) {
         ProductDTO product = productService.selectProductByCode(code);
+
         model.addAttribute("product", product);
     }
 
@@ -197,22 +200,23 @@ public class ProductController {
     }
 
     @GetMapping("/finalPrice")
-    public ResponseEntity<Integer> abc(@RequestParam(required = false, defaultValue = "0") int point, @RequestParam(required = false) int totalPrice, @RequestParam(required = false) int rate, @RequestParam(required = false) int couponCode) {
-        System.out.println(rate);
-        int finalPrice = totalPrice-point-rate;
-
+    public ResponseEntity<Long> abc(@RequestParam(defaultValue = "0") int point, @RequestParam(required = false) int totalPrice, @RequestParam(defaultValue = "10") int rate) {
+        float per = (float) rate / 100;
+        Long discount = (long) (totalPrice * per);
+        System.out.println("discount : " + discount); //할인금액
+        Long finalPrice = totalPrice-point-discount;
+        System.out.println(finalPrice);
         return ResponseEntity.ok(finalPrice);
     }
 
     @PostMapping("/complete")
-    public String complete(@ModelAttribute OrderDTO order, MultipartFile photo, Model model, RedirectAttributes rttr) {
+    public String complete(@ModelAttribute OrderDTO order, MultipartFile photo, Model model, OrderProductDTO orderProductDTO) {
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         int memberId = 1;
         int discount = (order.getPrice() + 3000) - order.getTotalPrice();
         String uuid = UUID.randomUUID().toString().substring(0,4);
         String code = simpleDateFormat.format(date) + uuid;
-
         order.setDiscount(discount);
         order.setCode(code);
         order.setDate(new Date());
@@ -235,10 +239,12 @@ public class ProductController {
         productService.addOrder(order);
         model.addAttribute(code);
 
+        System.out.println(orderProductDTO);
         return "redirect:/product/ordercomplete?code="+code;
     }
     @GetMapping("/ordercomplete")
     public void orderComplete(RedirectAttributes rttr, String code){
+
         rttr.addAttribute("code", code);
     }
 
@@ -289,7 +295,6 @@ public class ProductController {
         productMap.put("productMap",productCode);
         productService.deleteProduct(productMap);
 
-
         return ResponseEntity.ok("삭제가 완료되었습니다.");
     }
 
@@ -298,6 +303,5 @@ public class ProductController {
         int memberId =1;
         List<CouponDTO> couponList = productService.selectCoupon(memberId);
         model.addAttribute("couponList",couponList);
-
     }
 }

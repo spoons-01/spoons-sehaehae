@@ -8,7 +8,7 @@
 보유쿠폰
 <div th:each=" coupon : ${couponList}" style="border:1px solid black; margin-top: 5px">
     <input type="number" th:value="${coupon.code}" style="display: none" id="code">
-    <p th:text="${coupon.name}"></p>
+    <p th:text="${coupon.name}" id="name"></p>
     <p th:text="${coupon.duration}"></p>
     <p th:text="${coupon.rate}" id="rate"></p>
     <button type="submit">사용</button>
@@ -17,6 +17,7 @@
     const button = document.querySelectorAll("button");
     const code = document.querySelectorAll("#code");
     const rate = document.querySelectorAll("#rate");
+    const name = document.querySelectorAll("#name");
     console.log(button);
     console.log(code);
     console.log(rate);
@@ -27,6 +28,7 @@
         console.log(rate[index].textContent);
         opener.document.getElementById("usecoupon").value = code[index].value
         opener.document.getElementById("rate").value = rate[index].textContent
+        opener.document.getElementById("couponName").textContent = name[index].textContent
         window.close()
     }))
 
