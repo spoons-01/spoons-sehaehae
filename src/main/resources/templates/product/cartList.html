@@ -26,7 +26,7 @@
                 <p th:text="|${cart.product.price}원 / ${cart.product.premiumPrice}원|"></p>
                 <p th:text="${cart.product.price}" id="price" style="display: none"></p>
                 <th:block th:if="${cart.useEco == 'Y'}"><span>천연세제 사용</span>
-                    <button id="deleteEco">x</button>
+                    <button id="deleteEco" th:value="${cart.product.code}">x</button>
                 </th:block>
                 <br>
                 <th:block th:if="${cart.usePremium == 'Y'}"><span>프리미엄케어 추가</span>
@@ -35,8 +35,8 @@
                 <br>
 
                 <span id="code" th:text="${cart.product.code}" style="display: none"></span>
-                <div class="gg">
-                    <input type="number" class="amount" th:value="${cart.amount}" MIN="1" max="99" th><select>
+                <div class="gg" >
+                    <input type="number" class="amount" MIN="1" max="99" value="1"><select>
                     <option selected>옵션선택</option>
                     <option>천연세제 사용</option>
                     <option>프리미엄케어</option>
@@ -103,13 +103,13 @@
     }
 
     const $delete = document.querySelector(".delete");
-    const $checkbox = document.querySelectorAll('.product');
+    const $checkbox = document.querySelectorAll('.productCode');
     console.log($delete.dataset['cartNum']);
-    $delete.addEventListener("click", async function () {
-        const checkCnt = document.querySelectorAll("input[class='product']:checked").length;
-        if (checkCnt == 0) {
+    $delete.addEventListener("click",function () {
+        const checkCnt = document.querySelectorAll("input[class='productCode']:checked").length;
+        console.log(checkCnt)
+        if (checkCnt <= 0) {
             alert("선택된 상품이 없습니다.");
-            location.href = '/product/cartList'
         }
         let code = []
         $checkbox.forEach((box) => {
@@ -119,19 +119,41 @@
             }
         });
         console.log(code);
-        const json = JSON.stringify(code);
-        const respone = await fetch("/product/deleteCart", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
-            },
-            body: json
-        });
-        const result = await respone.text();
-        console.log(result);
+
+        fetch("/product/deleteCart",{
+            method:'POST',
+            headers:{'Content-Type': 'application/json;charset=UTF-8'},
+            body: JSON.stringify(code)
+        })
+            .then(res=>res.text())
+            .then(res=>alert(res))
+            .catch(error=>console.log(error));
+
     })
 
+    const $deletePremium = document.querySelectorAll("#deletePremium");
+    const $deleteEco = document.querySelectorAll("#deleteEco");
+
+    $deletePremium.forEach((list)=>{
+        console.log(list.pre)
+        // list.addEventListener("click",function(){
+        //     const index = Array.from($deletePremium).indexOf(this);
+        //     console.log(list.siblings(index))
+        // })
+    })
+
+
+
+
+
+
+
+
+
+
     const $order = document.querySelector(".order");
+
+
     $order.onclick = function(){
         location.href = '/product/payment?totalPrice='+$finalPrice3.textContent
     }

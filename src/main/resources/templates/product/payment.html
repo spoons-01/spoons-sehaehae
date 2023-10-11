@@ -75,9 +75,10 @@
                 </tr>
                 <tr>
                     <td>쿠폰</td>
-                    <td>사용쿠폰없음</td>
+                    <input name="usecoupon" id="usecoupon" style="display: none">
+                    <td><input type="number" name="rate" id="rate"> </td>
                     <td>
-                        <button class="coupon">쿠폰변경</button>
+                        <button type="button" class="coupon">쿠폰변경</button>
                     </td>
                 </tr>
                 <tr>
@@ -153,8 +154,10 @@
     console.log(point);
     const ttotalPrice = '[[${totalPrice}]]'
     $point.addEventListener("change", function () {
-        if ($point.value > point) {
-        }
+        // if ($point.value > point) {
+        //     alert("보유하신 포인트가 부족합니다.")
+        //     $point.value = point;
+        // }
         fetch("/product/finalPrice?point=" + $point.value + "&totalPrice=" + ttotalPrice)
             .then(res => res.text())
             .then(re => $finalPrice.textContent = (Number(re) + 3000))
@@ -163,7 +166,6 @@
         console.log($finalPrice.textContent);
     })
 </script>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript" src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script>
     const $regist = document.querySelector(".regist")
@@ -172,36 +174,28 @@
     const $naver = document.querySelector("#naver");
     const $card = document.querySelector("#card");
     const submit = document.querySelector("#submit");
-
     console.log($payemthod);
     $regist.onclick = function () {
         if ($kakao.checked) {
             kakaopay();
-
         } else if ($naver.checked) {
             naverpay();
         } else if ($card.checked) {
             card();
         }
-
     }
     console.log($regist)
-
     function naverpay(data) {
         location.href = '/'
         alert(123)
     }
-
     function card(data) {
         alert("카드")
     }
 
-
     function kakaopay(data) {
         const price = '[[${totalPrice}]]';  //원래그임
-        const totalPrice = $finalPrice.textContent;//결제금액
-
-
+        const totalPrice = $finalPrice.textContent;//결제금액\
         IMP.init('imp24841453');
         IMP.request_pay({
             pg: "kakaopay.TC0ONETIME",
@@ -220,9 +214,43 @@
                 alert("결제가 취소되었습니다");
             }
         });
-
-
     }
+
+    let openWin;
+    const $coupon = document.querySelector(".coupon")
+    $coupon.onclick = function(){
+        //창 크기 지정
+        var width = 500;
+        var height = 500;
+
+        //pc화면기준 가운데 정렬
+        var left = (window.screen.width / 2) - (width/2);
+        var top = (window.screen.height / 4);
+
+        //윈도우 속성 지정
+        var windowStatus = 'width='+width+', height='+height+', left='+left+', top='+top+', scrollbars=yes, status=yes, resizable=yes, titlebar=yes';
+
+
+        //연결하고싶은url
+        const url = "/product/coupon";
+        window.name = 'parentForm';
+        openWin = window.open(url, "title", windowStatus);
+        openWin.addEventListener("beforeunload",function(){
+            const $rate = document.querySelector("#rate").value;
+            const $usecoupon = document.querySelector("#usecoupon").value;
+            console.log($rate);
+            console.log($usecoupon);
+            fetch("/product/finalPrice?rate="+$rate+"&couponCode="+$usecoupon+"&totalPrice="+ttotalPrice)
+                .then(res => res.text())
+                .then(re => $finalPrice.textContent = (Number(re) + 3000))
+                .then(r => $finalPrice2.value = Number(r))
+                .catch(error => console.log(error));
+        })
+    }
+
+
+
+
 </script>
 
 

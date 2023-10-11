@@ -1,10 +1,7 @@
 package com.spoons.sehaehae.product.controller;
 
 import com.spoons.sehaehae.member.dto.MemberDTO;
-import com.spoons.sehaehae.product.dto.CartDTO;
-import com.spoons.sehaehae.product.dto.CategoryDTO;
-import com.spoons.sehaehae.product.dto.OrderDTO;
-import com.spoons.sehaehae.product.dto.ProductDTO;
+import com.spoons.sehaehae.product.dto.*;
 import com.spoons.sehaehae.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,13 +43,12 @@ public class ProductController {
         Map<String, String> searchMap = new HashMap<>();
         searchMap.put("searchValue", searchValue);
         searchMap.put("searchCondition", searchCondition);
-
         List<ProductDTO> productList = productService.selectProduct(searchMap);
+        List<ProductDTO> allProduct = productService.selectAllproduct(null);
         List<CategoryDTO> categoryList = productService.selectCategory();
-        List<ProductDTO> selectAllProduct = productService.selectAllproduct();
+        model.addAttribute("allProduct",allProduct);
         model.addAttribute("productList", productList);
         model.addAttribute("categoryList", categoryList);
-        model.addAttribute("allProduct", selectAllProduct);
     }
 
     @GetMapping("/productRegist")
@@ -166,6 +162,7 @@ public class ProductController {
 
         model.addAttribute("cartList", list);
         model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("ecoPrice",3000);
     }
 
     @GetMapping("/selectAllCategory")
@@ -195,13 +192,14 @@ public class ProductController {
         cartMap.put("memberId", userid);
         cartMap.put("productList", product);
         productService.deleteCart(cartMap);
+
         return ResponseEntity.ok("삭제완료");
     }
 
     @GetMapping("/finalPrice")
-    public ResponseEntity<Integer> abc(int point, int totalPrice) {
-
-        int finalPrice = totalPrice - point;
+    public ResponseEntity<Integer> abc(@RequestParam(required = false, defaultValue = "0") int point, @RequestParam(required = false) int totalPrice, @RequestParam(required = false) int rate, @RequestParam(required = false) int couponCode) {
+        System.out.println(rate);
+        int finalPrice = totalPrice-point-rate;
 
         return ResponseEntity.ok(finalPrice);
     }
@@ -246,15 +244,18 @@ public class ProductController {
 
 
     @GetMapping("/listAdmin")
-    public void listAdmin(Model model){
-        List<ProductDTO> productList = productService.selectAllproduct();
+    public void listAdmin(Model model, String searchValue){
+        Map<String,Object> searchMap = new HashMap<>();
+        searchMap.put("searchValue",searchValue);
+        List<ProductDTO> productList = productService.selectAllproduct(searchMap);
         model.addAttribute("productList",productList);
+        model.addAttribute("searchValue",searchValue);
     }
 
     @GetMapping("/productModify")
     public void modify(int code,Model model){
-       ProductDTO product = productService.selectProductByCode(code);
-       model.addAttribute("product",product);
+        ProductDTO product = productService.selectProductByCode(code);
+        model.addAttribute("product",product);
     }
     @PostMapping("/modify")
     public String productModify(ProductDTO product, MultipartFile productImage,RedirectAttributes rttr){
@@ -290,5 +291,13 @@ public class ProductController {
 
 
         return ResponseEntity.ok("삭제가 완료되었습니다.");
+    }
+
+    @GetMapping("/coupon")
+    public void coupon(Model model){
+        int memberId =1;
+        List<CouponDTO> couponList = productService.selectCoupon(memberId);
+        model.addAttribute("couponList",couponList);
+
     }
 }

@@ -1,10 +1,7 @@
 package com.spoons.sehaehae.product.dao;
 
 import com.spoons.sehaehae.member.dto.MemberDTO;
-import com.spoons.sehaehae.product.dto.CartDTO;
-import com.spoons.sehaehae.product.dto.CategoryDTO;
-import com.spoons.sehaehae.product.dto.OrderDTO;
-import com.spoons.sehaehae.product.dto.ProductDTO;
+import com.spoons.sehaehae.product.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +28,7 @@ public interface ProductMapper {
 
     void updateCartList(Map<String,Object> updateMap);
 
-    List<ProductDTO> selectAllProduct();
+    List<ProductDTO> selectAllProduct(Map<String, Object> searchMap);
 
     void deleteCart(Map<String,Object> product);
 
@@ -42,4 +39,6 @@ public interface ProductMapper {
     void deleteProduct(Map<String,List<Integer>> productMap);
 
     List<ProductDTO> selectAllproductAdmin();
+
+    List<CouponDTO> selectCoupon(int memberId);
 }

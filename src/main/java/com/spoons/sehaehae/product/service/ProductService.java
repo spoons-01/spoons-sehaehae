@@ -2,10 +2,7 @@ package com.spoons.sehaehae.product.service;
 
 import com.spoons.sehaehae.member.dto.MemberDTO;
 import com.spoons.sehaehae.product.dao.ProductMapper;
-import com.spoons.sehaehae.product.dto.CartDTO;
-import com.spoons.sehaehae.product.dto.CategoryDTO;
-import com.spoons.sehaehae.product.dto.OrderDTO;
-import com.spoons.sehaehae.product.dto.ProductDTO;
+import com.spoons.sehaehae.product.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,9 +58,9 @@ public class ProductService {
         productMapper.updateCartList(updateMap);
     }
 
-    public List<ProductDTO> selectAllproduct() {
+    public List<ProductDTO> selectAllproduct(Map<String, Object> searchMap) {
 
-        return productMapper.selectAllProduct();
+        return productMapper.selectAllProduct(searchMap);
     }
 
     public void deleteCart(Map<String,Object> product) {
@@ -87,5 +84,10 @@ public class ProductService {
 
     public List<ProductDTO> selectAllproductAdmin() {
         return productMapper.selectAllproductAdmin();
+    }
+
+    public List<CouponDTO> selectCoupon(int memberId) {
+
+       return productMapper.selectCoupon(memberId);
     }
 }

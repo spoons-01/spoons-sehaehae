@@ -57,7 +57,6 @@
         (SEQ_PRODUCT_NO.NEXTVAL,#{name},#{category.code},#{price},#{premiumPrice},#{useableStatus},#{registDate},#{photo})
     </insert>
 
-
     <select id="selectProduct" resultMap="productResultMap">
         SELECT
         A.PRODUCT_NAME,
@@ -69,16 +68,18 @@
         A.PRODUCT_PHOTO
         FROM TBL_PRODUCT A
         JOIN TBL_CATEGORY B ON(A.CATEGORY_CODE = B.CATEGORY_CODE)
-        WHERE USEABLE_STATUS = 'Y'
-        AND DELETE_STATUS = 'N'
+        WHERE A.USEABLE_STATUS = 'Y'
+        AND A.DELETE_STATUS = 'N'
         <if test="searchValue != null">
             AND PRODUCT_NAME LIKE '%' || #{searchValue} || '%'
         </if>
         <if test="searchCondition != null">
             AND CATEGORY_NAME = #{searchCondition}
         </if>
-        ORDER BY PRODUCT_CODE
+        ORDER BY A.PRODUCT_CODE
+
     </select>
+
     <select id="selectAllProduct" resultMap="productResultMap">
         SELECT
         A.PRODUCT_NAME,
@@ -87,13 +88,20 @@
         A.PRODUCT_PRICE,
         A.PRODUCT_PREMIUM_PRICE,
         A.PRODUCT_ECO_PRICE,
-        A.PRODUCT_PHOTO
+        A.PRODUCT_PHOTO,
+        A.USEABLE_STATUS
         FROM TBL_PRODUCT A
         JOIN TBL_CATEGORY B ON(A.CATEGORY_CODE = B.CATEGORY_CODE)
-        WHERE USEABLE_STATUS = 'Y'
-        AND DELETE_STATUS = 'N'
+        WHERE DELETE_STATUS = 'N'
+        <if test="searchValue != null">
+            AND PRODUCT_NAME LIKE '%' || #{searchValue} || '%'
+        </if>
+        <if test="searchCondition != null">
+            AND CATEGORY_NAME = #{searchCondition}
+        </if>
         ORDER BY PRODUCT_CODE
     </select>
+
 
     <select id="selectCategory" resultMap="categoryResultMap">
         SELECT
@@ -155,7 +163,6 @@
     </update>
 
 
-
     <insert id="registOrder">
         INSERT INTO TBL_ORDER
         (ORDER_CODE, ORDER_DATE, ORDER_REQUEST, ORDER_PRICE, ORDER_DISCOUNT, ORDER_TOTAL_PRICE,
@@ -173,7 +180,7 @@
         PRODUCT_PREMIUM_PRICE = #{premiumPrice},
         USEABLE_STATUS = #{useableStatus},
         <if test=" photo != null">
-        PRODUCT_PHOTO = #{photo},
+            PRODUCT_PHOTO = #{photo},
         </if>
         MODIFY_DATE = #{modifyDate}
         WHERE PRODUCT_CODE = #{code}
@@ -182,6 +189,22 @@
     <update id="deleteProduct">
         UPDATE TBL_PRODUCT
         SET DELETE_STATUS = 'Y'
-        WHERE PRODUCT_CODE IN <foreach collection="productMap" item="item" open="(" separator="," close=")">#{item}</foreach>
+        WHERE PRODUCT_CODE IN
+        <foreach collection="productMap" item="item" open="(" separator="," close=")">#{item}</foreach>
     </update>
+
+    <resultMap id="couponResultMap" type="com.spoons.sehaehae.product.dto.CouponDTO">
+        <id property="code" column="CP_CODE"/>
+        <result property="name" column="CP_NAME"/>
+        <result property="duration" column="CP_DURATION"/>
+        <result property="rate" column="CP_RATE"/>
+    </resultMap>
+    <select id="selectCoupon" resultMap="couponResultMap">
+        SELECT
+        CP_CODE,
+        CP_NAME,
+        CP_DURATION,
+        CP_RATE
+        FROM TBL_CP
+    </select>
 </mapper>
