@@ -17,7 +17,6 @@
         <div class="containerr">
         <div class="bigcontainer">
             <div class="container a">
-
                 <div class="info1">
                     <p>주문자 정보</p>
                     <table>
@@ -38,8 +37,8 @@
                     <p id="address">주소변경</p>
                 </div>
                 <div class="info2">
-                    <p th:text="${member.address}" id="zonecode"></p>
-                    <input type="text" name="address" style="display: none" th:value="${member.address}">
+                    <p th:text="${member.address1}" id="zonecode"></p>
+                    <input type="text" name="address" style="display: none" th:value="${member.address1}">
                     <input type="text" name="address2" placeholder="상세주소"><br><br>
                     <span th:text="${member.name}" id="name2"></span><span th:text="${member.phone}"
                                                                            style="margin-left: 20px" id="phone2"></span>

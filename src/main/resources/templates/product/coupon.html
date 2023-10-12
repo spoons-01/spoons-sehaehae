@@ -7,10 +7,10 @@
 <body>
 보유쿠폰
 <div th:each=" coupon : ${couponList}" style="border:1px solid black; margin-top: 5px">
-    <input type="number" th:value="${coupon.code}" style="display: none" id="code">
-    <p th:text="${coupon.name}" id="name"></p>
-    <p th:text="${coupon.duration}"></p>
-    <p th:text="${coupon.rate}" id="rate"></p>
+    <input type="number" th:value="${coupon.cpCode}" style="display: none" id="code">
+    <p th:text="${coupon.cpName}" id="name"></p>
+    <p th:text="${coupon.cpEdate}"></p>
+    <p th:text="${coupon.cpRate}" id="rate"></p>
     <button type="submit">사용</button>
 </div>
 <script>
