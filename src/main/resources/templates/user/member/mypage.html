@@ -17,27 +17,97 @@
 </head>
 
 <body>
-    <!-- 헤더 -->
-    <div th:replace="user/common/header.html"></div>
-    <ul class="mypage-nav">
-        <a id="profile" href="/user/member/profile"><li>프로필</li></a>
-        <a id="mysehae" href="/user/member/mysehae"><li>나의 세해</li></a>
-        <a is="setting" href="/user/member/update"><li>설정</li></a>
-    </ul>
-    <hr class="line" style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
+<!-- 헤더 -->
+<div th:replace="user/common/header.html"></div>
 
-    <div class="left-box">
+<!-- 마이페이지 네비 -->
+<ul class="mypage-nav">
+    <a id="profile" href="/user/member/mypage">
+        <li>프로필</li>
+    </a>
+    <a id="mysehae" href="/user/member/mysehae">
+        <li>나의 세해</li>
+    </a>
+    <a is="setting" href="/user/member/update">
+        <li>설정</li>
+    </a>
+</ul>
+<hr class="line" style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
 
+<!-- 본문 박스 -->
+<div class="wrapper">
+    <!-- 왼쪽 박스 -->
+    <div class="box-all">
+        <div class="left-box">
+            <div class="photo">
+                <!-- 자리잡기용 임시 사진 -->
+                <img class="profile" src="/images/smile.png">
+                <p class="nickname" th:text="${ #authentication.principal.nickname }"></p>
+                <div class="button-wrapper">
+                    <a href="/user/member/update" class="button">설정</a>
+                </div>
+                <hr style="border-width:1px 0 0 0; border-style:solid; border-color:#c2c2c2;">
+
+                <div class="mini-nav">
+                    <div class="mini">
+                        <a><img src="/images/smile.png"></a>
+                        <p>좋아요</p>
+                        <p>1</p>
+                    </div>
+                    <div class="mini">
+                        <a><img src="/images/smile.png"></a>
+                        <p>좋아요</p>
+                        <p>1</p>
+                    </div>
+                    <div class="mini">
+                        <a><img src="/images/smile.png"></a>
+                        <p>좋아요</p>
+                        <p>1</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 오른쪽 박스 -->
+        <div class="right-box">
+            <div class="right-box-child">
+                <h3>내가 쓴 후기</h3>
+                <div class="dot-box">
+                    <!-- 기본 멘트 -->
+                    <div class="dot-box-content">
+                        <p> + 첫 번째 후기를 올려보세요!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-box-child2">
+                <h3>좋아요</h3>
+                <div class="mini-box">
+                    <!-- 기본 멘트 -->
+                    <div class="mini-box-child">
+                        <p>임시 후기 게시판 조회 글</p>
+                    </div>
+                    <div class="mini-box-child">
+                        <p>임시 후기 게시판 조회 글</p>
+                    </div>
+                    <div class="mini-box-child">
+                        <p>임시 후기 게시판 조회 글</p>
+                    </div>
+                    <div class="mini-box-child">
+                        <p>임시 후기 게시판 조회 글</p>
+                    </div>
+                    <!-- 후기 게시판 연동 -->
+                </div>
+                <div class="btn-wrapper">
+                    <a href="#" class="button">+더보기</a>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
-    <div class="right-box">
-
-    </div>
-
-
-
-    <!-- 푸터 -->
-    <div th:replace="user/common/footer.html"></div>
+<!-- 푸터 -->
+<div th:replace="user/common/footer.html"></div>
 </body>
 
 </html>

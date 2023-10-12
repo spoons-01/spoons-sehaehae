@@ -1,0 +1,205 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'GangwonState';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/GangwonState.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NanumSquareNeo-Variable';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+    font-size: 100%;
+}
+
+a {
+    text-decoration: none;
+    font-family: NanumSquareNeo-Variable;
+}
+
+img {
+    max-width: 100%;
+}
+
+p {
+    font-family: NanumSquareNeo-Variable;
+    color: #8E8585;
+}
+
+h3 {
+    font-family: NanumSquareNeo-Variable;
+}
+
+/* mysehae 설정 --------------------------------------------------------- */
+.wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 4%;
+}
+
+/* mypage nav ---------------------------------------------------------*/
+.mypage-nav {
+    display: flex;
+    list-style-type: none;
+    justify-content: center;
+    font-family: NanumSquareNeo-Variable;
+}
+
+.mypage-nav a {
+    color: black;
+    font-weight: bold;
+    margin: -5px 20px 0px 20px;
+}
+
+.mypage-nav a:hover {
+    color: #4B93FF;
+}
+
+.line {
+    margin-top: 30px;
+}
+
+/* first-bar(유저 서비스) ---------------------------------------------------------*/
+.box-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.first-bar {
+    justify-content: center;
+    align-items: center;
+    display: grid;
+    grid-template-columns: 4fr 1fr 4fr 1fr 4fr;
+    border: #d9d6d6 solid 1px;
+    width: 1200px;
+    height: 110px;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 3px 3px 15px 1px rgba(135, 147, 165, 0.1);
+}
+
+/* 쿠폰, 포인트, 세탁 등급 */
+.first-bar-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 380px;
+}
+
+.first-bar-child img {
+    max-height: 50px;
+    max-width: 50px;
+    margin-left: -10px;
+}
+
+.vertical-line {
+    border-left: 1px solid #d9d6d6;
+    height: 100px
+}
+
+.first-text {
+    display: flex;
+    margin-left: 20px;
+}
+
+.my-point {
+    transform: scale(0.9);
+}
+
+.first-blue {
+    margin-left: 10px;
+    color: #4B93FF;
+
+}
+
+/* second-bar(주문 현황) ---------------------------------------------------------- */
+.box-wrapper {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.second-bar {
+    display: flex;
+    justify-content: center;
+    border: #d9d6d6 solid 1px;
+    width: 1200px;
+    height: 140px;
+    align-items: center;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 3px 3px 10px 1px rgba(135, 147, 165, 0.1);
+}
+
+/* 주문 상태 */
+.second-bar-child {
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    justify-content: center;
+    padding: 10px;
+    align-items: center;
+    grid-gap: 30px
+}
+
+.order-status {
+    text-align: center;
+}
+
+.ineq {
+    align-items: center;
+    margin-left: 18px;
+}
+
+.num {
+    color: #4B93FF;
+    font-weight: bold;
+}
+
+/* 소-bar(주문 목록) ---------------------------------------------------------- */
+.third-bar {
+    display: flex;
+    border: #d9d6d6 solid 1px;
+    width: 1200px;
+    height: auto; /* 무조건 auto여야 함 => 바꾸지 말기! */
+    align-items: center;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 3px 3px 10px 1px rgba(135, 147, 165, 0.1);
+}
+
+.select-box-wrapper {
+    margin: 30px;
+}
+
+.third-bar-child {
+    display: flex;
+    justify-content: left;
+}
+
+.order-status-select {
+    display: flex;
+    padding: 10px;
+    font-family: NanumSquareNeo-Variable;
+    border-radius: 4px;
+    background-color: #eeeeee;
+    color: #8E8585;
+    border: none;
+    margin-left: 20px;
+}
+
+.date-select {
+    display: flex;
+    padding: 10px;
+    font-family: NanumSquareNeo-Variable;
+    border-radius: 4px;
+    background-color: #eeeeee;
+    color: #8E8585;
+    border: none;
+}

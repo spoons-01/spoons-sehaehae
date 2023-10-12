@@ -1,15 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>세탁해병대</title>
-<!-- 스타일 시트 -->
-<link href="/css/usermainstyle.css" rel="stylesheet" type="text/css">
-
-<!-- favicon 추후 설정 -->
-<!-- 리셋 CSS 설정 -->
-<link href="https://unpkg.com/ress/dist/ress.min.css" rel="stylesheet" type="text/css">
+<head>
+    <link href="/css/headerStyle.css" rel="stylesheet" type="text/css">
+</head>
 
 <div id="main-top" class="main-set">
     <header class="page-header wrapper">
@@ -24,9 +18,9 @@
                     <li><a id="login" href="/user/member/login">로그인</a></li>
                     <li><a href="3_service.html">
                         <li>서비스</li></a>
-                    <li><a href="/user/board/userReview">
+                    <li><a href="4_board.html">
                         <li>게시판</li></a>
-                    <li><a href="/user/board/userNotice">
+                    <li><a href="5_qa.html">
                         <li>고객센터</li></a>
                 </ul>
             </nav>
@@ -40,6 +34,7 @@
         <th:block sec:authorize="isAuthenticated()">
             <nav>
                 <ul class="main-nav">
+<!--                    <li><a id="admin" href="/admin/member/memberList">관리자</a></li>-->
                     <li><a id="logout" href="/user/member/logout">로그아웃</a></li>
                     <li><a href="3_service.html">
                         <li>서비스</li></a>
