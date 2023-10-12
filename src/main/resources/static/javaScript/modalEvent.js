@@ -4,7 +4,7 @@ window.addEventListener("load", function() {
     const loremIpsum = document.getElementById("lorem-ipsum");
     fetch("https://baconipsum.com/api/?type=all-meat&paras=200&format=html")
         .then(response => response.text())
-        .then(result => loremIpsum.innerHTML = result)
+        // .then(result => loremIpsum.innerHTML = result)
     /* 키는 이벤트 */
     const modal = document.getElementById("modal")
     const btnModal = document.getElementById("btn-modal")

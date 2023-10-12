@@ -358,3 +358,154 @@ h3 {
 .accordion-content1 textarea {
     margin-top: 4px;
 }
+
+/* 후기 게시판 -------------------------------------------------------------------- */
+
+/* 후기 작성하기 모달창 ------------------------------------------- */
+#modal.modal-overlay {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;   /* 페이지 위에 띄우기*/
+    border-radius: 10px;
+    background-color: white;
+    border: 1px solid black;
+    padding: 20px;
+    width: 800px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.modal-detail {
+    width: 800px;
+}
+
+#modal .reviewModalTitle {
+    padding-left: 10px;
+    display: flex;
+    justify-content: center;
+    color: black;
+}
+.reviewTitle {
+    font-size: 45px;
+    margin-top: 10px;
+}
+#modal .close-area {
+    cursor: pointer;
+    text-shadow: 1px 1px 2px grey;
+    color: black;
+    float: right;
+    margin-right: 20px;
+    font-size: 25px;
+}
+
+#modal .content {
+    margin-top: 20px;
+    padding: 0px 10px;
+    color: rgba(79, 75, 75, 1);
+}
+.content p {
+    margin-left: 20px;
+    font-size: 13px;
+}
+.reviewModal {
+    font-family: NanumSquareNeo-Variable;
+    font-size: 20px;
+    line-height: 50px;
+    margin-left: 10px;
+}
+
+.reviewBox {
+    display: flex;
+    justify-content: center;
+}
+
+.image-area {
+    margin-top: 10px;
+    border-radius: 10px;
+    border: 2px #4B93FF solid;
+    text-align: center;
+    padding: 5px;
+    width: 700px;
+}
+
+.image-area img {
+    width: 50px;
+    height: 50px;
+}
+
+.image-area p {
+    margin-left: 0;
+    font-family: NanumSquareNeo-Variable;
+    font-size: 15px;
+}
+.reviewregist-name {
+    border-radius: 10px;
+    border: 2px #4B93FF solid;
+    width: 700px;
+    height: 40px;
+}
+
+.reviewregist-body {
+    border-radius: 10px;
+    border: 2px #4B93FF solid;
+    width: 700px;
+    height: 200px;
+}
+
+.reviewDML2 {
+    background: #4B93FF;
+    border-radius: 20px;
+    width: 700px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.reviewDML2 button {
+    color: white;
+    font-family: NanumSquareNeo-Variable;
+    font-size: 24px;
+}
+
+/* 후기쓰기에 별점 */
+
+.rating .rate_radio {
+    position: relative;
+    display: inline-block;
+    z-index: 20;
+    opacity: 0.001;
+    width: 60px;
+    height: 60px;
+    background-color: #fff;
+    cursor: pointer;
+    vertical-align: top;
+    display: none;
+}
+
+.rating .rate_radio + label {
+    position: relative;
+    display: inline-block;
+    margin-left: 10px;
+    z-index: 10;
+    width: 50px;
+    height: 50px;
+    background-image: url('../images/starrate.png');
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+}
+.rating .rate_radio:checked + label {
+    background-color: #ff8;
+}
+
+/* 후기게시판 첨부파일 */
+
+.file {
+    display: none;
+}
