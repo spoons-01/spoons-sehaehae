@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spoons.sehaehae.admin.dao.CouponMapper">
+
+    <resultMap type="com.spoons.sehaehae.admin.dto.CouponDTO" id="couponResultMap">
+        <id property="cpCode" column="CP_CODE"/>
+        <result property="cpName" column="CP_NAME"/>
+        <result property="cpRate" column="CP_RATE"/>
+        <result property="cpSdate" column="CP_SDATE"/>
+        <result property="cpEdate" column="CP_EDATE"/>
+    </resultMap>
+    
+    <select id="selectCouponList" resultMap="couponResultMap">
+        select
+            *
+        from    TBL_CP
+    </select>
+
+    <insert id="insertCoupon">
+        insert
+        into TBL_CP
+        (
+            CP_CODE,
+            CP_NAME,
+            CP_RATE,
+            CP_SDATE,
+            CP_EDATE
+        )
+        values
+        (
+         SEQ_CP_CODE.NEXTVAL,
+         #{cpName},
+         #{cpRate},
+         #{cpSdate},
+         #{cpEdate}
+        )
+    </insert>
+
+    <update id="updateCoupon">
+        update TBL_CP
+        set
+                CP_NAME=#{cpName},
+                CP_RATE=#{cpRate},
+                CP_SDATE=#{cpSdate},
+                CP_EDATE=#{cpEdate}
+        where   CP_CODE=#{cpCode}
+    </update>
+
+
+</mapper>

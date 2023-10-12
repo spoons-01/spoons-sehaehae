@@ -2,6 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.spoons.sehaehae.member.dao.MemberMapper">
 
 	<resultMap id="memberResultMap" type="com.spoons.sehaehae.member.dto.MemberDTO">
@@ -210,5 +211,20 @@
 		WHERE MEMBER_STATUS = 'Y'
 		  AND MEMBER_NO = #{ memberNo }
 	</update>
+  
+   <select id="selectMemberList" resultMap="memberResultMap">
+        select
+            *
+        from    TBL_MEMBER
+    </select>
+    
+
+    <select id="genderChart" resultType="int">
+        select
+            COUNT(*)
+        from TBL_MEMBER
+        where GENDER = 'F'
+    </select>
 
 </mapper>
+

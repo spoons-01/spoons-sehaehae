@@ -87,11 +87,13 @@ ul{padding: 0;}
     transition-duration: 1s;
 }
 .menu>li:hover .cancell {
+
     height: 50px;
     transition-duration: 1s;
 }
 .menu>li:hover .calculate {
     height: 50px;
+
     transition-duration: 1s;
 }
 .menu>li:hover .board {
@@ -131,8 +133,6 @@ header{
     vertical-align: middle;
     justify-content: space-between;
 }
-
-
 
 
 
@@ -179,3 +179,4 @@ header{
 /*    width: 1350px; height: 700px;*/
 /*    margin-left: 400px; margin-top: 20px;*/
 /*}*/
+

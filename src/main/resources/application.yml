@@ -15,6 +15,7 @@ spring:
             enable: true
           auth: true
   datasource:
+
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     url: jdbc:log4jdbc:oracle:thin:@localhost:1521:xe
     username: C##SPOONS
@@ -26,6 +27,7 @@ servlet:
     max-file-size: 300MB
     max-request-size: 300MB
     location: C:/sub_project/uploadFile
+
 
 # Mybatis config
 mybatis:
