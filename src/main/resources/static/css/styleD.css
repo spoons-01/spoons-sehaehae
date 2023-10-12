@@ -25,9 +25,10 @@
     gap: 20px 20px;
     border: black 1px solid;
     width: 1350px; height: 700px;
-    margin-left: 400px; margin-top: 20px;
+    margin-left: 400px; margin-top: 55px;
 }
 .coupon{
+    cursor: pointer;
     height: 120px;
     border: #4B93FF solid 1px;
     box-shadow: 2px 4px 12px rgba(0,0,0,.08);

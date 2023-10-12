@@ -35,21 +35,7 @@
         <result property="memberStatus" column="MEMBER_STATUS"/>
         <result property="address1" column="ADDRESS1"/>
         <result property="address2" column="ADDRESS2"/>
-<!--        <collection property="memberRoleList" resultMap="memberRoleResultMap"/>-->
-<!--        <collection property="memberLevelList" resultMap="memberLevelResultMap"/>-->
     </resultMap>
-
-<!--    <resultMap type="com.spoons.sehaehae.member.dto.MemberRoleDTO" id="memberRoleResultMap">-->
-<!--        <id property="memberNo" column="REF_MEMBER_NO"/>-->
-<!--        <id property="authorityCode" column="REF_AUTHORITY_CODE"/>-->
-<!--        <association property="authority" resultMap="authorityResultMap"/>-->
-<!--    </resultMap>-->
-
-<!--    <resultMap type="com.spoons.sehaehae.member.dto.MemberLevelDTO" id="memberLevelResultMap">-->
-<!--        <id property="memberNo" column="REF_MEMBER_NO2"/>-->
-<!--        <id property="membershipCode" column="REF_MEMBERSHIP_CODE"/>-->
-<!--        <association property="membership" resultMap="membershipResultMap"/>-->
-<!--    </resultMap>-->
 
     <!-- 자주하는 질문 -->
     <resultMap id="qnaBoardResultMap" type="com.spoons.sehaehae.board.dto.QnaDTO">
@@ -70,6 +56,64 @@
     <resultMap id="categoryResultMap" type="com.spoons.sehaehae.board.dto.BoardCategoryDTO">
         <id property="no" column="CATEGORY_NO"/>
         <result property="name" column="CATEGORY_NAME"/>
+    </resultMap>
+
+    <!-- 후기 게시판 -->
+    <resultMap id="reviewBoardResultMap" type="com.spoons.sehaehae.board.dto.ReviewDTO">
+        <id property="no" column="REVIEW_NO"/>
+        <result property="title" column="REVIEW_TITLE"/>
+        <result property="body" column="REVIEW_BODY"/>
+        <result property="count" column="REVIEW_COUNT"/>
+        <result property="createdDate" column="REVIEW_CREATED_DATE"/>
+        <result property="modifiedDate" column="REVIEW_MODIFIED_DATE"/>
+        <result property="memberNo" column="MEMBER_NO"/>
+        <result property="status" column="REVIEW_STATUS"/>
+        <result property="deleteDate" column="REVIEW_DELETE_DATE"/>
+        <result property="orderCode" column="ORDER_CODE"/>
+        <result property="rating" column="RATING"/>
+
+        <association property="writer" resultMap="memberResultMap"/>
+        <collection property="attachmentList" resultMap="attachmentResultMap"/>
+        <collection property="replyList" resultMap="replyResultMap"/>
+    </resultMap>
+
+    <resultMap id="replyResultMap" type="com.spoons.sehaehae.board.dto.ReplyDTO">
+        <id property="no" column="REPLY_NO"/>
+        <result property="reviewNo" column="REVIEW_NO"/>
+        <result property="body" column="REVIEW_NO"/>
+        <result property="date" column="REVIEW_NO"/>
+        <result property="status" column="REVIEW_NO"/>
+        <result property="deleteDate" column="REVIEW_NO"/>
+        <result property="modifiedDate" column="REVIEW_NO"/>
+
+        <association property="writer" javaType="com.spoons.sehaehae.member.dto.MemberDTO">
+            <id property="memberNo" column="MEMBER_NO"/>
+            <result property="memberId" column="ID"/>
+            <result property="memberPwd" column="PASSWORD"/>
+            <result property="name" column="NAME"/>
+            <result property="nickname" column="NICKNAME"/>
+            <result property="phone" column="PHONE_NUMBER"/>
+            <result property="birthday" column="BIRTHDAY"/>
+            <result property="gender" column="GENDER"/>
+            <result property="zipCode" column="ZIPCODE"/>
+            <result property="subscriptionDate" column="SUBSCRIPTION_DATE"/>
+            <result property="profilePhoto" column="PROFILE_PHOTO"/>
+            <result property="referralCode" column="REFERRAL_CODE"/>
+            <result property="memberStatus" column="MEMBER_STATUS"/>
+            <result property="address1" column="ADDRESS1"/>
+            <result property="address2" column="ADDRESS2"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="attachmentResultMap" type="com.spoons.sehaehae.board.dto.AttachmentDTO">
+        <id property="no" column="ATTACHED_FILE_NO"/>
+        <result property="name" column="ATTACHED_FILE_NAME"/>
+        <result property="route" column="ATTACHED_FILE_NAME"/>
+        <result property="saveName" column="ATTACHED_FILE_NAME"/>
+        <result property="extension" column="ATTACHED_FILE_NAME"/>
+        <result property="size" column="ATTACHED_FILE_NAME"/>
+        <result property="ex" column="ATTACHED_FILE_NAME"/>
+        <result property="reviewNo" column="ATTACHED_FILE_NAME"/>
     </resultMap>
 
     <!-- 공지사항 -->

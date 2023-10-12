@@ -52,5 +52,11 @@
         where   CP_CODE=#{cpCode}
     </update>
 
+    <update id="deleteCoupon">
+        update  TBL_CP
+        set     CP_STATUS='N'
+        where   CP_CODE=#{cpCode}
+    </update>
+
 
 </mapper>

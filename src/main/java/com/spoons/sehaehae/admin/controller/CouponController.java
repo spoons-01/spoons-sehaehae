@@ -34,5 +34,11 @@ public class CouponController {
         return "redirect:/coupon/list";
     }
 
+    @PostMapping("/remove")
+    public String removeCoupon(CouponDTO removeCoupon){
+        couponService.removeCoupon(removeCoupon);
+        return "redirect:/coupon/list";
+    }
+
 
 }
