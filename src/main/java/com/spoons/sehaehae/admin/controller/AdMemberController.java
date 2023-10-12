@@ -1,8 +1,6 @@
 package com.spoons.sehaehae.admin.controller;
 
-import com.spoons.sehaehae.admin.dto.CouponDTO;
-import com.spoons.sehaehae.admin.service.CouponService;
-import com.spoons.sehaehae.admin.service.MemberService;
+import com.spoons.sehaehae.admin.service.AdMemberService;
 import com.spoons.sehaehae.member.dto.MemberDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,13 +11,13 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/member")
-public class MemberController {
-    private final MemberService memberService;
-    public MemberController(MemberService memberService){this.memberService=memberService;}
+public class AdMemberController {
+    private final AdMemberService adMemberService;
+    public AdMemberController(AdMemberService adMemberService){this.adMemberService = adMemberService;}
     @GetMapping("/list")
     public String MemberList(Model model){
 
-        List<MemberDTO> memberList = memberService.selectMemberList();
+        List<MemberDTO> memberList = adMemberService.selectMemberList();
         model.addAttribute("member", memberList);
 
 
