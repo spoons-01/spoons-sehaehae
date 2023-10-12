@@ -40,7 +40,7 @@ public class ProductController {
                             @RequestParam(required = false) String searchValue,
                             @RequestParam(required = false) String searchCondition
                             ) {
-        SelectCriteria selectCriteria = new SelectCriteria();
+
 
         Map<String, String> searchMap = new HashMap<>();
         searchMap.put("searchValue", searchValue);
