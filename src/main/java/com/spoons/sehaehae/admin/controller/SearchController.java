@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 @Controller
 @Slf4j
+
+/*---------------------------------------------주문리스트----------------------------------------------*/
 @RequestMapping("/orderManagement")
 public class SearchController {
     private final OrderService orderService;
@@ -46,7 +48,7 @@ public class SearchController {
         return "admin/orderManagement/orderList";
     }
 
-
+    /*---------------------------------------------결제완료----------------------------------------------*/
     @GetMapping("/complete-payment")
     public String selectPaymentList(@RequestParam(defaultValue = "1") int page,
                                     @RequestParam(required = false) String searchCondition,
@@ -62,6 +64,7 @@ public class SearchController {
 
         return "admin/orderManagement/complete-payment";
     }
+
 
     @PostMapping("/update-order-status")
     public ResponseEntity<String> updateOrderStatus(@RequestParam(name = "orderId[]") Long[] orderId) {
@@ -81,7 +84,7 @@ public class SearchController {
     }
 
 
-
+    /*---------------------------------------------주문완료----------------------------------------------*/
 
     @GetMapping("/collection-completed")
     public String selectcollectionList(@RequestParam(defaultValue = "1") int page,
@@ -117,6 +120,8 @@ public class SearchController {
         }
     }
 
+    /*---------------------------------------------세탁완료----------------------------------------------*/
+
     @GetMapping("/laundry-complete")
     public String selectlaundryList(@RequestParam(defaultValue = "1") int page,
                                        @RequestParam(required = false) String searchCondition,
@@ -133,29 +138,29 @@ public class SearchController {
         return "admin/orderManagement/laundry-complete";
     }
 
-    @GetMapping("/preparing-delivery")
-    public String selectpreparingList(@RequestParam(defaultValue = "1") int page,
-                                    @RequestParam(required = false) String searchCondition,
-                                    @RequestParam(required = false) String searchValue, Model model) {
-
-        return "admin/orderManagement/preparing-delivery";
-    }
-
-    @GetMapping("/delivery")
-    public String selectdeliveryList(@RequestParam(defaultValue = "1") int page,
-                                      @RequestParam(required = false) String searchCondition,
-                                      @RequestParam(required = false) String searchValue, Model model) {
-
-        return "admin/orderManagement/delivery";
-    }
-
-    @GetMapping("/order-confirmed")
-    public String selectconfirmedList(@RequestParam(defaultValue = "1") int page,
-                                     @RequestParam(required = false) String searchCondition,
-                                     @RequestParam(required = false) String searchValue, Model model) {
-
-        return "admin/orderManagement/order-confirmed";
-    }
+//    @GetMapping("/preparing-delivery")
+//    public String selectpreparingList(@RequestParam(defaultValue = "1") int page,
+//                                    @RequestParam(required = false) String searchCondition,
+//                                    @RequestParam(required = false) String searchValue, Model model) {
+//
+//        return "admin/orderManagement/preparing-delivery";
+//    }
+//
+//    @GetMapping("/delivery")
+//    public String selectdeliveryList(@RequestParam(defaultValue = "1") int page,
+//                                      @RequestParam(required = false) String searchCondition,
+//                                      @RequestParam(required = false) String searchValue, Model model) {
+//
+//        return "admin/orderManagement/delivery";
+//    }
+//
+//    @GetMapping("/order-confirmed")
+//    public String selectconfirmedList(@RequestParam(defaultValue = "1") int page,
+//                                     @RequestParam(required = false) String searchCondition,
+//                                     @RequestParam(required = false) String searchValue, Model model) {
+//
+//        return "admin/orderManagement/order-confirmed";
+//    }
 
 
 }

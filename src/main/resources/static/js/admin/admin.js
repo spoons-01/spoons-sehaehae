@@ -60,7 +60,7 @@ function selectAll(selectAll) {
 }
 
 
-/*---------------------수거완료-------------------------*/
+/*---------------------결제완료 -> 수거완료 -------------------------*/
 
 function markAsCollected() {
     const checkboxes = $('input.checkStatus:checked');
@@ -85,16 +85,13 @@ function markAsCollected() {
                 }else {
                     alert('주문상태 업데이트에 실패하였습니다');
                 }
-            },
-            error: function (error) {
-                // 오류 처리를 수행합니다.
-                console.error('상태 업데이트 실패:', error);
             }
+
         });
     }
 }
 
-/*---------------------세탁완료-------------------------*/
+/*---------------------수거완료 -> 세탁완료-------------------------*/
 
 function markAsCompleted() {
     const checkboxes = $('input.checkStatus:checked');
@@ -119,11 +116,8 @@ function markAsCompleted() {
                 }else {
                     alert('주문상태 업데이트에 실패하였습니다');
                 }
-            },
-            error: function (error) {
-                // 오류 처리를 수행합니다.
-                console.error('상태 업데이트 실패:', error);
             }
+
         });
     }
 }

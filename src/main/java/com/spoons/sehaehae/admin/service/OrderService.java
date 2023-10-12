@@ -21,7 +21,7 @@ public class OrderService {
 
     public OrderService(SearchMapper searchMapper){this.searchMapper = searchMapper;}
 
-
+    /*---------------------------------------------전체리스트----------------------------------------------*/
     public Map<String, Object> selectSerchList(Map<String, String> searchMap, int page) {
 
         int totalCount = searchMapper.selectTotalCount(searchMap);  // searchMap 검색어 기준으로 했을때 총 게시글 수가 몇개 있나요?
@@ -39,7 +39,7 @@ public class OrderService {
 
         return searchListAndPaging;
     }
-
+    /*---------------------------------------------결제완료----------------------------------------------*/
 
     public Map<String, Object> selectSearchPaymentList(Map<String, String> searchMap, int page) {
 
@@ -75,7 +75,7 @@ public class OrderService {
             return false;
         }
     }
-
+    /*---------------------------------------------주문완료----------------------------------------------*/
     public Map<String, Object> selectSearchCollectionList(Map<String, String> searchMap, int page) {
         int totalCount = searchMapper.selectTotalCount(searchMap);
 
@@ -92,6 +92,8 @@ public class OrderService {
 
         return searchListAndPaging;
     }
+
+    /*---------------------------------------------세탁완료----------------------------------------------*/
 
     public Map<String, Object> selectSearchLaundryList(Map<String, String> searchMap, int page) {
         int totalCount = searchMapper.selectTotalCount(searchMap);
