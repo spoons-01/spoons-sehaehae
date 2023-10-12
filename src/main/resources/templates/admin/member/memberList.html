@@ -27,10 +27,10 @@
                 <td th:text="${member.memberId}"></td>
                 <td th:text="${member.nickname}"></td>
                 <td th:text="${member.phone}"></td>
-                <td th:text="${#dates.format(member.birthday,'yyyy-MM-dd')}"></td>
+                <td th:text="${member.birthday}"></td>
                 <td th:if="${member.gender}=='F'">여성</td>
                 <td th:if="${member.gender}=='M'">남성</td>
-                <td th:text="${member.address}"></td>
+                <td th:text="${member.address1}"></td>
                 <td th:text="${#dates.format(member.subscriptionDate,'yyyy-MM-dd')}"></td>
                 <td><button>삭제</button></td>
             </tr>
