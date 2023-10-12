@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/member")
+@RequestMapping("/admember")
 public class AdMemberController {
     private final AdMemberService adMemberService;
     public AdMemberController(AdMemberService adMemberService){this.adMemberService = adMemberService;}
