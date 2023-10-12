@@ -1,0 +1,70 @@
+.asdasd{
+    font-size: 30px;
+    margin-left: 90px;
+    margin-top: 80px;
+}
+.head{
+    border-bottom: black 1px solid;
+    width: 800px;
+    margin-left: 90px;
+    margin-top: -20px;
+}
+.a{
+    height: 25px;
+    width: 15px;
+    background: #0038FF;
+    display: inline-block;
+    margin-left: 95px;
+    margin-top: 10px;
+}
+.b{
+    display: inline-block;
+
+}
+.info{
+    margin-left: 100px;
+    margin-top: 30px;
+    font-size: 20px;
+    border: 1px solid black;
+    width: 1000px;
+    height: 350px;
+
+
+}
+.info th{
+    text-align: right;
+}
+.info table{
+    margin-top: 30px;
+    height: 270px;
+    padding-left: 50px;
+    line-height: 40px;
+}
+.info input,select{
+    margin-left: 100px;
+    height: 25px;
+}
+
+tr td:first-child{
+    text-align: right;
+}
+
+.regist, .rollback{
+    display: inline-block;
+    width: 150px;
+    padding: 20px 0px;
+    text-align: center;
+    margin-top: 20px;
+
+}
+
+.regist{
+    background: #0038FF;
+    color: white;
+    margin-top: 70px;
+    border: none;
+
+}
+.rollback{
+    border: 1px solid black;
+}

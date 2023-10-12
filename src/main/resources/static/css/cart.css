@@ -1,0 +1,105 @@
+
+
+.container1{
+    display: flex;
+    column-gap: 1000px;
+    margin-left: 300px;
+    height: 130px;
+}
+.container1 p:last-child{
+    margin-left: -200px;
+    height: 30px;
+    font-size: 20px;
+    margin-top: 60px;
+    border-bottom: 1px solid black;
+}
+.container2 button{
+    border: 1px solid black;
+    background: white;
+    width: 100px;
+    height: 35px;
+    font-weight: bold;
+}
+
+.container2{
+
+    display: flex;
+    margin-left: 500px;
+    margin-top: 30px;
+    column-gap: 20px;
+}
+
+input[type="checkbox"]{
+    width: 20px;
+}
+.order{
+    border: none;
+    width: 170px;
+    height: 60px;
+    font-size: 23px;
+    font-weight: bold;
+    margin-left: 70px;
+    background: white;
+}
+button{
+    font-size: 15px;
+}
+
+.container3{
+
+    background: white;
+    border: 1px black solid;
+    display: flex;
+    margin-left: 470px;
+    margin-top: 40px;
+    column-gap: 20px;
+    width: 800px;
+    padding: 25px;
+    border-radius: 20px;
+    position: relative;
+}
+
+.container3 input[type="checkbox"]{
+    margin-left: 10px;
+}
+
+
+
+.container3 img{
+    width: 130px;
+    height: 130px;
+    margin-left: 60px;
+}
+.container3 p:first-child{
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 15px;
+}
+.zz{
+    border: none;
+    margin-left: 25px;
+    font-size: 20px;
+    font-weight: bold;
+    width: 80px;
+}
+.zz span:first-child{
+    font-size: 100px;
+}
+
+.gg{
+    position: absolute;
+    bottom: 20px;
+}
+
+
+.total{
+    background-color: antiquewhite;
+    width: 1000px;
+    margin-left: 400px;
+    margin-top: 33px;
+    padding: 10px;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+}
