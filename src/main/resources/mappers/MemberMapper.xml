@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spoons.sehaehae.member.dao.MemberMapper">
+
+	<resultMap id="memberResultMap" type="com.spoons.sehaehae.member.dto.MemberDTO">
+		<id property="memberNo" column="MEMBER_NO"/>
+		<result property="memberId" column="ID"/>
+		<result property="memberPwd" column="PASSWORD"/>
+		<result property="name" column="NAME"/>
+		<result property="nickname" column="NICKNAME"/>
+		<result property="phone" column="PHONE_NUMBER"/>
+		<result property="birthday" column="BIRTHDAY"/>
+		<result property="gender" column="GENDER"/>
+		<result property="zipCode" column="ZIPCODE"/>
+		<result property="subscriptionDate" column="SUBSCRIPTION_DATE"/>
+		<result property="profilePhoto" column="PROFILE_PHOTO"/>
+		<result property="referralCode" column="REFERRAL_CODE"/>
+		<result property="memberStatus" column="MEMBER_STATUS"/>
+		<result property="address1" column="ADDRESS1"/>
+		<result property="address2" column="ADDRESS2"/>
+		<collection property="memberRoleList" resultMap="memberRoleResultMap"/>
+		<collection property="memberLevelList" resultMap="memberLevelResultMap"/>
+	</resultMap>
+
+	<resultMap type="com.spoons.sehaehae.member.dto.MemberRoleDTO" id="memberRoleResultMap">
+		<id property="memberNo" column="REF_MEMBER_NO"/>
+		<id property="authorityCode" column="REF_AUTHORITY_CODE"/>
+		<association property="authority" resultMap="authorityResultMap"/>
+	</resultMap>
+
+    <resultMap type="com.spoons.sehaehae.member.dto.AuthorityDTO" id="authorityResultMap">
+		<id property="code" column="REF_AUTHORITY_CODE2"/>
+		<result property="name" column="AUTHORITY_NAME"/>
+		<result property="desc" column="AUTHORITY_DESC"/>
+	</resultMap>
+
+	<resultMap type="com.spoons.sehaehae.member.dto.MemberLevelDTO" id="memberLevelResultMap">
+		<id property="memberNo" column="REF_MEMBER_NO2"/>
+		<id property="membershipCode" column="REF_MEMBERSHIP_CODE"/>
+		<association property="membership" resultMap="membershipResultMap"/>
+	</resultMap>
+
+	<resultMap type="com.spoons.sehaehae.member.dto.MemberShipDTO" id="membershipResultMap">
+		<id property="membershipCode" column="REF_MEMBERSHIP_CODE2"/>
+		<result property="membershipName" column="MEMBERSHIP_NAME"/>
+	</resultMap>
+<!--
+	<resultMap type="com.spoons.sehaehae.member.dto.ProfileAttachmentDTO" id="profileAttachmentResultMap">
+		<id property="profilePhotoNo" column="PROFILE_PHOTO_NO"></id>
+		<result property="memberNo" column="REF_MEMBER_NO3"/>
+		<result property="originalProfilePhotoName" column="ORIGINAL_NAME_PROFILE"/>
+		<result property="savedProfilePhotoName" column="SAVED_NAME_PROFILE"/>
+		<result property="savePathProfile" column="SAVE_PATH_PROFILE"/>
+		<result property="profileFileType" column="FILE_TYPE_PROFILE"/>
+	</resultMap>-->
+
+
+	<select id="findByMemberId" resultMap="memberResultMap">
+        SELECT
+               A.MEMBER_NO
+		     , A.ID
+             , A.PASSWORD
+             , A.NAME
+		     , A.NICKNAME
+		     , A.PHONE_NUMBER
+		     , A.BIRTHDAY
+		     , A.GENDER
+		     , A.ZIPCODE
+		     , A.SUBSCRIPTION_DATE
+		     , A.PROFILE_PHOTO
+		     , A.REFERRAL_CODE
+		     , A.MEMBER_STATUS
+		     , A.ADDRESS1
+		     , A.ADDRESS2
+		     , B.MEMBER_NO REF_MEMBER_NO
+		     , B.AUTHORITY_CODE REF_AUTHORITY_CODE
+		     , C.AUTHORITY_CODE REF_AUTHORITY_CODE2
+		     , C.AUTHORITY_NAME
+		     , C.AUTHORITY_DESC
+        	 , D.MEMBER_NO REF_MEMBER_NO2
+        	 , D.MEMBERSHIP_CODE REF_MEMBERSHIP_CODE
+        	 , E.MEMBERSHIP_CODE REF_MEMBERSHIP_CODE2
+        	 , E.MEMBERSHIP_NAME
+          FROM TBL_MEMBER A
+          LEFT JOIN TBL_MEMBER_ROLE B ON (A.MEMBER_NO = B.MEMBER_NO)
+		  LEFT JOIN TBL_MEMBER_LEVEL D ON (A.MEMBER_NO = D.MEMBER_NO)
+		  LEFT JOIN TBL_AUTHORITY C ON (B.AUTHORITY_CODE = C.AUTHORITY_CODE)
+          LEFT JOIN TBL_MEMBERSHIP E ON (D.MEMBERSHIP_CODE = E.MEMBERSHIP_CODE)
+         WHERE A.MEMBER_STATUS = 'Y'
+           AND A.ID = #{ memberId }
+    </select>
+
+        <select id="selectMemberById" resultType="String">
+            SELECT
+                   ID
+              FROM TBL_MEMBER
+             WHERE MEMBER_STATUS = 'Y'
+               AND ID = #{ memberId }
+        </select>
+
+<!--	<select id="countMemberByTel" resultType="String">-->
+<!--		SELECT-->
+<!--		    PHONE_NUMBER-->
+<!--		FROM TBL_MEMBER-->
+<!--		WHERE PHONE_NUMBER = #{tel}-->
+<!--	</select>-->
+
+	<insert id="insertMember">
+		INSERT
+		INTO TBL_MEMBER
+		(
+		  MEMBER_NO
+		, ID
+		, PASSWORD
+		, NAME
+		, NICKNAME
+		, PHONE_NUMBER
+		, BIRTHDAY
+		, GENDER
+		, ZIPCODE
+		, SUBSCRIPTION_DATE
+		, MEMBER_STATUS
+		, REFERRAL_CODE
+		, ADDRESS1
+		, ADDRESS2
+		)
+		VALUES
+			(
+			  SEQ_MEMBER_NO.NEXTVAL
+			, #{ memberId }
+			, #{ memberPwd }
+			, #{ name }
+			, #{ nickname }
+			, #{ phone }
+			, (to_date(#{ birthday },'MM-DD-YYYY'))
+			, #{ gender }
+			, #{ zipCode }
+			, SYSDATE
+			, 'Y'
+			, 'ABC1234'
+			, #{ address1 }
+			, #{ address2 }
+			)
+	</insert>
+
+<!--	<insert id="insertMemberRole">-->
+<!--		INSERT-->
+<!--		INTO TBL_MEMBER_ROLE-->
+<!--		(-->
+<!--			MEMBER_NO-->
+<!--		, AUTHORITY_CODE-->
+<!--		)-->
+<!--		VALUES-->
+<!--			(-->
+<!--				SEQ_MEMBER_NO.CURRVAL-->
+<!--			, 2-->
+<!--			)-->
+<!--	</insert>-->
+
+<!--	<insert id="insertMemberLevel">-->
+<!--		INSERT-->
+<!--		INTO TBL_MEMBER_LEVEL-->
+<!--		(-->
+<!--			MEMBER_NO-->
+<!--		, MEMBERSHIP_CODE-->
+<!--		)-->
+<!--		VALUES-->
+<!--			(-->
+<!--				SEQ_MEMBER_NO.CURRVAL-->
+<!--			, SEHAE01-->
+<!--			)-->
+<!--	</insert>-->
+	<select id="selectEncryptedPwd" resultType="string">
+		SELECT
+			PASSWORD
+		FROM TBL_MEMBER
+		WHERE MEMBER_STATUS = 'Y'
+		  AND ID = #{ memberId }
+	</select>
+
+	<select id="selectMember">
+		SELECT
+			MEMBER_NO
+			 , ID
+			 , NICKNAME
+			 , PHONE
+			 , EMAIL
+			 , ZIPCODE
+		     , ADDRESS1
+		     , ADDRESS2
+			 , MEMBER_STATUS
+		FROM  TBL_MEMBER A
+		WHERE  MEMBER_STATUS = 'Y'
+		  AND  ID = #{ memberId }
+	</select>
+
+	<update id="updateMember">
+		UPDATE
+			TBL_MEMBER
+		SET NICKNAME = #{ nickname }
+          , BIRTHDAY = #{ birthday }
+		  , PHONE_NUMBER = #{ phone }
+		  , ZIPCODE = #{ zipCode }
+		  , ADDRESS1 = #{ address1 }
+		  , ADDRESS2 = #{ address2 }
+		  , PROFILE_PHOTO = #{profilePhoto}
+
+		WHERE MEMBER_STATUS = 'Y'
+		  AND MEMBER_NO = #{ memberNo }
+	</update>
+  
+   <select id="selectMemberList" resultMap="memberResultMap">
+        select
+            *
+        from    TBL_MEMBER
+    </select>
+    
+
+    <select id="genderChart" resultType="int">
+        select
+            COUNT(*)
+        from TBL_MEMBER
+        where GENDER = 'F'
+    </select>
+
+</mapper>
+

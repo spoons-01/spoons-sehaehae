@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="/js/event.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 | 세탁해병대</title>
+    <link href="/css/loginstyle.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="/images/favicon.ico">
+    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="styles heet" type="text/css">
+</head>
+
+<body>
+<div class="wrapper">
+    <div class="logo">
+        <h1>세탁해병대</h1>
+    </div>
+    <form id="loginForm" action="/user/member/login" method="post">
+        <div class="loginbox">
+            <label class="email">이메일 주소</label>
+            <input class="input" name="memberId" placeholder="sehae@email.com" type="text">
+            <label class="pwd">비밀번호</label>
+            <input class="input" name="memberPwd" placeholder="비밀번호를 입력해주세요." type="password">
+        </div>
+
+        <div class="buttoncenter">
+            <input type="submit" class="button" value="로그인" id="loginSubmit">
+        </div>
+    </form>
+
+    <div class="id-pwd-join">
+        <a href="#" class="ipj">아이디 찾기</a>
+        <a href="#" class="ipj">비밀번호 찾기</a>
+        <a id="regist" href="/user/member/regist" class="ipj">회원가입</a>
+    </div>
+
+    <div class="sns">
+        <h>SNS 계정으로 간편 로그인/회원가입</h>
+        <br>
+        <a href="#" class="sns-all"><img src="/images/kakao.png"></a>
+        <a href="#" class="sns-all"><img src="/images/naver.png"></a>
+        <a href="#" class="sns-all"><img src="/images/google.png"></a>
+        <a href="#" class="sns-all"><img src="/images/apple.png"></a>
+    </div>
+
+    <div class="login-issue">
+        <a href="#" 로그인에 문제가 있으신가요?></a>
+    </div>
+
+    <footer class="footer">
+        <a href=/user/main/main><img class="logoimg" src="/images/logo.png"></a>
+        <h>Copyright ⓒ 세탁해병대. All Rights Reserved.</h>
+    </footer>
+</div>
+
+</body>

@@ -1,44 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>세탁해병대</title>
-    <!-- 스타일 시트 -->
-    <link href="/static/css/userMainHeader.css" rel="stylesheet" type="text/css">
-    <!-- favicon 추후 설정 -->
-    <!-- 리셋 CSS 설정 -->
-    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="stylesheet" type="text/css">
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>세탁해병대</title>
+<!-- 스타일 시트 -->
+<link href="/css/usermainstyle.css" rel="stylesheet" type="text/css">
+
+<!-- favicon 추후 설정 -->
+<!-- 리셋 CSS 설정 -->
+<link href="https://unpkg.com/ress/dist/ress.min.css" rel="stylesheet" type="text/css">
+
 <div id="main-top" class="main-set">
     <header class="page-header wrapper">
         <div class="logo-header">
-            <a href="1_main.html">
+            <a href="/">
                 <img class="logo" src="/images/logo.png" alt="HOME">
             </a>
         </div>
-        <nav>
-            <ul class="main-nav">
-                <li><a href="2_login.html">
-                    <li>로그인</li></a>
-                <li><a href="3_service.html">
-                    <li>서비스</li></a>
-                <li><a href="/user/board/userNotice">
-                    <li>게시판</li></a>
-                <li><a href="5_qa.html">
-                    <li>고객센터</li></a>
-                <li><a href="/product/cartList">
-                    <li>장바구니로 이동</li></a>
-            </ul>
-        </nav>
-        <div>
-            <a href="6_mypage.html">
-                <img class="mypage" src="/images/mypage.png" alt="MYPAGE">
-            </a>
-        </div>
+        <th:block sec:authorize="isAnonymous()">
+            <nav>
+                <ul class="main-nav">
+                    <li><a id="login" href="/user/member/login">로그인</a></li>
+                    <li><a href="3_service.html">
+                        <li>서비스</li></a>
+                    <li><a href="/user/board/userReview">
+                        <li>게시판</li></a>
+                    <li><a href="/user/board/userNotice">
+                        <li>고객센터</li></a>
+                </ul>
+            </nav>
+            <div>
+                <a href="/user/member/login">
+                    <img class="mypage" src="/images/mypage.png"  alt="MYPAGE">
+                </a>
+            </div>
+        </th:block>
+
+        <th:block sec:authorize="isAuthenticated()">
+            <nav>
+                <ul class="main-nav">
+                    <li><a id="logout" href="/user/member/logout">로그아웃</a></li>
+                    <li><a href="3_service.html">
+                        <li>서비스</li></a>
+                    <li><a href="4_board.html">
+                        <li>게시판</li></a>
+                    <li><a href="5_qa.html">
+                        <li>고객센터</li></a>
+                </ul>
+            </nav>
+            <div>
+                <a href="/user/member/mypage">
+                    <th:block th:if="${ #authentication.principal.profilePhoto == null}">
+                        <img class="mypage" src="/images/smile.png" alt="MYPAGE">
+                    </th:block>
+                    <th:block th:if="${ #authentication.principal.profilePhoto != null}">
+                        <img class="mypage" th:src="${#authentication.principal.profilePhoto}" alt="MYPAGE">
+                    </th:block>
+                </a>
+            </div>
+        </th:block>
     </header>
     <hr style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
 </div>
-</body>
-</html>

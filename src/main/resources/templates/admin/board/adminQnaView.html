@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/adminBoard.css" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="/javaScript/modalEvent.js" type="text/javascript"></script>
+    <title>Title</title>
+</head>
+<body>
+<div th:replace="/admin/common/nav"></div>
+<header>
+    <h3>게시판 &gt <a href="/admin/board/adminQna">자주하는 질문</a></h3>
+    <h3 id="login">로그인(로그아웃)</h3>
+</header>
+
+<div class="details">
+    <table>
+        <tr class="detail-category">
+            <td><p name="category" th:text="${ qna.category.name }"/></td>
+        </tr>
+        <tr class="detail-name">
+            <td ><p name="title" th:text="${ qna.title }"></p></td>
+        </tr>
+        <tr class="detail-date">
+            <td><p th:text="${ qna.createdDate }"></p></td>
+        </tr>
+        <tr class="detail-body">
+            <td><textarea name="body" cols="60" rows="15"
+                          readonly th:text="${ qna.body }">
+                                    </textarea></td>
+        </tr>
+    </table>
+</div>
+<div class="noticeDML">
+    <button type="button" id="noticeList" th:onclick="'location.href=\'/admin/board/adminQna\''">목록으로</button>
+    <button id="btn-modal">수정</button>
+    <!--        <button type="button" id="modifiedNotice" th:onclick="|location.href='/admin/board/adminNoticeUpdate?no=${notice.no}'|">수정하기</button>-->
+    <a th:href="@{/admin/board/deleteQna(id=${ qna.no })}">삭제</a>
+    <!--        <button type="button" id="noticedelete" th:onclick="'location.href=\'/admin/board/delete?no=' + ${notice.no} + '\''">삭제하기</button>-->
+
+</div>
+
+<!-- 모달창 -->
+<div id="modal" class="modal-overlay">
+    <div class="modal-detail">
+        <div class="title">
+            <h3 >자주하는 질문 등록</h3>
+            <div class="close-area">X</div>
+        </div>
+        <form id="qnaForm" action="/admin/board/updateQna" method="post">
+            <input type="hidden" name="no" th:value="${ qna.no }" />
+            <div class="content">
+                <table class="modal-table">
+                    <tr>
+                        <td class="modal-td">카테고리</td>
+                        <td><select name="categoryNo" class="modal-category" id="categorySelect">
+                            <option value="7">수거·배송 관련 문의</option>
+                            <option value="8">결제 관련 문의</option>
+                            <option value="9">서비스 이용 관련 문의</option>
+                            <option value="10">서비스·세탁 관련 문의</option>
+                            <option value="11">기타 문의</option>
+                            <option value="12">로그인 문의</option>
+                        </select> </td>
+                    </tr>
+                    <tr>
+                        <td class="modal-td">제목</td>
+                        <td colspan="3"><input type="text" name="title" class="regist-name" th:value="${ qna.title }"></td>
+                    </tr>
+                    <tr>
+                        <td class="modal-td">내용</td>
+                        <td colspan="3"><textarea name="body" cols="60" rows="15" class="regist-body"
+                                                  th:text="${ qna.body }"></textarea></td>
+                    </tr>
+                </table>
+                <br>
+                <div class="noticeDML2">
+                    <button type="submit">수정하기</button>
+                    <!--            <button type="button" th:onclick="'location.href=\'/admin/board/adminQna\''">취소하기</button>-->
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

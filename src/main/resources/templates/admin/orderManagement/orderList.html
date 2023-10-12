@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/adminManagement.css" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+<div th:replace="admin/common/nav.html"></div>
+
+
+<header>
+    <h3>주문관리 &gt 주문리스트</h3>
+    <h3 id="login">로그인(로그아웃)</h3>
+</header>
+
+<div class="container">
+    <div class="basic-search">
+        <h4 class="top-name">주문리스트</h4>
+    </div>
+
+    <div class="basic-search2">
+        <img class="ractangle" src="/images/rectangle.png">
+        <p>기본검색</p>
+    </div>
+
+<div class="container1">
+    <form id="allSearch" action="/orderManagement/list">
+        <table>
+
+            <tr>
+                <th>검색</th>
+                <td>
+                    <select id="search-method" name="searchCondition">
+                        <option selected>전체</option>
+                        <option value="code" th:selected="${paging.searchCondition eq 'code'}">주문번호</option>
+                        <option value="member" th:selected="${paging.searchCondition eq 'member'}">주문자</option>
+                        <option value="phone" th:selected="${paging.searchCondition eq 'phone'}">전화번호</option>
+                        <option value="orderStatus" th:selected="${paging.searchCondition eq 'orderStatus'}" >주문상태</option>
+                    </select>
+                    <input type="search" id="searchValue" name="searchValue" th:value="${paging.searchValue}" placeholder="입력하세요">
+                </td>
+
+            </tr>
+
+            <tr>
+                <th>기간</th>
+                <td>
+                    <input type="date" id="start-date" name="startDate">
+                    ~
+                    <input type="date" id="end-date" name="endDate">
+                    <span class="but-group">
+                    <input type="button" onclick="searchDate('오늘');" class="sub-btn" value="오늘">
+                    <input type="button" onclick="searchDate('1주');" class="sub-btn" value="1주">
+                    <input type="button" onclick="searchDate('15일');" class="sub-btn" value="15일">
+                    <input type="button" onclick="searchDate('1개월');" class="sub-btn" value="1개월">
+                    <input type="button" onclick="searchDate('3개월');" class="sub-btn" value="3개월">
+                    <input type="button" onclick="searchDate('6개월');" class="sub-btn" value="6개월">
+                </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="search-bottom">
+                    <button type="submit" id="searchButton">검색</button>
+                    <button type="button" id="resetButton" >초기화</button>
+
+                </td>
+            </tr>
+
+        </table>
+    </form>
+</div>
+
+<div class="container2" align="center">
+    <table id="listArea" style="text-align:center">
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <th></th>
+            <th th:style="'width: 80px;'">주문번호</th>
+            <th>주문일자</th>
+            <th>요청사항</th>
+            <th>상품금액</th>
+            <th>할인금액</th>
+            <th>총결제금액</th>
+            <th>주문자</th>
+            <th>전화번호</th>
+            <th>우편번호</th>
+            <th>주문상태</th>
+        </tr>
+        <tr th:each="search : ${ searchList }">
+            <td></td>
+            <td th:text="${ search.code }" th:onclick="|location.href='/orderManagement/orderDetail?code=${search.code}'|" th:style="'border: 1px solid #000000FF; color: blue;'"></td>
+            <td th:text="${#dates.format(search.orderDate, 'yyyy-MM-dd')}" th:style="'border: 1px solid #000000FF;'"></td>
+            <td th:text="${ search.orderRequest }" th:style="'border: 1px solid #000000FF;'"></td>
+            <td th:text="${ search.orderPrice }" th:style="'border: 1px solid #000000FF;'"></td>
+            <td th:text="${ search.orderDiscount }" th:style="'border: 1px solid #000000FF;'"></td>
+            <td th:text="${ search.orderTotalPrice }" th:style="'border: 1px solid #000000FF;'"></td>
+            <td th:text="${ search.member.name}" th:style="'border: 1px solid #000000FF;'"></td>
+            <td th:text="${ search.member.phone}" th:style="'border: 1px solid #000000FF;'"></td>
+            <td th:text="${ search.inputZipCode }" th:style="'border: 1px solid #000000FF;'"></td>
+            <td th:text="${ search.orderStatus }" th:style="'border: 1px solid #000000FF;'"></td>
+        </tr>
+    </table>
+
+    <!-- 페이징 바 -->
+    <div id="paging" align="center" style="margin-top: 20px; ">
+
+        <th:block
+                th:if="${ paging.searchCondition != null and paging.searchValue != null }">
+            <!-- 맨 앞으로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/orderManagement/list?page=1&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">&lt;&lt;</button>
+
+            <!-- 이전 페이지로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/orderManagement/list?page=' + @{${paging.page - 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                    th:disabled="${ paging.page <= 1 }">&lt;</button>
+
+            <!-- 숫자 버튼 -->
+            <th:block
+                    th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
+                <button
+                        th:onclick="'location.href=\'/orderManagement/list?page=' + @{${page}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                        th:text="${ page }" th:disabled="${ paging.page eq page }">
+                </button>
+            </th:block>
+
+            <!-- 다음 페이지로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/orderManagement/list?page=' + @{${paging.page + 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                    th:disabled="${ paging.page >= paging.maxPage }">></button>
+
+            <!-- 맨 끝으로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/orderManagement/list?page=' + @{${paging.maxPage}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">>></button>
+
+        </th:block>
+
+        <th:block
+                th:if="${ paging.searchCondition == null ||  paging.searchValue == null }">
+            <!-- 맨 앞으로 이동 -->
+            <button th:onclick="'location.href=\'/orderManagement/list?page=1\''">&lt;&lt;</button>
+
+            <!-- 이전 페이지로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/orderManagement/list?page=' + @{${paging.page - 1}} + '\''"
+                    th:disabled="${ paging.page <= 1 }">&lt;</button>
+
+            <!-- 숫자 버튼 -->
+            <th:block
+                    th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
+                <button
+                        th:onclick="'location.href=\'/orderManagement/list?page=' + @{${page}} + '\''"
+                        th:text="${ page }" th:disabled="${ paging.page eq page }">
+                </button>
+            </th:block>
+
+            <!-- 다음 페이지로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/orderManagement/list?page=' + @{${paging.page + 1}} + '\''"
+                    th:disabled="${ paging.page >= paging.maxPage }">></button>
+
+            <!-- 맨 끝으로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/orderManagement/list?page=' + @{${paging.maxPage}} + '\''">>></button>
+        </th:block>
+
+    </div>
+</div>
+
+<script>
+
+    document.getElementById('searchButton').addEventListener('click', function() {
+        // // 검색 조건과 날짜 범위 값을 가져와서 폼에 추가
+        // var searchCondition = document.getElementById('search-method').value;
+        // var searchValue = document.getElementById('searchValue').value;
+        // var startDate = document.getElementById('start-date').value;
+        // var endDate = document.getElementById('end-date').value;
+        //
+        // // 폼에 추가
+        // document.getElementById('allSearch').innerHTML +=
+        //     `<input type="hidden" name="searchCondition" value="${searchCondition}">` +
+        //     `<input type="hidden" name="searchValue" value="${searchValue}">` +
+        //     `<input type="hidden" name="startDate" value="${startDate}">` +
+        //     `<input type="hidden" name="endDate" value="${endDate}">`;
+
+        document.getElementById('allSearch').submit();
+    });
+
+    document.getElementById('resetButton').addEventListener('click', function() {
+        document.getElementById('allSearch').reset();
+    });
+
+    function searchDate(range){
+        var today = new Date();
+        var startDate = new Date();
+        var endDate = new Date();
+
+        if (range == '오늘'){
+            startDate = today;
+            endDate = today;
+        }else if (range == '1주'){
+            startDate.setDate(today.getDate() + 6);
+            endDate.setDate(today.getDate() + 6);
+        }else if (range == '15일'){
+            startDate.setDate(today.getDate() + 14);
+            endDate.setDate(today.getDate() + 14);
+        }else if (range === '1개월') {
+            endDate.setMonth(today.getMonth() + 1);
+            endDate.setDate(1); // 다음 달의 첫 번째 날로 설정
+            startDate = new Date(endDate);
+        } else if (range === '3개월') {
+            endDate.setMonth(today.getMonth() + 3);
+            endDate.setDate(1); // 다음 달의 첫 번째 날로 설정
+            startDate = new Date(endDate);
+        } else if (range === '6개월') {
+            endDate.setMonth(today.getMonth() + 6);
+            endDate.setDate(1); // 다음 달의 첫 번째 날로 설정
+            startDate = new Date(endDate);
+        }
+
+        // input 요소에 날짜 설정
+        document.getElementById('start-date').valueAsDate = startDate;
+        document.getElementById('end-date').valueAsDate = endDate;
+
+
+
+    }
+
+
+
+</script>
+
+
+
+</div>
+</body>
+
+</html>
+
+
+
