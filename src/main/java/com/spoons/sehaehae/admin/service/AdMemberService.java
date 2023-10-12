@@ -1,6 +1,5 @@
 package com.spoons.sehaehae.admin.service;
 
-import com.spoons.sehaehae.admin.dao.AdMemberMapper;
 import com.spoons.sehaehae.member.dao.MemberMapper;
 import com.spoons.sehaehae.member.dto.MemberDTO;
 import org.springframework.stereotype.Service;

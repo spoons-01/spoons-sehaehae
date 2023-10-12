@@ -12,5 +12,6 @@ public class CouponDTO {
     private Long cpRate;
     private Date cpSdate;
     private Date cpEdate;
+    private String cpStatus;
 
 }
