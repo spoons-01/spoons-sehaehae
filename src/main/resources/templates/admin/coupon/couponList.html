@@ -7,7 +7,7 @@
 </head>
 <body>
     <div th:replace="admin/common/nav.html"></div>
-    <header><h3>qwer</h3><h3>asdf</h3></header>
+    <header><h3>서비스관리 &gt 쿠폰관리</h3><h3>로그인(로그아웃)</h3></header>
     <div class="coupon_container">
         <div style="cursor: pointer" class="coupon" th:each="coupon : ${coupon}" th:onclick="couponModal([[${coupon}]])">
             <ul>
@@ -46,7 +46,7 @@
                         <button type="button" th:onclick="'location.href=\'/coupon/list\''">
                             닫기</button>
                         <button type="submit">수정</button>
-                        <button type="button">삭제</button>
+                        <button th:onclick="removeCoupon([[${coupon}]])">삭제.</button>
                     </div>
                 </form>
             </div>

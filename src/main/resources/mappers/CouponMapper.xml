@@ -10,12 +10,14 @@
         <result property="cpRate" column="CP_RATE"/>
         <result property="cpSdate" column="CP_SDATE"/>
         <result property="cpEdate" column="CP_EDATE"/>
+        <result property="cpStatus" column="CP_STATUS"/>
     </resultMap>
     
     <select id="selectCouponList" resultMap="couponResultMap">
         select
             *
         from    TBL_CP
+        WHERE   CP_STATUS = 'Y'
     </select>
 
     <insert id="insertCoupon">
@@ -26,7 +28,8 @@
             CP_NAME,
             CP_RATE,
             CP_SDATE,
-            CP_EDATE
+            CP_EDATE,
+            CP_STATUS
         )
         values
         (
@@ -34,7 +37,8 @@
          #{cpName},
          #{cpRate},
          #{cpSdate},
-         #{cpEdate}
+         #{cpEdate},
+         'Y'
         )
     </insert>
 
