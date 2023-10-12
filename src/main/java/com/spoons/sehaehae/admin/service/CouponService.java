@@ -12,6 +12,7 @@ import java.util.List;
 public class CouponService {
     private final CouponMapper couponMapper;
     public CouponService(CouponMapper couponMapper){this.couponMapper=couponMapper;}
+
     public List<CouponDTO> selectCouponList() {
         return couponMapper.selectCouponList();
     }
