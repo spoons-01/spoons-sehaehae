@@ -210,7 +210,8 @@ public class ProductController {
     }
 
     @PostMapping("/complete")
-    public String complete(@ModelAttribute OrderDTO order, MultipartFile photo, Model model, @RequestParam List<OrderProductDTO> orderProductDTO) {
+    public String complete(@ModelAttribute OrderDTO order, MultipartFile photo, Model model, @ModelAttribute(value = "OrderDTO") List<OrderProductDTO> orderList) {
+        System.out.println(orderList);
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         int memberId = 1;
@@ -239,7 +240,7 @@ public class ProductController {
         productService.addOrder(order);
         model.addAttribute(code);
 
-        System.out.println(orderProductDTO);
+
         return "redirect:/product/ordercomplete?code="+code;
     }
     @GetMapping("/ordercomplete")

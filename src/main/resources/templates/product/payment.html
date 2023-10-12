@@ -119,8 +119,6 @@
             <div class="pdinfo" th:each="list:${cartList}">
                 <input type="hidden" th:value="${list.product.code}" name="productList.productCode">
                 <input type="hidden" th:value="${list.amount}" name="productList.amount">
-                <input type="hidden" th:value="${list.product.code}" name="productCode">
-                <input type="hidden" th:value="${list.amount}" name="amount">
                 <img th:src="${list.product.photo}" style="max-width: 120px; max-height: 100px">
                 <div class="iinfo">
                     <p th:text="${list.product.name}">티셔츠</p>
@@ -164,8 +162,6 @@
     $phone.oninput = function () {
         $phone2.textContent = $phone.value;
     }
-
-
     const $point = document.querySelector("#point")
     const point = '[[${member.point}]]'
     const $finalPrice = document.querySelector("#finalPrice")
@@ -173,7 +169,6 @@
     console.log($point);
     console.log(point);
     const ttotalPrice = '[[${totalPrice}]]'
-
 </script>
 <script type="text/javascript" src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script>
