@@ -73,7 +73,7 @@ tr:nth-child(even) td {
 
     width:100%;
     height:100%;
-    background-color: rgba(0,0,0,0.4);
+    background-color: #e8e8ede6; rgba(0,0,0,0.0);
 }
 .update{display: none;}
 .insert{display: none;}
@@ -81,12 +81,13 @@ tr:nth-child(even) td {
 .modalBody{
     position: absolute;
     top: 50%;
-    width: 1200px; height: 800px;
+    width: 690px; height: 690px;
     text-align: center;
     transform:translateY(-50%);
     box-shadow: 2px 4px 12px rgba(0,0,0,.08);
     border-radius: 18px;
     background: #FFF;
 }
+
 
 

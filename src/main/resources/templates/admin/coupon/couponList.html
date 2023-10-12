@@ -62,28 +62,29 @@
 
     <div class="modal insert">
         <div class="modalBody">
-            <h1>쿠폰생성</h1>
+            <h1 style="font-size: 34px; padding: 30px 0px 100px;">쿠폰생성</h1>
             <div>
                 <form id="couponInsert" action="/coupon/insert" method="post">
-                    <table style="width: 1200px; margin: 0">
-                        <tr>
-                            <td>쿠폰명</td>
-                            <td colspan="3"><input type="text" name="cpName" ></td>
-                        </tr>
-                        <tr>
-                            <td>기간</td>
-                            <td>시작일<input type="date" name="cpSdate"> ~ 종료일<input type="date" name="cpEdate"></td>
-                        </tr>
-                        <tr>
-                            <td>할인율</td>
-                            <td><input type="number" name="cpRate">%</td>
-                        </tr>
-                    </table>
+                    <ul style="width: 690px; line-height: 3; margin: 0">
+                        <li>
+                            <h3>쿠폰명</h3>
+                            <input style="width:280px; height:56px; border-radius: 4px; border:1px solid #d2d2d7;" type="text" name="cpName" >
+                        </li>
+                        <li>
+                            <h3>기간</h3>
+                            <input style="width:280px; height:56px; border-radius: 4px; border:1px solid #d2d2d7;"type="date" name="cpSdate">
+                        </li>
+                        <li><input style="width:280px; height:56px; border-radius: 4px; border:1px solid #d2d2d7;"type="date" name="cpEdate"></li>
+                        <li>
+                            <h3>할인율</h3>
+                            <input style="width:280px; height:56px; border-radius: 4px; border:1px solid #d2d2d7;"type="number" name="cpRate">%
+                        </li>
+                    </ul>
                     <br>
                     <div align="center">
-                        <button type="button" th:onclick="'location.href=\'/coupon/list\''">
+                        <button style="border-radius:4px; width:94px; height: 35px; background: #4B93FF;color: #fff" type="button" th:onclick="'location.href=\'/coupon/list\''">
                             닫기</button>
-                        <button type="submit">생성</button>
+                        <button style="border-radius:4px; width:94px; height: 35px; background: #4B93FF; color: #fff;" type="submit">생성</button>
                     </div>
                 </form>
             </div>
