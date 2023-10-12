@@ -139,7 +139,7 @@
             console.log(list.value);
             fetch("/product/deletePremium?code="+list.value)
                 .then(res=>res.text())
-                .then(res=>console.log(res))
+                .then(res=>load())
                 .catch(error=>console.log(error))
         })
     })
@@ -150,6 +150,13 @@
         })
     })
 
+    function load(){
+
+        fetch("/prodcut/cartListReload")
+            .then(res=>)
+
+
+    }
     const $order = document.querySelector(".order");
     $order.onclick = function(){
         location.href = '/product/payment?totalPrice='+$finalPrice3.value
