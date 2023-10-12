@@ -191,7 +191,60 @@
         </foreach>
     </update>
 
+    <select id="selectSearchCollectionList" resultMap="OrderResultMap">
+        SELECT
+        A.ORDER_CODE
+        , A.ORDER_DATE
+        , A.ORDER_TOTAL_PRICE
+        , A.MEMBER_NO
+        , D.NAME
+        , D.PHONE_NUMBER
+        , A.INPUT_ZIP_CODE
+        , A.ORDER_STATUS
+        FROM (SELECT
+        ROWNUM RNUM
+        , B.ORDER_CODE
+        , B.ORDER_DATE
+        , B.ORDER_TOTAL_PRICE
+        , B.MEMBER_NO
+        , B.INPUT_ZIP_CODE
+        , B.ORDER_STATUS
+        FROM ( SELECT
+        C.ORDER_CODE
+        , C.ORDER_DATE
+        , C.ORDER_TOTAL_PRICE
+        , C.MEMBER_NO
+        , C.INPUT_ZIP_CODE
+        , C.ORDER_STATUS
+        FROM TBL_ORDER C
+        <if test="searchCondition == 'member'">
+            JOIN TBL_MEMBER D ON(C.MEMBER_NO = D.MEMBER_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'code'">
+                C.ORDER_CODE = #{searchValue}
+            </if>
 
+            <if test="searchCondition == 'member'">
+                D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'
+            </if>
+
+            <if test="searchCondition == 'orderStatus'">
+                C.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
+            </if>
+            AND C.ORDER_STATUS = '수거완료'
+        </where>
+        ORDER BY C.ORDER_CODE DESC
+        ) B
+        <![CDATA[
+                                 WHERE ROWNUM <= #{endRow}
+                                 ]]>
+        ) A
+        JOIN TBL_MEMBER D ON (A.MEMBER_NO = D.MEMBER_NO)
+        WHERE A.RNUM >= #{startRow}
+        ORDER BY 1 DESC
+
+    </select>
 
 
 
