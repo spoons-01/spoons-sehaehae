@@ -22,6 +22,7 @@ repositories {
 }
 
 dependencies {
+    /* 썸네일 */
     // https://mvnrepository.com/artifact/net.coobird/thumbnailator
     implementation 'net.coobird:thumbnailator:0.4.20'
 
