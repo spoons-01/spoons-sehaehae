@@ -11,6 +11,7 @@
     </script>
 </head>
 <body>
+<div th:replace="user/common/header.html"></div>
 <button onclick="location.href='/product/cartList'">장바구니</button>
 <br>
 <div id="productlist">
@@ -61,6 +62,8 @@
     </div>
 </div>
 </div>
+
+<div th:replace="user/common/footer.html"></div>
 <script>
     const $subbar = document.querySelectorAll(".subproduct");
     const $menu = document.querySelectorAll(".menu");

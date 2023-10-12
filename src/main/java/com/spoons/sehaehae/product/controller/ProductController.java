@@ -1,6 +1,7 @@
 package com.spoons.sehaehae.product.controller;
 
-import com.spoons.sehaehae.common.paging.SelectCriteria;
+import com.spoons.sehaehae.admin.dto.CouponDTO;
+import com.spoons.sehaehae.admin.dto.OrderDTO;
 import com.spoons.sehaehae.member.dto.MemberDTO;
 import com.spoons.sehaehae.product.dto.*;
 import com.spoons.sehaehae.product.service.ProductService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -208,17 +210,18 @@ public class ProductController {
     }
 
     @PostMapping("/complete")
-    public String complete(@ModelAttribute OrderDTO order, MultipartFile photo, Model model) {
+    public String complete(@ModelAttribute OrderDTO order, MultipartFile photo, Model model, @AuthenticationPrincipal MemberDTO member) {
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         int memberId = 1;
-        int discount = (order.getPrice() + 3000) - order.getTotalPrice();
+        int discount = (order.getOrderPrice() + 3000) - order.getOrderTotalPrice();
         String uuid = UUID.randomUUID().toString().substring(0,4);
         String code = simpleDateFormat.format(date) + uuid;
-        order.setDiscount(discount);
+        order.setOrderDiscount(discount);
         order.setCode(code);
-        order.setDate(new Date());
+        order.setOrderDate(new Date());
         order.setMember(memberId);
+
         String originalName = photo.getOriginalFilename();
         String fileUploadDir = IMG_DIR + "resource/images";
         File dir = new File(fileUploadDir);

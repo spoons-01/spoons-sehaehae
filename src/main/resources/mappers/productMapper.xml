@@ -33,10 +33,10 @@
         <association resultMap="productResultMap" property="product"/>
     </resultMap>
     <resultMap id="memberResultMap" type="com.spoons.sehaehae.member.dto.MemberDTO">
-        <id column="MEMBER_NO" property="no"/>
+        <id column="MEMBER_NO" property="memberNo"/>
         <result column="NAME" property="name"/>
         <result column="PHONE_NUMBER" property="phone"/>
-        <result column="ADDRESS" property="address"/>
+        <result column="ADDRESS" property="address1"/>
         <result column="MY_POINT" property="point"/>
     </resultMap>
 
@@ -193,11 +193,11 @@
         <foreach collection="productMap" item="item" open="(" separator="," close=")">#{item}</foreach>
     </update>
 
-    <resultMap id="couponResultMap" type="com.spoons.sehaehae.product.dto.CouponDTO">
-        <id property="code" column="CP_CODE"/>
-        <result property="name" column="CP_NAME"/>
-        <result property="duration" column="CP_DURATION"/>
-        <result property="rate" column="CP_RATE"/>
+    <resultMap id="couponResultMap" type="com.spoons.sehaehae.admin.dto.CouponDTO">
+        <id property="cpCode" column="CP_CODE"/>
+        <result property="cpName" column="CP_NAME"/>
+        <result property="cpEdate" column="CP_DURATION"/>
+        <result property="cpRate" column="CP_RATE"/>
     </resultMap>
     <select id="selectCoupon" resultMap="couponResultMap">
         SELECT
