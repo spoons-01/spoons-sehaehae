@@ -4,6 +4,8 @@ import com.spoons.sehaehae.member.dto.MemberDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Mapper
 public interface MemberMapper {
     MemberDTO findByMemberId(String memberId);
@@ -18,4 +20,6 @@ public interface MemberMapper {
     int updateMember(MemberDTO modifyMember);
     @Transactional
     void insertThumbnailContent(MemberDTO modifyMember);
+
+    List<MemberDTO> selectMemberList();
 }

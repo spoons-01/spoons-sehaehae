@@ -29,6 +29,11 @@ ul{padding: 0;}
 .manager{
     text-align: center;
     padding-top: 20px;
+    margin-top: 10px;
+}
+
+.manager h2 {
+    margin-top: 10px;
 }
 
 .bar {
@@ -49,6 +54,10 @@ ul{padding: 0;}
 .bar > li:hover{
     background-color: #020c132a;
     overflow: visible;
+}
+
+.menu {
+    margin-top: 25px;
 }
 
 .menu > li:hover {
@@ -87,13 +96,11 @@ ul{padding: 0;}
     transition-duration: 1s;
 }
 .menu>li:hover .cancell {
-
-    height: 50px;
+    height: 102px;
     transition-duration: 1s;
 }
 .menu>li:hover .calculate {
-    height: 50px;
-
+    height: 51px;
     transition-duration: 1s;
 }
 .menu>li:hover .board {
@@ -114,6 +121,7 @@ ul{padding: 0;}
 h4{
     display: flex;
     display: inline-flex;
+    padding: 15px;
 }
 
 .down{
@@ -133,6 +141,7 @@ header{
     vertical-align: middle;
     justify-content: space-between;
 }
+
 
 
 
@@ -179,4 +188,3 @@ header{
 /*    width: 1350px; height: 700px;*/
 /*    margin-left: 400px; margin-top: 20px;*/
 /*}*/
-
