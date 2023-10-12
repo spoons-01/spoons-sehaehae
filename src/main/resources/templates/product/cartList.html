@@ -30,13 +30,13 @@
                 </th:block>
                 <br>
                 <th:block th:if="${cart.usePremium == 'Y'}"><span>프리미엄케어 추가</span>
-                    <button id="deletePremium">x</button>
+                    <button id="deletePremium" th:value="${cart.product.code}">x</button>
                 </th:block>
                 <br>
 
                 <span id="code" th:text="${cart.product.code}" style="display: none"></span>
                 <div class="gg" >
-                    <input type="number" class="amount" MIN="1" max="99" value="1"><select>
+                    <input type="number" class="amount" MIN="1" max="99" value="1" th:value="${cart.amount}"><select>
                     <option selected>옵션선택</option>
                     <option>천연세제 사용</option>
                     <option>프리미엄케어</option>
@@ -54,15 +54,11 @@
         <span>+</span>
         <span>배송비 3,000원</span>
         <span id="final2" th:text="|= ${#numbers.formatInteger(totalPrice+3000,3,'COMMA')}원|"></span>
-        <span id="final3" th:text="totalPrice" style="display: none;"></span>
+        <input type="hidden" id="final3" th:value="${totalPrice}+3000">
         <button class="order">주문/결제</button>
     </div>
 </div>
 <script>
-
-
-
-
     const $amount = document.querySelectorAll(".amount");
     const $price = document.querySelectorAll("#totalPrice");
     const $finalPrice1 = document.querySelector("#final1");
@@ -79,7 +75,7 @@
             $price.forEach((i)=> totalprice += Number(i.textContent))
             $finalPrice1.textContent= totalprice.toLocaleString('ko-KR')+"원";
             $finalPrice2.textContent = totalprice + 3000;
-            $finalPrice3.textContent = totalprice + 3000;
+            $finalPrice3.value = totalprice + 3000;
         })
     })
     $amount.forEach((amount)=>{
@@ -139,17 +135,24 @@
     const $deleteEco = document.querySelectorAll("#deleteEco");
 
     $deletePremium.forEach((list)=>{
-        console.log(list.pre)
-        // list.addEventListener("click",function(){
-        //     const index = Array.from($deletePremium).indexOf(this);
-        //     console.log(list.siblings(index))
-        // })
+        list.addEventListener("click",function(){
+            console.log(list.value);
+            fetch("/product/deletePremium?code="+list.value)
+                .then(res=>res.text())
+                .then(res=>console.log(res))
+                .catch(error=>console.log(error))
+        })
     })
+
+    $deleteEco.forEach((list)=>{
+        list.addEventListener("click",function(){
+            location.href='/product/deleteEco?code='+list.value;
+        })
+    })
+
     const $order = document.querySelector(".order");
-
-
     $order.onclick = function(){
-        location.href = '/product/payment?totalPrice='+$finalPrice3.textContent
+        location.href = '/product/payment?totalPrice='+$finalPrice3.value
     }
 </script>
 </body>

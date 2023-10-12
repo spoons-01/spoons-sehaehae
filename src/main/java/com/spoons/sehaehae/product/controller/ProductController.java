@@ -210,7 +210,7 @@ public class ProductController {
     }
 
     @PostMapping("/complete")
-    public String complete(@ModelAttribute OrderDTO order, MultipartFile photo, Model model, OrderProductDTO orderProductDTO) {
+    public String complete(@ModelAttribute OrderDTO order, MultipartFile photo, Model model, @RequestParam List<OrderProductDTO> orderProductDTO) {
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         int memberId = 1;
@@ -304,4 +304,26 @@ public class ProductController {
         List<CouponDTO> couponList = productService.selectCoupon(memberId);
         model.addAttribute("couponList",couponList);
     }
+
+    @GetMapping("/deletePremium")
+    public ResponseEntity<String> deletePremium(int code){
+        int memberId = 1;
+        Map<String,Object> map = new HashMap<>();
+        map.put("memberId",memberId);
+        map.put("code",code);
+        productService.deletePremium(map);
+
+        return ResponseEntity.ok("변경 완료");
+    }
+    @GetMapping("/deleteEco")
+    public String deleteEco(int code){
+        int memberId = 1;
+        Map<String,Object> map = new HashMap<>();
+        map.put("memberId",memberId);
+        map.put("code",code);
+        productService.deleteEco(map);
+
+        return "redirect:/product/cartList";
+    }
+
 }

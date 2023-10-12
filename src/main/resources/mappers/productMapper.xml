@@ -215,4 +215,17 @@
         WHERE USEABLE_STATUS = 'Y'
         AND DELETE_STATUS = 'N'
     </select>
+
+    <update id="deletePremium">
+        UPDATE TBL_CART
+        SET USE_PREMIUM = 'N'
+        WHERE MEMBER_NO = #{memberId}
+        AND PRODUCT_CODE = ${code}
+    </update>
+    <update id="deleteEco">
+        UPDATE TBL_CART
+        SET USE_ECO = 'N'
+        WHERE MEMBER_NO = #{memberId}
+        AND PRODUCT_CODE = ${code}
+    </update>
 </mapper>

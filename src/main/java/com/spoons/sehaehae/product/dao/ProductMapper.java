@@ -44,4 +44,8 @@ public interface ProductMapper {
     List<CouponDTO> selectCoupon(int memberId);
 
     int selectProductCount();
+
+    void deletePremium(Map<String, Object> map);
+
+    void deleteEco(Map<String, Object> map);
 }

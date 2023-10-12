@@ -26,5 +26,5 @@ public class OrderDTO {
     private String collectionDate; //o
     private String deliveryDate; //o
     private String image;  //O
-    private List<OrderProductDTO> list;
+    private List<OrderProductDTO> productList;
 }

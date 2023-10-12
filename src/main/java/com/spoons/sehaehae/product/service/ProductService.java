@@ -98,9 +98,17 @@ public class ProductService {
         int buttonAmount = 5;
         SelectCriteria selectCriteria = Pagenation.getSelectCriteria(page,limit,buttonAmount, totalCount);
         System.out.println(totalCount);
-
-
-
         return null;
+    }
+
+    public void deletePremium(Map<String, Object> map) {
+
+        productMapper.deletePremium(map);
+
+    }
+
+    public void deleteEco(Map<String, Object> map) {
+
+        productMapper.deleteEco(map);
     }
 }

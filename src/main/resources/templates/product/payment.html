@@ -117,6 +117,8 @@
         <div class="order">
             <p class="z">상품정보</p>
             <div class="pdinfo" th:each="list:${cartList}">
+                <input type="hidden" th:value="${list.product.code}" name="productList.productCode">
+                <input type="hidden" th:value="${list.amount}" name="productList.amount">
                 <input type="hidden" th:value="${list.product.code}" name="productCode">
                 <input type="hidden" th:value="${list.amount}" name="amount">
                 <img th:src="${list.product.photo}" style="max-width: 120px; max-height: 100px">
@@ -204,7 +206,7 @@
 
     function kakaopay(data) {
         const price = '[[${totalPrice}]]';  //원래그임
-        const totalPrice = $finalPrice.textContent;//결제금액\
+        const totalPrice = $finalPrice.textContent;//결제금액
         IMP.init('imp24841453');
         IMP.request_pay({
             pg: "kakaopay.TC0ONETIME",
