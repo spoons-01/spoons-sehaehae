@@ -167,6 +167,12 @@ public class MemberController {
         return "redirect:/user/member/update";
     }
 
+    /* 마이페이지-나의 세해 이동 */
+    @GetMapping("/member/mysehae")
+    public void mysehae() {
+    }
+
+
     /* ================================================================== */
 
     protected Authentication createNewAuthentication(String memberId) {
