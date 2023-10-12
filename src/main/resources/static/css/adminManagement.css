@@ -1,0 +1,273 @@
+
+/*------------------ breadcrumb ---------------- */
+
+.nav {
+    height: 100px;
+    border-right: 1px solid rgba(0, 0, 0, 0.185);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.185);
+
+}
+
+.nav ol {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    width: 400px;
+    font-size: 18px;
+}
+
+
+/*------------ header 아래있는 애들 -------------*/
+
+.container {
+    display: flex;
+    flex-direction: column;
+    /* 자식 요소를 세로로 배치 */
+    margin-left: 300px;
+    width: 1500px;
+
+}
+
+.basic-search2 {
+    display: flex;
+    height: 50px;
+}
+
+.top-name {
+
+    margin: 0px;
+    padding: 0px 0px 3px 0px;
+    font-size: 25px;
+    border-bottom: 1px solid black;
+    height: 40px;
+    width: 1550px;
+    display: block;
+
+}
+
+.ractangle {
+    margin: 16px 0px 0px 0px;
+    height: 30px;
+    width: 5px;
+    display: inline-flex;
+}
+
+p {
+    margin: 20px 0px 0px 4px;
+}
+
+/*----- table -----*/
+
+table{
+    width: 1550px;
+}
+
+table,tr,th{
+    border:1px solid black;
+    border-collapse:collapse;
+    padding: 20px;
+
+
+}
+
+td{
+    height: 50px;
+    padding-left: 6px;
+
+
+}
+
+
+#search-method{
+    height: 30px;
+    width: 100px;
+
+}
+
+#searchValue{
+    margin-left: 7px;
+    height: 30px;
+    width: 300px;
+}
+
+#order-status{
+    height: 30px;
+    width: 100px;
+}
+
+#start-date{
+    height: 25.8px;
+    margin: 0px 3px 0px 0px;
+}
+
+#end-date{
+    height: 25.8px;
+    margin: 0px 3px 0px 5px;
+}
+
+.but-group{
+    margin-left: 5px;
+}
+
+.sub-btn{
+    padding: 4px;
+
+}
+
+.search-bottom{
+    padding: 20px 0px 20px 0px;
+}
+
+#searchButton{
+    height: 30px;
+    width: 100px;
+    margin-left: 670px;
+    border: 1px solid rgba(0, 0, 0, 0.68);
+    background-color: rgb(57, 125, 246);
+    color: white;
+}
+#searchButton:hover{
+    background-color: rgb(42, 101, 213);
+}
+
+#resetButton{
+    height: 30px;
+    width: 100px;
+    margin-left: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.68);
+    background-color: rgb(255, 255, 255);
+    color: rgb(57, 125, 246);
+}
+
+
+#resetButton:hover{
+    background-color: rgb(241, 239, 239);
+}
+
+/*-------- 주문일괄처리 ----------*/
+.container1 {
+    display: flex;
+    flex-direction: column;
+    /* 자식 요소를 세로로 배치 */
+
+    width: 1500px;
+
+}
+
+.order-process {
+    display: flex;
+    height: 50px;
+}
+
+
+.bottom-table{
+    border-left: none; !important;
+    border-right: none; !important;
+}
+
+.bottom-th{
+    width: 50px;
+    border-left: none;  !important;
+    border-right: none; !important;
+    background-color: rgba(0, 0, 0, 0.09);
+
+}
+
+.bottom-tr{
+    border-left: none; !important;
+    border-right: none; !important;
+}
+
+.bottom-td{
+    width: 500px;
+    border-right: none; !important;
+    padding-left: 20px;
+
+}
+
+.bottom-button{
+    margin: 0;
+    border: 1px solid rgba(0, 0, 0, 0.37);
+    width: 85px;
+    padding: 10px 12px 10px 12px;
+    border-radius: 5px;
+    background-color: rgb(57, 125, 246);
+    color: white;
+
+}
+
+.bottom-button:hover{
+    background-color: rgb(42, 101, 213);
+}
+
+/*----------------------- 디비애들 --------------------*/
+
+#listArea{
+    margin-top: 70px;
+
+}
+
+.container2 {
+    margin-bottom: 50px;
+}
+
+/*---------------------모달 창 -------------------------*/
+#modal.modal-overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(1.5px);
+    -webkit-backdrop-filter: blur(1.5px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+#modal .modal-window {
+    background: rgba( 69, 139, 197, 0.70 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 13.5px );
+    -webkit-backdrop-filter: blur( 13.5px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    width: 400px;
+    height: 500px;
+    position: relative;
+    top: -100px;
+    padding: 10px;
+}
+#modal .title {
+    padding-left: 10px;
+    display: inline;
+    text-shadow: 1px 1px 2px rgba(128, 128, 128, 0.96);
+    color: white;
+
+}
+#modal .title h2 {
+    display: inline;
+}
+#modal .close-area {
+    display: inline;
+    float: right;
+    padding-right: 10px;
+    cursor: pointer;
+    text-shadow: 1px 1px 2px rgba(128, 128, 128, 0.96);
+    color: white;
+}
+
+#modal .content {
+    margin-top: 20px;
+    padding: 0px 10px;
+    text-shadow: 1px 1px 2px rgba(128, 128, 128, 0.96);
+    color: white;
+}
+
+
+
+

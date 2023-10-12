@@ -1,0 +1,305 @@
+@charset "UTF-8";
+@font-face {
+    font-family: 'GangwonState';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/GangwonState.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 제목, 겉 테두리 ---------------------------------------------------*/
+.adminNotice {
+    /*width: 50%; !* 원하는 너비로 조정 *!*/
+    margin: 100px 530px; /* 가운데 정렬을 위한 마진 설정 */
+    margin-bottom: 10px;
+    text-align: center; /* 내용을 수평으로 가운데 정렬 */
+    padding: 20px; /* 내용 주변 여백 설정 */
+    border: 1px solid black;
+    width: 1100px;
+    height: auto;
+}
+
+.adminNoticename h2 {
+    margin-top: 10px;
+    color: black;
+    font-size: 45px;
+    font-family: GANGWON STATE;
+    font-weight: 400;
+    line-height: 18px;
+    word-wrap: break-word;
+}
+/* 테이블 --------------------------------------------------------*/
+
+.adminNotice table {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top: 50px;
+    border-spacing: 80px 20px;
+    border-collapse: collapse;
+    width: 100%;  /* 화면에서 표가 차지하는 비율*/
+}
+
+.adminNotice td,th {
+    border-bottom: 1px solid black;
+    padding: 5px;
+}
+
+.th1 {
+    width: 80px;
+}
+
+.th2 {
+    width: 500px;
+}
+
+.th3 {
+    width: 100px;
+}
+
+.th4 {
+    width: 220px;
+}
+
+/* 버튼들 ------------------------------------------------*/
+
+.noticeDML {
+    margin-right: 290px;
+    float: right;
+    /*display: flex;*/
+    /*justify-content: space-between;*/
+    /*margin-left: 550px;*/
+}
+
+.noticeDML button{
+    width: 80px;
+    height: 35px;
+    background: #E7E3DF;
+    border-radius: 20px;
+    color: #4E4D4D;
+    font-size: 15px;
+    /*font-weight: 100;*/
+    /*word-wrap: break-word*/
+}
+
+.noticeDML a {
+
+    background: #E7E3DF;
+    border-radius: 20px;
+    color: #4E4D4D;
+    font-size: 15px;
+    padding: 10px;
+}
+
+/* 상단바 경로 -------------------------------------------------------*/
+.breadcrumb {
+    /*background-color: #f2f2f2;*/
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.breadcrumb a {
+    /*text-decoration: none;*/
+    /*color: #333;*/
+    /*font-weight: bold;*/
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+/* 페이징바 ---------------------------------------------------- */
+.pagingbar {
+    margin-left: 250px;
+    margin-top: 90px;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+/* 디테일 ---------------------------------------------------------*/
+
+.details {
+    margin: 100px 530px; /* 가운데 정렬을 위한 마진 설정 */
+    margin-bottom: 10px;
+    text-align: center; /* 내용을 수평으로 가운데 정렬 */
+    padding: 20px; /* 내용 주변 여백 설정 */
+    border: 1px solid black;
+    width: 1100px;
+}
+
+.detail-category p{
+    margin-bottom: 30px;
+    text-decoration: underline;
+}
+.detail-name {
+    margin-top: 10px;
+    color: black;
+    font-size: 40px;
+    font-family: GANGWON STATE;
+    font-weight: 400;
+    line-height: 18px;
+    word-wrap: break-word;
+}
+
+.details table {
+    /*border-top: 1px solid black;*/
+    border-bottom: 1px solid black;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top: 50px;
+    border-spacing: 80px 20px;
+    border-collapse: collapse;
+    width: 100%;  /* 화면에서 표가 차지하는 비율*/
+}
+
+.detail-date p{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.detail-body {
+    border-top: 1px solid black;
+}
+
+.detail-body textarea {
+    text-align: center;
+    margin-top: 20px;
+    width: 1000px;
+    height: auto; /* 높이를 자동으로 조절 */
+    min-height: 100px; /* 최소 높이를 지정 (원하는 높이로 조정 가능) */
+    max-height: 1000px; /* 최대 높이를 지정 (원하는 높이로 조정 가능) */
+    resize: none; /* 크기 조절 비활성화 */
+}
+
+.golist {
+    float: none;
+    text-align: center;
+}
+
+/* 공지사항 글 작성 -----------------------------------------------------------------------*/
+
+.regist {
+    margin: 100px 530px; /* 가운데 정렬을 위한 마진 설정 */
+    margin-bottom: 10px;
+    /*text-align: center; !* 내용을 수평으로 가운데 정렬 *!*/
+    padding: 20px; /* 내용 주변 여백 설정 */
+    border: 1px solid black;
+    width: 1100px;
+    height: auto;
+}
+
+.regist table {
+    border-collapse: collapse;
+
+}
+
+.regist td {
+    border-top: 1px solid black;
+    color: black;
+    font-size: 20px;
+    font-family: Inter;
+    font-weight: 300;
+    word-wrap: break-word;
+}
+
+.regist-name {
+    border: 1px solid black;
+    width: 450px;
+    margin-left: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.regist-body {
+    border: 1px solid black;
+    width: 900px;
+    margin-left: 30px;
+    margin-top: 10px;
+    border-radius: 5px;
+    /*resize: none;*/
+}
+
+.noticeDML2 {
+    text-align: center;
+}
+
+.noticeDML2 button {
+    width: 80px;
+    height: 35px;
+    background: #E7E3DF;
+    border-radius: 20px;
+    color: #4E4D4D;
+    font-size: 15px;
+}
+
+/* 모달창 -------------------------------------------------------------- */
+#modal.modal-overlay {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;   /* 페이지 위에 띄우기*/
+    border-radius: 10px;
+    background-color: white;
+    border: 1px solid black;
+    padding: 20px;
+    width: 1100px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.modal-detail {
+
+}
+#modal .title {
+    padding-left: 10px;
+    display: flex;
+    justify-content: space-between;
+    color: black;
+    background-color: rgba(217, 217, 217, 1);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+#modal .close-area {
+    padding-right: 10px;
+    cursor: pointer;
+    text-shadow: 1px 1px 2px grey;
+    color: black;
+}
+
+#modal .content {
+    margin-top: 20px;
+    padding: 0px 10px;
+    color: rgba(79, 75, 75, 1);
+}
+
+.modal-table {
+    border-collapse: collapse;
+    background-color: rgba(255, 251, 251, 1);
+    display: flex;
+    justify-content: center;
+    width: auto;
+}
+.modal-table td{
+    border-spacing: 20px 0;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 10px;
+}
+
+.modal-td {
+    text-align: center;
+}
+
+.modal-category {
+    margin-left: 30px;
+    appearance: auto;
+    border: 1px solid black;
+    border-radius: 5px;
+}

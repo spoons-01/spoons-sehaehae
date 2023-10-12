@@ -1,24 +1,53 @@
 #DB config
+server:
+  port: 80
 spring:
+  mail:
+    # Google smtp server 사용
+    host: smtp.gmail.com
+    port: 587
+    username: yang950454@gmail.com
+    password: pddufdxtdxfmhzwm
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
   datasource:
-    driver-class-name: oracle.jdbc.driver.OracleDriver
-    url: jdbc:oracle:thin:@localhost:1521:xe
+
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:oracle:thin:@localhost:1521:xe
     username: C##SPOONS
     password: SPOONS
 
-#  # file upload config
-#  servlet:
-#    multipart:
-#      max-file-size: 10MB
-#      max-request-size: 10MB
-#      location: C:/Lecture/spoons-sehaehae
-#
-## Mybatis config
+# file upload config
+servlet:
+  multipart:
+    max-file-size: 300MB
+    max-request-size: 300MB
+    location: C:/sub_project/uploadFile
+
+
+# Mybatis config
 mybatis:
   mapper-locations: mappers/**/*.xml
+  type-aliases-package: com.spoons.sehaehae.*.dto
 
-## image upload dir
-#image:
-#  image-dir: src/main/resources/upload
+logging:
+  pattern:
+    file: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+  level:
+    org:
+      springframework: INFO
+    jdbc:
+      sqlonly: OFF
+      sqltiming: DEBUG
+      audit: OFF
+      resultset: OFF
+      resultsettable: DEBUG
+      connection: OFF
 
-
+# image upload dir
+image:
+  image-dir: C:/sub_project/spoons/sehae/src/main/resources/upload/

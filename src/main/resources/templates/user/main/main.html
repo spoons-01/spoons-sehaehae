@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>세탁해병대</title>
+    <!-- 스타일 시트 -->
+    <link href="/css/usermainstyle.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="/images/favicon.ico">
+    <!-- 리셋 CSS 설정 -->
+    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="stylesheet" type="text/css">
+</head>
+
+<!-- 양슬기 파트 -->
+<body>
+
+<!-- 헤더 불러오기 -->
+<div th:replace="user/common/header.html"></div>
+
+<!-- 메인 컨텐츠 -->
+<div id="background">
+    <div class="wrapper">
+        <h1>각잡힌 배송, 칼같은 세탁!<br>세탁해병대의 신조입니다.</h1>
+        <p>세탁해병대</p>
+        <a href="2_history" class="button">자세히 보기</a>
+    </div>
+</div>
+
+<div class="wrapper service">
+    <h2>서비스 신청</h2>
+    <div class="service-all">
+        <div class="main-service">
+            <img src="/images/service1.png"><br>
+            <h3>세탁 신청</h3>
+        </div>
+        <div class="main-service">
+            <img src="/images/service2.png"><br>
+            <h3>PET 용품 세탁</h3>
+        </div>
+        <div class="main-service">
+            <img src="/images/service3.png"><br>
+            <h3>의류 보관 신청</h3>
+        </div>
+    </div>
+    <div class="buttoncenter">
+        <a href="#" class="button2">수거신청하기</a>
+    </div>
+</div>
+
+
+<div id="blue-background">
+    <div class="blue-div wrapper">
+        <h>세탁소도 세탁기도 필요 없습니다.<br><span>세해</span>는 한 번에!</h>
+    </div>
+
+    <div class="sehae">
+        <div class="s-all">
+            <h2>일반세탁</h2><br>
+            <img src="/images/s-1.jpg"><br>
+            <h>봉투에 수건, 양말, 잠옷 같은 빨랫감을 담아주시면 단독 물세탁하고 보송하게 개어 드립니다. 건조기와 세탁소 찾지 말고 9,900원에 세탁 없는 일상을 직접 경험해보세요.</h>
+        </div>
+        <div class="s-all">
+            <h2>프리미엄 세탁</h2><br>
+            <img src="/images/s-2.png"><br>
+            <h>검수부터 마무리까지, 명품다운 프리미엄 올인원 케어. 세계적인 브랜드 Electrolux의 고급 의류 전용 머신, LagoonⓇ 시스템을 도입해 세탁 마찰에 의한 의류 손상을
+                최소화합니다.</h>
+        </div>
+        <div class="s-all">
+            <h2>오염케어</h2><br>
+            <img src="/images/s-3.png"><br>
+            <h>얼룩이 많아서, 까다로운 얼룩이라서 세탁비가 너무 비싸진 적 있나요? 반려동물 털 때문에 세탁 거절 당한 적은요? 세특에서는 모두 무료로 서비스 해드려요.</h>
+        </div>
+    </div>
+</div>
+
+<!-- 강인선 파트 -->
+<div class="tip wrapper">
+    <div class="tip-name">
+        <h2>세탁의 모든것, 세해 꿀팁!💡</h2>
+        <p>더보기</p>
+    </div>
+
+    <!-- 이부분은 나중에 조회수나 좋아요 순으로 게시글이 나오게 해야한다. 지금은 임시로 보여주는거 -->
+    <div class="tip-content">
+        <div>
+            <img src="/images/tip1.png">
+            <h5>빨래, 예쁘게 개고 싶다면?</h5>
+            <p>자취 10년차가...</p>
+        </div>
+        <div>
+            <img src="/images/tip2.png">
+            <h5>세탁기 냄새 없애기!</h5>
+            <p>오늘은 세탁기 청소날!</p>
+        </div>
+        <div>
+            <img src="/images/tip3.png">
+            <h5>여름철 빨래 보관은?</h5>
+            <p>세해가 싹 알려드려요!</p>
+        </div>
+        <div>
+            <img src="/images/tip4.png">
+            <h5>적정 세제양, 궁금하세요?</h5>
+            <p>울세탁부터 기본세...</p>
+        </div>
+    </div>
+</div>
+
+<!-- 여기도 나중에 작성한 후기가 최신순으로 노출된다. -->
+<div class="review wrapper">
+    <h2>실시간 이용 후기</h2><br>
+    <div class="review-box">
+        <p><</p>
+        <div>후기1</div>
+        <div>후기2</div>
+        <div>후기3</div>
+        <p>></p>
+    </div>
+    <div>
+        <div class="reviewcenter">
+            <a href="#" class="button3">후기 더보기</a>
+        </div>
+    </div>
+</div>
+
+<!-- footer 불러오기 -->
+<div th:replace="user/common/footer.html"></div>
+</body>
+
+</html>
