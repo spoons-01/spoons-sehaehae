@@ -47,6 +47,7 @@
 		<id property="membershipCode" column="REF_MEMBERSHIP_CODE2"/>
 		<result property="membershipName" column="MEMBERSHIP_NAME"/>
 	</resultMap>
+
 <!--
 	<resultMap type="com.spoons.sehaehae.member.dto.ProfileAttachmentDTO" id="profileAttachmentResultMap">
 		<id property="profilePhotoNo" column="PROFILE_PHOTO_NO"></id>
@@ -214,8 +215,9 @@
   
    <select id="selectMemberList" resultMap="memberResultMap">
         select
-            *
-        from    TBL_MEMBER
+            A.*
+        from    TBL_MEMBER A
+		join 	TBL_CPBOX B on(A.MEMBER_NO = B.MEMBER_NO)
         where	MEMBER_STATUS = 'Y'
     </select>
 
@@ -238,6 +240,22 @@
 		where  MEMBER_NO=${memberNo}
 	</update>
 
+	
+	
+	
+	<select id="getfNum" parameterType="int">
+		select
+		    count(*)
+		from	TBL_MEMBER
+		where	MEMBER_STATUS='Y' and GENDER = 'F'
+	</select>
+
+	<select id="getmNum" parameterType="int">
+		select
+			count(*)
+		from	TBL_MEMBER
+		where	MEMBER_STATUS='Y' and GENDER = 'M'
+	</select>
 
 </mapper>
 

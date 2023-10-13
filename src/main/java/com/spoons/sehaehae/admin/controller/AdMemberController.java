@@ -40,4 +40,5 @@ public class AdMemberController {
     public String MemberMessage(){
         return "admin/member/memberMessage";
     }
+
 }

@@ -26,4 +26,9 @@ public interface MemberMapper {
     void adUpdateMember(MemberDTO member);
 
     void removeMember(MemberDTO removeMember);
+
+
+    int getfNum();
+
+    int getmNum();
 }
