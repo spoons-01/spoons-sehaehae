@@ -23,7 +23,7 @@ public class SelectCriteria {
     private int endRow;
     private String searchCondition;
     private String searchValue;
-//    private String startDate;
-//    private String endDate;
+    private String startDate;
+    private String endDate;
 
 }
