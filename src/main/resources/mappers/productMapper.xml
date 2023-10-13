@@ -36,8 +36,7 @@
         <id column="MEMBER_NO" property="memberNo"/>
         <result column="NAME" property="name"/>
         <result column="PHONE_NUMBER" property="phone"/>
-        <result column="ADDRESS" property="address1"/>
-        <result column="MY_POINT" property="point"/>
+        <result column="ADDRESS1" property="address1"/>
     </resultMap>
 
 
@@ -149,8 +148,7 @@
         MEMBER_NO,
         NAME,
         PHONE_NUMBER,
-        ADDRESS,
-        MY_POINT
+        ADDRESS1
         FROM TBL_MEMBER
         WHERE MEMBER_NO = #{memberCode}
     </select>
@@ -166,9 +164,9 @@
     <insert id="registOrder">
         INSERT INTO TBL_ORDER
         (ORDER_CODE, ORDER_DATE, ORDER_REQUEST, ORDER_PRICE, ORDER_DISCOUNT, ORDER_TOTAL_PRICE,
-        MEMBER_NO,INPUT_ADDRESS,CP_CODE,USE_POINT,COLLECTION_DATE,DELIVERY_DATE,ORDER_IMAGE,ORDER_STATUS)
+        MEMBER_NO,INPUT_ADDRESS,INPUT_ADDRESS2,CP_CODE,USE_POINT,COLLECTION_DATE,DELIVERY_DATE,ORDER_STATUS)
         VALUES
-        (#{code},#{date},#{request},#{price},#{discount},#{totalPrice},#{member},#{address},#{coupon},#{usePoint},#{collectionDate},#{deliveryDate},#{image},'Y')
+        (#{code},#{orderDate},#{orderRequest},#{orderPrice},#{orderDiscount},#{orderTotalPrice},#{member.memberNo},#{inputAddress},#{InputAddress2},#{useCoupon},#{usePoint},#{collectionDate},#{deliveryDate},'결제완료')
     </insert>
 
     <update id="modifyProduct">
@@ -196,14 +194,12 @@
     <resultMap id="couponResultMap" type="com.spoons.sehaehae.admin.dto.CouponDTO">
         <id property="cpCode" column="CP_CODE"/>
         <result property="cpName" column="CP_NAME"/>
-        <result property="cpEdate" column="CP_DURATION"/>
         <result property="cpRate" column="CP_RATE"/>
     </resultMap>
     <select id="selectCoupon" resultMap="couponResultMap">
         SELECT
         CP_CODE,
         CP_NAME,
-        CP_DURATION,
         CP_RATE
         FROM TBL_CP
     </select>
@@ -228,4 +224,18 @@
         WHERE MEMBER_NO = #{memberId}
         AND PRODUCT_CODE = ${code}
     </update>
+    <update id="addOption">
+        UPDATE TBL_CART
+        SET USE_Eco = 'Y'
+        WHERE MEMBER_NO = #{memberCode}
+        AND PRODUCT_CODE = #{code}
+    </update>
+    <update id="addPremium">
+        UPDATE TBL_CART
+        SET USE_PREMIUM = 'Y'
+        WHERE MEMBER_NO = #{memberCode}
+        AND PRODUCT_CODE = #{code}
+    </update>
+
+
 </mapper>

@@ -66,23 +66,22 @@ public class ProductController {
     }
 
     @GetMapping("/cart")
-    public void cart(Model model) {
-        int i = 1;
-        List<CartDTO> cartList = productService.cartList(i);
+    public void cart(Model model, @AuthenticationPrincipal MemberDTO member) {
+        List<CartDTO> cartList = productService.cartList(member.getMemberNo());
         model.addAttribute("cartList", cartList);
         model.addAttribute("price", 3000);
     }
 
     @GetMapping("/payment")
-    public void payemnt(Model model, @RequestParam int totalPrice) {
-        int memberCode = 1;
+    public void payemnt(Model model, @RequestParam int totalPrice, @AuthenticationPrincipal MemberDTO member) {
+        int memberCode = member.getMemberNo();
         System.out.println(totalPrice);
 
-        MemberDTO member = productService.selectMember(memberCode);
+        MemberDTO member1 = productService.selectMember(memberCode);
         List<CartDTO> cart = productService.cartList(memberCode);
 
         model.addAttribute("totalPrice", totalPrice-3000);
-        model.addAttribute("member", member);
+        model.addAttribute("member", member1);
         model.addAttribute("cartList", cart);
     }
 
@@ -128,8 +127,8 @@ public class ProductController {
     }
 
     @GetMapping("/addCart")
-    public ResponseEntity<String> addCart(@ModelAttribute CartDTO cart) {
-        cart.setMember(1);
+    public ResponseEntity<String> addCart(@ModelAttribute CartDTO cart, @AuthenticationPrincipal MemberDTO member) {
+        cart.setMember(member.getMemberNo());
         productService.addCart(cart);
         return ResponseEntity.ok("장바구니에 추가됨");
     }
@@ -145,14 +144,10 @@ public class ProductController {
     }
 
     @GetMapping("/cartList")
-    public void cartList(Model model) {
-        int a = 1;
-        List<CartDTO> list = productService.cartList(a);
+    public void cartList(Model model, @AuthenticationPrincipal MemberDTO member) {
+        List<CartDTO> list = productService.cartList(member.getMemberNo());
         int totalPrice = 0;
-
         System.out.println(list);
-
-
         for (int i = 0; list.size() > i; i++) {
             totalPrice += list.get(i).getProduct().getPrice() * list.get(i).getAmount();
             if(list.get(i).getUseEco().equals("Y")){
@@ -162,7 +157,6 @@ public class ProductController {
                 totalPrice += list.get(i).getProduct().getPremiumPrice();
             }
         }
-
         model.addAttribute("cartList", list);
         model.addAttribute("totalPrice", totalPrice);
         model.addAttribute("ecoPrice",3000);
@@ -175,24 +169,23 @@ public class ProductController {
     }
 
     @GetMapping("/updateCart")
-    public ResponseEntity<String> updateCart1(@RequestParam int amount, @RequestParam String productCode) {
-        int memberid = 1;
+    public ResponseEntity<String> updateCart1(@RequestParam int amount, @RequestParam String productCode, @AuthenticationPrincipal MemberDTO member) {
+
         System.out.println("amount : " + amount);
         System.out.println("productCode : " + productCode);
         Map<String, Object> updateCartMap = new HashMap<>();
         updateCartMap.put("amount", amount);
         updateCartMap.put("productCode", productCode);
-        updateCartMap.put("memberId", memberid);
+        updateCartMap.put("memberId", member.getMemberNo());
         productService.updateCartList(updateCartMap);
         return ResponseEntity.ok("ddd");
     }
 
     @PostMapping("/deleteCart")
-    public @ResponseBody ResponseEntity<String> deleteCart(@RequestBody List<Integer> product) {
-        int userid = 1;
+    public @ResponseBody ResponseEntity<String> deleteCart(@RequestBody List<Integer> product, @AuthenticationPrincipal MemberDTO member) {
 
         Map<String, Object> cartMap = new HashMap<>();
-        cartMap.put("memberId", userid);
+        cartMap.put("memberId", member.getMemberNo());
         cartMap.put("productList", product);
         productService.deleteCart(cartMap);
 
@@ -201,6 +194,10 @@ public class ProductController {
 
     @GetMapping("/finalPrice")
     public ResponseEntity<Long> abc(@RequestParam(defaultValue = "0") int point, @RequestParam(required = false) int totalPrice, @RequestParam(defaultValue = "10") int rate) {
+        System.out.println(totalPrice);
+        System.out.println(rate);
+
+
         float per = (float) rate / 100;
         Long discount = (long) (totalPrice * per);
         System.out.println("discount : " + discount); //할인금액
@@ -210,17 +207,18 @@ public class ProductController {
     }
 
     @PostMapping("/complete")
-    public String complete(@ModelAttribute OrderDTO order, MultipartFile photo, Model model, @AuthenticationPrincipal MemberDTO member) {
+    public String complete(@ModelAttribute OrderDTO order, Model model, @AuthenticationPrincipal MemberDTO member,MultipartFile photo) {
+
+
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-        int memberId = 1;
         int discount = (order.getOrderPrice() + 3000) - order.getOrderTotalPrice();
         String uuid = UUID.randomUUID().toString().substring(0,4);
         String code = simpleDateFormat.format(date) + uuid;
         order.setOrderDiscount(discount);
         order.setCode(code);
         order.setOrderDate(new Date());
-        order.setMember(memberId);
+        order.setMember(member);
 
         String originalName = photo.getOriginalFilename();
         String fileUploadDir = IMG_DIR + "resource/images";
@@ -240,12 +238,13 @@ public class ProductController {
 
         productService.addOrder(order);
         model.addAttribute(code);
-        return "redirect:/product/ordercomplete?code="+code;
+        return "/product/ordercomplete";
     }
     @GetMapping("/ordercomplete")
-    public void orderComplete(RedirectAttributes rttr, String code){
-
-        rttr.addAttribute("code", code);
+    public String orderComplete(Model model, String code){
+        System.out.println(code);
+        model.addAttribute("code",code);
+        return "/product/ordercomplete";
     }
 
 
@@ -286,7 +285,6 @@ public class ProductController {
         rttr.addFlashAttribute("message",messageSourceAccessor.getMessage("product.regist"));
         return "redirect:/product/listAdmin";
     }
-
     @PostMapping("/delete")
     public ResponseEntity<String> delete(@RequestBody List<Integer> productCode){
         System.out.println(productCode);
@@ -297,33 +295,39 @@ public class ProductController {
 
         return ResponseEntity.ok("삭제가 완료되었습니다.");
     }
-
     @GetMapping("/coupon")
-    public void coupon(Model model){
-        int memberId =1;
-        List<CouponDTO> couponList = productService.selectCoupon(memberId);
+    public void coupon(Model model, @AuthenticationPrincipal MemberDTO member){
+        List<CouponDTO> couponList = productService.selectCoupon(member.getMemberNo());
         model.addAttribute("couponList",couponList);
     }
 
     @GetMapping("/deletePremium")
-    public ResponseEntity<String> deletePremium(int code){
-        int memberId = 1;
+    public ResponseEntity<String> deletePremium(int code, @AuthenticationPrincipal MemberDTO member){
         Map<String,Object> map = new HashMap<>();
-        map.put("memberId",memberId);
+        map.put("memberId",member.getMemberNo());
         map.put("code",code);
         productService.deletePremium(map);
 
         return ResponseEntity.ok("변경 완료");
     }
     @GetMapping("/deleteEco")
-    public String deleteEco(int code){
-        int memberId = 1;
+    public String deleteEco(int code, @AuthenticationPrincipal MemberDTO member){
         Map<String,Object> map = new HashMap<>();
-        map.put("memberId",memberId);
+        map.put("memberId",member.getMemberNo());
         map.put("code",code);
         productService.deleteEco(map);
-
         return "redirect:/product/cartList";
+    }
+
+    @GetMapping("addOption")
+    public void addoption(int code, String option,@AuthenticationPrincipal MemberDTO member){
+        System.out.println(code);
+        System.out.println(option);
+        Map<String, Object> addoption = new HashMap<>();
+        addoption.put("option",option);
+        addoption.put("code",code);
+        addoption.put("memberCode",member.getMemberNo());
+        productService.addOption(addoption);
     }
 
 }

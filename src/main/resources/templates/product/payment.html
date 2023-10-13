@@ -38,14 +38,14 @@
                 </div>
                 <div class="info2">
                     <p th:text="${member.address1}" id="zonecode"></p>
-                    <input type="text" name="address" style="display: none" th:value="${member.address1}">
-                    <input type="text" name="address2" placeholder="상세주소"><br><br>
+                    <input type="text" name="InputAddress" style="display: none" th:value="${member.address1}">
+                    <input type="text" name="InputAddress2" placeholder="상세주소"><br><br>
                     <span th:text="${member.name}" id="name2"></span><span th:text="${member.phone}"
                                                                            style="margin-left: 20px" id="phone2"></span>
                 </div>
                 <div class="request">
                     <p>요청사항 :</p>
-                    <input id="orderrequest" type="text" name="request" placeholder="문 앞에 놔주세요">
+                    <input id="orderrequest" type="text" name="orderRequest" placeholder="문 앞에 놔주세요">
                 </div>
 
                 <div class="image">
@@ -72,12 +72,12 @@
                     <tr>
                         <td>총 상품가격</td>
                         <td th:text="|${#numbers.formatInteger(totalPrice,3,'COMMA')}원|"></td>
-                        <input type="number" style="display: none" th:value="${totalPrice}" name="price">
+                        <input type="number" style="display: none" th:value="${totalPrice}" name="orderPrice">
                     </tr>
                     <tr>
                         <td>쿠폰</td>
-                        <input name="coupon" id="usecoupon" style="display: none">
-                        <input type="number" name="rate" id="rate" style="display: none" value="0">
+                        <input name="useCoupon" id="usecoupon" style="display: none">
+                        <input type="number" id="rate" style="display: none" value="0">
                         <td><span id="couponName">선택된쿠폰없음</span></td>
                         <td>
                             <button type="button" class="coupon">쿠폰변경</button>
@@ -87,15 +87,15 @@
                         <td>배송비</td>
                         <td>3,000원</td>
                     </tr>
-                    <tr>
-                        <td>포인트</td>
-                        <td><input id="point" type="number" placeholder="사용금액 입력" name="usePoint" value="0"></td>
-                        <td th:text="${member.point}+'원 보유'"></td>
-                    </tr>
+<!--                    <tr>-->
+<!--                        <td>포인트</td>-->
+<!--                        <td><input id="point" type="number" placeholder="사용금액 입력" name="usePoint" value="0"></td>-->
+<!--                        <td th:text="${member.point}+'원 보유'"></td>-->
+<!--                    </tr>-->
                     <tr>
                         <td>총 결제금액</td>
-                        <td id="finalPrice" th:text="${totalPrice}+3000"></td>
-                        <input type="number" name="totalPrice" id="finalPrice2" style="display: none">
+                        <td id="finalPrice" th:text="${#numbers.formatInteger(totalPrice+3000,3,'COMMA')}+'원'"></td>
+                        <input type="number" name="orderTotalPrice" id="finalPrice2" th:value="${totalPrice+3000}">
                     </tr>
                 </table>
                 <p class="dd">결제수단</p>
@@ -115,8 +115,8 @@
         <div class="order">
             <p class="z">상품정보</p>
             <div class="pdinfo" th:each="list:${cartList}">
-                <input type="hidden" th:value="${list.product.code}" name="productList.productCode">
-                <input type="hidden" th:value="${list.amount}" name="productList.amount">
+                <input type="hidden" th:value="${list.product.code}" name="list[0].productCode">
+                <input type="hidden" th:value="${list.amount}" name="list[0].amount">
                 <img th:src="${list.product.photo}" style="max-width: 120px; max-height: 100px">
                 <div class="iinfo">
                     <p th:text="${list.product.name}">티셔츠</p>
@@ -132,8 +132,8 @@
         </div>
     </form>
 </div>
-
 <script>
+    const ttotalPrice = '[[${totalPrice}]]'
     const $imagebox = document.querySelector(".replaceimage");
     const $file = document.querySelector(".file");
     const reader = new FileReader();
@@ -161,12 +161,10 @@
         $phone2.textContent = $phone.value;
     }
     const $point = document.querySelector("#point")
-    const point = '[[${member.point}]]'
     const $finalPrice = document.querySelector("#finalPrice")
     const $finalPrice2 = document.querySelector("#finalPrice2")
-    console.log($point);
     console.log(point);
-    const ttotalPrice = '[[${totalPrice}]]'
+
 </script>
 <script type="text/javascript" src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script>
@@ -189,12 +187,11 @@
     console.log($regist)
 
     function naverpay(data) {
-        location.href = '/'
-        alert(123)
+        submit.submit();
     }
 
     function card(data) {
-        alert("카드")
+        submit.submit();
     }
 
     function kakaopay(data) {
@@ -226,16 +223,15 @@
     const $coupon = document.querySelector(".coupon")
     $coupon.onclick = function () {
         //창 크기 지정
-        var width = 500;
-        var height = 500;
+        let width = 500;
+        let height = 500;
 
         //pc화면기준 가운데 정렬
-        var left = (window.screen.width / 2) - (width / 2);
-        var top = (window.screen.height / 4);
+        let left = (window.screen.width / 2) - (width / 2);
+        let top = (window.screen.height / 4);
 
         //윈도우 속성 지정
-        var windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=yes, status=yes, resizable=yes, titlebar=yes';
-
+        let windowStatus = 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top + ', scrollbars=yes, status=yes, resizable=yes, titlebar=yes';
 
         //연결하고싶은url
         const url = "/product/coupon";
@@ -246,26 +242,13 @@
             const $usecoupon = document.querySelector("#usecoupon").value;
             console.log($rate);
             console.log($usecoupon);
-            fetch("/product/finalPrice?rate=" + $rate + "&couponCode=" + $usecoupon + "&totalPrice=" + ttotalPrice + "&point=" + $point.value)
+            fetch("/product/finalPrice?rate=" + $rate + "&couponCode=" + $usecoupon + "&totalPrice=" + Number(ttotalPrice))
                 .then(res => res.text())
-                .then(re => $finalPrice.textContent = (Number(re) + 3000))
-                .then(r => $finalPrice2.value = Number(r))
+                .then(r => $finalPrice2.value = Number(r)+3000)
+                .then(re => $finalPrice.textContent = re.toLocaleString('ko-KR')+"원")
                 .catch(error => console.log(error));
         })
     }
-
-    $point.addEventListener("change", function () {
-
-        $rate = document.querySelector("#rate").value;
-        console.log($point.value);
-        console.log($rate)
-        fetch("/product/finalPrice?point=" + $point.value + "&totalPrice=" + ttotalPrice + "&rate=" + $rate)
-            .then(res => res.text())
-            .then(re => $finalPrice.textContent = (Number(re) + 3000))
-            .then(r => $finalPrice2.value = Number(r))
-            .catch(error => console.log(error));
-        console.log($finalPrice.textContent);
-    })
 
 
 </script>

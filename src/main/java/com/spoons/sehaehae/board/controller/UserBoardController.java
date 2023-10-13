@@ -1,20 +1,22 @@
 package com.spoons.sehaehae.board.controller;
 
-import com.spoons.sehaehae.board.dto.BoardCategoryDTO;
-import com.spoons.sehaehae.board.dto.NoticeDTO;
-import com.spoons.sehaehae.board.dto.QnaDTO;
+import com.spoons.sehaehae.board.dto.*;
 import com.spoons.sehaehae.board.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnails;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+
 @Slf4j
 @Controller
 @RequestMapping("/user/board")
@@ -25,6 +27,9 @@ public class UserBoardController {
     public UserBoardController(BoardService boardService) {
         this.boardService = boardService;
     }
+
+    @Value("${image.image-dir}")
+    private String IMAGE_DIR;
 
 
     List<BoardCategoryDTO> categoryList = new ArrayList<>();
@@ -78,16 +83,81 @@ public class UserBoardController {
 
     /* 후기게시판 */
 
-//    @GetMapping("/userReview")
-//    public String getReview() {
-//
-//        return "user/board/userReview";
-//    }
-//
-//    @GetMapping("/userReview")
-//    public String getRegistReview() {
-//
-//        return "user/board/userReview";
-//    }
+    @GetMapping("/userReview")
+    public String getReview() {
 
+        return "/user/board/userReview";
+    }
+
+    @GetMapping("/regist")
+    public String getRegistPage() {
+
+        return "/user/board/userReviewRegist";
+    }
+
+    @PostMapping("/regist")
+    public String registReview(ReviewDTO review, List<MultipartFile> attachImage) {
+
+        log.info("review request : {}", review);
+        log.info("attachImage request : {}", attachImage);
+
+        String fileUploadDir = IMAGE_DIR + "original";
+        String thumbnailDir = IMAGE_DIR + "thumbnail";
+
+        File dir1 = new File(fileUploadDir);
+        File dir2 = new File(thumbnailDir);
+
+        /* 디렉토리가 없을 경우 생성한다. */
+        if(!dir1.exists() || !dir2.exists()) {
+            dir1.mkdirs();
+            dir2.mkdirs();
+        }
+
+        /* 업로드 파일에 대한 정보를 담을 리스트 */
+        List<AttachmentDTO> attachmentList = new ArrayList<>();
+
+        try {
+
+            for(int i =0; i < attachImage.size(); i++) {
+                /* 첨부파일이 실제로 존재하는 경우에만 로직 수행 */
+                    if(attachImage.get(i).getSize() > 0) {
+
+                        String originalFileName = attachImage.get(i).getOriginalFilename();
+                        log.info("originalFileName : {}", originalFileName);
+
+                        String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
+                        String savedName = UUID.randomUUID() + ext;
+                        log.info("saveName : {}", savedName);
+
+                        Long size = attachImage.get(i).getSize();
+
+                        /* 서버의 설정 디렉토리에 파일 저장하기 */
+
+                        attachImage.get(i).transferTo(new File(fileUploadDir + "/" + savedName));
+
+                        /* DB에 저장할 파일의 정보 처리 */
+                        AttachmentDTO fileInfo = new AttachmentDTO();
+                        fileInfo.setName(originalFileName);
+                        fileInfo.setSaveName(savedName);
+                        fileInfo.setRoute("/upload/original");
+                        fileInfo.setExtension(ext);
+                        fileInfo.setSize(size);
+
+                        if(i == 0) {
+                            fileInfo.setEx("TITLE");
+                            /* 대표 사진에 대한 썸네일을 가공해서 저장한다. */
+                            Thumbnails.of(fileUploadDir + "/" + savedName).size(150,150)
+                                    .toFile(thumbnailDir + "/thumbnail_" + savedName);
+
+                        } else {
+                            fileInfo.setEx("BODY");
+                        }
+                        attachmentList.add(fileInfo);
+                    }
+                }
+            }catch (IOException e) {
+                throw new RuntimeException(e);
+        }
+        return "redirect:/user/board/userReview";
+    }
 }
