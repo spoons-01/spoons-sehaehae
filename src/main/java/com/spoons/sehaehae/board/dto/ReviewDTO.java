@@ -1,5 +1,6 @@
 package com.spoons.sehaehae.board.dto;
 
+import com.spoons.sehaehae.admin.dto.OrderDTO;
 import com.spoons.sehaehae.member.dto.MemberDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,8 @@ import java.util.List;
 
 @Getter @Setter @ToString
 public class ReviewDTO {
-    private Long no;
+
+    private Long reviewNo;
     private String title;
     private String body;
     private int count;
@@ -21,8 +23,9 @@ public class ReviewDTO {
     private String status;
     private Date deleteDate;
     private Long orderCode;
+    private OrderDTO order;
     private int rating;
     private List<ReplyDTO> replyList;
-    private List<AttachmentDTO> attachmentList;
+    private AttachmentDTO attachment;
 
 }
