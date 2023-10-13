@@ -165,6 +165,7 @@
             })
                 .then(res=>res.text())
                 .then(res=>alert(res))
+                .then(res=>window.location.reload())
                 .catch(error=>console.log(error));
         }
     }

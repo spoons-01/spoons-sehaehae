@@ -4,6 +4,7 @@ package com.spoons.sehaehae.product.dto;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter@Setter@ToString@NoArgsConstructor@AllArgsConstructor
 public class ProductDTO {
@@ -19,4 +20,5 @@ public class ProductDTO {
     private Date deleteDate;
     private char deleteStatus;
     private String photo;
+    private List<OrderProductDTO> list;
 }

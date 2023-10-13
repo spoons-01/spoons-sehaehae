@@ -130,7 +130,8 @@ public class ProductController {
     public ResponseEntity<String> addCart(@ModelAttribute CartDTO cart, @AuthenticationPrincipal MemberDTO member) {
         cart.setMember(member.getMemberNo());
         productService.addCart(cart);
-        return ResponseEntity.ok("장바구니에 추가됨");
+
+        return ResponseEntity.ok("장바구니에 추가됐습니다.");
     }
 
     @GetMapping("/totalPrice")
@@ -145,13 +146,9 @@ public class ProductController {
 
     @GetMapping("/cartList")
     public void cartList(Model model, @AuthenticationPrincipal MemberDTO member) {
-
         List<CartDTO> list = productService.cartList(member.getMemberNo());
         int totalPrice = 0;
-
         System.out.println(list);
-
-
         for (int i = 0; list.size() > i; i++) {
             totalPrice += list.get(i).getProduct().getPrice() * list.get(i).getAmount();
             if(list.get(i).getUseEco().equals("Y")){
@@ -161,7 +158,6 @@ public class ProductController {
                 totalPrice += list.get(i).getProduct().getPremiumPrice();
             }
         }
-
         model.addAttribute("cartList", list);
         model.addAttribute("totalPrice", totalPrice);
         model.addAttribute("ecoPrice",3000);
@@ -172,7 +168,6 @@ public class ProductController {
         List<CategoryDTO> categoryList = productService.selectCategory();
         return ResponseEntity.ok(categoryList);
     }
-
     @GetMapping("/updateCart")
     public ResponseEntity<String> updateCart1(@RequestParam int amount, @RequestParam String productCode, @AuthenticationPrincipal MemberDTO member) {
 
@@ -185,7 +180,6 @@ public class ProductController {
         productService.updateCartList(updateCartMap);
         return ResponseEntity.ok("ddd");
     }
-
     @PostMapping("/deleteCart")
     public @ResponseBody ResponseEntity<String> deleteCart(@RequestBody List<Integer> product, @AuthenticationPrincipal MemberDTO member) {
 
@@ -196,7 +190,6 @@ public class ProductController {
 
         return ResponseEntity.ok("삭제완료");
     }
-
     @GetMapping("/finalPrice")
     public ResponseEntity<Long> abc(@RequestParam(defaultValue = "0") int point, @RequestParam(required = false) int totalPrice, @RequestParam(defaultValue = "10") int rate) {
         System.out.println(totalPrice);
@@ -210,22 +203,29 @@ public class ProductController {
         System.out.println(finalPrice);
         return ResponseEntity.ok(finalPrice);
     }
-
     @PostMapping("/complete")
-    public String complete(@ModelAttribute OrderDTO order, Model model, @AuthenticationPrincipal MemberDTO member,MultipartFile photo) {
+    public String complete(@ModelAttribute OrderDTO order, Model model, @AuthenticationPrincipal MemberDTO member,MultipartFile photo, @RequestParam(value = "productCode") List<Integer> productCode, @RequestParam(value = "amount") List<Integer> amount) {
+        System.out.println(productCode);
+        System.out.println(amount);
 
-        List<CartDTO> cart = productService.cartList(member.getMemberNo());
-        System.out.println(cart);
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         int discount = (order.getOrderPrice() + 3000) - order.getOrderTotalPrice();
         String uuid = UUID.randomUUID().toString().substring(0,4);
         String code = simpleDateFormat.format(date) + uuid;
+        List<OrderProductDTO> orderProducts = new ArrayList<>();
+        for(int i = 0; i < productCode.size(); i++){
+            OrderProductDTO orderProduct = new OrderProductDTO();
+            orderProduct.setProductCode(productCode.get(i));
+            orderProduct.setAmount(amount.get(i));
+            orderProduct.setOrderCode(code);
+            orderProducts.add(orderProduct);
+        }
+        System.out.println(orderProducts);
         order.setOrderDiscount(discount);
         order.setCode(code);
         order.setOrderDate(new Date());
-        order.setMember(member.getMemberNo());
-
+        order.setMember(member);
         String originalName = photo.getOriginalFilename();
         String fileUploadDir = IMG_DIR + "resource/images";
         File dir = new File(fileUploadDir);
@@ -241,17 +241,14 @@ public class ProductController {
             throw new RuntimeException(e);
         }
         System.out.println(order);
-//
-//        productService.addOrder(order);
-        model.addAttribute(code);
-        return "redirect:/product/ordercomplete?code="+code;
-    }
-    @GetMapping("/ordercomplete")
-    public void orderComplete(RedirectAttributes rttr, String code){
-
-        rttr.addAttribute("code", code);
+        productService.addOrder(order, orderProducts);
+        return "redirect:/product/orderComplete?code="+code;
     }
 
+    @GetMapping("/orderComplete")
+    public void Ordercomplete(Model model, @RequestParam String code){
+        model.addAttribute("code",code);
+    }
 
     @GetMapping("/listAdmin")
     public void listAdmin(Model model, String searchValue){
@@ -323,10 +320,16 @@ public class ProductController {
         productService.deleteEco(map);
         return "redirect:/product/cartList";
     }
-    @GetMapping("/cartListReload")
-    public String cartListReload(){
 
-        return "삭제됨";
+    @GetMapping("addOption")
+    public void addoption(int code, String option,@AuthenticationPrincipal MemberDTO member){
+        System.out.println(code);
+        System.out.println(option);
+        Map<String, Object> addoption = new HashMap<>();
+        addoption.put("option",option);
+        addoption.put("code",code);
+        addoption.put("memberCode",member.getMemberNo());
+        productService.addOption(addoption);
     }
 
 }

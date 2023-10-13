@@ -12,47 +12,47 @@
 </head>
 <body>
 <div th:replace="user/common/header.html"></div>
-<button onclick="location.href='/product/cartList'">장바구니</button>
+
 <br>
 <div id="productlist">
+    <div id="page2">
     <div id="page1">
-        <ul id="header">
+        <ul id="mainCategory">
             <li>&#60;</li>
             <li onclick="location.href='/product/list'">ALL</li>
             <th:block th:each="category : ${categoryList}">
-                <li th:text="${category.name}"  th:onclick="'location.href=\'/product/list?searchCondition=' + @{${category.name}} + '\''"></li>
+                <li th:text="${category.name}"
+                    th:onclick="'location.href=\'/product/list?searchCondition=' + @{${category.name}} + '\''"
+                    id="categoryList9"></li>
             </th:block>
             <li>&#62;</li>
         </ul>
-        <div id="line"></div>
-        <div class="search">
-            <select>
-                <option value="category">카테고리</option>
-                <option value="name">상품명</option>
-            </select>
-            <form method="get" action="/product/list">
-            <input type="text" name="searchValue">
-            </form>
-        </div>
     </div>
-
-    <div id="container">
+    <div class="search">
+        <form method="get" action="/product/list">
+            <input type="text" name="searchValue" placeholder="상품명 입력">
+            <button type="submit">검색</button>
+        </form>
+    </div>
+    </div>
+    <div id="container222">
         <nav id="subp">
-            <div class="outer">
+            <div class="subcategory">
                 <th:block th:each="category : ${categoryList}">
                     <p th:text="${category.name}" class="menu"></p>
                     <ul class="subproduct up">
                         <th:block th:each="product : ${allProduct}">
-                            <li th:if="${product.category.name== category.name}" th:text="${product.name}" th:onclick="'location.href=\'/product/detail?code=' + @{${product.code}} + '\' '"></li>
+                            <li th:if="${product.category.name== category.name}" th:text="${product.name}"
+                                th:onclick="'location.href=\'/product/detail?code=' + @{${product.code}} + '\' '"></li>
                         </th:block>
                     </ul>
                 </th:block>
             </div>
         </nav>
-
         <div class="imgcontainer">
-            <div th:each=" product : ${productList}" th:onclick="|location.href='/product/detail?code=${product.code}'|">
-                <img class="images" th:src="${product.photo}" width="140px">
+            <div th:each=" product : ${productList}"
+                 th:onclick="|location.href='/product/detail?code=${product.code}'|">
+                <img class="images" th:src="${product.photo}" width="200px" height="190px">
                 <div class="product">
                     <p th:text="${product.name}"/>
                     <p th:text="${#numbers.formatInteger(product.price,3,'COMMA')}+'원'"/>
@@ -61,13 +61,12 @@
         </div>
     </div>
 </div>
-</div>
 
 <div th:replace="user/common/footer.html"></div>
 <script>
     const $subbar = document.querySelectorAll(".subproduct");
     const $menu = document.querySelectorAll(".menu");
-    var subToggle = [true, true, true, true, true, true, true, true, true, true, true, true];
+    let subToggle = [true, true, true, true, true, true, true, true, true, true, true, true];
     $menu.forEach((menu) => {
         menu.addEventListener("click", function () {
             const index = Array.from($menu).indexOf(this);
@@ -84,6 +83,15 @@
             }
         })
     })
+
+    const $categoryList = document.querySelector("#mainCategory")
+    console.log($categoryList);
+
+    $categoryList.onclick = function (e) {
+        console.log(e.target);
+        e.target.classList.add("focus")
+    }
+
 
 </script>
 </body>

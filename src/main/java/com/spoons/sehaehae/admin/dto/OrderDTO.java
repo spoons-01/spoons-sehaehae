@@ -20,13 +20,13 @@ public class OrderDTO {
     private int orderDiscount;
     private int orderTotalPrice;
     private Long memberCode;
-    private int member;
-    private Long inputZipCode;
+    private MemberDTO member;
+    private String inputZipCode;
     private String inputAddress;
     private String InputAddress2;
     private String orderStatus;
     private int usePoint;
-    private int useCoupon;
+    private Integer useCoupon;
     private String collectionDate;
     private String deliveryDate;
     private String image;

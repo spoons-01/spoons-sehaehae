@@ -2,7 +2,6 @@ package com.spoons.sehaehae.product.service;
 
 import com.spoons.sehaehae.admin.dto.CouponDTO;
 import com.spoons.sehaehae.admin.dto.OrderDTO;
-import com.spoons.sehaehae.common.paging.SelectCriteria;
 import com.spoons.sehaehae.member.dto.MemberDTO;
 import com.spoons.sehaehae.product.dao.ProductMapper;
 import com.spoons.sehaehae.product.dto.*;
@@ -42,8 +41,9 @@ public class ProductService {
         return productMapper.selectProductByCode(code);
     }
 
-    public void addCart(CartDTO cart) {
-        productMapper.addCart(cart);
+    public int addCart(CartDTO cart) {
+
+        return productMapper.addCart(cart);
     }
 
 
@@ -71,7 +71,11 @@ public class ProductService {
         productMapper.deleteCart(product);
     }
 
-    public void addOrder(OrderDTO order) {
+    public void addOrder(OrderDTO order,List<OrderProductDTO> orderProducts) {
+
+        for(int i = 0; i < orderProducts.size();i++){
+            productMapper.addOrderProduct(orderProducts.get(i));
+        }
 
         productMapper.registOrder(order);
     }
@@ -94,15 +98,6 @@ public class ProductService {
        return productMapper.selectCoupon(memberId);
     }
 
-    public Map<String, Object> selectAllproduct1(int page) {
-        int totalCount = productMapper.selectProductCount();
-        int limit = 10;
-        int buttonAmount = 5;
-        SelectCriteria selectCriteria = Pagenation.getSelectCriteria(page,limit,buttonAmount, totalCount);
-        System.out.println(totalCount);
-        return null;
-    }
-
     public void deletePremium(Map<String, Object> map) {
 
         productMapper.deletePremium(map);
@@ -112,5 +107,13 @@ public class ProductService {
     public void deleteEco(Map<String, Object> map) {
 
         productMapper.deleteEco(map);
+    }
+
+    public void addOption(Map<String, Object> addoption) {
+        if (addoption.get("option").equals("eco")){
+            productMapper.addOption(addoption);
+        }else{
+            productMapper.addPremium(addoption);
+        }
     }
 }
