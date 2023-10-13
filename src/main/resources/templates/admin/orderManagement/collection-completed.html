@@ -7,7 +7,7 @@
     <link href="/css/adminManagement.css" rel="stylesheet" type="text/css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-    <script src="/js/admin/admin.js"></script>
+    <script src="/js/admin/admin.js" type="text/javascript"></script>
 
     <title>Document</title>
 </head>
@@ -31,7 +31,7 @@
     </div>
 
     <div class="container1">
-        <form id="allSearch" action="/orderManagement/collection-completedt">
+        <form id="allSearch" action="/orderManagement/collection-completed">
             <table>
                 <tr>
                     <th th:style="'width: 190px;'">결제방법</th>
@@ -58,6 +58,23 @@
                 </tr>
 
                 <tr>
+                    <th>기간</th>
+                    <td>
+                        <input type="date" id="start-date" name="startDate" th:value="${paging.startDate}">
+                        ~
+                        <input type="date" id="end-date" name="endDate" th:value="${paging.endDate}">
+                        <span class="but-group">
+                    <input type="button" onclick="searchDate('오늘');" class="sub-btn" value="오늘">
+                    <input type="button" onclick="searchDate('1주');" class="sub-btn" value="1주">
+                    <input type="button" onclick="searchDate('15일');" class="sub-btn" value="15일">
+                    <input type="button" onclick="searchDate('1개월');" class="sub-btn" value="1개월">
+                    <input type="button" onclick="searchDate('3개월');" class="sub-btn" value="3개월">
+                    <input type="button" onclick="searchDate('6개월');" class="sub-btn" value="6개월">
+                </span>
+                    </td>
+                </tr>
+
+                <tr>
                     <td colspan="2" class="search-bottom">
                         <button type="submit" id="searchButton">검색</button>
                         <button type="button" id="resetButton" >초기화</button>
@@ -76,7 +93,7 @@
             </tr>
             <tr>
                 <th><input id="selectAll" type="checkbox" name="checkStatus" value="checkStatus" onclick='selectAll(this)'></th>
-                <th th:style="'width: 80px;'">주문번호</th>
+                <th th:style="'width: 110px;'">주문번호</th>
                 <th>주문일자</th>
                 <th>총결제금액</th>
                 <th>주문자</th>
@@ -176,7 +193,43 @@
 
     </div>
 
+    <script>
+        function searchDate(range) {
+            var today = new Date();
+            var startDate = new Date();
+            var endDate = new Date();
 
+            if (range == '오늘') {
+                startDate = today;
+                endDate = today;
+            } else if (range == '1주') {
+                startDate.setDate(today.getDate() + 6);
+                endDate.setDate(today.getDate() + 6);
+            } else if (range == '15일') {
+                startDate.setDate(today.getDate() + 14);
+                endDate.setDate(today.getDate() + 14);
+            } else if (range === '1개월') {
+                endDate.setMonth(today.getMonth() + 1);
+                endDate.setDate(1); // 다음 달의 첫 번째 날로 설정
+                startDate = new Date(endDate);
+            } else if (range === '3개월') {
+                endDate.setMonth(today.getMonth() + 3);
+                endDate.setDate(1); // 다음 달의 첫 번째 날로 설정
+                startDate = new Date(endDate);
+            } else if (range === '6개월') {
+                endDate.setMonth(today.getMonth() + 6);
+                endDate.setDate(1); // 다음 달의 첫 번째 날로 설정
+                startDate = new Date(endDate);
+            }
+
+            // input 요소에 날짜 설정
+            document.getElementById('start-date').valueAsDate = startDate;
+            document.getElementById('end-date').valueAsDate = endDate;
+
+        }
+
+
+    </script>
 
 
 </div>
