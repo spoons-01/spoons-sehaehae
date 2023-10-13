@@ -60,7 +60,7 @@
 
     <!-- 후기 게시판 -->
     <resultMap id="reviewBoardResultMap" type="com.spoons.sehaehae.board.dto.ReviewDTO">
-        <id property="no" column="REVIEW_NO"/>
+        <id property="reviewNo" column="REVIEW_NO"/>
         <result property="title" column="REVIEW_TITLE"/>
         <result property="body" column="REVIEW_BODY"/>
         <result property="count" column="REVIEW_COUNT"/>
@@ -73,48 +73,72 @@
         <result property="rating" column="RATING"/>
 
         <association property="writer" resultMap="memberResultMap"/>
-        <collection property="attachmentList" resultMap="attachmentResultMap"/>
-        <collection property="replyList" resultMap="replyResultMap"/>
+        <association property="attachment" resultMap="attachmentResultMap"/>
+<!--        <association property="order" resultMap="OrderResultMap"/>-->
+<!--        <collection property="replyList" resultMap="replyResultMap"/>-->
     </resultMap>
+<!--댓글-->
+<!--    <resultMap id="replyResultMap" type="com.spoons.sehaehae.board.dto.ReplyDTO">-->
+<!--        <id property="no" column="REPLY_NO"/>-->
+<!--        <result property="reviewNo" column="REVIEW_NO"/>-->
+<!--        <result property="body" column="REPLY_BODY"/>-->
+<!--        <result property="date" column="REPLY_DATE"/>-->
+<!--        <result property="status" column="REPLY_STATUS"/>-->
+<!--        <result property="deleteDate" column="REVIEW_DELETE_DATE"/>-->
+<!--        <result property="modifiedDate" column="REPLY_MODIFIED_DATE"/>-->
 
-    <resultMap id="replyResultMap" type="com.spoons.sehaehae.board.dto.ReplyDTO">
-        <id property="no" column="REPLY_NO"/>
-        <result property="reviewNo" column="REVIEW_NO"/>
-        <result property="body" column="REVIEW_NO"/>
-        <result property="date" column="REVIEW_NO"/>
-        <result property="status" column="REVIEW_NO"/>
-        <result property="deleteDate" column="REVIEW_NO"/>
-        <result property="modifiedDate" column="REVIEW_NO"/>
-
-        <association property="writer" javaType="com.spoons.sehaehae.member.dto.MemberDTO">
-            <id property="memberNo" column="MEMBER_NO"/>
-            <result property="memberId" column="ID"/>
-            <result property="memberPwd" column="PASSWORD"/>
-            <result property="name" column="NAME"/>
-            <result property="nickname" column="NICKNAME"/>
-            <result property="phone" column="PHONE_NUMBER"/>
-            <result property="birthday" column="BIRTHDAY"/>
-            <result property="gender" column="GENDER"/>
-            <result property="zipCode" column="ZIPCODE"/>
-            <result property="subscriptionDate" column="SUBSCRIPTION_DATE"/>
-            <result property="profilePhoto" column="PROFILE_PHOTO"/>
-            <result property="referralCode" column="REFERRAL_CODE"/>
-            <result property="memberStatus" column="MEMBER_STATUS"/>
-            <result property="address1" column="ADDRESS1"/>
-            <result property="address2" column="ADDRESS2"/>
-        </association>
-    </resultMap>
-
+<!--        <association property="writer" javaType="com.spoons.sehaehae.member.dto.MemberDTO">-->
+<!--            <id property="memberNo" column="MEMBER_NO"/>-->
+<!--            <result property="memberId" column="ID"/>-->
+<!--            <result property="memberPwd" column="PASSWORD"/>-->
+<!--            <result property="name" column="NAME"/>-->
+<!--            <result property="nickname" column="NICKNAME"/>-->
+<!--            <result property="phone" column="PHONE_NUMBER"/>-->
+<!--            <result property="birthday" column="BIRTHDAY"/>-->
+<!--            <result property="gender" column="GENDER"/>-->
+<!--            <result property="zipCode" column="ZIPCODE"/>-->
+<!--            <result property="subscriptionDate" column="SUBSCRIPTION_DATE"/>-->
+<!--            <result property="profilePhoto" column="PROFILE_PHOTO"/>-->
+<!--            <result property="referralCode" column="REFERRAL_CODE"/>-->
+<!--            <result property="memberStatus" column="MEMBER_STATUS"/>-->
+<!--            <result property="address1" column="ADDRESS1"/>-->
+<!--            <result property="address2" column="ADDRESS2"/>-->
+<!--        </association>-->
+<!--    </resultMap>-->
+<!--첨부파일-->
     <resultMap id="attachmentResultMap" type="com.spoons.sehaehae.board.dto.AttachmentDTO">
         <id property="no" column="ATTACHED_FILE_NO"/>
         <result property="name" column="ATTACHED_FILE_NAME"/>
-        <result property="route" column="ATTACHED_FILE_NAME"/>
-        <result property="saveName" column="ATTACHED_FILE_NAME"/>
-        <result property="extension" column="ATTACHED_FILE_NAME"/>
-        <result property="size" column="ATTACHED_FILE_NAME"/>
-        <result property="ex" column="ATTACHED_FILE_NAME"/>
-        <result property="reviewNo" column="ATTACHED_FILE_NAME"/>
+        <result property="route" column="ATTACHED_FILE_ROUTE"/>
+        <result property="saveName" column="ATTACHED_FILE_SAVE_NAME"/>
+        <result property="extension" column="ATTACHED_FILE_EXTENSION"/>
+        <result property="size" column="ATTACHED_FILE_SIZE"/>
+        <result property="ex" column="ATTACHED_FILE_EX"/>
+        <result property="reviewNo" column="REVIEW_NO"/>
+        <result property="thumbnail" column="ATTACHED_FILE_THUMBNAIL"/>
+
+        <association property="review" resultMap="reviewBoardResultMap"/>
     </resultMap>
+<!--후기 쓸 주문-->
+<!--    <resultMap id="OrderResultMap" type="com.spoons.sehaehae.admin.dto.OrderDTO">-->
+<!--        <id property="code" column="ORDER_CODE"/>-->
+<!--        <result property="orderDate" column="ORDER_DATE"/>-->
+<!--        <result property="orderRequest" column="ORDER_REQUEST"/>-->
+<!--        <result property="orderPrice" column="ORDER_PRICE"/>-->
+<!--        <result property="orderDiscount" column="ORDER_DISCOUNT"/>-->
+<!--        <result property="memberCode" column="MEMBER_NO"/>-->
+<!--        <result property="orderTotalPrice" column="ORDER_TOTAL_PRICE"/>-->
+<!--        <result property="inputZipCode" column="INPUT_ZIP_CODE"/>-->
+<!--        <result property="inputAddress" column="INPUT_ADDRESS"/>-->
+<!--        <result property="InputAddress2" column="INPUT_ADDRESS2"/>-->
+<!--        <result property="cpCode" column="CP_CODE"/>-->
+<!--        <result property="orderStatus" column="ORDER_STATUS"/>-->
+<!--        <result property="usePoint" column="USE_POINT"/>-->
+<!--        <result property="collectionDate" column="COLLECTION_DATE"/>-->
+<!--        <result property="deliveryDate" column="DELIVERY_DATE"/>-->
+
+<!--        <association property="member" resultMap="MemberResultMap"/>-->
+<!--    </resultMap>-->
 
     <!-- 공지사항 -->
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
@@ -394,5 +418,60 @@
         WHERE QNA_STATUS = 'Y'
         AND QNA_NO = #{ no }
     </update>
+
+    <!-- 후기 게시판 -->
+
+    <insert id="insertReview">
+        INSERT
+        INTO TBL_REVIEW A
+        (
+        A.REVIEW_NO
+        , A.REVIEW_TITLE
+        , A.REVIEW_BODY
+        , A.REVIEW_COUNT
+        , A.REVIEW_CREATED_DATE
+        , A.MEMBER_NO
+        , A.REVIEW_STATUS
+        , A.ORDER_CODE
+        , A.RATING
+        )
+        VALUES
+        (
+        SEQ_REVIEW_NO.NEXTVAL
+        , #{ title }
+        , #{ body }
+        , 0
+        , SYSDATE
+        , #{ writer.memberNo }
+        , 'Y'
+        , 41
+<!--        , #{ order.orderCode }-->
+        , #{ rating }
+        )
+    </insert>
+
+    <insert id="insertAttachment">
+        INSERT
+        INTO ATTACHED_FILE A
+        (
+          A.ATTACHED_FILE_NO
+        , A.ATTACHED_FILE_NAME
+        , A.ATTACHED_FILE_ROUTE
+        , A.ATTACHED_FILE_SAVE_NAME
+        , A.ATTACHED_FILE_EXTENSION
+        , A.ATTACHED_FILE_SIZE
+        , A.REVIEW_NO
+        )
+        VALUES
+        (
+        SEQ_ATTACHED_FILE_NO.NEXTVAL
+        , #{ name }
+        , #{ route }
+        , #{ saveName }
+        , #{ extension }
+        , #{ size }
+        , SEQ_REVIEW_NO.CURRVAL
+        )
+    </insert>
 
 </mapper>

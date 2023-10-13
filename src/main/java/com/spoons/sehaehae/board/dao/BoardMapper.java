@@ -1,7 +1,9 @@
 package com.spoons.sehaehae.board.dao;
 
+import com.spoons.sehaehae.board.dto.AttachmentDTO;
 import com.spoons.sehaehae.board.dto.NoticeDTO;
 import com.spoons.sehaehae.board.dto.QnaDTO;
+import com.spoons.sehaehae.board.dto.ReviewDTO;
 import com.spoons.sehaehae.common.paging.SelectCriteria;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -37,4 +39,11 @@ public interface BoardMapper {
     void updateQna(QnaDTO modifyQna);
 
 
+    void insertReview(ReviewDTO review);
+
+    void insertAttachment(AttachmentDTO attachment);
+
+    int reviewTotalCount(Map<String, String> searchMap);
+
+    List<ReviewDTO> selectReviewList(SelectCriteria selectCriteria);
 }

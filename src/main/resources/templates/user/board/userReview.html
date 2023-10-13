@@ -10,14 +10,25 @@
 </head>
 <body>
 
-<div th:replace="/user/common/header.html"></div>
+    <div th:replace="/user/common/header.html"></div>
 
-
-<div class="notice-name"></div>
-<h3>이용 후기</h3>
-<h4>상세 이용 후기</h4>
-<br><br>
 <a href="regist">후기작성인가?</a>
+    <div class="notice-name"></div>
+        <h3>이용 후기</h3>
+    <div id="thumbnailArea">
+        <th:block th:each="review : ${ reviewList }">
+            <div class="thumbnailButton" th:onclick="|location.href='/user/board/userReview/detail?no=${ rivew.no }'|">
+                <div>
+                    <th:block th:each="attachment : ${review.attachment}">
+                        <img th:src="${ attachment.route }">
+                    </th:block>
+                </div>
+
+            </div>
+        </th:block>
+    </div>
+
+
 
 </body>
 </html>

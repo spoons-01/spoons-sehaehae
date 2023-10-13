@@ -15,4 +15,7 @@ public class AttachmentDTO {
     private Long size;
     private String ex;
     private Long reviewNo;
+    private ReviewDTO review;
+    private String thumbnail;
+
 }
