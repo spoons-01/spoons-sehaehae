@@ -14,12 +14,11 @@ import java.util.List;
 public class CouponController {
     private final CouponService couponService;
     public CouponController(CouponService couponService){this.couponService=couponService;}
+
     @GetMapping("/list")
     public String getCouponList(Model model){
-
         List<CouponDTO> couponList = couponService.selectCouponList();
         model.addAttribute("coupon", couponList);
-
         return "/admin/coupon/couponList";
     }
 
@@ -28,6 +27,7 @@ public class CouponController {
         couponService.insertCoupon(coupon);
         return "redirect:/coupon/list";
     }
+
     @PostMapping("/update")
     public String updateCoupon(CouponDTO coupon){
         couponService.updateCoupon(coupon);

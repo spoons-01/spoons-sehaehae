@@ -216,15 +216,28 @@
         select
             *
         from    TBL_MEMBER
+        where	MEMBER_STATUS = 'Y'
     </select>
-    
 
-    <select id="genderChart" resultType="int">
-        select
-            COUNT(*)
-        from TBL_MEMBER
-        where GENDER = 'F'
-    </select>
+	<update id="adUpdateMember">
+		update TBL_MEMBER
+		set
+			NAME=#{name},
+			ID=#{memberId},
+			NICKNAME=#{nickname},
+			PHONE_NUMBER=#{phone},
+			GENDER=#{gender},
+			BIRTHDAY=#{birthday},
+			ADDRESS1=#{address1}
+		where   MEMBER_NO=#{memberNo}
+	</update>
+
+	<update id="removeMember">
+		update TBL_MEMBER
+		set	   MEMBER_STATUS = 'N'
+		where  MEMBER_NO=${memberNo}
+	</update>
+
 
 </mapper>
 

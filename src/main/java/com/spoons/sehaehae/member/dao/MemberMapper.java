@@ -22,4 +22,8 @@ public interface MemberMapper {
     void insertThumbnailContent(MemberDTO modifyMember);
 
     List<MemberDTO> selectMemberList();
+
+    void adUpdateMember(MemberDTO member);
+
+    void removeMember(MemberDTO removeMember);
 }

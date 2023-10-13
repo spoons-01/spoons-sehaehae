@@ -28,31 +28,33 @@
             <h1>쿠폰수정.</h1>
             <div>
                 <form id="couponUpdate" role="form" action="/coupon/update" method="post">
-                    <table style="width: 1200px; margin: 0">
+                    <ul style="width: 690px; margin: 0">
                         <input type="hidden" name="cpCode" id="cpCode" value="">
-                        <tr>
-                            <td>쿠폰명</td>
-                            <td><input type="text" name="cpName" id="cpName"></td>
-                        </tr>
-                        <tr>
-                            <td>시작일</td>
-                            <td><input type="Date" name="cpSdate" id="cpSdate">
-                        </tr>
-                        <tr>
-                            <td>종료일</td>
-                            <td><input type="Date" name="cpEdate" id="cpEdate"></td>
-                        </tr>
-                        <tr>
-                            <td>할인율</td>
-                            <td><input type="number" name="cpRate" id="cpRate">%</td>
-                        </tr>
-                    </table>
+                        <li>
+                            <h3>쿠폰명</h3>
+                            <input type="text" name="cpName" id="cpName">
+                        </li>
+                        <li>
+                            <h3>시작일</h3>
+                            <input type="Date" name="cpSdate" id="cpSdate">
+                        </li>
+                        <li>
+                            <h3>종료일</h3>
+                            <input type="Date" name="cpEdate" id="cpEdate">
+                        </li>
+                        <li>
+                            <h3>할인율</h3>
+                            <input type="number" name="cpRate" id="cpRate">%
+                        </li>
+                    </ul>
                     <br>
-                    <div align="center">
-                        <button type="button" th:onclick="'location.href=\'/coupon/list\''">
-                            닫기</button>
-                        <button type="submit">수정</button>
-                        <button formaction="/coupon/remove">삭제</button>
+                    <div class="button-zone">
+                        <button class="buttonD button-cancel" type="button" th:onclick="'location.href=\'/coupon/list\''">
+                            취소</button>
+                        <div>
+                        <button class="buttonD" type="submit">수정</button>
+                        <button class="buttonD" id="button-delete" formaction="/coupon/remove">삭제</button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -68,22 +70,22 @@
                     <ul style="width: 690px; line-height: 3; margin: 0">
                         <li>
                             <h3>쿠폰명</h3>
-                            <input style="width:280px; height:56px; border-radius: 4px; border:1px solid #d2d2d7;" type="text" name="cpName" >
+                            <input type="text" name="cpName" >
                         </li>
                         <li>
                             <h3>기간</h3>
-                            <input style="width:280px; height:56px; border-radius: 4px; border:1px solid #d2d2d7;"type="date" name="cpSdate">
+                            <input type="date" name="cpSdate">
                         </li>
-                        <li><input style="width:280px; height:56px; border-radius: 4px; border:1px solid #d2d2d7;"type="date" name="cpEdate"></li>
+                        <li><input type="date" name="cpEdate"></li>
                         <li>
                             <h3>할인율</h3>
-                            <input style="width:280px; height:56px; border-radius: 4px; border:1px solid #d2d2d7;"type="number" name="cpRate">%
+                            <input type="number" name="cpRate">%
                         </li>
                     </ul>
                     <br>
-                    <div align="center">
-                        <button style="border-radius:4px; width:94px; height: 35px; background: #4B93FF;color: #fff" type="button" th:onclick="'location.href=\'/coupon/list\''">
-                            닫기</button>
+                    <div class="button-zone">
+                        <button class="buttonD button-cancel" type="button" th:onclick="'location.href=\'/coupon/list\''">
+                            취소</button>
                         <button style="border-radius:4px; width:94px; height: 35px; background: #4B93FF; color: #fff;" type="submit">생성</button>
                     </div>
                 </form>
