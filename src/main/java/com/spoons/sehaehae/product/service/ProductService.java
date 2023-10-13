@@ -113,4 +113,12 @@ public class ProductService {
 
         productMapper.deleteEco(map);
     }
+
+    public void addOption(Map<String, Object> addoption) {
+        if (addoption.get("option").equals("eco")){
+            productMapper.addOption(addoption);
+        }else{
+            productMapper.addPremium(addoption);
+        }
+    }
 }

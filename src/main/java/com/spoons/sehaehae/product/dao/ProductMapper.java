@@ -49,4 +49,8 @@ public interface ProductMapper {
     void deletePremium(Map<String, Object> map);
 
     void deleteEco(Map<String, Object> map);
+
+    void addOption(Map<String, Object> addoption);
+
+    void addPremium(Map<String, Object> addoption);
 }

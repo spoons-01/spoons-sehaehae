@@ -145,13 +145,9 @@ public class ProductController {
 
     @GetMapping("/cartList")
     public void cartList(Model model, @AuthenticationPrincipal MemberDTO member) {
-
         List<CartDTO> list = productService.cartList(member.getMemberNo());
         int totalPrice = 0;
-
         System.out.println(list);
-
-
         for (int i = 0; list.size() > i; i++) {
             totalPrice += list.get(i).getProduct().getPrice() * list.get(i).getAmount();
             if(list.get(i).getUseEco().equals("Y")){
@@ -161,7 +157,6 @@ public class ProductController {
                 totalPrice += list.get(i).getProduct().getPremiumPrice();
             }
         }
-
         model.addAttribute("cartList", list);
         model.addAttribute("totalPrice", totalPrice);
         model.addAttribute("ecoPrice",3000);
@@ -214,8 +209,7 @@ public class ProductController {
     @PostMapping("/complete")
     public String complete(@ModelAttribute OrderDTO order, Model model, @AuthenticationPrincipal MemberDTO member,MultipartFile photo) {
 
-        List<CartDTO> cart = productService.cartList(member.getMemberNo());
-        System.out.println(cart);
+
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         int discount = (order.getOrderPrice() + 3000) - order.getOrderTotalPrice();
@@ -224,7 +218,7 @@ public class ProductController {
         order.setOrderDiscount(discount);
         order.setCode(code);
         order.setOrderDate(new Date());
-        order.setMember(member.getMemberNo());
+        order.setMember(member);
 
         String originalName = photo.getOriginalFilename();
         String fileUploadDir = IMG_DIR + "resource/images";
@@ -241,15 +235,16 @@ public class ProductController {
             throw new RuntimeException(e);
         }
         System.out.println(order);
-//
-//        productService.addOrder(order);
+
+        productService.addOrder(order);
         model.addAttribute(code);
-        return "redirect:/product/ordercomplete?code="+code;
+        return "/product/ordercomplete";
     }
     @GetMapping("/ordercomplete")
-    public void orderComplete(RedirectAttributes rttr, String code){
-
-        rttr.addAttribute("code", code);
+    public String orderComplete(Model model, String code){
+        System.out.println(code);
+        model.addAttribute("code",code);
+        return "/product/ordercomplete";
     }
 
 
@@ -323,10 +318,16 @@ public class ProductController {
         productService.deleteEco(map);
         return "redirect:/product/cartList";
     }
-    @GetMapping("/cartListReload")
-    public String cartListReload(){
 
-        return "삭제됨";
+    @GetMapping("addOption")
+    public void addoption(int code, String option,@AuthenticationPrincipal MemberDTO member){
+        System.out.println(code);
+        System.out.println(option);
+        Map<String, Object> addoption = new HashMap<>();
+        addoption.put("option",option);
+        addoption.put("code",code);
+        addoption.put("memberCode",member.getMemberNo());
+        productService.addOption(addoption);
     }
 
 }
