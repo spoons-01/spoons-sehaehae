@@ -150,7 +150,7 @@
             <if test="searchCondition == 'title'">
                 A.NOTICE_TITLE LIKE '%' || #{ searchValue } || '%'
             </if>
-            <if test="searchCondition == 'content'">
+            <if test="searchCondition == 'body'">
                 A.NOTICE_BODY LIKE '%' || #{ searchValue } || '%'
             </if>
             AND A.NOTICE_STATUS = 'Y'
@@ -485,7 +485,7 @@
             <if test="searchCondition == 'title'">
                 A.REVIEW_TITLE LIKE '%' || #{ searchValue } || '%'
             </if>
-            <if test="searchCondition == 'content'">
+            <if test="searchCondition == 'body'">
                 A.REVIEW_BODY LIKE '%' || #{ searchValue } || '%'
             </if>
             AND A.REVIEW_STATUS = 'Y'
@@ -528,7 +528,15 @@
                             , C.ORDER_CODE
                             , C.RATING
                        FROM TBL_REVIEW C
-                      WHERE C.REVIEW_STATUS ='Y'
+                <where>
+                    <if test="searchCondition == 'title'">
+                        C.REVIEW_TITLE LIKE '%' || #{ searchValue } || '%'
+                    </if>
+                    <if test="searchCondition == 'body'">
+                        C.REVIEW_BODY LIKE '%' || #{ searchValue } || '%'
+                    </if>
+                    AND C.REVIEW_STATUS = 'Y'
+                </where>
                       ORDER BY C.REVIEW_NO DESC
                       ) B
         <![CDATA[

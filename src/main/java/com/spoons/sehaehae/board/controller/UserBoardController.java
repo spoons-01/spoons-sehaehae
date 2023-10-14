@@ -117,10 +117,14 @@ public class UserBoardController {
 
     @PostMapping("/regist")
     public String registReview(ReviewDTO review, MultipartFile attachImage,
-                               @AuthenticationPrincipal MemberDTO member) {
+                               @AuthenticationPrincipal MemberDTO member,
+                               @RequestParam("rating") int rating) {
 
         log.info("review request : {}", review);
         log.info("attachImage request : {}", attachImage);
+
+        // 별점을 ReviewDTO에 설정
+        review.setRating(rating);
 
         String fileUploadDir = IMAGE_DIR + "original";
         String thumbnailDir = IMAGE_DIR + "thumbnail";
