@@ -3,10 +3,7 @@ package com.spoons.sehaehae.member.controller;
 import com.spoons.sehaehae.common.exception.member.MemberModifyException;
 import com.spoons.sehaehae.common.exception.member.MemberRegistException;
 import com.spoons.sehaehae.common.util.EmailUtil;
-import com.spoons.sehaehae.member.dto.EmailAuthDTO;
-import com.spoons.sehaehae.member.dto.EmailDTO;
-import com.spoons.sehaehae.member.dto.MemberDTO;
-import com.spoons.sehaehae.member.dto.MemberLevelDTO;
+import com.spoons.sehaehae.member.dto.*;
 import com.spoons.sehaehae.member.service.AuthenticationService;
 import com.spoons.sehaehae.member.service.CouponRepository;
 import com.spoons.sehaehae.member.service.MemberService;
@@ -35,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -67,6 +65,7 @@ public class MemberController {
         String currentUsername = principal.getName();
         // 현재 사용자의 MemberDTO를 얻어온다
         MemberDTO memberDTO = memberService.findByMemberId(currentUsername);
+//        MemberDTO orderMember = memberService.findMyOrder(currentUsername);
 
         // 1. MemberDTO에서 membershipName을 추출한다
         String membershipName = extractMembershipName(memberDTO);
@@ -74,9 +73,14 @@ public class MemberController {
         int memberNo = memberDTO.getMemberNo();
         // 2-2. MEMBER_NO를 이용하여 쿠폰 개수를 얻어온다
         int couponCount = couponRepository.countCouponsByMemberNo(memberNo);
+        // 3. 내 주문 목록을 불러온다
+        List<MyOrderDTO> myOrders = memberService.findMyOrder(currentUsername);
+        model.addAttribute("myOrders", myOrders);
+
 
         /* 1 */ model.addAttribute("membershipName", membershipName);
         /* 2 */ model.addAttribute("couponCount", couponCount);
+        /* 3 */ model.addAttribute("myOrders", myOrders);
         return "/user/member/mysehae";
     }
 
@@ -92,6 +96,11 @@ public class MemberController {
         return "N/A"; // 값이 로드되지 않았을 때, 기본값 설정
     }
 
+    @GetMapping("/member/myCoupon")
+    public void myCoupon() {}
+
+    @GetMapping("/member/myOrder")
+    public void myOrder() {}
 
     /* 메인페이지 이동 */
     @GetMapping("/main/main")
@@ -210,9 +219,6 @@ public class MemberController {
         return "redirect:/user/member/update";
     }
 
-
-    @GetMapping("/member/myCoupon")
-    public void myCoupon() {}
 
 
     /* ================================================================== */

@@ -1,6 +1,7 @@
 package com.spoons.sehaehae.member.dao;
 
 import com.spoons.sehaehae.member.dto.MemberDTO;
+import com.spoons.sehaehae.member.dto.MyOrderDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,4 +23,6 @@ public interface MemberMapper {
     void insertThumbnailContent(MemberDTO modifyMember);
 
     List<MemberDTO> selectMemberList();
+
+    List<MyOrderDTO> findMyOrder(String memberId);
 }

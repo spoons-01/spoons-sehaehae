@@ -1,0 +1,68 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'GangwonState';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/GangwonState.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NanumSquareNeo-Variable';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+    font-size: 100%;
+}
+
+a {
+    text-decoration: none;
+    font-family: NanumSquareNeo-Variable;
+}
+
+img {
+    max-width: 100%;
+}
+
+p {
+    font-family: NanumSquareNeo-Variable;
+    color: #8E8585;
+}
+
+h3 {
+    font-family: NanumSquareNeo-Variable;
+}
+
+/* mysehae 설정 --------------------------------------------------------- */
+.wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 4%;
+}
+
+/* mypage nav ---------------------------------------------------------*/
+.mypage-nav {
+    display: flex;
+    list-style-type: none;
+    justify-content: center;
+    font-family: NanumSquareNeo-Variable;
+}
+
+.mypage-nav a {
+    color: black;
+    font-weight: bold;
+    margin: -5px 20px 0px 20px;
+}
+
+.mypage-nav a:hover {
+    color: #4B93FF;
+}
+
+.line {
+    margin-top: 30px;
+}
+
+/* 내 주문 페이지 ------------------------------------------------------*/

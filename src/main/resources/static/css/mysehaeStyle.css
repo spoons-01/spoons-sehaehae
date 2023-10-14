@@ -302,13 +302,26 @@ h3 {
     padding: 14px 24px 14px 24px;
     border-radius: 4px;
     color: #FFFFFF;
+    font-weight: bold;
+}
+
+.button.disabled {
+    pointer-events: none;
+    background-color: #e5e5e5;
+    color: #adadad;
 }
 
 .button2 {
     background-color: #4B93FF;
-    padding: 14px 24px 14px 24px;
+    padding: 14px 24px;
     margin-left: 8px;
     border-radius: 4px;
     color: #FFFFFF;
+    font-weight: bold;
 }
 
+.button2.disabled {
+    pointer-events: none;
+    background-color: #ececec;
+    color: #adadad;
+}
