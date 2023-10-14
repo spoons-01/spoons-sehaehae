@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta charset="UTF-8">
+    <!--    <script type="text/javascript" src="/js/event.js"></script>-->
+    <script type="text/javascript" src="/js/regist.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>보유 쿠폰 | 세탁해병대</title>
+
+    <link href="/css/myCouponStyle.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="/static/images/favicon.ico">
+    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="styles heet" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+<!-- 헤더 -->
+<div th:replace="user/common/header.html"></div>
+
+<!-- 마이페이지 네비 -->
+<ul class="mypage-nav">
+    <a id="profile" href="/user/member/mypage">
+        <li>프로필</li>
+    </a>
+    <a id="mysehae" href="/user/member/mysehae">
+        <li>나의 세해</li>
+    </a>
+    <a is="setting" href="/user/member/update">
+        <li>설정</li>
+    </a>
+</ul>
+<hr class="line" style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
+
+
+<!-- 쿠폰 페이지 -->
+<div class="background">
+    <div class="wrapper">
+        <h3>쿠폰 목록</h3>
+        <div class="couponwrapper">
+            <div class="coupon">
+                <div class="first-line">
+                    <p class="cp-name">첫 가입 쿠폰</p>
+                    <div class="circle-more">
+                        <div class="circle">
+                            <p>?</p>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="blue">10%</p>
+                <li class="cp-date">2023년 10월 20일까지</li>
+            </div>
+
+            <div class="coupon">
+                <p class="cp-name">첫 가입 쿠폰</p>
+                <p class="blue">10%</p>
+                <li class="cp-date">2023년 10월 20일까지</li>
+            </div>
+
+            <div class="coupon">
+                <p class="cp-name">첫 가입 쿠폰</p>
+                <p class="blue">10%</p>
+                <li class="cp-date">2023년 10월 20일까지</li>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 푸터 -->
+<div th:replace="user/common/footer.html"></div>
+</body>
+</html>

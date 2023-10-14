@@ -146,33 +146,32 @@
 			)
 	</insert>
 
-<!--	<insert id="insertMemberRole">-->
-<!--		INSERT-->
-<!--		INTO TBL_MEMBER_ROLE-->
-<!--		(-->
-<!--			MEMBER_NO-->
-<!--		, AUTHORITY_CODE-->
-<!--		)-->
-<!--		VALUES-->
-<!--			(-->
-<!--				SEQ_MEMBER_NO.CURRVAL-->
-<!--			, 2-->
-<!--			)-->
-<!--	</insert>-->
+	<insert id="insertMemberRole">
+		INSERT
+		INTO TBL_MEMBER_ROLE
+		(
+			MEMBER_NO
+		, AUTHORITY_CODE
+		)
+		VALUES
+			( SEQ_MEMBER_NO.CURRVAL
+			, 2
+			)
+	</insert>
 
-<!--	<insert id="insertMemberLevel">-->
-<!--		INSERT-->
-<!--		INTO TBL_MEMBER_LEVEL-->
-<!--		(-->
-<!--			MEMBER_NO-->
-<!--		, MEMBERSHIP_CODE-->
-<!--		)-->
-<!--		VALUES-->
-<!--			(-->
-<!--				SEQ_MEMBER_NO.CURRVAL-->
-<!--			, SEHAE01-->
-<!--			)-->
-<!--	</insert>-->
+	<insert id="insertMemberLevel">
+		INSERT
+		INTO TBL_MEMBER_LEVEL
+		(
+			MEMBER_NO
+		, MEMBERSHIP_CODE
+		)
+		VALUES
+			(
+				SEQ_MEMBER_NO.CURRVAL
+			, 1)
+	</insert>
+
 	<select id="selectEncryptedPwd" resultType="string">
 		SELECT
 			PASSWORD

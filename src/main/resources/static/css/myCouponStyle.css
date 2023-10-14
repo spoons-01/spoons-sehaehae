@@ -1,0 +1,142 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'GangwonState';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/GangwonState.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NanumSquareNeo-Variable';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+    font-size: 100%;
+}
+
+a {
+    text-decoration: none;
+    font-family: NanumSquareNeo-Variable;
+}
+
+img {
+    max-width: 100%;
+}
+
+p {
+    font-family: NanumSquareNeo-Variable;
+    color: #8E8585;
+}
+
+h3 {
+    font-family: NanumSquareNeo-Variable;
+}
+
+/* mysehae 설정 --------------------------------------------------------- */
+.wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 4%;
+}
+
+/* mypage nav ---------------------------------------------------------*/
+.mypage-nav {
+    display: flex;
+    list-style-type: none;
+    justify-content: center;
+    font-family: NanumSquareNeo-Variable;
+}
+
+.mypage-nav a {
+    color: black;
+    font-weight: bold;
+    margin: -5px 20px 0px 20px;
+}
+
+.mypage-nav a:hover {
+    color: #4B93FF;
+}
+
+.line {
+    margin-top: 30px;
+}
+
+/* 마이 쿠폰 페이지 ---------------------------------------------------------------- */
+.background {
+    background-color: #eeeeee;
+    display: flex;
+    justify-content: center;
+}
+
+.couponwrapper {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    margin: 60px auto;
+}
+
+/* 쿠폰 박스 */
+.coupon {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    background-color: #FFFFFF;
+    border-radius: 7px;
+    margin: auto 20px;
+    padding: 10px 30px;
+    line-height: 60px;
+    width: 250px;
+    box-shadow: 3px 3px 15px 1px rgba(135, 147, 165, 0.1);
+}
+
+/* 쿠폰 박스 - 첫번째 줄 */
+.first-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.circle-more {
+    margin-top: 20px;
+}
+
+.cp-name {
+    color: #262626;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    width: 14px;
+    height: 14px;
+    border: #b9b9b9 solid 1px;
+}
+
+.circle p {
+    font-size: 8px;
+    margin: 0;
+    color: #b9b9b9;
+}
+
+.blue {
+    color: #4B93FF;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.cp-date {
+    color: #a2a0a0;
+    font-size: 12px;
+    font-family: NanumSquareNeo-Variable;
+}
+
+
+
+

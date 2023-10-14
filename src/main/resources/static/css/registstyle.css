@@ -96,6 +96,12 @@ input {
 /* 회원가입 --------------------------------------------------*/
 /* email */
 
+.email-joinbox {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
 .wrapper2 h3 {
     margin-top: 40px;
 }
@@ -161,19 +167,20 @@ select.box {
     max-width: 100px;
     margin-left: 13px;
 }
-/*!* 이메일 인증버튼 *!*/
-/*.button {*/
-/*    background-color: #f2f2f2;*/
-/*    border: 1px solid #bbbbbb;*/
-/*    color: #bbbbbb;*/
-/*    font-size: 16px;*/
-/*    padding: 13px 160px;*/
-/*    border-radius: 4px;*/
-/*    cursor: pointer;*/
-/*    font-family: NanumSquareNeo-Variable;*/
-/*    font-weight: 600;*/
-/*    letter-spacing: 1px;*/
-/*}*/
+
+.btn2 {
+    background-color: #f2f2f2;
+    border: 1px solid #bbbbbb;
+    color: #bbbbbb;
+    font-size: 16px;
+    padding: 13px;
+    width: 470px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: NanumSquareNeo-Variable;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
 
 .buttoncenter {
     text-align: center;

@@ -13,20 +13,11 @@ window.onload = function () {
     }
 
     if (document.getElementById("duplicationCheck")) {
-
         const $duplication = document.getElementById("duplicationCheck");
+        const $btnEmailAuthReg = document.getElementById("btnEmailAuthReg");
 
         $duplication.onclick = function () {
             let memberId = document.getElementById("memberId").value.trim();
-
-            /**
-             * Promis => 실행 방법 중
-             *  시점 1. 시작 - fetch or ajax
-             *  시점 2. 무조건 실행 - Then
-             *  시점 3. 성공 - Resolve
-             *  시점 4. 실패 - Reject
-             *  시점 5. 완료 - Done
-             */
 
             fetch("/user/member/idDupCheck", {
                 method: "POST",
@@ -35,20 +26,18 @@ window.onload = function () {
                 },
                 body: JSON.stringify({memberId: memberId})
             })
-                /**
-                 * 성공 또는 완료케이스
-                 */
                 .then(result => result.text())
-                .then(result => alert(result))
-                /**
-                 * 오류가 발생 시  에러 정보 결과를 추출(.text())
-                 */
-                .catch(
-                    (error) => error.text()
-                        // 알림창을 실행
-                        .then((res) => alert(res))
-                );
+                .then(result => {
+                    alert(result);
 
+                    // 중복 확인에 성공하면 btn2 버튼을 활성화하고 배경색을 파란색으로 변경
+                    $btnEmailAuthReg.disabled = false;
+                    $btnEmailAuthReg.style.backgroundColor = "#4B93FF";
+                    $btnEmailAuthReg.style.color = "white";
+                })
+                .catch(error => {
+                    error.text().then(res => alert(res));
+                });
         }
     }
 
