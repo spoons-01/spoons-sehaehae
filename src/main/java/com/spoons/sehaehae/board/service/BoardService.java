@@ -150,7 +150,7 @@ public class BoardService {
 
         Map<String, Object> reviewListAndPaging = new HashMap<>();
         reviewListAndPaging.put("paging", selectCriteria);
-        reviewListAndPaging.put("qnaList", reviewList);
+        reviewListAndPaging.put("reviewList", reviewList);
 
         return reviewListAndPaging;
     }

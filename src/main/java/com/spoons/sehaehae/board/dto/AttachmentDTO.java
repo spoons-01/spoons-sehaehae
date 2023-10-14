@@ -10,7 +10,7 @@ public class AttachmentDTO {
     private Long no;
     private String name;
     private String route;
-    private String saveName;
+    private String savedName;
     private String extension;
     private Long size;
     private String ex;

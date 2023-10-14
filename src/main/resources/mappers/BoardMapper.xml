@@ -74,7 +74,7 @@
 
         <association property="writer" resultMap="memberResultMap"/>
         <association property="attachment" resultMap="attachmentResultMap"/>
-<!--        <association property="order" resultMap="OrderResultMap"/>-->
+        <association property="order" resultMap="OrderResultMap"/>
 <!--        <collection property="replyList" resultMap="replyResultMap"/>-->
     </resultMap>
 <!--댓글-->
@@ -105,12 +105,13 @@
 <!--            <result property="address2" column="ADDRESS2"/>-->
 <!--        </association>-->
 <!--    </resultMap>-->
+
 <!--첨부파일-->
     <resultMap id="attachmentResultMap" type="com.spoons.sehaehae.board.dto.AttachmentDTO">
         <id property="no" column="ATTACHED_FILE_NO"/>
         <result property="name" column="ATTACHED_FILE_NAME"/>
         <result property="route" column="ATTACHED_FILE_ROUTE"/>
-        <result property="saveName" column="ATTACHED_FILE_SAVE_NAME"/>
+        <result property="savedName" column="ATTACHED_FILE_SAVE_NAME"/>
         <result property="extension" column="ATTACHED_FILE_EXTENSION"/>
         <result property="size" column="ATTACHED_FILE_SIZE"/>
         <result property="ex" column="ATTACHED_FILE_EX"/>
@@ -120,25 +121,25 @@
         <association property="review" resultMap="reviewBoardResultMap"/>
     </resultMap>
 <!--후기 쓸 주문-->
-<!--    <resultMap id="OrderResultMap" type="com.spoons.sehaehae.admin.dto.OrderDTO">-->
-<!--        <id property="code" column="ORDER_CODE"/>-->
-<!--        <result property="orderDate" column="ORDER_DATE"/>-->
-<!--        <result property="orderRequest" column="ORDER_REQUEST"/>-->
-<!--        <result property="orderPrice" column="ORDER_PRICE"/>-->
-<!--        <result property="orderDiscount" column="ORDER_DISCOUNT"/>-->
-<!--        <result property="memberCode" column="MEMBER_NO"/>-->
-<!--        <result property="orderTotalPrice" column="ORDER_TOTAL_PRICE"/>-->
-<!--        <result property="inputZipCode" column="INPUT_ZIP_CODE"/>-->
-<!--        <result property="inputAddress" column="INPUT_ADDRESS"/>-->
-<!--        <result property="InputAddress2" column="INPUT_ADDRESS2"/>-->
-<!--        <result property="cpCode" column="CP_CODE"/>-->
-<!--        <result property="orderStatus" column="ORDER_STATUS"/>-->
-<!--        <result property="usePoint" column="USE_POINT"/>-->
-<!--        <result property="collectionDate" column="COLLECTION_DATE"/>-->
-<!--        <result property="deliveryDate" column="DELIVERY_DATE"/>-->
+    <resultMap id="OrderResultMap" type="com.spoons.sehaehae.admin.dto.OrderDTO">
+        <id property="code" column="ORDER_CODE"/>
+        <result property="orderDate" column="ORDER_DATE"/>
+        <result property="orderRequest" column="ORDER_REQUEST"/>
+        <result property="orderPrice" column="ORDER_PRICE"/>
+        <result property="orderDiscount" column="ORDER_DISCOUNT"/>
+        <result property="orderTotalPrice" column="ORDER_TOTAL_PRICE"/>
+        <result property="memberCode" column="MEMBER_NO"/>
+        <result property="inputZipCode" column="INPUT_ZIP_CODE"/>
+        <result property="inputAddress" column="INPUT_ADDRESS"/>
+        <result property="InputAddress2" column="INPUT_ADDRESS2"/>
+        <result property="orderStatus" column="ORDER_STATUS"/>
+        <result property="usePoint" column="USE_POINT"/>
+        <result property="useCoupon" column="CP_CODE"/>
+        <result property="collectionDate" column="COLLECTION_DATE"/>
+        <result property="deliveryDate" column="DELIVERY_DATE"/>
 
-<!--        <association property="member" resultMap="MemberResultMap"/>-->
-<!--    </resultMap>-->
+        <association property="member" resultMap="memberResultMap"/>
+    </resultMap>
 
     <!-- 공지사항 -->
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
@@ -444,7 +445,7 @@
         , SYSDATE
         , #{ writer.memberNo }
         , 'Y'
-        , 41
+        , 2
 <!--        , #{ order.orderCode }-->
         , #{ rating }
         )
@@ -461,17 +462,83 @@
         , A.ATTACHED_FILE_EXTENSION
         , A.ATTACHED_FILE_SIZE
         , A.REVIEW_NO
+        , A.ATTACHED_FILE_THUMBNAIL
         )
         VALUES
         (
         SEQ_ATTACHED_FILE_NO.NEXTVAL
         , #{ name }
         , #{ route }
-        , #{ saveName }
+        , #{ savedName }
         , #{ extension }
         , #{ size }
         , SEQ_REVIEW_NO.CURRVAL
+        , #{ thumbnail }
         )
     </insert>
 
+    <select id="reviewTotalCount" resultType="_int" parameterType="hashmap">
+        SELECT
+               COUNT(*)
+          FROM TBL_REVIEW A
+        <where>
+            <if test="searchCondition == 'title'">
+                A.REVIEW_TITLE LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'content'">
+                A.REVIEW_BODY LIKE '%' || #{ searchValue } || '%'
+            </if>
+            AND A.REVIEW_STATUS = 'Y'
+        </where>
+    </select>
+
+    <select id="selectReviewList" resultMap="reviewBoardResultMap">
+        SELECT
+              A.REVIEW_NO
+            , D.ATTACHED_FILE_EX
+            , D.ATTACHED_FILE_THUMBNAIL
+            , A.REVIEW_TITLE
+            , A.REVIEW_BODY
+            , A.REVIEW_COUNT
+            , A.REVIEW_CREATED_DATE
+            , A.MEMBER_NO
+            , E.NICKNAME
+            , A.REVIEW_STATUS
+            , A.ORDER_CODE
+            , A.RATING
+         FROM ( SELECT
+                       ROWNUM RNUM
+                    , B.REVIEW_NO
+                    , B.REVIEW_TITLE
+                    , B.REVIEW_BODY
+                    , B.REVIEW_COUNT
+                    , B.REVIEW_CREATED_DATE
+                    , B.MEMBER_NO
+                    , B.REVIEW_STATUS
+                    , B.ORDER_CODE
+                    , B.RATING
+                FROM(SELECT
+                              C.REVIEW_NO
+                            , C.REVIEW_TITLE
+                            , C.REVIEW_BODY
+                            , C.REVIEW_COUNT
+                            , C.REVIEW_CREATED_DATE
+                            , C.MEMBER_NO
+                            , C.REVIEW_STATUS
+                            , C.ORDER_CODE
+                            , C.RATING
+                       FROM TBL_REVIEW C
+                      WHERE C.REVIEW_STATUS ='Y'
+                      ORDER BY C.REVIEW_NO DESC
+                      ) B
+        <![CDATA[
+              WHERE ROWNUM <= #{ endRow }
+              ]]>
+        ) A
+        JOIN ATTACHED_FILE D ON(A.REVIEW_NO = D.REVIEW_NO)
+        JOIN TBL_MEMBER E ON(A.MEMBER_NO = E.MEMBER_NO)
+        JOIN TBL_ORDER F ON(A.ORDER_CODE = F.ORDER_CODE)
+        WHERE A.RNUM >= #{ startRow }
+        ORDER BY 1 DESC
+    </select>
 </mapper>

@@ -157,7 +157,7 @@ public class UserBoardController {
                         /* DB에 저장할 파일의 정보 처리 */
 //                        AttachmentDTO fileInfo = new AttachmentDTO();
                         attachment.setName(originalFileName);
-                        attachment.setSaveName(savedName);
+                        attachment.setSavedName(savedName);
                         attachment.setRoute("/uplode/original/");
                         attachment.setExtension(ext);
                         attachment.setSize(size);
