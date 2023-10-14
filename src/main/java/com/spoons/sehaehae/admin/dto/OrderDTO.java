@@ -21,6 +21,7 @@ public class OrderDTO {
     private int orderTotalPrice;
     private Long memberCode;
     private MemberDTO member;
+    private String inputZipCode;
     private String inputAddress;
     private String InputAddress2;
     private String orderStatus;

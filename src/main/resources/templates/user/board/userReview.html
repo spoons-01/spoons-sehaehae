@@ -1,34 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/userBoard.css" rel="stylesheet" type="text/css">
     <link rel="icon" href="/images/favicon.ico">
-    <script src="/javaScript/event.js" type="text/javascript"></script>
+<!--    <script src="/javaScript/event.js" type="text/javascript"></script>-->
     <title>고객센터</title>
 </head>
 <body>
 
     <div th:replace="/user/common/header.html"></div>
 
-<a href="regist">후기작성인가?</a>
-    <div class="notice-name"></div>
+<!--<a href="regist">후기작성인가?</a>-->
+    <div>
+    <div class="notice-name">
         <h3>이용 후기</h3>
+    </div>
     <div id="thumbnailArea">
         <th:block th:each="review : ${ reviewList }">
-            <div class="thumbnailButton" th:onclick="|location.href='/user/board/userReview/detail?no=${ rivew.no }'|">
+            <span th:text="${ review.writer.nickname }"></span>
+            <div class="thumbnailButton" th:onclick="|location.href='/user/board/userReview/detail?no=${ review.reviewNo }'|">
                 <div>
                     <th:block th:each="attachment : ${review.attachment}">
-                        <img th:src="${ attachment.route }">
+                        <img th:src="${ attachment.thumbnail }" width="200px" height="200px">
                     </th:block>
                 </div>
-
+                <div>
+                    <div>
+                    <img src="/images/heart.png"><p>10</p>
+                    </div>
+                    <div>
+                        <p>조회수 : <span th:text="${review.count}"></span></p>
+                    </div>
+                    <div>
+                        <img src="/images/chat.png"><p>3</p>
+                    </div>
+                </div>
+                <div>
+                    No. <label th:text="${review.reviewNo}"></label>
+                    <span th:text="${review.title}"></span>
+                </div>
             </div>
         </th:block>
     </div>
-
-
-
+    </div>
 </body>
 </html>
