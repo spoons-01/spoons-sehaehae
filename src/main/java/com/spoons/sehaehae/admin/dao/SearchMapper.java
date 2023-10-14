@@ -27,4 +27,6 @@ public interface SearchMapper {
     List<OrderDTO> selectSearchDeliveryList(SelectCriteria selectCriteria);
 
     List<OrderDTO> selectSearchConfirmedList(SelectCriteria selectCriteria);
+
+    int calculateTotalOrderAmount(Map<String, String> searchMap);
 }

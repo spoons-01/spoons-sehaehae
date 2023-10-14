@@ -20,6 +20,7 @@
         <result property="usePoint" column="USE_POINT"/>
         <result property="collectionDate" column="COLLECTION_DATE"/>
         <result property="deliveryDate" column="DELIVERY_DATE"/>
+        <result property="progressDate" column="PROGRESS_DATE"/>
 
         <association property="member" resultMap="MemberResultMap"/>
 
@@ -53,16 +54,18 @@
            </if>
 
            <if test="startDate != '' and endDate == ''">
-               AND A.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+               AND A.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
            </if>
 
            <if test="startDate == '' and endDate != ''">
-               AND <![CDATA[A.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+               AND <![CDATA[A.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
            </if>
 
-           <if test="startDate != '' and endDate != ''">
-               AND A.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+           <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+               AND A.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+               AND <![CDATA[A.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
            </if>
+
 
 
        </where>
@@ -121,16 +124,20 @@
                           </if>
 
                           <if test="startDate != '' and endDate == ''">
-                              AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+                              AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
                           </if>
 
                           <if test="startDate == '' and endDate != ''">
-                              AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+                              AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
                           </if>
 
-                          <if test="startDate != '' and endDate != ''">
-                              AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+                          <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                              AND C.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                              AND <![CDATA[C.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
                           </if>
+
+
+
                       </where>
 
 
@@ -189,15 +196,16 @@
             </if>
 
             <if test="startDate != '' and endDate == ''">
-                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
             </if>
 
             <if test="startDate == '' and endDate != ''">
-                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
             </if>
 
-            <if test="startDate != '' and endDate != ''">
-                AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                AND C.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[C.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
             </if>
             AND C.ORDER_STATUS = '결제완료'
         </where>
@@ -216,6 +224,7 @@
     <update id="updateOrderStatus">
         UPDATE TBL_ORDER
         SET ORDER_STATUS = #{newStatus}
+        ,PROGRESS_DATE = SYSDATE
         WHERE ORDER_CODE IN
         <foreach collection="orderId" item="orderId" open="(" separator="," close=")">
             #{orderId}
@@ -265,15 +274,16 @@
             </if>
 
             <if test="startDate != '' and endDate == ''">
-                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
             </if>
 
             <if test="startDate == '' and endDate != ''">
-                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
             </if>
 
-            <if test="startDate != '' and endDate != ''">
-                AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                AND C.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[C.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
             </if>
             AND C.ORDER_STATUS = '수거완료'
         </where>
@@ -332,15 +342,16 @@
             </if>
 
             <if test="startDate != '' and endDate == ''">
-                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
             </if>
 
             <if test="startDate == '' and endDate != ''">
-                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
             </if>
 
-            <if test="startDate != '' and endDate != ''">
-                AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                AND C.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[C.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
             </if>
             AND C.ORDER_STATUS = '세탁완료'
         </where>
@@ -400,15 +411,16 @@
             </if>
 
             <if test="startDate != '' and endDate == ''">
-                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
             </if>
 
             <if test="startDate == '' and endDate != ''">
-                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
             </if>
 
-            <if test="startDate != '' and endDate != ''">
-                AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                AND C.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[C.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
             </if>
             AND C.ORDER_STATUS = '배송준비'
         </where>
@@ -467,16 +479,19 @@
             </if>
 
             <if test="startDate != '' and endDate == ''">
-                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
             </if>
 
             <if test="startDate == '' and endDate != ''">
-                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
             </if>
 
-            <if test="startDate != '' and endDate != ''">
-                AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                AND C.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[C.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
             </if>
+
+
             AND C.ORDER_STATUS = '배송중'
         </where>
         ORDER BY C.ORDER_CODE DESC
@@ -534,15 +549,16 @@
             </if>
 
             <if test="startDate != '' and endDate == ''">
-                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
             </if>
 
             <if test="startDate == '' and endDate != ''">
-                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
             </if>
 
-            <if test="startDate != '' and endDate != ''">
-                AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                AND C.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[C.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
             </if>
             AND C.ORDER_STATUS = '구매확정'
         </where>
@@ -557,6 +573,10 @@
         ORDER BY 1 DESC
 
     </select>
+
+
+
+
 
 
 </mapper>

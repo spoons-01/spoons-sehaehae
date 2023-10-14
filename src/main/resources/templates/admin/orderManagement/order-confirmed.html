@@ -16,13 +16,13 @@
 <div th:replace="/admin/common/nav.html"></div>
 
 <header>
-    <h3>주문관리 &gt 결제완료</h3>
+    <h3>주문관리 &gt 구매확정</h3>
     <h3 id="login">로그인(로그아웃)</h3>
 </header>
 
 <div class="container">
     <div class="basic-search">
-        <h4 class="top-name">결제완료</h4>
+        <h4 class="top-name">구매확정</h4>
     </div>
 
     <div class="basic-search2">
@@ -64,13 +64,13 @@
                         ~
                         <input type="date" id="end-date" name="endDate" th:value="${paging.endDate}">
                         <span class="but-group">
-                    <input type="button" onclick="searchDate('오늘');" class="sub-btn" value="오늘">
-                    <input type="button" onclick="searchDate('1주');" class="sub-btn" value="1주">
-                    <input type="button" onclick="searchDate('15일');" class="sub-btn" value="15일">
-                    <input type="button" onclick="searchDate('1개월');" class="sub-btn" value="1개월">
-                    <input type="button" onclick="searchDate('3개월');" class="sub-btn" value="3개월">
-                    <input type="button" onclick="searchDate('6개월');" class="sub-btn" value="6개월">
-                </span>
+                            <input type="button" onclick="searchDate('오늘');" class="sub-btn" value="오늘">
+                            <input type="button" onclick="searchDate('1주');" class="sub-btn" value="1주">
+                            <input type="button" onclick="searchDate('15일');" class="sub-btn" value="15일">
+                            <input type="button" onclick="searchDate('1개월');" class="sub-btn" value="1개월">
+                            <input type="button" onclick="searchDate('3개월');" class="sub-btn" value="3개월">
+                            <input type="button" onclick="searchDate('6개월');" class="sub-btn" value="6개월">
+                        </span>
                     </td>
                 </tr>
 
@@ -92,7 +92,7 @@
                 <td></td>
             </tr>
             <tr>
-                <th></th>
+                <th><input id="selectAll" type="checkbox" name="checkStatus" value="checkStatus" onclick='selectAll(this)'></th>
                 <th th:style="'width: 110px;'">주문번호</th>
                 <th>주문일자</th>
                 <th>총결제금액</th>
@@ -102,9 +102,9 @@
                 <th>주문상태</th>
             </tr>
             <tr th:each="search : ${ searchConfirmedList }">
-                <td></td>
-                <td th:text="${ search.code }" th:onclick="|location.href='/orderManagement/orderDetail?code=${search.code}'|" th:style="'border: 1px solid #000000FF; color: blue;'"></td>
-                <td th:text="${ #dates.format(search.orderDate, 'yyy-MM-dd') }" th:style="'border: 1px solid #000000FF;'"></td>
+                <td><input class="checkStatus" type="checkbox" name="checkStatus" value="checkStatus" th:data-order-id="${search.code}"></td>
+                <td th:text="${ search.code }" th:style="'border: 1px solid #000000FF; color: blue;'"></td>
+                <td th:text="${ #dates.format(search.orderDate, 'YYYY-MM-DD') }" th:style="'border: 1px solid #000000FF;'"></td>
                 <td th:text="${ search.orderTotalPrice }" th:style="'border: 1px solid #000000FF;'"></td>
                 <td th:text="${ search.member.name}" th:style="'border: 1px solid #000000FF;'"></td>
                 <td th:text="${ search.member.phone}" th:style="'border: 1px solid #000000FF;'"></td>
@@ -179,6 +179,8 @@
 
     </div>
 
+    
+
     <script>
         function searchDate(range) {
             var today = new Date();
@@ -216,8 +218,6 @@
 
 
     </script>
-
-
 
 
 </div>

@@ -103,8 +103,8 @@
         </tr>
         <tr th:each="search : ${ searchPaymentList }">
             <td><input class="checkStatus" type="checkbox" name="checkStatus" value="checkStatus" th:data-order-id="${search.code}"></td>
-            <td th:text="${ search.code }" th:onclick="|location.href='/orderManagement/orderDetail?code=${search.code}'|" th:style="'border: 1px solid #000000FF; color: blue;'"></td>
-            <td th:text="${ #dates.format(search.orderDate, 'yyy-MM-dd') }" th:style="'border: 1px solid #000000FF;'"></td>
+            <td th:text="${ search.code }"  th:style="'border: 1px solid #000000FF; color: blue;'"></td>
+            <td th:text="${ #dates.format(search.orderDate, 'yyyy-MM-dd') }" th:style="'border: 1px solid #000000FF;'"></td>
             <td th:text="${ search.orderTotalPrice }" th:style="'border: 1px solid #000000FF;'"></td>
             <td th:text="${ search.member.name}" th:style="'border: 1px solid #000000FF;'"></td>
             <td th:text="${ search.member.phone}" th:style="'border: 1px solid #000000FF;'"></td>

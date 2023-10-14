@@ -31,6 +31,7 @@
 
 <div class="container1">
     <form id="allSearch" action="/orderManagement/list">
+
         <table>
 
             <tr>
@@ -97,7 +98,7 @@
         </tr>
         <tr th:each="search : ${ searchList }">
             <td></td>
-            <td th:text="${ search.code }" th:onclick="|location.href='/orderManagement/orderDetail?code=${search.code}'|" th:style="'border: 1px solid #000000FF; color: blue;'"></td>
+            <td th:text="${ search.code }"  th:style="'border: 1px solid #000000FF; color: blue; cursor: pointer;'"></td>
             <td th:text="${#dates.format(search.orderDate, 'yyyy-MM-dd')}" th:style="'border: 1px solid #000000FF;'"></td>
             <td th:text="${ search.orderRequest }" th:style="'border: 1px solid #000000FF;'"></td>
             <td th:text="${ search.orderPrice }" th:style="'border: 1px solid #000000FF;'"></td>
@@ -176,6 +177,97 @@
     </div>
 </div>
 
+    <div id="modalContainer" class="modal-overlay">
+        <div id="modalContent">
+            <p>주문관리</p>
+            <div class="close-area">X</div>
+        </div>
+
+        <div class="content">
+           <table>
+               <tr>
+                   <td>주문자 정보</td>
+               </tr>
+               <tr>
+                   <th th:style="'background-color : #0909090F;'">주문번호</th>
+                   <th></th>
+                   <th th:style="'background-color : #0909090F;'">주문일자</th>
+                   <th></th>
+               </tr>
+               <tr>
+                   <th th:style="'background-color : #0909090F;'">주문자이름</th>
+                   <th></th>
+                   <th th:style="'background-color : #0909090F;'">주문자메일</th>
+                   <th></th>
+               </tr>
+               <tr>
+                   <th th:style="'background-color : #0909090F;'">주문자핸드폰</th>
+                   <th></th>
+                   <th th:style="'background-color : #0909090F;'">기본주소</th>
+                   <th></th>
+               </tr>
+           </table>
+
+        </div>
+
+        <div class="content1">
+            <table>
+                <tr>
+                    <td>주문 리스트</td>
+                </tr>
+                <tr>
+                    <th th:style="'background-color : #0909090F;'">주문번호</th>
+                    <th></th>
+                    <th th:style="'background-color : #0909090F;'">주문일자</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th th:style="'background-color : #0909090F;'">주문자이름</th>
+                    <th></th>
+                    <th th:style="'background-color : #0909090F;'">주문자메일</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th th:style="'background-color : #0909090F;'">주문자핸드폰</th>
+                    <th></th>
+                    <th th:style="'background-color : #0909090F;'">기본주소</th>
+                    <th></th>
+                </tr>
+            </table>
+
+        </div>
+
+        <div class="content2">
+            <table>
+                <tr>
+                    <td>주문 리스트</td>
+                </tr>
+                <tr>
+                    <th th:style="'background-color : #0909090F;'">주문번호</th>
+                    <th></th>
+                    <th th:style="'background-color : #0909090F;'">주문일자</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th th:style="'background-color : #0909090F;'">주문자이름</th>
+                    <th></th>
+                    <th th:style="'background-color : #0909090F;'">주문자메일</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th th:style="'background-color : #0909090F;'">주문자핸드폰</th>
+                    <th></th>
+                    <th th:style="'background-color : #0909090F;'">기본주소</th>
+                    <th></th>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+
+
+
+
 <script>
     function searchDate(range) {
         var today = new Date();
@@ -210,6 +302,12 @@
         document.getElementById('end-date').valueAsDate = endDate;
 
     }
+
+
+
+
+
+
 
 
 </script>

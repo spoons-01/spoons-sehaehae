@@ -2,13 +2,12 @@ window.onload = function() {
 
     /*---------- 초기화 버튼 ---------*/
     document.getElementById('resetButton').addEventListener('click', function () {
-        document.getElementById('allSearch').reset();
         document.getElementById('search-method').value = '전체';
         document.getElementById('searchValue').value = '';
         document.getElementById('start-date').value = '';
         document.getElementById('end-date').value = '';
     });
-
+}
     /*---------- 날짜 ---------*/
 
 
@@ -224,4 +223,22 @@ window.onload = function() {
     /*-------------------------------------------------------------*/
 
 
-}
+// 페이지 로드 후 실행할 코드
+//     document.addEventListener('DOMContentLoaded', function () {
+//         // .clickable 클래스가 지정된 모든 요소에 대한 클릭 이벤트 핸들러를 등록합니다.
+//         const clickableElements = document.querySelectorAll('.clickable');
+//
+//         clickableElements.forEach(function (element) {
+//             element.addEventListener('click', function () {
+//                 // 클릭된 요소의 데이터 검색 코드를 가져와서 모달 열기 함수로 전달합니다.
+//                 const searchCode = element.textContent;
+//                 openModal(searchCode);
+//             });
+//         });
+//     });
+//
+//     function openModal(code) {
+//         // 클릭된 요소의 데이터 검색 코드를 기반으로 모달 열기 및 데이터 가져오기 로직을 수행합니다.
+//         // 이전 답변의 "openModal" 함수 내용을 여기에 구현하세요.
+//     }
+
