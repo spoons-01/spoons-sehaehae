@@ -5,11 +5,14 @@ import com.spoons.sehaehae.common.exception.member.MemberModifyException;
 import com.spoons.sehaehae.common.exception.member.MemberRegistException;
 import com.spoons.sehaehae.member.dao.MemberMapper;
 import com.spoons.sehaehae.member.dto.MemberDTO;
+import com.spoons.sehaehae.member.dto.MyOrderDTO;
 import com.spoons.sehaehae.member.util.Naver_Sens_V2;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Random;
 
 @Slf4j
@@ -22,6 +25,13 @@ public class MemberService {
     public MemberService(MemberMapper memberMapper) {
         this.memberMapper = memberMapper;
     }
+
+    public List<MyOrderDTO> findMyOrder(String currentUsername) {
+        List<MyOrderDTO> myOrders = memberMapper.findMyOrder(currentUsername);
+        return myOrders;
+    }
+
+
     public MemberDTO findByMemberId(String memberId) {
         return memberMapper.findByMemberId(memberId);
     }
@@ -51,8 +61,10 @@ public class MemberService {
         int result = memberMapper.updateMember(modifyMember);
 
         if(!(result > 0)) {throw new MemberModifyException("회원 정보 수정에 실패하였습니다.");}
-
     }
+
+
+
 
     /* SENS 난수 생성 */
     public String sendRandomMessage(String tel) {
@@ -75,5 +87,6 @@ public class MemberService {
     public int memberTelCount(String tel) {
         return memberMapper.countMemberByTel(tel);
     }
+
 
 }

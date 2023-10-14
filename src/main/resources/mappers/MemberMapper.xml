@@ -5,6 +5,7 @@
 
 <mapper namespace="com.spoons.sehaehae.member.dao.MemberMapper">
 
+	<!-- TBL_MEMBER -->
 	<resultMap id="memberResultMap" type="com.spoons.sehaehae.member.dto.MemberDTO">
 		<id property="memberNo" column="MEMBER_NO"/>
 		<result property="memberId" column="ID"/>
@@ -47,6 +48,46 @@
 		<id property="membershipCode" column="REF_MEMBERSHIP_CODE2"/>
 		<result property="membershipName" column="MEMBERSHIP_NAME"/>
 	</resultMap>
+
+	<!-- TBL_ORDER -->
+	<resultMap id="orderResultMap" type="com.spoons.sehaehae.admin.dto.OrderDTO">
+		<id property="code" column="ORDER_CODE"/>
+		<result property="orderDate" column="ORDER_DATE"/>
+		<result property="orderRequest" column="ORDER_REQUEST"/>
+		<result property="orderPrice" column="ORDER_PRICE"/>
+		<result property="orderDiscount" column="ORDER_DISCOUNT"/>
+		<result property="orderTotalPrice" column="ORDER_TOTAL_PRICE"/>
+		<result property="memberCode" column="MEMBER_NO"/>
+		<result property="inputZipCode" column="INPUT_ZIP_CODE"/>
+		<result property="inputAddress" column="INPUT_ADDRESS"/>
+		<result property="InputAddress2" column="INPUT_ADDRESS2"/>
+		<result property="orderStatus" column="ORDER_STATUS"/>
+		<result property="cpCode" column="CP_CODE"/>
+		<result property="usePoint" column="USE_POINT"/>
+		<result property="collectionDate" column="COLLECTION_DATE"/>
+		<result property="deliveryDate" column="DELIVERY_DATE"/>
+	</resultMap>
+
+	<!-- 내 구매내역 -->
+	<resultMap id="myOrderResultMap" type="com.spoons.sehaehae.member.dto.MyOrderDTO">
+		<id property="memberNo" column="MEMBER_NO"/>
+		<result property="orderCode" column="ORDER_CODE"/>
+		<result property="orderDate" column="ORDER_DATE"/>
+		<result property="orderStatus" column="ORDER_STATUS"/>
+		<result property="progressDate" column="PROGRESS_DATE"/>
+	</resultMap>
+
+	<select id="findMyOrder" resultMap="myOrderResultMap">
+		SELECT
+			B.*
+		FROM TBL_MEMBER A
+				 LEFT JOIN TBL_ORDER B ON(A.MEMBER_NO = B.MEMBER_NO)
+		WHERE MEMBER_STATUS = 'Y'
+		  AND A.ID = #{ memberId }
+	</select>
+
+
+
 <!--
 	<resultMap type="com.spoons.sehaehae.member.dto.ProfileAttachmentDTO" id="profileAttachmentResultMap">
 		<id property="profilePhotoNo" column="PROFILE_PHOTO_NO"></id>
