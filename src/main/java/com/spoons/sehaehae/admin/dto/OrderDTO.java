@@ -32,4 +32,5 @@ public class OrderDTO {
     private Date progressDate;
     private String image;
     private List<OrderProductDTO> list;
+
 }
