@@ -38,16 +38,17 @@
     <!-- 쿠폰, 포인트, 세탁등급 -->
     <div class="box-wrapper">
         <div class="first-bar">
-            <div class="first-bar-child">
+            <div class="first-bar-child1">
+                <a href="/user/member/myCoupon"></a>
                 <img src="/images/my-coupon.png">
                 <div class="first-text">
                     <p>쿠폰</p>
-                    <p class="first-blue">1</p>
+                    <p class="first-blue" th:text="${couponCount}"></p>
                 </div>
             </div>
             <div class="vertical-line"></div>
 
-            <div class="first-bar-child">
+            <div class="first-bar-child2">
                 <img class="my-point" src="/images/my-point.png">
                 <div class="first-text">
                     <p>포인트</p>
@@ -56,12 +57,13 @@
             </div>
             <div class="vertical-line"></div>
 
-            <div class="first-bar-child">
+            <div class="first-bar-child3">
                 <img src="/images/my-level.png">
                 <div class="first-text">
                     <p>세탁 등급</p>
-                    <p class="first-blue">이병</p>
+                    <p class="first-blue" th:text="${membershipName}"></p>
                 </div>
+
             </div>
         </div>
     </div>
@@ -166,7 +168,7 @@
                         <div class="button-wrapper">
                             <a href="#" class="button">환불하기</a>
                             <!-- 환불은 구매확정시에만 뜬다. if문과 hidden 사용 -->
-                            <a href="#" class="button2">구매하기</a>
+                            <a href="#" class="button2">후기쓰기</a>
                         </div>
                     </div>
                 </div>
@@ -194,7 +196,7 @@
                         <div class="button-wrapper">
                             <a href="#" class="button">환불하기</a>
                             <!-- 환불은 구매확정시에만 뜬다. if문과 hidden 사용 -->
-                            <a href="#" class="button2">구매하기</a>
+                            <a href="#" class="button2">환불하기</a>
                         </div>
                     </div>
                 </div>
@@ -222,7 +224,7 @@
                         <div class="button-wrapper">
                             <a href="#" class="button">환불하기</a>
                             <!-- 환불은 구매확정시에만 뜬다. if문과 hidden 사용 -->
-                            <a href="#" class="button2">구매하기</a>
+                            <a href="#" class="button2">환불하기</a>
                         </div>
                     </div>
                 </div>
