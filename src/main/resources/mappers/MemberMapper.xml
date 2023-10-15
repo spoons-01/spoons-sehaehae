@@ -5,7 +5,6 @@
 
 <mapper namespace="com.spoons.sehaehae.member.dao.MemberMapper">
 
-	<!-- TBL_MEMBER -->
 	<resultMap id="memberResultMap" type="com.spoons.sehaehae.member.dto.MemberDTO">
 		<id property="memberNo" column="MEMBER_NO"/>
 		<result property="memberId" column="ID"/>
@@ -212,32 +211,33 @@
 			)
 	</insert>
 
-	<insert id="insertMemberRole">
-		INSERT
-		INTO TBL_MEMBER_ROLE
-		(
-			MEMBER_NO
-		, AUTHORITY_CODE
-		)
-		VALUES
-			( SEQ_MEMBER_NO.CURRVAL
-			, 2
-			)
-	</insert>
+<!--	<insert id="insertMemberRole">-->
+<!--		INSERT-->
+<!--		INTO TBL_MEMBER_ROLE-->
+<!--		(-->
+<!--			MEMBER_NO-->
+<!--		, AUTHORITY_CODE-->
+<!--		)-->
+<!--		VALUES-->
+<!--			(-->
+<!--				SEQ_MEMBER_NO.CURRVAL-->
+<!--			, 2-->
+<!--			)-->
+<!--	</insert>-->
 
-	<insert id="insertMemberLevel">
-		INSERT
-		INTO TBL_MEMBER_LEVEL
-		(
-			MEMBER_NO
-		, MEMBERSHIP_CODE
-		)
-		VALUES
-			(
-				SEQ_MEMBER_NO.CURRVAL
-			, 1)
-	</insert>
-
+<!--	<insert id="insertMemberLevel">-->
+<!--		INSERT-->
+<!--		INTO TBL_MEMBER_LEVEL-->
+<!--		(-->
+<!--			MEMBER_NO-->
+<!--		, MEMBERSHIP_CODE-->
+<!--		)-->
+<!--		VALUES-->
+<!--			(-->
+<!--				SEQ_MEMBER_NO.CURRVAL-->
+<!--			, SEHAE01-->
+<!--			)-->
+<!--	</insert>-->
 	<select id="selectEncryptedPwd" resultType="string">
 		SELECT
 			PASSWORD
@@ -279,17 +279,46 @@
   
    <select id="selectMemberList" resultMap="memberResultMap">
         select
-            *
-        from    TBL_MEMBER
+            A.*
+        from    TBL_MEMBER A
+        where	MEMBER_STATUS = 'Y'
     </select>
-    
 
-    <select id="genderChart" resultType="int">
-        select
-            COUNT(*)
-        from TBL_MEMBER
-        where GENDER = 'F'
-    </select>
+	<update id="adUpdateMember">
+		update TBL_MEMBER
+		set
+			NAME=#{name},
+			ID=#{memberId},
+			NICKNAME=#{nickname},
+			PHONE_NUMBER=#{phone},
+			GENDER=#{gender},
+			BIRTHDAY=#{birthday},
+			ADDRESS1=#{address1}
+		where   MEMBER_NO=#{memberNo}
+	</update>
+
+	<update id="removeMember">
+		update TBL_MEMBER
+		set	   MEMBER_STATUS = 'N'
+		where  MEMBER_NO=${memberNo}
+	</update>
+
+
+
+
+	<select id="getfNum" parameterType="int">
+		select
+		    count(*)
+		from	TBL_MEMBER
+		where	MEMBER_STATUS='Y' and GENDER = 'F'
+	</select>
+
+	<select id="getmNum" parameterType="int">
+		select
+			count(*)
+		from	TBL_MEMBER
+		where	MEMBER_STATUS='Y' and GENDER= 'M'
+	</select>
 
 
 	<select id="findMyOrder" resultMap="myOrderResultMap">

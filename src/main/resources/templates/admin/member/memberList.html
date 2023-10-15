@@ -19,10 +19,9 @@
             <th>성별</th>
             <th>주소</th>
             <th>가입일</th>
-            <th>계정삭제</th>
             </thead>
             <tbody>
-            <tr th:each="member : ${member}" onclick="memberModal(this)">
+            <tr th:each="member : ${member}" th:onclick="memberModal([[${member}]])">
                 <td th:text="${member.memberNo}"></td>
                 <td th:text="${member.name}"></td>
                 <td th:text="${member.memberId}"></td>
@@ -31,53 +30,67 @@
                 <td th:text="${member.birthday}"></td>
                 <td th:if="${member.gender}=='F'">여성</td>
                 <td th:if="${member.gender}=='M'">남성</td>
-                <td th:text="${member.address1}"></td>
+                <td th:text="${member.address1} +' '+ ${member.address2}"></td>
                 <td th:text="${#dates.format(member.subscriptionDate,'yyyy-MM-dd')}"></td>
-                <td><button>삭제</button></td>
             </tr>
             </tbody>
         </table>
 
-<div class="modal openmodal">
+<div class="modal updateMember">
  <div class="modalBody">
      <h1>회원정보</h1>
-     <form>
-         <table style="width: 1200px; margin: 0">
-            <tr>
-                <td>이름:</td><td><input type="text" name="a"></td>
-            </tr>
-             <tr>
-                <td>아이디:</td><td><input type="text"></td>
-             </tr>
-             <tr>
-                <td>닉네임:</td><td><input type="text"></td>
-             </tr>
-             <tr>
-                <td>전화번호:</td><td><input type="text"></td>
-             </tr>
-             <tr>
-                <td>생년월일:</td><td><input type="text"></td>
-             </tr>
-             <tr>
-                <td>성별:</td><td><input type="text"></td>
-             </tr>
-             <tr>
-                <td>주소:</td><td><input type="text"></td>
-            </tr>
-         </table>
+     <form id="adUpdateMember" action="/admember/update" method="post">
+         <ul style="width: 690px; margin: 0">
+             <input type="hidden" name="memberNo" id="memberNo">
+            <li>
+                <h3>이름</h3><input type="text" name="name" id="name">
+            </li>
+             <li>
+                <h3>아이디</h3><input type="text" name="memberId" id="memberId">
+             </li>
+             <li>
+                <h3>닉네임</h3><input type="text" name="nickname" id="nickname">
+             </li>
+             <li>
+                <h3>전화번호</h3><input type="text" name="phone" id="phone">
+             </li>
+             <li>
+                <h3>생년월일</h3><input type="date" name="birthday" id="birthday">
+             </li>
+             <li>
+                <h3>성별</h3><input type="text" name="gender" id="gender">
+             </li>
+             <li>
+                <h3>주소</h3>
+                 <input type="text" name="address1" id="address1">
+             </li>
+             <li>
+                 <input type="text" name="address2" id="address2">
+            </li>
+         </ul>
          <div align="center">
-             <button type="button" th:onclick="'location.href=\'/member/list\''">
+             <button class="buttonD" type="button" th:onclick="'location.href=\'/admember/list\''">
                  닫기</button>
-             <button type="submit">수정</button>
+             <button class="buttonD" type="submit">수정</button>
+             <button class="buttonD" id="button-delete" formaction="/admember/remove">삭제</button>
          </div>
      </form>
  </div>
 </div>
 
 <script>
-    function memberModal(){
-        const openmodal = document.querySelector('.openmodal');
-        openmodal.style.display="flex";
+    function memberModal(e){
+        const updateMember = document.querySelector('.updateMember');
+        updateMember.style.display="flex";
+        document.getElementById("memberNo").value=e.memberNo
+        document.getElementById("name").value=e.name
+        document.getElementById("memberId").value=e.memberId
+        document.getElementById("nickname").value=e.nickname
+        document.getElementById("phone").value=e.phone
+        document.getElementById("birthday").value=e.birthday
+        document.getElementById("gender").value=e.gender
+        document.getElementById("address1").value=e.address1
+        document.getElementById("address2").value=e.address2
     }
 </script>
 
