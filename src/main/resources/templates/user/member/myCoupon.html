@@ -39,10 +39,10 @@
 <div class="background">
     <div class="wrapper">
         <h3>쿠폰 목록</h3>
-        <div class="couponwrapper">
+        <div class="couponwrapper" th:each="coupon : ${myCoupons}">
             <div class="coupon">
                 <div class="first-line">
-                    <p class="cp-name">첫 가입 쿠폰</p>
+                    <div th:text="${coupon?.cpName}"></div>
                     <div class="circle-more">
                         <div class="circle">
                             <p>?</p>

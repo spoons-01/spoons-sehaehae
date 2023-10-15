@@ -5,6 +5,7 @@ import com.spoons.sehaehae.common.exception.member.MemberModifyException;
 import com.spoons.sehaehae.common.exception.member.MemberRegistException;
 import com.spoons.sehaehae.member.dao.MemberMapper;
 import com.spoons.sehaehae.member.dto.MemberDTO;
+import com.spoons.sehaehae.member.dto.MyCouponDTO;
 import com.spoons.sehaehae.member.dto.MyOrderDTO;
 import com.spoons.sehaehae.member.util.Naver_Sens_V2;
 import lombok.extern.slf4j.Slf4j;
@@ -26,11 +27,17 @@ public class MemberService {
         this.memberMapper = memberMapper;
     }
 
+    /* 내 주문 목록 */
     public List<MyOrderDTO> findMyOrder(String currentUsername) {
         List<MyOrderDTO> myOrders = memberMapper.findMyOrder(currentUsername);
         return myOrders;
     }
 
+    /* 내 쿠폰 목록 */
+    public List<MyCouponDTO> findMyCoupon(int memberNo) {
+        List<MyCouponDTO> myCoupons = memberMapper.findMyCoupon(memberNo);
+        return myCoupons;
+    }
 
     public MemberDTO findByMemberId(String memberId) {
         return memberMapper.findByMemberId(memberId);
@@ -87,6 +94,7 @@ public class MemberService {
     public int memberTelCount(String tel) {
         return memberMapper.countMemberByTel(tel);
     }
+
 
 
 }

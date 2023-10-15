@@ -77,14 +77,39 @@
 		<result property="progressDate" column="PROGRESS_DATE"/>
 	</resultMap>
 
-	<select id="findMyOrder" resultMap="myOrderResultMap">
-		SELECT
-			B.*
-		FROM TBL_MEMBER A
-				 LEFT JOIN TBL_ORDER B ON(A.MEMBER_NO = B.MEMBER_NO)
-		WHERE MEMBER_STATUS = 'Y'
-		  AND A.ID = #{ memberId }
-	</select>
+	<!-- TBL_COUPON -->
+	<resultMap id="couponResultMap" type="com.spoons.sehaehae.admin.dto.CouponDTO">
+		<id property="cpCode" column="CP_CODE"/>
+		<result property="cpName" column="CP_NAME"/>
+		<result property="cpRate" column="CP_RATE"/>
+		<result property="cpSdate" column="CP_SDATE"/>
+		<result property="cpEdate" column="CP_EDATE"/>
+		<result property="cpStatus" column="CP_STATUS"/>
+	</resultMap>
+
+	<!-- 내 쿠폰내역 -->
+	<resultMap id="myCouponResultMap" type="com.spoons.sehaehae.member.dto.MyCouponDTO">
+		<id property="memberNo" column="MEMBER_NO"></id>
+		<result property="cpCode" column="CP_CODE"/>
+		<result property="getDate" column="GET_DATE"/>
+		<result property="useStatus" column="USE_STATUS"/>
+		<result property="useDate" column="USE_DATE"/>
+	</resultMap>
+
+
+
+
+<!--	<select id="findMyCoupon" resultMap="myCouponResultMap">-->
+<!--		SELECT-->
+<!--			A.*,-->
+<!--			B.CP_NAME,-->
+<!--			C.ID-->
+<!--		FROM TBL_CPBOX AS A-->
+<!--				 LEFT JOIN TBL_CP AS B ON A.CP_CODE = B.CP_CODE-->
+<!--				 LEFT JOIN TBL_MEMBER AS C ON A.MEMBER_NO = C.MEMBER_NO-->
+<!--		WHERE MEMBER_STATUS = 'Y'-->
+<!--		  AND C.ID = #{memberId}-->
+<!--	</select>-->
 
 
 
@@ -266,5 +291,29 @@
         where GENDER = 'F'
     </select>
 
+
+	<select id="findMyOrder" resultMap="myOrderResultMap">
+		SELECT
+			B.*
+		FROM TBL_MEMBER A
+				 LEFT JOIN TBL_ORDER B ON(A.MEMBER_NO = B.MEMBER_NO)
+		WHERE MEMBER_STATUS = 'Y'
+		  AND A.ID = #{ memberId }
+	</select>
+
+
+	<select id="findMyCoupon" resultMap="myCouponResultMap">
+		SELECT
+			A.*,
+			B.CP_NAME
+			C.ID
+		FROM TBL_CPBOX A
+				 LEFT JOIN TBL_CP B ON A.CP_CODE = B.CP_CODE
+				 LEFT JOIN TBL_MEMBER C ON A.MEMBER_NO = C.MEMBER_NO
+		  AND A.MEMBER_NO = #{ memberNo };
+	</select>
+
 </mapper>
+
+
 
