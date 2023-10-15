@@ -167,7 +167,7 @@
                         <div class="button-wrapper">
                             <a th:if="${order.orderStatus == '구매확정'}" href="#" class="button">환불하기</a>
                             <a th:unless="${order.orderStatus == '구매확정'}" href="#" class="button disabled">환불하기</a>
-                            <a th:if="${order.orderStatus == '구매확정'}" href="#" class="button2">후기쓰기</a>
+                            <a th:if="${order.orderStatus == '구매확정'}" id="btn-modal" class="button2">후기쓰기</a>
                             <a th:unless="${order.orderStatus == '구매확정'}" href="#" class="button2 disabled">후기쓰기</a>
 
                         </div>
@@ -177,5 +177,96 @@
         </div>
     </div>
 </div>
+
+<!-- 인선 !!!! 후기 작성 모달 창 -->
+<div id="modal" class="modal-overlay">
+    <div class="modal-detail">
+        <div class="close-area">X</div>
+        <div class="reviewModalTitle">
+            <h3 class="reviewTitle">후기 쓰기</h3>
+        </div>
+        <form id="reviewForm" action="/user/board/regist" method="post" enctype="multipart/form-data" >
+            <div class="content">
+                <div class="rating">
+                    <span class="text-bold">별점을 선택해주세요</span>
+                    <input type="radio" name="rating" value="5" id="rate1"><label
+                        for="rate1">★</label>
+                    <input type="radio" name="rating" value="4" id="rate2"><label
+                        for="rate2">★</label>
+                    <input type="radio" name="rating" value="3" id="rate3"><label
+                        for="rate3">★</label>
+                    <input type="radio" name="rating" value="2" id="rate4"><label
+                        for="rate4">★</label>
+                    <input type="radio" name="rating" value="1" id="rate5"><label
+                        for="rate5">★</label>
+                </div>
+            </div>
+            <div>
+                <h4 class="reviewModal">사진 첨부</h4>
+                <p>사진을 첨부해주세요.(최대 1장)</p>
+                <div class="reviewBox">
+                    <div class="image-area"><img src="/images/camera.png"><p>사진 첨부하기</p></div>
+                </div>
+            </div>
+            <div>
+                <h4 class="reviewModal">제목</h4>
+                <div class="reviewBox">
+                    <input type="text" name="title" class="reviewregist-name">
+                </div>
+            </div>
+            <div>
+                <h4 class="reviewModal">리뷰 작성</h4>
+                <div class="reviewBox">
+                        <textarea name="body" cols="60" rows="15" class="reviewregist-body"
+                                  placeholder="자세하고 솔직한 리뷰는 다른 고객에게 큰 도움이 됩니다."></textarea>
+                </div>
+            </div>
+            <div class="file">
+                <input type="file" name="attachImage" accept="image/jpeg,image/png">
+            </div>
+            <br>
+            <div class="reviewBox">
+                <div class="reviewDML2">
+                    <button type="submit" id="save">완 료</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+<!-- 인선 !!! 모달창 스크립트 -->
+<script>
+    (function (){
+        /* div image area 요소 */
+        const imageArea = document.querySelectorAll(".image-area");
+        /* input type=file 요소 */
+        const fileElements = document.querySelectorAll("[type=file]");
+        /* div 클릭 시 open 함수 동작하여 input type=file 클릭 */
+        imageArea.forEach(item => item.addEventListener('click', open));
+        /* 파일 첨부가 발생하는 상황에 preview 함수 동작 */
+        fileElements.forEach(item => item.addEventListener('change', preview));
+
+        function open() {
+            const index = Array.from(imageArea).indexOf(this);
+            fileElements[index].click();
+        }
+
+        function preview() {
+            const index = Array.from(fileElements).indexOf(this);
+            /* 첨부 된 파일이 존재한다면 */
+            if(this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.readAsDataURL(this.files[0]);
+                /* 파일 로드 후 동작하는 이벤트 설정 */
+                reader.onload = function () {
+                    console.log(reader.result);
+                    imageArea[index].innerHTML = `<img src='${reader.result}' style='width:50px;height:50px'>`;
+                }
+            }
+        }
+
+    })();
+</script>
 </body>
 </html>

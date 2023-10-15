@@ -10,6 +10,7 @@ footer {
 
 .footer-wrapper {
     display: flex;
+    justify-content: center;
 }
 
 .footer1 {

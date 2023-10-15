@@ -23,4 +23,23 @@ public interface MemberMapper {
     List<MemberDTO> selectMemberList();
     List<MyOrderDTO> findMyOrder(String memberId);
     List<MyCouponDTO> findMyCoupon(int memberNo);
+
+    void adUpdateMember(MemberDTO member);
+
+    void removeMember(MemberDTO removeMember);
+
+
+    int getfNum();
+
+    int getmNum();
+
+    int getFirst();
+
+    int getSecond();
+
+    int getThird();
+
+    int getFourth();
+
+    int getFifth();
 }

@@ -117,10 +117,14 @@ public class UserBoardController {
 
     @PostMapping("/regist")
     public String registReview(ReviewDTO review, MultipartFile attachImage,
-                               @AuthenticationPrincipal MemberDTO member) {
+                               @AuthenticationPrincipal MemberDTO member,
+                               @RequestParam("rating") int rating) {
 
         log.info("review request : {}", review);
         log.info("attachImage request : {}", attachImage);
+
+        // 별점을 ReviewDTO에 설정
+        review.setRating(rating);
 
         String fileUploadDir = IMAGE_DIR + "original";
         String thumbnailDir = IMAGE_DIR + "thumbnail";
@@ -158,7 +162,7 @@ public class UserBoardController {
 //                        AttachmentDTO fileInfo = new AttachmentDTO();
                         attachment.setName(originalFileName);
                         attachment.setSavedName(savedName);
-                        attachment.setRoute("/uplode/original/");
+                        attachment.setRoute("/uplode/original/original_" + savedName);
                         attachment.setExtension(ext);
                         attachment.setSize(size);
                         log.info("fileInfo : {}", attachment);
@@ -186,4 +190,13 @@ public class UserBoardController {
         return "redirect:/user/board/userReview";
     }
 
+    @GetMapping("/userReviewView")
+    public String getReviewView(@RequestParam Long no, Model model){
+
+        ReviewDTO reviewView = boardService.selectReviewView(no);
+
+        model.addAttribute("review", reviewView);
+
+        return "/user/board/userReviewView";
+    }
 }

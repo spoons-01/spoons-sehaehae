@@ -7,44 +7,231 @@
     <link href="/css/userBoard.css" rel="stylesheet" type="text/css">
     <link rel="icon" href="/images/favicon.ico">
 <!--    <script src="/javaScript/event.js" type="text/javascript"></script>-->
-    <title>고객센터</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js"></script>
+    <title>게시판</title>
 </head>
 <body>
 
     <div th:replace="/user/common/header.html"></div>
 
-<!--<a href="regist">후기작성인가?</a>-->
+<a href="regist">후기작성인가?</a>
     <div>
     <div class="notice-name">
-        <h3>이용 후기</h3>
+        <h3>후기 게시판</h3>
     </div>
-    <div id="thumbnailArea">
-        <th:block th:each="review : ${ reviewList }">
-            <span th:text="${ review.writer.nickname }"></span>
-            <div class="thumbnailButton" th:onclick="|location.href='/user/board/userReview/detail?no=${ review.reviewNo }'|">
+        <div class="searchNotice">
+            <form id="searchForm" action="/user/board/userReview" class="searchNotice-form1">
                 <div>
+                    <select  id="searchCondition" name="searchCondition" >
+                        <option value="title" th:selected="${ paging.searchCondition eq 'title'}" selected>제목</option>
+                        <option value="body" th:selected="${ paging.searchCondition eq 'body'}">내용</option>
+                    </select>
+                </div>
+                <div class="searchNotice-input1">
+                    <input type="search" id="searchValue" name="searchValue" th:value="${ paging.searchValue }"
+                           size="25" placeholder="검색어 입력"/>
+                    <button type="submit"><img src="/images/search.png"> </button>
+                </div>
+            </form>
+        </div>
+    <div id="thumbnailArea" class="thumbnailArea">
+        <th:block th:each="review : ${ reviewList }">
+            <div class="eachReview">
+                <div class="reviewNo">
+                    <div>
+                    No. <label th:text="${review.reviewNo}"></label>
+                    </div>
+                    <div>
+                        <span class="reviewNickname" th:text="${ review.writer.nickname }"></span>
+                    </div>
+                </div>
+                <div class="thumbnailButton" th:onclick="|location.href='/user/board/userReviewView?no=${ review.reviewNo }'|">
                     <th:block th:each="attachment : ${review.attachment}">
-                        <img th:src="${ attachment.thumbnail }" width="200px" height="200px">
+                        <img th:src="${ attachment.thumbnail }">
                     </th:block>
                 </div>
-                <div>
+                <div class="countReview">
                     <div>
-                    <img src="/images/heart.png"><p>10</p>
+                        <img src="/images/heart.png"><span class="ratingReview" th:text="${review.rating}"></span>
                     </div>
                     <div>
                         <p>조회수 : <span th:text="${review.count}"></span></p>
                     </div>
                     <div>
-                        <img src="/images/chat.png"><p>3</p>
+                        <img src="/images/chat.png"><span class="replyReview" th:text="${review.count}"></span>
                     </div>
                 </div>
-                <div>
-                    No. <label th:text="${review.reviewNo}"></label>
-                    <span th:text="${review.title}"></span>
+                <div class="review">
+                    <div class="ratingView" th:attr="data-rate=${review.rating}">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+<!--                   <span class="star" th:text="${review.rating}"></span>-->
+<!--                       <span class="star-rating">-->
+<!--                            <th:block th:each="i : ${#numbers.sequence(1, 5)}">-->
+<!--                                <span class="star"-->
+<!--                                      th:classappend="${i <= review.rating} ? 'rated' : 'unrated'"></span>-->
+<!--                            </th:block>-->
+<!--                           <span class="star" th:attr="data-rating=${review.rating}"></span>-->
+<!--                        </span>-->
+                </div>
+                <div class="reviewName">
+                        <span class="titleReview" th:text="${review.title}"></span>
                 </div>
             </div>
         </th:block>
     </div>
     </div>
+
+    <!-- 페이징 바-->
+    <div id="paging" class="pagingbar">
+
+        <th:block
+                th:if="${ paging.searchCondition != null and paging.searchValue != null }">
+            <!-- 맨 앞으로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/user/board/userReview?page=1&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">&lt;&lt;</button>
+
+            <!-- 이전 페이지로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/user/board/userReview?page=' + @{${paging.page - 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                    th:disabled="${ paging.page <= 1 }">&lt;</button>
+
+            <!-- 숫자 버튼 -->
+            <th:block
+                    th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
+                <button
+                        th:onclick="'location.href=\'/user/board/userReview?page=' + @{${page}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                        th:text="${ page }" th:disabled="${ paging.page eq page }">
+                </button>
+            </th:block>
+
+            <!-- 다음 페이지로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/user/board/userReview?page=' + @{${paging.page + 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                    th:disabled="${ paging.page >= paging.maxPage }">></button>
+
+            <!-- 맨 끝으로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/user/board/userReview?page=' + @{${paging.maxPage}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">>></button>
+
+        </th:block>
+
+        <th:block
+                th:if="${ paging.searchCondition == null  || paging.searchValue == null }">
+            <!-- 맨 앞으로 이동 -->
+            <button th:onclick="'location.href=\'/user/board/userReview?page=1\''">&lt;&lt;</button>
+
+            <!-- 이전 페이지로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/user/board/userReview?page=' + @{${paging.page - 1}} + '\''"
+                    th:disabled="${ paging.page <= 1 }">&lt;</button>
+
+            <!-- 숫자 버튼 -->
+            <th:block
+                    th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
+                <button
+                        th:onclick="'location.href=\'/user/board/userReview?page=' + @{${page}} + '\''"
+                        th:text="${ page }" th:disabled="${ paging.page eq page }">
+                </button>
+            </th:block>
+
+            <!-- 다음 페이지로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/user/board/userReview?page=' + @{${paging.page + 1}} + '\''"
+                    th:disabled="${ paging.page >= paging.maxPage }">></button>
+
+            <!-- 맨 끝으로 이동 -->
+            <button
+                    th:onclick="'location.href=\'/user/board/userReview?page=' + @{${paging.maxPage}} + '\''">>></button>
+        </th:block>
+
+    </div>
+
+    <div th:replace="/user/common/footer.html"></div>
+
+<script>
+    $(function (){
+        var rating = $('.ratingView');
+
+        rating.each(function (){
+           var targetScore = $(this).attr('data-rate');
+           console.log(targetScore);
+           $(this).find('svg:nth-child(-n+' + targetScore +')').css({color:'#FFFF00'});
+        });
+    });
+
+    // fetch('/')
+    // .then(response => response.json())
+    // .then(data => {
+    // const rating = data.rating;
+    //
+    // var stars = '';
+    //
+    // switch (rating) {
+    // case 1:
+    // stars = '★☆☆☆☆';
+    // break;
+    // case 2:
+    // stars = '★★☆☆☆';
+    // break;
+    // case 3:
+    // stars = '★★★☆☆';
+    // break;
+    // case 4:
+    // stars = '★★★★☆';
+    // break;
+    // case 5:
+    // stars = '★★★★★';
+    // break;
+    // default:
+    // stars = '☆☆☆☆☆';
+    // }})
+    // .catch(error => {
+    // console.error('데이터를 가져오는 중 오류 발생: ', error);
+    // });
+
+
+
+    // 결과를 웹 페이지에 표시
+    // document.getElementById('starRating').textContent = stars;
+
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     // HTML 페이지가 로드될 때 실행
+    //
+    //     // 모든 리뷰의 별점 표시
+    //     const starElements = document.querySelectorAll('.star');
+    //     starElements.forEach(function (starElement) {
+    //         const rating = starElement.getAttribute('data-rating'); // data-rating 속성에서 평가 점수 가져오기
+    //         displayRating(starElement, rating);
+    //     });
+    // });
+    //
+    // function displayRating(starElement, rating) {
+    //     // 별표시 함수: rating에 따라 별점 표시/숨김
+    //
+    //     const maxRating = 5; // 최대 별점
+    //
+    //     // 자식 요소의 개수를 가져옴
+    //     const childCount = starElement.children.length;
+    //
+    //     for (let i = 0; i < maxRating; i++) {
+    //         // i가 childCount보다 작을 때만 실행
+    //         if (i < rating) {
+    //             if (i < childCount) {
+    //                 starElement.children[i].style.display = 'inline-block'; // 별 표시
+    //             }
+    //         } else {
+    //             if (i < childCount) {
+    //                 starElement.children[i].style.display = 'none'; // 빈 별 숨김
+    //             }
+    //         }
+    //     }
+    // }
+</script>
 </body>
 </html>

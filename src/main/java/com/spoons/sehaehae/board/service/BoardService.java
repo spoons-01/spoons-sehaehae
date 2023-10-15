@@ -122,6 +122,8 @@ public class BoardService {
         boardMapper.updateQna(modifyQna);
     }
 
+    /* 후기 게시판 */
+
 
     public void registReview(ReviewDTO review, AttachmentDTO attachment) {
 
@@ -141,7 +143,7 @@ public class BoardService {
         int totalCount = boardMapper.reviewTotalCount(searchMap);
 
         /* 2. 페이징 처리와 연관 된 값을 계산하여 SelectCriteris 타입의 객체에 담는다. */
-        int limit = 10;         // 한 페이지에 보여줄 게시물의 수
+        int limit = 8;         // 한 페이지에 보여줄 게시물의 수
         int buttonAmount = 5;   // 한 번에 보여질 페이징 버튼의 수
         SelectCriteria selectCriteria = Pagenation.getSelectCriteria(page, totalCount, limit, buttonAmount, searchMap);
 
@@ -153,5 +155,13 @@ public class BoardService {
         reviewListAndPaging.put("reviewList", reviewList);
 
         return reviewListAndPaging;
+    }
+
+    public ReviewDTO selectReviewView(Long no) {
+
+        boardMapper.incrementReviewCount(no);
+
+        return boardMapper.selectReviewView(no);
+
     }
 }

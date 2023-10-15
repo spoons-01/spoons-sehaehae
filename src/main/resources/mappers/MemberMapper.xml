@@ -271,21 +271,78 @@
           , ADDRESS2      = #{ address2 }
           , PROFILE_PHOTO = #{profilePhoto}
 
-        WHERE MEMBER_STATUS = 'Y'
-          AND MEMBER_NO = #{ memberNo }
-    </update>
-
-    <select id="selectMemberList" resultMap="memberResultMap">
-        select *
-        from TBL_MEMBER
+		WHERE MEMBER_STATUS = 'Y'
+		  AND MEMBER_NO = #{ memberNo }
+	</update>
+  
+   <select id="selectMemberList" resultMap="memberResultMap">
+        select
+            A.*
+        from    TBL_MEMBER A
+        where	MEMBER_STATUS = 'Y'
     </select>
 
+	<update id="adUpdateMember">
+		update TBL_MEMBER
+		set
+			NAME=#{name},
+			ID=#{memberId},
+			NICKNAME=#{nickname},
+			PHONE_NUMBER=#{phone},
+			GENDER=#{gender},
+			BIRTHDAY=#{birthday},
+			ADDRESS1=#{address1}
+		where   MEMBER_NO=#{memberNo}
+	</update>
 
-    <select id="genderChart" resultType="int">
-        select COUNT(*)
-        from TBL_MEMBER
-        where GENDER = 'F'
-    </select>
+	<update id="removeMember">
+		update TBL_MEMBER
+		set	   MEMBER_STATUS = 'N'
+		where  MEMBER_NO=${memberNo}
+	</update>
+
+
+
+
+	<select id="getfNum" parameterType="int">
+		select
+		    count(*)
+		from	TBL_MEMBER
+		where	MEMBER_STATUS='Y' and GENDER = 'F'
+	</select>
+
+	<select id="getmNum" parameterType="int">
+		select
+			count(*)
+		from	TBL_MEMBER
+		where	MEMBER_STATUS='Y' and GENDER= 'M'
+	</select>
+
+	<select id="getFirst" parameterType="int">
+		SELECT count(*)
+		FROM TBL_MEMBER
+		where TRUNC( (sysdate - BIRTHDAY)/365, -1) <![CDATA[<=]]> 10
+	</select>
+	<select id="getSecond" parameterType="int">
+		SELECT count(*)
+		FROM TBL_MEMBER
+		where TRUNC( (sysdate - BIRTHDAY)/365, -1) = 20
+	</select>
+	<select id="getThird" parameterType="int">
+		SELECT count(*)
+		FROM TBL_MEMBER
+		where TRUNC( (sysdate - BIRTHDAY)/365, -1) = 30
+	</select>
+	<select id="getFourth" parameterType="int">
+		SELECT count(*)
+		FROM TBL_MEMBER
+		where TRUNC( (sysdate - BIRTHDAY)/365, -1) = 40
+	</select>
+	<select id="getFifth" parameterType="int">
+		SELECT count(*)
+		FROM TBL_MEMBER
+		where TRUNC( (sysdate - BIRTHDAY)/365, -1) <![CDATA[>=]]> 50
+	</select>
 
 
     <select id="findMyOrder" resultMap="myOrderResultMap">
@@ -297,7 +354,16 @@
     </select>
 
 
-    <select id="countMemberByTel" resultType="java.lang.Integer"></select>
+	<select id="findMyCoupon" resultMap="myCouponResultMap">
+		SELECT
+			A.*,
+			B.CP_NAME
+			C.ID
+		FROM TBL_CPBOX A
+				 LEFT JOIN TBL_CP B ON A.CP_CODE = B.CP_CODE
+				 LEFT JOIN TBL_MEMBER C ON A.MEMBER_NO = C.MEMBER_NO
+		  AND A.MEMBER_NO = #{ memberNo };
+	</select>
 
 </mapper>
 

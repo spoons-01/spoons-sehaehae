@@ -132,13 +132,13 @@
         <result property="inputZipCode" column="INPUT_ZIP_CODE"/>
         <result property="inputAddress" column="INPUT_ADDRESS"/>
         <result property="InputAddress2" column="INPUT_ADDRESS2"/>
+        <result property="useCoupon" column="CP_CODE"/>
         <result property="orderStatus" column="ORDER_STATUS"/>
         <result property="usePoint" column="USE_POINT"/>
-        <result property="useCoupon" column="CP_CODE"/>
         <result property="collectionDate" column="COLLECTION_DATE"/>
         <result property="deliveryDate" column="DELIVERY_DATE"/>
-
-        <association property="member" resultMap="memberResultMap"/>
+        <result property="progressDate" column="PROGRESS_DATE"/>
+<!--        <association property="member" resultMap="memberResultMap"/>-->
     </resultMap>
 
     <!-- 공지사항 -->
@@ -150,7 +150,7 @@
             <if test="searchCondition == 'title'">
                 A.NOTICE_TITLE LIKE '%' || #{ searchValue } || '%'
             </if>
-            <if test="searchCondition == 'content'">
+            <if test="searchCondition == 'body'">
                 A.NOTICE_BODY LIKE '%' || #{ searchValue } || '%'
             </if>
             AND A.NOTICE_STATUS = 'Y'
@@ -485,7 +485,7 @@
             <if test="searchCondition == 'title'">
                 A.REVIEW_TITLE LIKE '%' || #{ searchValue } || '%'
             </if>
-            <if test="searchCondition == 'content'">
+            <if test="searchCondition == 'body'">
                 A.REVIEW_BODY LIKE '%' || #{ searchValue } || '%'
             </if>
             AND A.REVIEW_STATUS = 'Y'
@@ -528,7 +528,15 @@
                             , C.ORDER_CODE
                             , C.RATING
                        FROM TBL_REVIEW C
-                      WHERE C.REVIEW_STATUS ='Y'
+                <where>
+                    <if test="searchCondition == 'title'">
+                        C.REVIEW_TITLE LIKE '%' || #{ searchValue } || '%'
+                    </if>
+                    <if test="searchCondition == 'body'">
+                        C.REVIEW_BODY LIKE '%' || #{ searchValue } || '%'
+                    </if>
+                    AND C.REVIEW_STATUS = 'Y'
+                </where>
                       ORDER BY C.REVIEW_NO DESC
                       ) B
         <![CDATA[
@@ -541,4 +549,29 @@
         WHERE A.RNUM >= #{ startRow }
         ORDER BY 1 DESC
     </select>
+
+    <select id="selectReviewView" resultMap="reviewBoardResultMap">
+        SELECT
+        A.REVIEW_NO
+        , B.MEMBER_NO
+        , B.NICKNAME
+        , A.REVIEW_TITLE
+        , A.REVIEW_BODY
+        , A.REVIEW_CREATED_DATE
+        , C.ORDER_CODE
+        , A.RATING
+        FROM TBL_REVIEW A
+        JOIN TBL_MEMBER B ON (A.MEMBER_NO = B.MEMBER_NO)
+        JOIN TBL_ORDER C ON (A.ORDER_CODE = C.ORDER_CODE)
+        WHERE A.REVIEW_STATUS = 'Y'
+        AND A.REVIEW_NO = #{ reviewNo }
+    </select>
+
+    <update id="incrementReviewCount">
+        UPDATE
+        TBL_REVIEW A
+        SET A.REVIEW_COUNT = A.REVIEW_COUNT + 1
+        WHERE A.REVIEW_NO = #{ reviewNo }
+    </update>
+
 </mapper>

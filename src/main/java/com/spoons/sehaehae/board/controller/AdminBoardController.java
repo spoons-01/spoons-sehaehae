@@ -2,6 +2,7 @@ package com.spoons.sehaehae.board.controller;
 
 import com.spoons.sehaehae.board.dto.NoticeDTO;
 import com.spoons.sehaehae.board.dto.QnaDTO;
+import com.spoons.sehaehae.board.dto.ReviewDTO;
 import com.spoons.sehaehae.board.service.BoardService;
 import com.spoons.sehaehae.member.dto.MemberDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -167,5 +168,33 @@ public class AdminBoardController {
         boardService.deleteQna(id);
 
         return "redirect:/admin/board/adminQna";
+    }
+
+    /* 후기 게시판*/
+
+    @GetMapping("/adminReview")
+    public String getReview(@RequestParam(defaultValue = "1")int page,
+                         @RequestParam(required = false) String searchCondition,
+                         @RequestParam(required = false)String searchValue,
+                         Model model){
+
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+
+        Map<String, Object> boardListAndPaging = boardService.selectReviewList(searchMap, page);
+        model.addAttribute("paging",boardListAndPaging.get("paging"));
+        model.addAttribute("reviewList", boardListAndPaging.get("reviewList"));
+
+        return "/admin/board/adminReviewList";
+    }
+
+    @GetMapping("/adminReviewView")
+    public String getReviewView(@RequestParam Long no, Model model){
+
+        ReviewDTO reviewView = boardService.selectReviewView(no);
+        model.addAttribute("review", reviewView);
+
+        return "admin/board/adminReviewView";
     }
 }
