@@ -317,7 +317,7 @@
 		select
 			count(*)
 		from	TBL_MEMBER
-		where	MEMBER_STATUS='Y' and GENDER = 'M'
+		where	MEMBER_STATUS='Y' and GENDER= 'M'
 	</select>
 
 
