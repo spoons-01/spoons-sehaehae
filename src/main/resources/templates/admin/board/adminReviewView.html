@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="stylesheet" type="text/css">-->
+    <link href="/css/adminBoard.css" rel="stylesheet" type="text/css">
+    <script src="/javaScript/modalEvent.js" type="text/javascript"></script>
+    <title>Title</title>
+</head>
+<body>
+<div th:replace="/admin/common/nav"></div>
+<header>
+    <h3>게시판 &gt <a href="/admin/board/adminReview">후기 게시판</a></h3>
+    <h3 id="login">로그인(로그아웃)</h3>
+</header>
+
+<div class="details">
+    <table>
+        <tr>
+            <td>No.<p name="reviewNo" th:text="${ review.reviewNo }"/></td>
+        </tr>
+        <tr>
+            <p>주문번호 : <span th:text="${ review.order.code }"/></p>
+        </tr>
+        <tr>
+            <p>별점 : <span th:text="${ review.rating }"/></p>
+        </tr>
+        <tr class="detail-name">
+            <td ><p name="title" th:text="${ review.title }"></p></td>
+        </tr>
+        <tr>
+            <p>작성자 : <span th:text="${ review.writer.nickname }"/></p>
+        </tr>
+        <tr class="detail-date">
+            <td><p th:text="${ review.createdDate }"></p></td>
+        </tr>
+        <tr class="detail-body">
+            <td>
+                <textarea name="body" cols="60" rows="15"
+                          readonly th:text="${ review.body }">
+                                    </textarea></td>
+        </tr>
+        <img th:src="${ review.attachment.thumbnail}">
+    </table>
+</div>
+<div class="noticeDML">
+    <button type="button" id="noticeList" th:onclick="'location.href=\'/admin/board/adminReview\''">목록으로</button>
+    <a th:href="@{/admin/board/deleteReview(id=${ review.reviewNo })}">삭제</a>
+</div>
+
+</body>
+</html>

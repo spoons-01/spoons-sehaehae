@@ -60,8 +60,8 @@
 		<result property="inputZipCode" column="INPUT_ZIP_CODE"/>
 		<result property="inputAddress" column="INPUT_ADDRESS"/>
 		<result property="InputAddress2" column="INPUT_ADDRESS2"/>
-		<result property="orderStatus" column="ORDER_STATUS"/>
 		<result property="cpCode" column="CP_CODE"/>
+		<result property="orderStatus" column="ORDER_STATUS"/>
 		<result property="usePoint" column="USE_POINT"/>
 		<result property="collectionDate" column="COLLECTION_DATE"/>
 		<result property="deliveryDate" column="DELIVERY_DATE"/>
