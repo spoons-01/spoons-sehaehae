@@ -14,4 +14,6 @@ public class MyCouponDTO {
     private String useStatus;
     private Date useDate;
     private String cpName;
+    private Long cpRate;
+    private Date cpEdate;
 }
