@@ -122,6 +122,8 @@ public class BoardService {
         boardMapper.updateQna(modifyQna);
     }
 
+    /* 후기 게시판 */
+
 
     public void registReview(ReviewDTO review, AttachmentDTO attachment) {
 
@@ -153,5 +155,13 @@ public class BoardService {
         reviewListAndPaging.put("reviewList", reviewList);
 
         return reviewListAndPaging;
+    }
+
+    public ReviewDTO selectReviewView(Long no) {
+
+        boardMapper.incrementReviewCount(no);
+
+        return boardMapper.selectReviewView(no);
+
     }
 }

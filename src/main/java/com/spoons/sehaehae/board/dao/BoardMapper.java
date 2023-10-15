@@ -46,4 +46,8 @@ public interface BoardMapper {
     int reviewTotalCount(Map<String, String> searchMap);
 
     List<ReviewDTO> selectReviewList(SelectCriteria selectCriteria);
+
+    ReviewDTO selectReviewView(Long no);
+
+    void incrementReviewCount(Long no);
 }

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/css/adminBoard.css" rel="stylesheet" type="text/css">
+  <script src="/javaScript/modalEvent.js" type="text/javascript"></script>
+  <title>Title</title>
+</head>
+<body>
+    <div th:replace="admin/common/nav.html"></div>
+    <header>
+      <h3>게시판 &gt <a href="/admin/board/adminReview">후기 게시판</a></h3>
+      <h3 id="login">로그인(로그아웃)</h3>
+    </header>
+
+      <div id="outerDiv" class="adminNotice">
+        <div class="adminNoticename">
+          <h2>후기 게시판</h2>
+        </div>
+
+        <table id="adminNoticeList">
+          <tr class="notice-list-head">
+            <!--                    <th><input type="checkbox" name="selectAll">전체선택</th>-->
+            <th class="th1">NO</th>
+            <th>주문번호</th>
+            <th class="th2">제목</th>
+            <th class="th3">작성자</th>
+            <th class="th4">등록일</th>
+          </tr>
+
+          <tr th:each="review : ${ reviewList }" >
+            <td th:text="${ review.reviewNo }"></td>
+            <td th:text="${ review.order.code }"></td>
+            <td th:text="${ review.title }" th:onclick="|location.href='/admin/board/adminReviewView?no=${review.reviewNo}'|"></td>
+            <td th:text="${ review.writer.nickname }"></td>
+            <td th:text="${ review.createdDate}"></td>
+          </tr>
+        </table>
+      </div>
+<!--      <div class="noticeDML">-->
+<!--        &lt;!&ndash;    <button type="button" id="writeNotice" th:onclick="'location.href=\'/admin/board/adminQnaRegist\''">작성하기</button>&ndash;&gt;-->
+<!--        <button id="btn-modal">작성하기</button>-->
+<!--      </div>-->
+
+      <!-- 페이징 바-->
+      <div id="paging" class="pagingbar">
+
+        <th:block
+                th:if="${ paging.searchCondition != null and paging.searchValue != null }">
+          <!-- 맨 앞으로 이동 -->
+          <button
+                  th:onclick="'location.href=\'/admin/board/adminReview?page=1&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">&lt;&lt;</button>
+
+          <!-- 이전 페이지로 이동 -->
+          <button
+                  th:onclick="'location.href=\'/admin/board/adminReview?page=' + @{${paging.page - 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                  th:disabled="${ paging.page <= 1 }">&lt;</button>
+
+          <!-- 숫자 버튼 -->
+          <th:block
+                  th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
+            <button
+                    th:onclick="'location.href=\'/admin/board/adminReview?page=' + @{${page}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                    th:text="${ page }" th:disabled="${ paging.page eq page }">
+            </button>
+          </th:block>
+
+          <!-- 다음 페이지로 이동 -->
+          <button
+                  th:onclick="'location.href=\'/admin/board/adminReview?page=' + @{${paging.page + 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                  th:disabled="${ paging.page >= paging.maxPage }">></button>
+
+          <!-- 맨 끝으로 이동 -->
+          <button
+                  th:onclick="'location.href=\'/admin/board/adminReview?page=' + @{${paging.maxPage}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">>></button>
+
+        </th:block>
+
+        <th:block
+                th:if="${ paging.searchCondition == null  || paging.searchValue == null }">
+          <!-- 맨 앞으로 이동 -->
+          <button th:onclick="'location.href=\'/admin/board/adminReview?page=1\''">&lt;&lt;</button>
+
+          <!-- 이전 페이지로 이동 -->
+          <button
+                  th:onclick="'location.href=\'/admin/board/adminReview?page=' + @{${paging.page - 1}} + '\''"
+                  th:disabled="${ paging.page <= 1 }">&lt;</button>
+
+          <!-- 숫자 버튼 -->
+          <th:block
+                  th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
+            <button
+                    th:onclick="'location.href=\'/admin/board/adminReview?page=' + @{${page}} + '\''"
+                    th:text="${ page }" th:disabled="${ paging.page eq page }">
+            </button>
+          </th:block>
+
+          <!-- 다음 페이지로 이동 -->
+          <button
+                  th:onclick="'location.href=\'/admin/board/adminReview?page=' + @{${paging.page + 1}} + '\''"
+                  th:disabled="${ paging.page >= paging.maxPage }">></button>
+
+          <!-- 맨 끝으로 이동 -->
+          <button
+                  th:onclick="'location.href=\'/admin/board/adminReview?page=' + @{${paging.maxPage}} + '\''">>></button>
+        </th:block>
+      </div>
+
+</body>
+</html>
