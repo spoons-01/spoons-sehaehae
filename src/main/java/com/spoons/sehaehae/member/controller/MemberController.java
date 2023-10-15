@@ -65,7 +65,6 @@ public class MemberController {
         String currentUsername = principal.getName();
         // 현재 사용자의 MemberDTO를 얻어온다
         MemberDTO memberDTO = memberService.findByMemberId(currentUsername);
-//        MemberDTO orderMember = memberService.findMyOrder(currentUsername);
 
         // 1. MemberDTO에서 membershipName을 추출한다
         String membershipName = extractMembershipName(memberDTO);
@@ -96,8 +95,37 @@ public class MemberController {
         return "N/A"; // 값이 로드되지 않았을 때, 기본값 설정
     }
 
+    /* 내 쿠폰 목록 조회*/
+//    @GetMapping("/member/myCoupon")
+//    public String myCoupon(Model model, Principal principal) {
+//        // 현재 로그인한 사용자의 아이디 얻기
+//        String currentUserName = principal.getName();
+//        // 현재 사용자의 MemberDTO를 얻어온다
+//        MemberDTO memberDTO = memberService.findByMemberId(currentUserName);
+//        // 현재 로그인한 회원의 memberNo를 얻는다
+//        int memberNo = memberDTO.getMemberNo();
+//
+//        // 내 쿠폰 목록을 불러온다
+//        List<MyCouponDTO> myCoupons = memberService.findMyCoupon(currentUserName);
+//        model.addAttribute("myCoupons", myCoupons);
+//        return "/user/member/myCoupon";
+//    }
+
     @GetMapping("/member/myCoupon")
-    public void myCoupon() {}
+    public String myCoupon(Model model, Principal principal) {
+        // 현재 로그인한 사용자의 아이디 얻기
+        String currentUserName = principal.getName();
+        // 현재 사용자의 MemberDTO를 얻어온다
+        MemberDTO memberDTO = memberService.findByMemberId(currentUserName);
+        // 현재 로그인한 회원의 memberNo를 얻는다
+        int memberNo = memberDTO.getMemberNo();
+
+        // 내 쿠폰 목록을 불러온다
+        List<MyCouponDTO> myCoupons = memberService.findMyCoupon(memberNo);
+        model.addAttribute("myCoupons", myCoupons);
+        return "/user/member/myCoupon";
+    }
+
 
     @GetMapping("/member/myOrder")
     public void myOrder() {}
