@@ -38,16 +38,17 @@
     <!-- 쿠폰, 포인트, 세탁등급 -->
     <div class="box-wrapper">
         <div class="first-bar">
-            <div class="first-bar-child">
+            <div class="first-bar-child1">
+                <a href="/user/member/myCoupon"></a>
                 <img src="/images/my-coupon.png">
                 <div class="first-text">
                     <p>쿠폰</p>
-                    <p class="first-blue">1</p>
+                    <p class="first-blue" th:text="${couponCount}"></p>
                 </div>
             </div>
             <div class="vertical-line"></div>
 
-            <div class="first-bar-child">
+            <div class="first-bar-child2">
                 <img class="my-point" src="/images/my-point.png">
                 <div class="first-text">
                     <p>포인트</p>
@@ -56,12 +57,13 @@
             </div>
             <div class="vertical-line"></div>
 
-            <div class="first-bar-child">
+            <div class="first-bar-child3">
                 <img src="/images/my-level.png">
                 <div class="first-text">
                     <p>세탁 등급</p>
-                    <p class="first-blue">이병</p>
+                    <p class="first-blue" th:text="${membershipName}"></p>
                 </div>
+
             </div>
         </div>
     </div>
@@ -119,52 +121,61 @@
             <!-- 기간, 주문상태 -->
             <div class="select-box-wrapper">
                 <div class="third-bar-child">
-                    <select class="date-select" id="date-search-method" name="searchCondition">
-                        <option selected>기간</option>
-                        <option value="1month">1개월</option>
-                        <option value="3month">3개월</option>
-                        <option value="6month">6개월</option>
-                        <option value="1year">1년</option>
-                    </select>
-                    <select class="order-status-select" id="search-method" name="searchCondition">
-                        <option selected>주문상태</option>
-                        <option value="orderStatus1">결제완료</option>
-                        <option value="orderStatus2">수거완료</option>
-                        <option value="orderStatus3">세탁완료</option>
-                        <option value="orderStatus4">배송준비</option>
-                        <option value="orderStatus5">배송중</option>
-                        <option value="orderStatus6">구매확정</option>
-                    </select>
+                    <div class="select">
+                        <select class="date-select" id="date-search-method" name="searchCondition">
+                            <option selected>기간</option>
+                            <option value="1month">1개월</option>
+                            <option value="3month">3개월</option>
+                            <option value="6month">6개월</option>
+                            <option value="1year">1년</option>
+                        </select>
+                    </div>
+                    <div class="select">
+                        <select class="order-status-select" id="search-method" name="searchCondition">
+                            <option selected>주문상태</option>
+                            <option value="orderStatus1">결제완료</option>
+                            <option value="orderStatus2">수거완료</option>
+                            <option value="orderStatus3">세탁완료</option>
+                            <option value="orderStatus4">배송준비</option>
+                            <option value="orderStatus5">배송중</option>
+                            <option value="orderStatus6">구매확정</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
             <!-- 주문 내역 -->
-            <div class="order1">
+            <div class="order-all" th:each="order : ${myOrders}">
+                <hr style="width: 100%; border: 1px solid #c2c2c2; margin: 0;">
+                <div class="order">
+                    <div class="order-child1"> <!-- 왼쪽 박스 -->
+                        <div class="order-num-date">
+                            <div th:text="${order?.orderCode}"></div>
+                            <p>|</p>
+                            <div th:text="${order?.orderDate}"></div>
+                        </div>
+                        <div class="greybox">
+                            <div th:text="${order?.progressDate}"></div>
+                            <div th:text="${order?.orderStatus}"></div>
+                        </div>
+                    </div>
+
+                    <div class="order-right-child1">
+                        <div class="more">
+                            <a href="/user/member/myOrder">상세보기</a>
+                        </div>
+                        <div class="button-wrapper">
+                            <a th:if="${order.orderStatus == '구매확정'}" href="#" class="button">환불하기</a>
+                            <a th:unless="${order.orderStatus == '구매확정'}" href="#" class="button disabled">환불하기</a>
+                            <a th:if="${order.orderStatus == '구매확정'}" href="#" class="button2">후기쓰기</a>
+                            <a th:unless="${order.orderStatus == '구매확정'}" href="#" class="button2 disabled">후기쓰기</a>
+
+                        </div>
+                    </div>
+                </div>
             </div>
-
         </div>
     </div>
-
-
-    <!-- 추천인 -->
-    <!--
-    <div class="second-bar">
-        <div class="second-bar-child">
-            <img src="/images/smile.png">
-            <h>쿠폰</h>
-            <h>임시 숫자</h>
-        </div>
-
-        <div class="second-bar-child">
-            <img src="/images/smile.png">
-            <h>포인트</h>
-            <h>임시 숫자</h>
-        </div>
-    </div>
-    -->
-
-
 </div>
-
 </body>
 </html>

@@ -23,10 +23,13 @@ public class SecurityConfig {
         return new DefaultHttpFirewall();
     }
 
-    private final AuthenticationService authenticationService;
 
-    public SecurityConfig(AuthenticationService authenticationService) {
+    private final AuthenticationService authenticationService;
+    private final DomainFailureHandler domainFailureHandler;
+
+    public SecurityConfig(AuthenticationService authenticationService, DomainFailureHandler domainFailureHandler) {
         this.authenticationService = authenticationService;
+        this.domainFailureHandler = domainFailureHandler;
     }
 
     /* 비밀번호 암호화에 사용할 객체 BCryptPasswordEncoder bean 등록 */
@@ -44,7 +47,7 @@ public class SecurityConfig {
                 /* 요청에 대한 권한 체크 */
                 .authorizeHttpRequests()
                 .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
-//                .antMatchers("/board/**", "/thumbnail/**", "/member/update", "/member/delete").hasRole("MEMBER")
+//                .antMatchers("/board/**", "/thumbnail/**", "/user/member/update", "/user/member/delete").hasRole("MEMBER")
                 /* 관리자만 사용 가능한 권한도 추후 추가 */
 
                 /* 위에 서술 된 패턴 외의 요청은 인증 되지 않은 사용자도 요청 허가 */
@@ -54,7 +57,8 @@ public class SecurityConfig {
                 .formLogin()
                 .loginPage("/user/member/login")
                 .defaultSuccessUrl("/")
-                .failureForwardUrl("/user/member/loginfail")
+                //.failureForwardUrl("/user/member/loginfail")
+                .failureHandler(domainFailureHandler)
                 .usernameParameter("memberId")
                 .passwordParameter("memberPwd")
                 .and()

@@ -2,9 +2,15 @@ package com.spoons.sehaehae.board.controller;
 
 import com.spoons.sehaehae.board.dto.*;
 import com.spoons.sehaehae.board.service.BoardService;
+import com.spoons.sehaehae.member.dto.MemberDTO;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +36,9 @@ public class UserBoardController {
 
     @Value("${image.image-dir}")
     private String IMAGE_DIR;
+
+    @Autowired
+    private ResourceLoader resourceLoader;
 
 
     List<BoardCategoryDTO> categoryList = new ArrayList<>();
@@ -84,7 +93,18 @@ public class UserBoardController {
     /* 후기게시판 */
 
     @GetMapping("/userReview")
-    public String getReview() {
+    public String getReview(@RequestParam(defaultValue = "1") int page,
+                            @RequestParam(required = false) String searchCondition,
+                            @RequestParam(required = false) String searchValue,
+                            Model model) {
+
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+
+        Map<String, Object> reviewListAndPaging = boardService.selectReviewList(searchMap,page);
+        model.addAttribute("paging",reviewListAndPaging.get("paging"));
+        model.addAttribute("reviewList", reviewListAndPaging.get("reviewList"));
 
         return "/user/board/userReview";
     }
@@ -96,10 +116,15 @@ public class UserBoardController {
     }
 
     @PostMapping("/regist")
-    public String registReview(ReviewDTO review, List<MultipartFile> attachImage) {
+    public String registReview(ReviewDTO review, MultipartFile attachImage,
+                               @AuthenticationPrincipal MemberDTO member,
+                               @RequestParam("rating") int rating) {
 
         log.info("review request : {}", review);
         log.info("attachImage request : {}", attachImage);
+
+        // 별점을 ReviewDTO에 설정
+        review.setRating(rating);
 
         String fileUploadDir = IMAGE_DIR + "original";
         String thumbnailDir = IMAGE_DIR + "thumbnail";
@@ -108,56 +133,61 @@ public class UserBoardController {
         File dir2 = new File(thumbnailDir);
 
         /* 디렉토리가 없을 경우 생성한다. */
-        if(!dir1.exists() || !dir2.exists()) {
+        if(!dir1.exists() ) {
             dir1.mkdirs();
             dir2.mkdirs();
         }
 
         /* 업로드 파일에 대한 정보를 담을 리스트 */
-        List<AttachmentDTO> attachmentList = new ArrayList<>();
+        AttachmentDTO attachment = new AttachmentDTO();
 
         try {
-
-            for(int i =0; i < attachImage.size(); i++) {
                 /* 첨부파일이 실제로 존재하는 경우에만 로직 수행 */
-                    if(attachImage.get(i).getSize() > 0) {
+                    if(attachImage.getSize() > 0) {
 
-                        String originalFileName = attachImage.get(i).getOriginalFilename();
+                        String originalFileName = attachImage.getOriginalFilename();
                         log.info("originalFileName : {}", originalFileName);
 
                         String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
                         String savedName = UUID.randomUUID() + ext;
                         log.info("saveName : {}", savedName);
 
-                        Long size = attachImage.get(i).getSize();
+                        Long size = attachImage.getSize();
 
                         /* 서버의 설정 디렉토리에 파일 저장하기 */
 
-                        attachImage.get(i).transferTo(new File(fileUploadDir + "/" + savedName));
+                        attachImage.transferTo(new File(fileUploadDir + "/" + savedName));
 
                         /* DB에 저장할 파일의 정보 처리 */
-                        AttachmentDTO fileInfo = new AttachmentDTO();
-                        fileInfo.setName(originalFileName);
-                        fileInfo.setSaveName(savedName);
-                        fileInfo.setRoute("/upload/original");
-                        fileInfo.setExtension(ext);
-                        fileInfo.setSize(size);
-
-                        if(i == 0) {
-                            fileInfo.setEx("TITLE");
+//                        AttachmentDTO fileInfo = new AttachmentDTO();
+                        attachment.setName(originalFileName);
+                        attachment.setSavedName(savedName);
+                        attachment.setRoute("/uplode/original/");
+                        attachment.setExtension(ext);
+                        attachment.setSize(size);
+                        log.info("fileInfo : {}", attachment);
+                        attachment.setEx("TITLE"); // 대표사진
+//
                             /* 대표 사진에 대한 썸네일을 가공해서 저장한다. */
                             Thumbnails.of(fileUploadDir + "/" + savedName).size(150,150)
                                     .toFile(thumbnailDir + "/thumbnail_" + savedName);
+                        attachment.setThumbnail("/upload/thumbnail/thumbnail_" + savedName);
 
-                        } else {
-                            fileInfo.setEx("BODY");
-                        }
-                        attachmentList.add(fileInfo);
+//                        attachmentList.add(fileInfo);
                     }
-                }
+
             }catch (IOException e) {
                 throw new RuntimeException(e);
         }
+
+        log.info("fileInfo : {}", attachment);
+
+        review.setAttachment(attachment);
+        review.setWriter(member);
+
+        boardService.registReview(review, attachment);
+
         return "redirect:/user/board/userReview";
     }
+
 }

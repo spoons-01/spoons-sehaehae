@@ -164,9 +164,9 @@
     <insert id="registOrder">
         INSERT INTO TBL_ORDER
         (ORDER_CODE, ORDER_DATE, ORDER_REQUEST, ORDER_PRICE, ORDER_DISCOUNT, ORDER_TOTAL_PRICE,
-        MEMBER_NO,INPUT_ADDRESS1,CP_CODE,USE_POINT,COLLECTION_DATE,DELIVERY_DATE,ORDER_IMAGE,ORDER_STATUS)
+        MEMBER_NO,INPUT_ADDRESS,INPUT_ADDRESS2,CP_CODE,USE_POINT,COLLECTION_DATE,DELIVERY_DATE,ORDER_STATUS)
         VALUES
-        (#{code},#{date},#{request},#{price},#{discount},#{totalPrice},#{member},#{address},#{coupon},#{usePoint},#{collectionDate},#{deliveryDate},#{image},'Y')
+        (#{code},#{orderDate},#{orderRequest},#{orderPrice},#{orderDiscount},#{orderTotalPrice},#{member.memberNo},#{inputAddress},#{InputAddress2},#{useCoupon},#{usePoint},#{collectionDate},#{deliveryDate},'결제완료')
     </insert>
 
     <update id="modifyProduct">
@@ -224,4 +224,18 @@
         WHERE MEMBER_NO = #{memberId}
         AND PRODUCT_CODE = ${code}
     </update>
+    <update id="addOption">
+        UPDATE TBL_CART
+        SET USE_Eco = 'Y'
+        WHERE MEMBER_NO = #{memberCode}
+        AND PRODUCT_CODE = #{code}
+    </update>
+    <update id="addPremium">
+        UPDATE TBL_CART
+        SET USE_PREMIUM = 'Y'
+        WHERE MEMBER_NO = #{memberCode}
+        AND PRODUCT_CODE = #{code}
+    </update>
+
+
 </mapper>

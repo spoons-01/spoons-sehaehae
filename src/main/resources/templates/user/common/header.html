@@ -19,9 +19,9 @@
                     <li><a id="login" href="/user/member/login">로그인</a></li>
                     <li><a href="3_service.html">
                         <li>서비스</li></a>
-                    <li><a href="4_board.html">
+                    <li><a href="/user/board/userReview">
                         <li>게시판</li></a>
-                    <li><a href="5_qa.html">
+                    <li><a href="/user/board/userNotice">
                         <li>고객센터</li></a>
                 </ul>
             </nav>
@@ -35,7 +35,7 @@
         <th:block sec:authorize="isAuthenticated()">
             <nav>
                 <ul class="main-nav">
-<!--                    <li><a id="admin" href="/admin/member/memberList">관리자</a></li>-->
+                    <li><a id="admin" href="/admember/list">관리자</a></li>
                     <li><a id="logout" href="/user/member/logout">로그아웃</a></li>
                     <li><a href="3_service.html">
                         <li>서비스</li></a>

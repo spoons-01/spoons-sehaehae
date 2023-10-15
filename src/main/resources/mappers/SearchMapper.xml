@@ -41,22 +41,32 @@
        </if>
        <where>
            <if test="searchCondition == 'code'">
-               A.ORDER_CODE = #{searchValue}
+               AND A.ORDER_CODE = #{searchValue}
            </if>
 
            <if test="searchCondition == 'member'">
-               B.NAME = #{searchValue} OR B.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'
+               AND (B.NAME = #{searchValue} OR B.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
            </if>
 
            <if test="searchCondition == 'orderStatus'">
-               A.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
+               AND A.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
            </if>
 
-<!--           <if test="startDate != null and endDate != null">-->
-<!--               AND A.ORDER_DATE BETWEEN TO_DATE(#{startDate}, 'yyyy-MM-dd') AND TO_DATE(#{endDate}, 'yyyy-MM-dd')-->
-<!--           </if>-->
+           <if test="startDate != '' and endDate == ''">
+               AND A.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+           </if>
+
+           <if test="startDate == '' and endDate != ''">
+               AND <![CDATA[A.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+           </if>
+
+           <if test="startDate != '' and endDate != ''">
+               AND A.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+           </if>
+
 
        </where>
+
     </select>
 
     <select id="selectSearchList" resultMap="OrderResultMap">
@@ -99,22 +109,31 @@
                       </if>
                       <where>
                           <if test="searchCondition == 'code'">
-                              C.ORDER_CODE = #{searchValue}
+                              AND C.ORDER_CODE = #{searchValue}
                           </if>
 
                           <if test="searchCondition == 'member'">
-                              D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'
+                              AND (D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
                           </if>
 
                           <if test="searchCondition == 'orderStatus'">
-                              C.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
+                              AND C.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
                           </if>
 
-<!--                          <if test="startDate != null and endDate != null">-->
-<!--                              AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate}, 'yyyy-MM-dd') AND TO_DATE(#{endDate}, 'yyyy-MM-dd')-->
-<!--                          </if>-->
+                          <if test="startDate != '' and endDate == ''">
+                              AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+                          </if>
 
+                          <if test="startDate == '' and endDate != ''">
+                              AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+                          </if>
+
+                          <if test="startDate != '' and endDate != ''">
+                              AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+                          </if>
                       </where>
+
+
                       ORDER BY C.ORDER_CODE DESC
                       ) B
                       <![CDATA[
@@ -158,15 +177,27 @@
         </if>
         <where>
             <if test="searchCondition == 'code'">
-                C.ORDER_CODE = #{searchValue}
+                AND C.ORDER_CODE = #{searchValue}
             </if>
 
             <if test="searchCondition == 'member'">
-                D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'
+                AND (D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
             </if>
 
             <if test="searchCondition == 'orderStatus'">
-                C.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
+                AND C.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
+            </if>
+
+            <if test="startDate != '' and endDate == ''">
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            </if>
+
+            <if test="startDate == '' and endDate != ''">
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+            </if>
+
+            <if test="startDate != '' and endDate != ''">
+                AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
             </if>
             AND C.ORDER_STATUS = '결제완료'
         </where>
@@ -222,15 +253,27 @@
         </if>
         <where>
             <if test="searchCondition == 'code'">
-                C.ORDER_CODE = #{searchValue}
+                AND C.ORDER_CODE = #{searchValue}
             </if>
 
             <if test="searchCondition == 'member'">
-                D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'
+                AND (D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
             </if>
 
             <if test="searchCondition == 'orderStatus'">
-                C.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
+                AND C.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
+            </if>
+
+            <if test="startDate != '' and endDate == ''">
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            </if>
+
+            <if test="startDate == '' and endDate != ''">
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+            </if>
+
+            <if test="startDate != '' and endDate != ''">
+                AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
             </if>
             AND C.ORDER_STATUS = '수거완료'
         </where>
@@ -246,6 +289,274 @@
 
     </select>
 
+    <select id="selectSearchLaundryList" resultMap="OrderResultMap">
+        SELECT
+        A.ORDER_CODE
+        , A.ORDER_DATE
+        , A.ORDER_TOTAL_PRICE
+        , A.MEMBER_NO
+        , D.NAME
+        , D.PHONE_NUMBER
+        , A.INPUT_ZIP_CODE
+        , A.ORDER_STATUS
+        FROM (SELECT
+        ROWNUM RNUM
+        , B.ORDER_CODE
+        , B.ORDER_DATE
+        , B.ORDER_TOTAL_PRICE
+        , B.MEMBER_NO
+        , B.INPUT_ZIP_CODE
+        , B.ORDER_STATUS
+        FROM ( SELECT
+        C.ORDER_CODE
+        , C.ORDER_DATE
+        , C.ORDER_TOTAL_PRICE
+        , C.MEMBER_NO
+        , C.INPUT_ZIP_CODE
+        , C.ORDER_STATUS
+        FROM TBL_ORDER C
+        <if test="searchCondition == 'member'">
+            JOIN TBL_MEMBER D ON(C.MEMBER_NO = D.MEMBER_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'code'">
+                AND C.ORDER_CODE = #{searchValue}
+            </if>
+
+            <if test="searchCondition == 'member'">
+                AND (D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+            </if>
+
+            <if test="searchCondition == 'orderStatus'">
+                AND C.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
+            </if>
+
+            <if test="startDate != '' and endDate == ''">
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            </if>
+
+            <if test="startDate == '' and endDate != ''">
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+            </if>
+
+            <if test="startDate != '' and endDate != ''">
+                AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            </if>
+            AND C.ORDER_STATUS = '세탁완료'
+        </where>
+        ORDER BY C.ORDER_CODE DESC
+        ) B
+        <![CDATA[
+                                 WHERE ROWNUM <= #{endRow}
+                                 ]]>
+        ) A
+        JOIN TBL_MEMBER D ON (A.MEMBER_NO = D.MEMBER_NO)
+        WHERE A.RNUM >= #{startRow}
+        ORDER BY 1 DESC
+
+    </select>
+
+
+    <select id="selectSearchPreparingList" resultMap="OrderResultMap">
+        SELECT
+        A.ORDER_CODE
+        , A.ORDER_DATE
+        , A.ORDER_TOTAL_PRICE
+        , A.MEMBER_NO
+        , D.NAME
+        , D.PHONE_NUMBER
+        , A.INPUT_ZIP_CODE
+        , A.ORDER_STATUS
+        FROM (SELECT
+        ROWNUM RNUM
+        , B.ORDER_CODE
+        , B.ORDER_DATE
+        , B.ORDER_TOTAL_PRICE
+        , B.MEMBER_NO
+        , B.INPUT_ZIP_CODE
+        , B.ORDER_STATUS
+        FROM ( SELECT
+        C.ORDER_CODE
+        , C.ORDER_DATE
+        , C.ORDER_TOTAL_PRICE
+        , C.MEMBER_NO
+        , C.INPUT_ZIP_CODE
+        , C.ORDER_STATUS
+        FROM TBL_ORDER C
+        <if test="searchCondition == 'member'">
+            JOIN TBL_MEMBER D ON(C.MEMBER_NO = D.MEMBER_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'code'">
+                AND C.ORDER_CODE = #{searchValue}
+            </if>
+
+            <if test="searchCondition == 'member'">
+                AND (D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+            </if>
+
+            <if test="searchCondition == 'orderStatus'">
+                AND C.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
+            </if>
+
+            <if test="startDate != '' and endDate == ''">
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            </if>
+
+            <if test="startDate == '' and endDate != ''">
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+            </if>
+
+            <if test="startDate != '' and endDate != ''">
+                AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            </if>
+            AND C.ORDER_STATUS = '배송준비'
+        </where>
+        ORDER BY C.ORDER_CODE DESC
+        ) B
+        <![CDATA[
+                                 WHERE ROWNUM <= #{endRow}
+                                 ]]>
+        ) A
+        JOIN TBL_MEMBER D ON (A.MEMBER_NO = D.MEMBER_NO)
+        WHERE A.RNUM >= #{startRow}
+        ORDER BY 1 DESC
+
+    </select>
+
+    <select id="selectSearchDeliveryList" resultMap="OrderResultMap">
+        SELECT
+        A.ORDER_CODE
+        , A.ORDER_DATE
+        , A.ORDER_TOTAL_PRICE
+        , A.MEMBER_NO
+        , D.NAME
+        , D.PHONE_NUMBER
+        , A.INPUT_ZIP_CODE
+        , A.ORDER_STATUS
+        FROM (SELECT
+        ROWNUM RNUM
+        , B.ORDER_CODE
+        , B.ORDER_DATE
+        , B.ORDER_TOTAL_PRICE
+        , B.MEMBER_NO
+        , B.INPUT_ZIP_CODE
+        , B.ORDER_STATUS
+        FROM ( SELECT
+        C.ORDER_CODE
+        , C.ORDER_DATE
+        , C.ORDER_TOTAL_PRICE
+        , C.MEMBER_NO
+        , C.INPUT_ZIP_CODE
+        , C.ORDER_STATUS
+        FROM TBL_ORDER C
+        <if test="searchCondition == 'member'">
+            JOIN TBL_MEMBER D ON(C.MEMBER_NO = D.MEMBER_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'code'">
+                AND C.ORDER_CODE = #{searchValue}
+            </if>
+
+            <if test="searchCondition == 'member'">
+                AND (D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+            </if>
+
+            <if test="searchCondition == 'orderStatus'">
+                AND C.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
+            </if>
+
+            <if test="startDate != '' and endDate == ''">
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            </if>
+
+            <if test="startDate == '' and endDate != ''">
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+            </if>
+
+            <if test="startDate != '' and endDate != ''">
+                AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            </if>
+            AND C.ORDER_STATUS = '배송중'
+        </where>
+        ORDER BY C.ORDER_CODE DESC
+        ) B
+        <![CDATA[
+                                 WHERE ROWNUM <= #{endRow}
+                                 ]]>
+        ) A
+        JOIN TBL_MEMBER D ON (A.MEMBER_NO = D.MEMBER_NO)
+        WHERE A.RNUM >= #{startRow}
+        ORDER BY 1 DESC
+
+    </select>
+
+    <select id="selectSearchConfirmedList" resultMap="OrderResultMap">
+        SELECT
+        A.ORDER_CODE
+        , A.ORDER_DATE
+        , A.ORDER_TOTAL_PRICE
+        , A.MEMBER_NO
+        , D.NAME
+        , D.PHONE_NUMBER
+        , A.INPUT_ZIP_CODE
+        , A.ORDER_STATUS
+        FROM (SELECT
+        ROWNUM RNUM
+        , B.ORDER_CODE
+        , B.ORDER_DATE
+        , B.ORDER_TOTAL_PRICE
+        , B.MEMBER_NO
+        , B.INPUT_ZIP_CODE
+        , B.ORDER_STATUS
+        FROM ( SELECT
+        C.ORDER_CODE
+        , C.ORDER_DATE
+        , C.ORDER_TOTAL_PRICE
+        , C.MEMBER_NO
+        , C.INPUT_ZIP_CODE
+        , C.ORDER_STATUS
+        FROM TBL_ORDER C
+        <if test="searchCondition == 'member'">
+            JOIN TBL_MEMBER D ON(C.MEMBER_NO = D.MEMBER_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'code'">
+                AND C.ORDER_CODE = #{searchValue}
+            </if>
+
+            <if test="searchCondition == 'member'">
+                AND (D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+            </if>
+
+            <if test="searchCondition == 'orderStatus'">
+                AND C.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
+            </if>
+
+            <if test="startDate != '' and endDate == ''">
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            </if>
+
+            <if test="startDate == '' and endDate != ''">
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+            </if>
+
+            <if test="startDate != '' and endDate != ''">
+                AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            </if>
+            AND C.ORDER_STATUS = '구매확정'
+        </where>
+        ORDER BY C.ORDER_CODE DESC
+        ) B
+        <![CDATA[
+                                 WHERE ROWNUM <= #{endRow}
+                                 ]]>
+        ) A
+        JOIN TBL_MEMBER D ON (A.MEMBER_NO = D.MEMBER_NO)
+        WHERE A.RNUM >= #{startRow}
+        ORDER BY 1 DESC
+
+    </select>
 
 
 </mapper>
