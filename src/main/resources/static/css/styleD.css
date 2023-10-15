@@ -23,9 +23,16 @@
     grid-template-rows: 1fr 1fr 1fr 1fr;
     padding: 20px;
     gap: 20px 20px;
-    border: black 1px solid;
+    border-top: black 1px solid;
     width: 1350px; height: 700px;
     margin-left: 400px; margin-top: 55px;
+}
+.generalcoupon-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 20px;
+    gap: 20px 20px;
+
 }
 .coupon{
     cursor: pointer;

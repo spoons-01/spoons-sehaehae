@@ -8,7 +8,17 @@
 <body>
     <div th:replace="admin/common/nav.html"></div>
     <header><h3>서비스관리 &gt 쿠폰관리</h3><h3>로그인(로그아웃)</h3></header>
-
+    <h3 style="margin-left: 400px">일반쿠폰</h3>
+    <div style="width: 1350px; height: 300px; border-top: black 1px solid; margin-left: 400px" class="generalcoupon-container">
+        <div class="coupon" th:each="coupon : ${coupon}" th:onclick="couponModal([[${coupon}]])">
+            <ul>
+                <li style="font-size: 24px" th:text="${coupon.cpName}"></li>
+                <li style="font-size: 15px" th:text="${#dates.format(coupon.cpSdate,'yyyy-MM-dd')}+' ~ '+${#dates.format(coupon.cpEdate,'yyyy-MM-dd')}"></li>
+                <li style="font-size: 24px; color: #4B93FF; text-align: right" th:text="${coupon.cpRate} + '%'"></li>
+            </ul>
+        </div>
+    </div>
+<h3 style="margin-left: 400px">이벤트 쿠폰</h3>
     <div class="coupon_container">
         <div class="coupon" th:each="coupon : ${coupon}" th:onclick="couponModal([[${coupon}]])">
             <ul>
