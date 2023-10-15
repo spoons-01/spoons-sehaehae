@@ -32,4 +32,14 @@ public interface MemberMapper {
     int getfNum();
 
     int getmNum();
+
+    int getFirst();
+
+    int getSecond();
+
+    int getThird();
+
+    int getFourth();
+
+    int getFifth();
 }

@@ -19,8 +19,20 @@ public class ChartController {
         int fNum =chartService.getfNum();
         int mNum =chartService.getmNum();
 
+        int first =chartService.getFirst();
+        int second =chartService.getSecond();
+        int third =chartService.getThird();
+        int fourth =chartService.getFourth();
+        int fifth =chartService.getFifth();
+
         model.addAttribute("fNum", fNum);
         model.addAttribute("mNum", mNum);
+
+        model.addAttribute("first", first);
+        model.addAttribute("second", second);
+        model.addAttribute("third", third);
+        model.addAttribute("fourth", fourth);
+        model.addAttribute("fifth", fifth);
 
         return "/admin/chart/memberChart";
     }
