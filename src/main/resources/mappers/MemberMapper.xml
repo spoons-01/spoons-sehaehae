@@ -320,6 +320,32 @@
 		where	MEMBER_STATUS='Y' and GENDER= 'M'
 	</select>
 
+	<select id="getFirst" parameterType="int">
+		SELECT count(*)
+		FROM TBL_MEMBER
+		where TRUNC( (sysdate - BIRTHDAY)/365, -1) <![CDATA[<=]]> 10
+	</select>
+	<select id="getSecond" parameterType="int">
+		SELECT count(*)
+		FROM TBL_MEMBER
+		where TRUNC( (sysdate - BIRTHDAY)/365, -1) = 20
+	</select>
+	<select id="getThird" parameterType="int">
+		SELECT count(*)
+		FROM TBL_MEMBER
+		where TRUNC( (sysdate - BIRTHDAY)/365, -1) = 30
+	</select>
+	<select id="getFourth" parameterType="int">
+		SELECT count(*)
+		FROM TBL_MEMBER
+		where TRUNC( (sysdate - BIRTHDAY)/365, -1) = 40
+	</select>
+	<select id="getFifth" parameterType="int">
+		SELECT count(*)
+		FROM TBL_MEMBER
+		where TRUNC( (sysdate - BIRTHDAY)/365, -1) <![CDATA[>=]]> 50
+	</select>
+
 
 	<select id="findMyOrder" resultMap="myOrderResultMap">
 		SELECT

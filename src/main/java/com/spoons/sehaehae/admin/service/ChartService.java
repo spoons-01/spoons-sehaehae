@@ -18,4 +18,19 @@ public class ChartService {
     public int getmNum() {
         return memberMapper.getmNum();
     }
+
+    public int getFirst() {return memberMapper.getFirst();
+    }
+
+    public int getSecond() {return memberMapper.getSecond();
+    }
+
+    public int getThird() {return memberMapper.getThird();
+    }
+
+    public int getFourth() {return memberMapper.getFourth();
+    }
+
+    public int getFifth() {return memberMapper.getFifth();
+    }
 }
