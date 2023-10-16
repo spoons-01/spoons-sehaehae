@@ -7,71 +7,89 @@
     <title>Document</title>
 </head>
 <body>
-<div class="container1">
-    <p style="font-size: 40px; font-weight: bold;">장바구니</p>
-    <p>가격표</p>
-</div>
-<div style="background:#EFEFEF; padding-top: 10px; margin-top: 20px; padding-bottom: 200px">
+<div th:replace="user/common/header.html"></div>
+<div class="cartListpage">
+    <p>장바구니</p>
     <div class="container2">
         <input type="checkbox" value="c" class="dd" onclick="selectAll(this)">
-        <button type="button" id="selectAll">전체선택</button>
-        <button type="button" class="delete">선택삭제</button>
+        <button type="button" id="selectAll" class="btt">전체선택</button>
+        <button type="button" class="delete btt">선택삭제</button>
     </div>
     <th:block th:each="cart : ${cartList}">
         <div class="container3">
             <input type="checkbox" class="productCode" th:value="${cart.product.code}">
-            <img th:src="${cart.product.photo}" style="max-width: 1000px; height: 200px;">
-            <div>
+            <img th:src="${cart.product.photo}" class="pdimage">
+            <div class="productInfo">
                 <input type="hidden" th:value="${cart.product.premiumPrice}" id="premiumPrice">
                 <input type="hidden" th:value="${cart.useEco}" id="eco">
                 <input type="hidden" th:value="${cart.usePremium}" id="premium">
                 <p id="name" th:text="${cart.product.name}"></p>
-                <p th:text="|${cart.product.price}원 / ${cart.product.premiumPrice}원|"></p>
+                <p th:text="|${#numbers.formatInteger(cart.product.price,3,'COMMA')}원 / ${#numbers.formatInteger(cart.product.premiumPrice,3,'COMMA')}원|"
+                   id="price1"></p>
                 <p th:text="${cart.product.price}" id="price" style="display: none"></p>
-                <th:block th:if="${cart.useEco == 'Y'}"><span id="ecoBox">천연세제 사용</span>
-                    <button id="deleteEco" th:value="${cart.product.code}">x</button>
+                <th:block th:if="${cart.useEco == 'Y'}"><span id="ecoBox" class="ecooption">천연세제 사용</span>
+                    <button id="deleteEco" class="optiondelete ecodelete" th:value="${cart.product.code}">X</button>
                 </th:block>
                 <br>
-                <th:block th:if="${cart.usePremium == 'Y'}"><span id="PremiumBox">프리미엄케어 추가</span>
-                    <button id="deletePremium" th:value="${cart.product.code}">x</button>
+                <th:block th:if="${cart.usePremium == 'Y'}"><span id="PremiumBox" class="premiumoption">프리미엄케어 추가</span>
+                    <button id="deletePremium" class="optiondelete" th:value="${cart.product.code}">X</button>
                 </th:block>
                 <br>
                 <span id="code" th:text="${cart.product.code}" style="display: none"></span>
                 <div class="gg">
+                    <span>수량</span>
                     <input type="number" class="amount" MIN="1" max="99" value="1" th:value="${cart.amount}">
                     <select id="option">
                         <option selected value="none">옵션선택</option>
                         <option value="eco">천연세제 사용</option>
                         <option value="premium">프리미엄케어</option>
                     </select>
-                    <span style="margin-left: 120px; font-size: 30px; font-weight: bold;" class="totalPrice"
-                          th:if="${cart.usePremium} == 'N' and ${cart.useEco} == 'N'"
-                          th:text="${cart.product.price}*${cart.amount}"></span>
-                    <span style="margin-left: 120px; font-size: 30px; font-weight: bold;" class="totalPrice"
-                          th:if="${cart.usePremium} == 'Y' and ${cart.useEco} == 'N'"
-                          th:text="${cart.product.price}*${cart.amount} + ${cart.product.premiumPrice}"></span>
-                    <span style="margin-left: 120px; font-size: 30px; font-weight: bold;" class="totalPrice"
-                          th:if="${cart.usePremium} == 'N' and ${cart.useEco} == 'Y'"
-                          th:text="${cart.product.price}*${cart.amount}+3000"></span>
-                    <span style="margin-left: 120px; font-size: 30px; font-weight: bold;" class="totalPrice"
-                          th:if="${cart.usePremium} == 'Y' and ${cart.useEco} == 'Y'"
-                          th:text="${cart.product.price}*${cart.amount}+3000+${cart.product.premiumPrice}"></span>
+                    <th:block th:if="${cart.usePremium} == 'N' and ${cart.useEco} == 'N'">
+                    <span class="totalPrice"
+                          th:text="${cart.product.price}*${cart.amount}+'원'">
+                    </span>
+                        <input type="hidden" th:value="${cart.product.price}*${cart.amount}" class="tp">
+                    </th:block>
+                    <th:block th:if="${cart.usePremium} == 'Y' and ${cart.useEco} == 'N'">
+                    <span class="totalPrice"
+                          th:text="${cart.product.price}*${cart.amount} + ${cart.product.premiumPrice}+'원'">
+                    </span>
+                        <input type="hidden" class="tp" th:value="${cart.product.price}*${cart.amount} + ${cart.product.premiumPrice}">
+                    </th:block>
+
+                    <th:block th:if="${cart.usePremium} == 'N' and ${cart.useEco} == 'Y'">
+                    <span class="totalPrice"
+                          th:text="${cart.product.price}*${cart.amount}+3000+'원'">
+                    </span>
+                        <input type="hidden" class="tp" th:value="${cart.product.price}*${cart.amount}+3000">
+                    </th:block>
+                    <th:block th:if="${cart.usePremium} == 'Y' and ${cart.useEco} == 'Y'">
+                    <span class="totalPrice"
+                          th:text="${cart.product.price}*${cart.amount}+3000+${cart.product.premiumPrice}+'원'">
+                    </span>
+                        <input type="hidden" th:value="${cart.product.price}*${cart.amount}+3000+${cart.product.premiumPrice}" class="tp">
+                    </th:block>
+
                 </div>
             </div>
         </div>
     </th:block>
+
 
     <div class="total">
         <span>총 결제금액</span>
         <span id="final1" th:text="${#numbers.formatInteger(totalPrice,3,'COMMA')+'원'}"></span>
         <span>+</span>
         <span>배송비 3,000원</span>
-        <span id="final2" th:text="|= ${#numbers.formatInteger(totalPrice+3000,3,'COMMA')}원|"></span>
+        <span>=</span>
+        <span id="final2" th:text="|${#numbers.formatInteger(totalPrice+3000,3,'COMMA')}원|"></span>
         <input type="hidden" id="final3" th:value="${totalPrice}+3000">
         <button class="order">주문/결제</button>
     </div>
 </div>
+<div th:replace="user/common/footer.html"></div>
 <script>
+    const tp = document.querySelectorAll(".tp")
     const $amount = document.querySelectorAll(".amount");
     const $price = document.querySelectorAll(".totalPrice");
     const $finalPrice1 = document.querySelector("#final1");
@@ -82,32 +100,32 @@
     const eco = document.querySelectorAll("#eco");
     const premium = document.querySelectorAll("#premium");
     const premiumPrice = document.querySelectorAll("#premiumPrice")
-    console.log(premiumPrice[0].value)
+
     $amount.forEach((amount) => {
         amount.addEventListener("change", function () {
-
             const index = Array.from($amount).indexOf(this);
             if (eco[index].value === 'N' && premium[index].value === 'N') {
-                $price[index].textContent = this.value * Number($price2[index].textContent);
+                $price[index].textContent = this.value * Number($price2[index].textContent)+"원";
+                tp[index].value = this.value * Number($price2[index].textContent);
             } else if (eco[index].value === 'Y' && premium[index].value === 'Y') {
-                $price[index].textContent = this.value * Number($price2[index].textContent) + 3000 + Number(premiumPrice[index].value);
+                $price[index].textContent = this.value * Number($price2[index].textContent) + 3000 + Number(premiumPrice[index].value)+"원";
+                tp[index].value = this.value * Number($price2[index].textContent) + 3000 + Number(premiumPrice[index].value);
             } else if (eco[index].value === 'Y' && premium[index].value === 'N') {
-                $price[index].textContent = this.value * Number($price2[index].textContent) + 3000;
+                $price[index].textContent = this.value * Number($price2[index].textContent) + 3000+"원";
+                tp[index].value = this.value * Number($price2[index].textContent) + 3000;
             } else if (eco[index].value === 'N' && premium[index].value === 'Y') {
-                $price[index].textContent = this.value * Number($price2[index].textContent) + Number(premiumPrice[index].value);
+                $price[index].textContent = this.value * Number($price2[index].textContent) + Number(premiumPrice[index].value)+"원";
+                tp[index].value = this.value * Number($price2[index].textContent) + Number(premiumPrice[index].value);
             }
-
             let totalprice = 0
-            $price.forEach((i) => totalprice += Number(i.textContent))
-
+            tp.forEach((i) => totalprice += Number(i.value))
             $finalPrice1.textContent = totalprice.toLocaleString('ko-KR') + "원";
-            $finalPrice2.textContent = totalprice + 3000;
-            $finalPrice3.value = totalprice + 3000;
+            $finalPrice2.textContent = (Number(totalprice) + 3000).toLocaleString('ko-KR') +"원";
+            $finalPrice3.value =  Number(totalprice) + 3000;
         })
     })
     $amount.forEach((amount) => {
         amount.addEventListener("focusout", function () {
-
             const index = Array.from($amount).indexOf(this);
             fetch("/product/updateCart?amount=" + Number(this.value) + "&productCode=" + $productCode[index].value)
                 .then(res => res.text())
@@ -117,28 +135,30 @@
     })
 
     const $box = document.querySelector(".dd"); //전체체크박스
-    const $product = document.querySelectorAll(".product"); //
     const $prbt = document.querySelector("#selectAll");
-    $prbt.addEventListener("click", function () {
-        $box.checked = 'true';
-        selectAll($box);
-    })
+    $box.onclick = selectAll
 
-    function selectAll(selectAll) {
-        $product.forEach((box) => {
-            box.checked = selectAll.checked;
+    $prbt.addEventListener("click", function () {
+            $box.checked = 'true';
+            selectAll();
+    })
+    function selectAll() {
+        console.log("123")
+        $productCode.forEach((box) => {
+            console.log($productCode)
+            box.checked = $box.checked;
         });
     }
 
     const $delete = document.querySelector(".delete");
     const $checkbox = document.querySelectorAll('.productCode');
 
-    console.log($delete.dataset['cartNum']);
     $delete.addEventListener("click", function () {
         const checkCnt = document.querySelectorAll("input[class='productCode']:checked").length;
         console.log(checkCnt)
         if (checkCnt <= 0) {
             alert("선택된 상품이 없습니다.");
+            return;
         }
         let code = []
         $checkbox.forEach((box) => {
@@ -194,17 +214,20 @@
         } else {
             console.log(box.value)
             console.log($productCode[index].value);
-
-            fetch("/product/addOption?code="+$productCode[index].value+"&option="+box.value)
+            fetch("/product/addOption?code=" + $productCode[index].value + "&option=" + box.value)
                 .then(window.location.reload());
         }
-
-
     }))
 
 
     const $order = document.querySelector(".order");
+    const $count = document.querySelectorAll(".container3").length;
+    console.log($count);
     $order.onclick = function () {
+        if($count <= 0){
+            alert("상품이없습니다.")
+            return;
+        }
         location.href = '/product/payment?totalPrice=' + $finalPrice3.value
     }
 </script>

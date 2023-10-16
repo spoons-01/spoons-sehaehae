@@ -20,6 +20,7 @@
         <result property="usePoint" column="USE_POINT"/>
         <result property="collectionDate" column="COLLECTION_DATE"/>
         <result property="deliveryDate" column="DELIVERY_DATE"/>
+        <result property="progressDate" column="PROGRESS_DATE"/>
 
         <association property="member" resultMap="MemberResultMap"/>
 
@@ -31,8 +32,26 @@
         <result property="phone" column="PHONE_NUMBER"/>
     </resultMap>
 
+    <resultMap id="RefundResultMap" type="com.spoons.sehaehae.admin.dto.RefundDTO">
+        <id property="refundCode" column="REFUND_CODE"/>
+        <result property="orderCode" column="ORDER_CODE"/>
+        <result property="refundReceiptDate" column="REFUND_RECEIPT_DATE"/>
+        <result property="refundCompleteDate" column="REFUND_COMPLETE_DATE"/>
+        <result property="processStatus" column="PROCESS_STATUS"/>
+        <result property="totalRefundAmount" column="TOTAL_REFUND_AMOUNT"/>
+        <result property="usedPoint" column="USED_POINT"/>
+        <result property="usedCupon" column="USED_CUPON"/>
+        <result property="refundShippingFee" column="REFUND_SHIPPING_FEE"/>
+        <result property="refundReason" column="REFUND_REASON"/>
 
-   <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
+
+        <association property="order" resultMap="OrderResultMap"/>
+
+    </resultMap>
+
+
+
+    <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
     SELECT
        COUNT(*)
        FROM TBL_ORDER A
@@ -53,21 +72,69 @@
            </if>
 
            <if test="startDate != '' and endDate == ''">
-               AND A.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+               AND A.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
            </if>
 
            <if test="startDate == '' and endDate != ''">
-               AND <![CDATA[A.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+               AND <![CDATA[A.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
            </if>
 
-           <if test="startDate != '' and endDate != ''">
-               AND A.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+           <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+               AND A.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+               AND <![CDATA[A.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
            </if>
+
 
 
        </where>
 
     </select>
+
+    <select id="selectRefundTotalCount" resultType="_int" parameterType="hashmap">
+        SELECT
+        COUNT(*)
+        FROM TBL_REFUND A
+        <if test="searchCondition == 'order'">
+            JOIN TBL_ORDER B ON(A.ORDER_CODE = B.ORDER_CODE)
+            JOIN TBL_MEMBER C ON(B.MEMBER_NO = C.MEMBER_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'refundCode'">
+                AND A.REFUND_CODE = #{searchValue}
+            </if>
+
+            <if test="searchCondition == 'processStatus'">
+                AND A.PROCESS_STATUS = #{searchValue}
+            </if>
+
+            <if test="searchCondition == 'order'">
+                AND (C.NAME = #{searchValue} OR C.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+            </if>
+
+<!--            <if test="searchCondition == 'orderStatus'">-->
+<!--                AND A.ORDER_STATUS LIKE '%' || #{searchValue} || '%'-->
+<!--            </if>-->
+
+<!--            <if test="startDate != '' and endDate == ''">-->
+<!--                AND B.PROGRESS_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')-->
+<!--            </if>-->
+
+<!--            <if test="startDate == '' and endDate != ''">-->
+<!--                AND <![CDATA[B.PROGRESS_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>-->
+<!--            </if>-->
+
+<!--            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >-->
+<!--                AND A.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')-->
+<!--                AND <![CDATA[B.PROGRESS_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>-->
+<!--            </if>-->
+
+
+
+        </where>
+
+    </select>
+
+
 
     <select id="selectSearchList" resultMap="OrderResultMap">
         SELECT
@@ -121,16 +188,20 @@
                           </if>
 
                           <if test="startDate != '' and endDate == ''">
-                              AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+                              AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
                           </if>
 
                           <if test="startDate == '' and endDate != ''">
-                              AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+                              AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
                           </if>
 
-                          <if test="startDate != '' and endDate != ''">
-                              AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+                          <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                              AND C.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                              AND <![CDATA[C.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
                           </if>
+
+
+
                       </where>
 
 
@@ -189,15 +260,16 @@
             </if>
 
             <if test="startDate != '' and endDate == ''">
-                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
             </if>
 
             <if test="startDate == '' and endDate != ''">
-                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
             </if>
 
-            <if test="startDate != '' and endDate != ''">
-                AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                AND C.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[C.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
             </if>
             AND C.ORDER_STATUS = '결제완료'
         </where>
@@ -216,6 +288,7 @@
     <update id="updateOrderStatus">
         UPDATE TBL_ORDER
         SET ORDER_STATUS = #{newStatus}
+        ,PROGRESS_DATE = SYSDATE
         WHERE ORDER_CODE IN
         <foreach collection="orderId" item="orderId" open="(" separator="," close=")">
             #{orderId}
@@ -265,15 +338,16 @@
             </if>
 
             <if test="startDate != '' and endDate == ''">
-                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
             </if>
 
             <if test="startDate == '' and endDate != ''">
-                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
             </if>
 
-            <if test="startDate != '' and endDate != ''">
-                AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                AND C.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[C.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
             </if>
             AND C.ORDER_STATUS = '수거완료'
         </where>
@@ -332,15 +406,16 @@
             </if>
 
             <if test="startDate != '' and endDate == ''">
-                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
             </if>
 
             <if test="startDate == '' and endDate != ''">
-                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
             </if>
 
-            <if test="startDate != '' and endDate != ''">
-                AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                AND C.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[C.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
             </if>
             AND C.ORDER_STATUS = '세탁완료'
         </where>
@@ -400,15 +475,16 @@
             </if>
 
             <if test="startDate != '' and endDate == ''">
-                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
             </if>
 
             <if test="startDate == '' and endDate != ''">
-                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
             </if>
 
-            <if test="startDate != '' and endDate != ''">
-                AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                AND C.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[C.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
             </if>
             AND C.ORDER_STATUS = '배송준비'
         </where>
@@ -467,16 +543,19 @@
             </if>
 
             <if test="startDate != '' and endDate == ''">
-                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
             </if>
 
             <if test="startDate == '' and endDate != ''">
-                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
             </if>
 
-            <if test="startDate != '' and endDate != ''">
-                AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                AND C.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[C.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
             </if>
+
+
             AND C.ORDER_STATUS = '배송중'
         </where>
         ORDER BY C.ORDER_CODE DESC
@@ -534,15 +613,16 @@
             </if>
 
             <if test="startDate != '' and endDate == ''">
-                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
             </if>
 
             <if test="startDate == '' and endDate != ''">
-                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')]]>
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
             </if>
 
-            <if test="startDate != '' and endDate != ''">
-                AND C.ORDER_DATE BETWEEN TO_DATE(#{startDate, jdbcType=VARCHAR}, 'YYYY-MM-DD') AND TO_DATE(#{endDate, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                AND C.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[C.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
             </if>
             AND C.ORDER_STATUS = '구매확정'
         </where>
@@ -557,6 +637,75 @@
         ORDER BY 1 DESC
 
     </select>
+
+    <select id="selectSearchRefundList" resultMap="RefundResultMap">
+        SELECT
+        A.REFUND_CODE
+        , A.ORDER_CODE
+        , A.REFUND_RECEIPT_DATE
+        , A.REFUND_COMPLETE_DATE
+        , A.PROCESS_STATUS
+        , A.TOTAL_REFUND_AMOUNT
+        , E.NAME
+        , E.PHONE_NUMBER
+        , A.USED_POINT
+        , A.USED_CUPON
+        , A.REFUND_SHIPPING_FEE
+        , A.REFUND_REASON
+        FROM (SELECT
+        ROWNUM RNUM
+        , B.REFUND_CODE
+        , B.ORDER_CODE
+        , B.REFUND_RECEIPT_DATE
+        , B.REFUND_COMPLETE_DATE
+        , B.PROCESS_STATUS
+        , B.TOTAL_REFUND_AMOUNT
+        , B.USED_POINT
+        , B.USED_CUPON
+        , B.REFUND_SHIPPING_FEE
+        , B.REFUND_REASON
+        FROM ( SELECT
+          C.REFUND_CODE
+        , C.ORDER_CODE
+        , C.REFUND_RECEIPT_DATE
+        , C.REFUND_COMPLETE_DATE
+        , C.PROCESS_STATUS
+        , C.TOTAL_REFUND_AMOUNT
+        , C.USED_POINT
+        , C.USED_CUPON
+        , C.REFUND_SHIPPING_FEE
+        , C.REFUND_REASON
+        FROM TBL_REFUND C
+        <if test="searchCondition == 'order'">
+            JOIN TBL_ORDER D ON(C.ORDER_CODE = D.ORDER_CODE)
+            JOIN TBL_MEMBER E ON(D.MEMBER_NO = E.MEMBER_NO)
+        </if>
+        <where>
+        <if test="searchCondition == 'refundCode'">
+            AND C.REFUND_CODE = #{searchValue}
+        </if>
+
+        <if test="searchCondition == 'processStatus'">
+            AND C.PROCESS_STATUS = #{searchValue}
+        </if>
+
+        <if test="searchCondition == 'order'">
+            AND (E.NAME = #{searchValue} OR E.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+        </if>
+        </where>
+        ORDER BY C.REFUND_CODE DESC
+        ) B
+        <![CDATA[
+                                 WHERE ROWNUM <= #{endRow}
+                                 ]]>
+        ) A
+        JOIN TBL_ORDER D ON (A.ORDER_CODE = D.ORDER_CODE)
+        JOIN TBL_MEMBER E ON (D.MEMBER_NO = E.MEMBER_NO)
+        WHERE A.RNUM >= #{startRow}
+        ORDER BY 1 DESC
+
+    </select>
+
 
 
 </mapper>

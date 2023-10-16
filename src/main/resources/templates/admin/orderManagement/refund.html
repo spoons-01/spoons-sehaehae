@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>refund</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -9,7 +16,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <script src="/js/admin/admin.js" type="text/javascript"></script>
 
-
     <title>Document</title>
 </head>
 
@@ -17,13 +23,13 @@
 <div th:replace="/admin/common/nav.html"></div>
 
 <header>
-    <h3>주문관리 &gt 배송준비</h3>
+    <h3>환불관리 &gt 환불요청</h3>
     <h3 id="login">로그인(로그아웃)</h3>
 </header>
 
 <div class="container">
     <div class="basic-search">
-        <h4 class="top-name">배송준비</h4>
+        <h4 class="top-name">환불요청</h4>
     </div>
 
     <div class="basic-search2">
@@ -32,26 +38,18 @@
     </div>
 
     <div class="container1">
-        <form id="allSearch" action="/orderManagement/preparing-delivery">
+        <form id="allSearch" action="/orderManagement/refund">
             <table>
-                <tr>
-                    <th th:style="'width: 190px;'">결제방법</th>
-                    <td>
-                        <input type="checkbox" name="payment" value="카드">카드
-                        <input type="checkbox" name="payment" value="카카오페이">카카오페이
-                        <input type="checkbox" name="payment" value="네이버페이">네이버페이
-                    </td>
-                </tr>
 
                 <tr>
                     <th>검색</th>
                     <td>
                         <select id="search-method" name="searchCondition">
                             <option selected>전체</option>
-                            <option value="code" th:selected="${paging.searchCondition eq 'code'}">주문번호</option>
-                            <option value="member" th:selected="${paging.searchCondition eq 'member'}">주문자</option>
+                            <option value="refundCode" th:selected="${paging.searchCondition eq 'refundCode'}">환불번호</option>
+                            <option value="order" th:selected="${paging.searchCondition eq 'order'}">주문자</option>
                             <option value="phone" th:selected="${paging.searchCondition eq 'phone'}">전화번호</option>
-                            <option value="orderStatus" th:selected="${paging.searchCondition eq 'orderStatus'}" >주문상태</option>
+                            <option value="processStatus" th:selected="${paging.searchCondition eq 'processStatus'}" >처리상태</option>
                         </select>
                         <input type="search" id="searchValue" name="searchValue" th:value="${paging.searchValue}" placeholder="입력하세요">
                     </td>
@@ -86,6 +84,10 @@
             </table>
         </form>
     </div>
+    <div class="refudn-button">
+        <button type="button" class="refund-ok refund-subButton" onclick="markAsRefundOk()">환불승인</button>
+        <button type="button" class="refund-no refund-subButton" onclick="markAsCollected()">환불거절</button>
+    </div>
 
     <div align="center">
         <table id="listArea" style="text-align:center">
@@ -94,23 +96,34 @@
             </tr>
             <tr>
                 <th><input id="selectAll" type="checkbox" name="checkStatus" value="checkStatus" onclick='selectAll(this)'></th>
-                <th th:style="'width: 110px;'">주문번호</th>
+                <th th:style="'width: 110px;'">환불번호</th>
+                <th>주문번호</th>
                 <th>주문일자</th>
-                <th>총결제금액</th>
                 <th>주문자</th>
                 <th>전화번호</th>
-                <th>우편번호</th>
-                <th>주문상태</th>
+                <th>환불완료일자</th>
+                <th>총환불액</th>
+                <th>사용한포인트</th>
+                <th>사용한쿠폰</th>
+                <th>환불배송비</th>
+                <th>처리상태</th>
+                <th>환불사유</th>
+
             </tr>
-            <tr th:each="search : ${ searchPreparingList }">
-                <td><input class="checkStatus" type="checkbox" name="checkStatus" value="checkStatus" th:data-order-id="${search.code}"></td>
-                <td class="clickable" th:text="${ search.code }"  th:style="'border: 1px solid #000000FF; color: blue;'"></td>
-                <td th:text="${ #dates.format(search.orderDate, 'yyyy-MM-dd') }" th:style="'border: 1px solid #000000FF;'"></td>
-                <td th:text="${ search.orderTotalPrice }" th:style="'border: 1px solid #000000FF;'"></td>
-                <td th:text="${ search.member.name}" th:style="'border: 1px solid #000000FF;'"></td>
-                <td th:text="${ search.member.phone}" th:style="'border: 1px solid #000000FF;'"></td>
-                <td th:text="${ search.inputZipCode }" th:style="'border: 1px solid #000000FF;'"></td>
-                <td th:text="${ search.orderStatus }" th:style="'border: 1px solid #000000FF;'"></td>
+            <tr th:each="search : ${ searchRefundList }">
+                <td><input class="checkStatus" type="checkbox" name="checkStatus" value="checkStatus" th:data-order-id="${search.refundCode}"></td>
+                <td th:text="${ search.refundCode }"  th:style="'border: 1px solid #000000FF; color: blue;'"></td>
+                <td th:text="${ search.orderCode }"  th:style="'border: 1px solid #000000FF; color: blue;'"></td>
+                <td th:text="${ #dates.format(search.refundReceiptDate, 'yyyy-MM-dd') }" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.order.member.name}" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.order.member.phone}" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ #dates.format(search.refundCompleteDate, 'yyyy-MM-dd') }" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.totalRefundAmount }" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.usedPoint}" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.usedCupon}" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.refundShippingFee }" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.processStatus }" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.refundReason }" th:style="'border: 1px solid #000000FF;'"></td>
             </tr>
         </table>
     </div>
@@ -122,81 +135,75 @@
                 th:if="${ paging.searchCondition != null and paging.searchValue != null }">
             <!-- 맨 앞으로 이동 -->
             <button
-                    th:onclick="'location.href=\'/orderManagement/preparing-delivery?page=1&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">&lt;&lt;</button>
+                    th:onclick="'location.href=\'/orderManagement/complete-payment?page=1&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">&lt;&lt;</button>
 
             <!-- 이전 페이지로 이동 -->
             <button
-                    th:onclick="'location.href=\'/orderManagement/preparing-delivery?page=' + @{${paging.page - 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                    th:onclick="'location.href=\'/orderManagement/complete-payment?page=' + @{${paging.page - 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
                     th:disabled="${ paging.page <= 1 }">&lt;</button>
 
             <!-- 숫자 버튼 -->
             <th:block
                     th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
                 <button
-                        th:onclick="'location.href=\'/orderManagement/preparing-delivery?page=' + @{${page}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                        th:onclick="'location.href=\'/orderManagement/complete-payment?page=' + @{${page}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
                         th:text="${ page }" th:disabled="${ paging.page eq page }">
                 </button>
             </th:block>
 
             <!-- 다음 페이지로 이동 -->
             <button
-                    th:onclick="'location.href=\'/orderManagement/preparing-delivery?page=' + @{${paging.page + 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                    th:onclick="'location.href=\'/orderManagement/complete-payment?page=' + @{${paging.page + 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
                     th:disabled="${ paging.page >= paging.maxPage }">></button>
 
             <!-- 맨 끝으로 이동 -->
             <button
-                    th:onclick="'location.href=\'/orderManagement/preparing-delivery?page=' + @{${paging.maxPage}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">>></button>
+                    th:onclick="'location.href=\'/orderManagement/complete-payment?page=' + @{${paging.maxPage}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">>></button>
 
         </th:block>
 
         <th:block
                 th:if="${ paging.searchCondition == null ||  paging.searchValue == null }">
             <!-- 맨 앞으로 이동 -->
-            <button
-                    th:onclick="'location.href=\'/orderManagement/preparing-delivery?page=1\''">&lt;&lt;</button>
+            <button th:onclick="'location.href=\'/orderManagement/complete-payment?page=1\''">&lt;&lt;</button>
 
             <!-- 이전 페이지로 이동 -->
             <button
-                    th:onclick="'location.href=\'/orderManagement/preparing-delivery?page=' + @{${paging.page - 1}} + '\''"
+                    th:onclick="'location.href=\'/orderManagement/complete-payment?page=' + @{${paging.page - 1}} + '\''"
                     th:disabled="${ paging.page <= 1 }">&lt;</button>
 
             <!-- 숫자 버튼 -->
             <th:block
                     th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
                 <button
-
-                        th:onclick="'location.href=\'/orderManagement/preparing-delivery?page=' + @{${page}} + '\''"
+                        th:onclick="'location.href=\'/orderManagement/complete-payment?page=' + @{${page}} + '\''"
                         th:text="${ page }" th:disabled="${ paging.page eq page }">
                 </button>
             </th:block>
 
             <!-- 다음 페이지로 이동 -->
             <button
-
-                    th:onclick="'location.href=\'/orderManagement/preparing-delivery?page=' + @{${paging.page + 1}} + '\''"
+                    th:onclick="'location.href=\'/orderManagement/complete-payment?page=' + @{${paging.page + 1}} + '\''"
                     th:disabled="${ paging.page >= paging.maxPage }">></button>
 
             <!-- 맨 끝으로 이동 -->
             <button
-
-                    th:onclick="'location.href=\'/orderManagement/preparing-delivery?page=' + @{${paging.maxPage}} + '\''">>></button>
+                    th:onclick="'location.href=\'/orderManagement/complete-payment?page=' + @{${paging.maxPage}} + '\''">>></button>
         </th:block>
 
     </div>
 
-    <div class="container2">
-        <div class="order-process">
-            <img class="ractangle" src="/static/images/rectangle.png">
-            <p>주문일괄처리</p>
+    <div id="refund-modal">
+        <div class="refund-modal-title">
+            <p>주문리스트</p>
         </div>
-        <table class="bottom-table">
-            <tr class="bottom-tr">
-                <th class="bottom-th">선택한 주문을</th>
-                <td class="bottom-td"><button type="button" class="bottom-button" onclick="markAsPreparing()">배송중</button></td>
-            </tr>
-        </table>
-
+        <div class="refund-reason">
+            <input type="text" value="서버에서 가져온 내용">
+        </div>
+        <button type="submit" class="refund-completed">확인</button>
+        <button type="button" class="refund-completed">취소</button>
     </div>
+
 
     <script>
         function searchDate(range) {
@@ -244,3 +251,6 @@
 
 
 
+
+</body>
+</html>

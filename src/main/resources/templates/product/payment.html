@@ -9,7 +9,6 @@
 <body>
 <div class="container1" style="margin-top: 0px;">
     <p style="font-size: 40px;">주문/결제</p>
-    <p>가격표</p>
 </div>
 
 <div class="big">
@@ -37,11 +36,11 @@
                     <p id="address">주소변경</p>
                 </div>
                 <div class="info2">
-                    <p th:text="${member.address1}" id="zonecode"></p>
+                    <span th:text="${member.address1}" id="zonecode"></span> <span th:text="${member.zipCode}"></span><br><br>
+                    <input type="text" name="inputZipCode" style="display: none" th:value="${member.zipCode}">
                     <input type="text" name="InputAddress" style="display: none" th:value="${member.address1}">
-                    <input type="text" name="InputAddress2" placeholder="상세주소"><br><br>
-                    <span th:text="${member.name}" id="name2"></span><span th:text="${member.phone}"
-                                                                           style="margin-left: 20px" id="phone2"></span>
+                    <input type="text" name="InputAddress2" placeholder="상세주소"  th:value="${member.address2}" class="address2"><br><br>
+                    <span th:text="${member.name}" id="name2"></span><span th:text="${member.phone}" style="margin-left: 20px" id="phone2"></span>
                 </div>
                 <div class="request">
                     <p>요청사항 :</p>
@@ -70,17 +69,17 @@
                 <p class="cc">결제정보</p>
                 <table>
                     <tr>
-                        <td>총 상품가격</td>
+                          <td>총 상품가격</td>
                         <td th:text="|${#numbers.formatInteger(totalPrice,3,'COMMA')}원|"></td>
                         <input type="number" style="display: none" th:value="${totalPrice}" name="orderPrice">
                     </tr>
                     <tr>
                         <td>쿠폰</td>
-                        <input name="useCoupon" id="usecoupon" style="display: none">
+                        <input type="hidden" name="useCoupon" id="usecoupon" class="usecoupon" style="display: none" value="0">
                         <input type="number" id="rate" style="display: none" value="0">
                         <td><span id="couponName">선택된쿠폰없음</span></td>
                         <td>
-                            <button type="button" class="coupon">쿠폰변경</button>
+                        <button type="button" class="coupon">쿠폰변경</button>
                         </td>
                     </tr>
                     <tr>
@@ -109,14 +108,12 @@
                     <button class="rollback">취소하기</button>
                 </div>
             </div>
-
         </div>
-
         <div class="order">
             <p class="z">상품정보</p>
             <div class="pdinfo" th:each="list:${cartList}">
-                <input type="hidden" th:value="${list.product.code}" name="list[0].productCode">
-                <input type="hidden" th:value="${list.amount}" name="list[0].amount">
+                <input type="hidden" th:value="${list.product.code}" name="productCode">
+                <input type="hidden" th:value="${list.amount}" name="amount">
                 <img th:src="${list.product.photo}" style="max-width: 120px; max-height: 100px">
                 <div class="iinfo">
                     <p th:text="${list.product.name}">티셔츠</p>
@@ -124,7 +121,6 @@
                         <p th:if="${list.useEco} == 'Y'">천연세제 사용</p>
                         <p th:if="${list.usePremium} == 'Y'">프리미엄케어</p>
                         <sapn type="number" th:text="|수량 : ${list.amount}|"></sapn>
-                        <span style="margin-left: 30px" th:text="(${list.product.price}*${list.amount})+'원'"></span>
                     </div>
                 </div>
             </div>
@@ -133,6 +129,10 @@
     </form>
 </div>
 <script>
+    const $usecoupon = document.querySelector(".usecoupon")
+    console.log($usecoupon.value);
+
+
     const ttotalPrice = '[[${totalPrice}]]'
     const $imagebox = document.querySelector(".replaceimage");
     const $file = document.querySelector(".file");
@@ -145,7 +145,6 @@
             }
         }
     })
-
 
     const $name = document.querySelector("#name");
     const $phone = document.querySelector("#phone");
@@ -174,8 +173,22 @@
     const $naver = document.querySelector("#naver");
     const $card = document.querySelector("#card");
     const submit = document.querySelector("#submit");
+    const $collection = document.querySelector("#collection");
+    const $deliver = document.querySelector("#deliver");
     console.log($payemthod);
     $regist.onclick = function () {
+        if(!address2.value){
+            alert("상세주소를 입력해주세요")
+            return;
+        }
+        if ($collection.value == ''){
+            alert("수거날짜를 입력해주세요")
+            return;
+        }
+        if ($deliver.value == ''){
+            alert("배송날짜를 입력해주세요")
+            return;
+        }
         if ($kakao.checked) {
             kakaopay();
         } else if ($naver.checked) {
@@ -193,7 +206,6 @@
     function card(data) {
         submit.submit();
     }
-
     function kakaopay(data) {
         const price = '[[${totalPrice}]]';  //원래그임
         const totalPrice = $finalPrice.textContent;//결제금액
@@ -249,12 +261,15 @@
                 .catch(error => console.log(error));
         })
     }
-
-
+    const date = new Date;
+    const today = date.getFullYear()+"-"+(Number(date.getMonth())+1)+"-"+date.getDate();
+    $collection.min = today;
+    $deliver.min = today;
 </script>
+
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
-
+    const address2 = document.querySelector(".address2");
     const $address = document.querySelector("#address");
     const $zoneCode = document.querySelector("#zonecode");
 
@@ -262,9 +277,9 @@
         new daum.Postcode({
             oncomplete: function (data) {
                 $zoneCode.textContent = data.address
+                address2.value = '';
             }
         }).open();
-
     }
 </script>
 

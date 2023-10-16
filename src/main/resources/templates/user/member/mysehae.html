@@ -17,9 +17,6 @@
 </head>
 
 <body>
-<!-- 헤더 -->
-<div th:replace="user/common/header.html"></div>
-
 <!-- 마이페이지 네비 -->
 <ul class="mypage-nav">
     <a id="profile" href="/user/member/mypage">
@@ -134,7 +131,7 @@
                             <a href="/user/member/myOrder">상세보기</a>
                         </div>
                         <div class="button-wrapper">
-                            <a th:if="${order.orderStatus == '구매확정'}" href="#" class="button">환불하기</a>
+                            <a th:if="${order.orderStatus == '구매확정'}" href="/user/member/refund" class="button">환불하기</a>
                             <a th:unless="${order.orderStatus == '구매확정'}" href="#" class="button disabled">환불하기</a>
                             <a th:if="${order.orderStatus == '구매확정'}" id="btn-modal" class="button2">후기쓰기</a>
                             <a th:unless="${order.orderStatus == '구매확정'}" href="#" class="button2 disabled">후기쓰기</a>

@@ -5,6 +5,99 @@
     <title>subOrderManagement</title>
 </head>
 <body>
+<div id="modalContainer" class="modal-overlay">
+    <div id="modalContent">
+        <p>주문관리</p>
+        <div class="close-area">X</div>
+    </div>
 
+    <div class="content">
+        <table>
+            <tr>
+                <td>주문자 정보</td>
+            </tr>
+            <tr>
+                <th th:style="'background-color : #0909090F;'">주문번호</th>
+                <th></th>
+                <th th:style="'background-color : #0909090F;'">주문일자</th>
+                <th></th>
+            </tr>
+            <tr>
+                <th th:style="'background-color : #0909090F;'">주문자이름</th>
+                <th></th>
+                <th th:style="'background-color : #0909090F;'">주문자메일</th>
+                <th></th>
+            </tr>
+            <tr>
+                <th th:style="'background-color : #0909090F;'">주문자핸드폰</th>
+                <th></th>
+                <th th:style="'background-color : #0909090F;'">기본주소</th>
+                <th></th>
+            </tr>
+        </table>
+
+    </div>
+
+    <div class="content1">
+        <table>
+            <tr>
+                <td>주문 리스트</td>
+            </tr>
+            <tr>
+
+                <th></th>
+                <th th:style="'width: 110px;'">주문번호</th>
+                <th>상품이미지</th>
+                <th>상품명</th>
+                <th>상품코드</th>
+                <th>상품금액</th>
+                <th>주문번호</th>
+                <th>주문자</th>
+                <th>전화번호</th>
+                <th>주문자 메일</th>
+
+            </tr>
+            <tr th:each="search : ${ searchList }">
+                <td></td>
+                <td th:text="${ search.code }"  th:style="'border: 1px solid #000000FF; color: blue; cursor: pointer;'"></td>
+                <td th:text="${#dates.format(search.orderDate, 'yyyy-MM-dd')}" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.orderRequest }" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.orderPrice }" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.orderDiscount }" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.orderTotalPrice }" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.member.name}" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.member.phone}" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.inputZipCode }" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.orderStatus }" th:style="'border: 1px solid #000000FF;'"></td>
+            </tr>
+        </table>
+
+    </div>
+
+    <div class="content2">
+        <table>
+            <tr>
+                <td>결제 상세정보 확인</td>
+            </tr>
+            <tr>
+                <th th:style="'text-align : left; ">총 주문금액</th>
+                <th ></th>
+            </tr>
+            <tr>
+                <th th:style="'text-align : left;'">총 배송비</th>
+                <th ></th>
+            </tr>
+            <tr>
+                <th th:style="'text-align : left;'">총 쿠폰할인</th>
+                <th ></th>
+            </tr>
+            <tr>
+                <th th:style="'text-align : left;'">실 결제금액</th>
+                <th ></th>
+            </tr>
+        </table>
+
+    </div>
+</div>
 </body>
 </html>

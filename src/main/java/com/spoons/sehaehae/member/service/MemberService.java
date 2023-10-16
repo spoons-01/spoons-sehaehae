@@ -1,6 +1,7 @@
 package com.spoons.sehaehae.member.service;
 
 
+import com.spoons.sehaehae.admin.dto.RefundDTO;
 import com.spoons.sehaehae.board.dto.ReviewDTO;
 import com.spoons.sehaehae.common.exception.member.MemberModifyException;
 import com.spoons.sehaehae.common.exception.member.MemberRegistException;
@@ -8,7 +9,6 @@ import com.spoons.sehaehae.member.dao.MemberMapper;
 import com.spoons.sehaehae.member.dto.MemberDTO;
 import com.spoons.sehaehae.member.dto.MyCouponDTO;
 import com.spoons.sehaehae.member.dto.MyOrderDTO;
-import com.spoons.sehaehae.member.dto.MyPointDTO;
 import com.spoons.sehaehae.member.util.Naver_Sens_V2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -74,6 +74,7 @@ public class MemberService {
         if (!(result1 > 0 && result2 > 0 && result3 > 0)) throw new MemberRegistException("회원 가입에 실패하였습니다.");
 
     }
+
 
     // @Transactional => 기본 처리 옵션은 RuntimeException 발생할 때  Rollback COmmit ;  그 외적으로는  COmmit ;
     // 쿼리만 실행되면 Commit;
