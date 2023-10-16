@@ -128,7 +128,7 @@
 
                     <div class="order-right-child1">
                         <div class="more">
-                            <a href="/user/member/myOrder">상세보기</a>
+                            <a th:href="@{'/user/member/myOrder/' + ${order.orderCode}}">상세보기</a>
                         </div>
                         <div class="button-wrapper">
                             <a th:if="${order.orderStatus == '구매확정'}" href="/user/member/refund" class="button">환불하기</a>

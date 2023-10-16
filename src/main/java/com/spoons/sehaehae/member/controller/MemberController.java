@@ -1,6 +1,7 @@
 package com.spoons.sehaehae.member.controller;
 
 
+import com.spoons.sehaehae.admin.dto.OrderDTO;
 import com.spoons.sehaehae.board.dto.ReviewDTO;
 import com.spoons.sehaehae.common.exception.member.MemberModifyException;
 import com.spoons.sehaehae.common.exception.member.MemberRegistException;
@@ -127,23 +128,22 @@ public class MemberController {
         String membershipName = extractMembershipName(memberDTO);
         // 2. 현재 로그인한 회원의 memberNo를 얻는다
         int memberNo = memberDTO.getMemberNo();
-        // 2-2. MEMBER_NO를 이용하여 쿠폰 개수를 얻어온다
+        // 2-1. MEMBER_NO를 이용하여 쿠폰 개수를 얻어온다
         int couponCount = couponRepository.countCouponsByMemberNo(memberNo);
         // 3. 내 주문 목록을 불러온다
         List<MyOrderDTO> myOrders = memberService.findMyOrder(currentUsername);
         // 4. 내 포인트를 불러온다.
         int myPoint = memberService.findMyPoint(memberNo);
         // 5. 주문 상태별 개수를 저장할 맵 초기화
-        // 5-2. 주문 상태 배열에 넣기
         String[] orderedOrderStatuses = {"결제완료", "수거완료", "세탁완료", "배송준비", "배송중", "구매확정"};
         List<MyOrderDTO> myOrderList = memberService.findMyOrder(currentUsername);
-        // 5-3. 주문 상태별 개수를 저장할 맵 초기화
+        // 5-1. 주문 상태별 개수를 저장할 맵 초기화
         Map<String, Integer> orderStatusCounts = new LinkedHashMap<>();  // 순서가 중요하므로 LinkedHashMap 사용
-        // 5-4. 정렬된 주문 상태 배열을 기반으로 초기화
+        // 5-2. 정렬된 주문 상태 배열을 기반으로 초기화
         for (String status : orderedOrderStatuses) {
             orderStatusCounts.put(status, 0);
         }
-        // 5-5. 주문 목록을 순회하면서 주문 상태 개수 계산
+        // 5-3. 주문 목록을 순회하면서 주문 상태 개수 계산
         for (MyOrderDTO order : myOrderList) {
             String orderStatus = order.getOrderStatus();
             orderStatusCounts.put(orderStatus, orderStatusCounts.get(orderStatus) + 1);
@@ -184,8 +184,11 @@ public class MemberController {
         return "/user/member/myCoupon";
     }
 
-    @GetMapping("/member/myOrder")
-    public void myOrder() {
+    @GetMapping("/member/myOrder/{orderCode}")
+    public String myOrder(@PathVariable String orderCode, Model model) {
+        OrderDTO orderDTO = memberService.findMyOrderDetails(orderCode);
+        model.addAttribute("orderDetails", orderDTO);
+        return "/user/member/myOrder";
     }
 
 
@@ -249,8 +252,6 @@ public class MemberController {
 
 
 
-    /* ================================================================== */
-
     protected Authentication createNewAuthentication(String memberId) {
 
         UserDetails newPrincipal = authenticationService.loadUserByUsername(memberId);
@@ -259,43 +260,6 @@ public class MemberController {
 
         return newAuth;
     }
-
-
-    /**/
-    /* 핸드폰 번호 인증 */
-//    @PostMapping("/member/phoneAuth")
-//    @ResponseBody
-//    public Boolean phoneAuth(@RequestParam("tel") String tel, HttpSession session) {
-//
-//        try { // 이미 가입된 전화번호가 있으면
-//            if (memberService.memberTelCount(tel) > 0)
-//                return true;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        String code = memberService.sendRandomMessage(tel);
-//        session.setAttribute("rand", code);
-//
-//        return false;
-//    }
-
-
-//    @PostMapping("/member/phoneAuthOk")
-//    @ResponseBody
-//    public Boolean phoneAuthOk(HttpSession session, HttpServletRequest request) {
-//        String rand = (String) session.getAttribute("rand");
-//        String code = request.getParameter("code");
-//
-//        System.out.println(rand + " : " + code);
-//
-//        if (rand.equals(code)) {
-//            session.removeAttribute("rand");
-//            return false;
-//        }
-//
-//        return true;
-//    }
 
     /**
      * 이메일 인증코드 발송
@@ -321,7 +285,7 @@ public class MemberController {
                     EmailDTO.builder()
                             .email(emailAuthDTO.getEmail())
                             .content(
-                                    "<h1>인증 사용자 : 홍길동</h1>"
+                                    "<h1>인증 사용자 : 세탁해병대</h1>"
                                             + "<h1>인증 요청 시간 : " + DateFormatUtils.format(emailAuthDTO.getRegDt(), "HH:mm:ss (E)") + "</h1>"
                                             + "<h1>인증 번호 : [" + emailAuthDTO.getEmailAuthVal() + "]</h1>"
                                             + "<h1>인증 만료 시간은 10분 입니다. 10분 이내에 입력 하여 주시기 바랍니다.</h1>"
