@@ -166,10 +166,16 @@ h3 {
     padding: 20px;
     border-collapse: separate;
     border-spacing: 8px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap : 8px;
 }
 
 .dot-box-content {
-    text-align: center;
+    border: #d9d6d6 1px solid;
+    border-radius: 4px;
+    padding: 20px;
+
 }
 
 /* 좋아요 */
