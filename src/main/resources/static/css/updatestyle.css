@@ -100,6 +100,7 @@ input {
     font-size: 14px;
     border-radius: 4px;
     padding: 10px;
+    border: #989898 1px solid;
 }
 
 .emailbox,
@@ -160,6 +161,7 @@ label:focus-within {
     height: 50px;
     width: 170px;
     border: none;
+
     font-family: GangwonState;
     font-size : 18px;
 }
