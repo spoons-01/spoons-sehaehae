@@ -39,7 +39,6 @@ public interface MemberMapper {
 
     List<ReviewDTO> findMyReview(int memberNo);
 
-    int submitRefund(RefundDTO refundDTO);
 
 
     /* 동한님 */

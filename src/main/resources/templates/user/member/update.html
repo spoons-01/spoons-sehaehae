@@ -1,21 +1,21 @@
-<!DOCTYPE>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
 <head>
-    <meta charset="UTF- 8">
-    <!--    <script type="text/javascript" src="/js/event.js"></script>-->
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>설정 | 세탁해병대</title>
+    <title>회원정보 수정 | 세탁해병대</title>
+
     <link href="/css/updatestyle.css" rel="stylesheet" type="text/css">
     <link rel="icon" href="/static/images/favicon.ico">
     <link href="https://unpkg.com/ress/dist/ress.min.css" rel="styles heet" type="text/css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="/js/update.js"></script>
 </head>
 
 <body>
-<!-- 헤더 -->
-<div th:replace="user/common/header.html"></div>
+
 <ul class="mypage-nav">
     <a id="profile" href="/user/member/mypage">
         <li>프로필</li>
@@ -32,7 +32,7 @@
 <div class="box-wrapper">
     <div class="bigbox">
         <h3>회원정보수정</h3>
-        <form id=updateProfile action="/user/member/update" method="post" enctype="multipart/form-data">
+        <form id="updateProfile" action="/user/member/update" method="post" enctype="multipart/form-data">
             <div class="box1">
                 <label>이메일</label>
                 <input type="email" class="emailbox" th:value="${ #authentication.principal.memberId }" readonly>
@@ -92,8 +92,7 @@
             </div>
 
             <div style="display: none">
-                <input type="file" id="attachImage" name="attachImage"
-                       accept="image/gif,immage/jpeg,image/png, image/jpg">
+                <input type="file" id="attachImage" name="attachImage" accept="image/gif,image/jpeg,image/png,image/jpg">
             </div>
 
             <div class="button-center">
@@ -165,7 +164,6 @@
     })();
 </script>
 
-<div th:replace="user/common/footer.html"></div>
 </body>
 
 </html>
