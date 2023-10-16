@@ -1,5 +1,6 @@
 package com.spoons.sehaehae.member.dao;
 
+import com.spoons.sehaehae.admin.dto.RefundDTO;
 import com.spoons.sehaehae.board.dto.ReviewDTO;
 import com.spoons.sehaehae.member.dto.MemberDTO;
 import com.spoons.sehaehae.member.dto.MyCouponDTO;
@@ -38,6 +39,7 @@ public interface MemberMapper {
 
     List<ReviewDTO> findMyReview(int memberNo);
 
+    int submitRefund(RefundDTO refundDTO);
 
 
     /* 동한님 */

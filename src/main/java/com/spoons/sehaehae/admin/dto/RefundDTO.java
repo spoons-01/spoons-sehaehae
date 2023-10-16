@@ -13,15 +13,11 @@ import java.util.List;
 @ToString
 public class RefundDTO {
     private String refundCode;
-    private String orderCode;
     private OrderDTO order;
     private Date refundReceiptDate;
     private Date refundCompleteDate;
     private String processStatus;
     private int totalRefundAmount;
-    private int usedPoint;
-    private int usedCupon;
     private int refundShippingFee;
-    private String  refundReason;
-
+    private String refundReason;
 }

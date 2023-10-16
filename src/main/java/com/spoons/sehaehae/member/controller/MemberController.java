@@ -161,7 +161,6 @@ public class MemberController {
         return "/user/member/mysehae";
     }
 
-    // MemberDTO에서 membershipName을 추출하는 메소드
     private String extractMembershipName(MemberDTO memberDTO) {
         if (memberDTO != null && memberDTO.getMemberLevelList() != null) {
             for (MemberLevelDTO memberLevelDTO : memberDTO.getMemberLevelList()) {
@@ -170,35 +169,31 @@ public class MemberController {
                 }
             }
         }
-        return "N/A"; // 기본값
+        return "N/A";
     }
 
     @GetMapping("/member/myCoupon")
     public String myCoupon(Model model, Principal principal) {
-        // 현재 로그인한 사용자의 아이디 얻기
         String currentUserName = principal.getName();
-        // 현재 사용자의 MemberDTO를 얻어온다
         MemberDTO memberDTO = memberService.findByMemberId(currentUserName);
-        // 현재 로그인한 회원의 memberNo를 얻는다
         int memberNo = memberDTO.getMemberNo();
 
-        // 내 쿠폰 목록을 불러온다
         List<MyCouponDTO> myCoupons = memberService.findMyCoupon(memberNo);
         model.addAttribute("myCoupons", myCoupons);
         return "/user/member/myCoupon";
     }
 
-
     @GetMapping("/member/myOrder")
     public void myOrder() {
     }
+
+
+    /* 마이페이지-설정 이동 */
     @GetMapping("/member/update")
-    public void update(@AuthenticationPrincipal MemberDTO loginMember) {
-        if (StringUtils.isBlank(loginMember.getProfilePhoto())) {
-            loginMember.setProfilePhoto("/images/smile.png");
-        }
+    public void update() {
     }
 
+    /* 마이페이지-설정 수정(회원정보 수정) */
     @PostMapping("/member/update")
     public String modifyMember(MemberDTO modifyMember, MultipartFile attachImage,
                                @AuthenticationPrincipal MemberDTO loginMember, RedirectAttributes rttr) throws MemberModifyException {
@@ -208,7 +203,7 @@ public class MemberController {
         log.info("modifyMember request Member : {}", modifyMember);
         log.info("modifyMember attachImage request : {}", attachImage);
 
-        String fileUploadDir = IMAGE_DIR + "/original";
+        String fileUploadDir = IMAGE_DIR + "original";
 
         File dir = new File(fileUploadDir);
 
@@ -219,6 +214,7 @@ public class MemberController {
 
         // 여러 개의 파일을 받을 게 아니라서, DTO와 리스트는 필요 없다.
         //List<ProfileAttachmentDTO> profileAttachmentList = new ArrayList<>();
+
         try {
             if (attachImage.getSize() > 0) {
                 /* 첨부파일이 실제로 존재하는 경우에만 로직 수행 */
@@ -231,7 +227,7 @@ public class MemberController {
                 log.info("savedFileName : {}", savedFileName);
 
                 /* 서버의 설정 디렉토리에 파일 저장하기 */
-                attachImage.transferTo(new File(IMAGE_DIR + File.separator + savedFileName));
+                attachImage.transferTo(new File(fileUploadDir + "/" + savedFileName));
                 modifyMember.setProfilePhoto("/upload/original/" + savedFileName);
             }
         } catch (IOException e) {
@@ -245,7 +241,7 @@ public class MemberController {
         SecurityContextHolder.getContext().
                 setAuthentication(createNewAuthentication(loginMember.getMemberId()));
 
-//        rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("member.modify"));
+        rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("member.modify"));
 
         return "redirect:/user/member/update";
     }
