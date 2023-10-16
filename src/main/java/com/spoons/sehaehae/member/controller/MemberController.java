@@ -376,9 +376,10 @@ public class MemberController {
     @PostMapping("/member/mysehae")
     public String registReview(ReviewDTO review, MultipartFile attachImage,
                                @AuthenticationPrincipal MemberDTO member,
-                               @AuthenticationPrincipal MyOrderDTO myOrder,
+                               @AuthenticationPrincipal OrderDTO myOrder,
                                @RequestParam("rating") int rating,
-                               Model model, Principal principal) {
+                               Model model, Principal principal,
+                               String orderCode) {
 
         log.info("review request : {}", review);
         log.info("attachImage request : {}", attachImage);
@@ -446,7 +447,7 @@ public class MemberController {
         review.setMyOrders(myOrder);
         model.addAttribute("myOrders", myOrder);
 
-        boardService.registReview(review, attachment);
+        boardService.registReview(review, attachment, orderCode);
 
         return "redirect:/user/member/mysehae";
         }

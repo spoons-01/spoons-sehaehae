@@ -1,10 +1,12 @@
 package com.spoons.sehaehae.board.dao;
 
+import com.spoons.sehaehae.admin.dto.OrderDTO;
 import com.spoons.sehaehae.board.dto.AttachmentDTO;
 import com.spoons.sehaehae.board.dto.NoticeDTO;
 import com.spoons.sehaehae.board.dto.QnaDTO;
 import com.spoons.sehaehae.board.dto.ReviewDTO;
 import com.spoons.sehaehae.common.paging.SelectCriteria;
+import com.spoons.sehaehae.member.dto.MyOrderDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -52,4 +54,6 @@ public interface BoardMapper {
     void incrementReviewCount(Long no);
 
     void deleteReview(Integer id);
+
+    void updateOrderReviewStatus(String orderCode);
 }

@@ -30,6 +30,7 @@ public class OrderDTO {
     private String collectionDate;
     private String deliveryDate;
     private Date progressDate;
+    private String reviewStatus;
     private String image;
     private List<OrderProductDTO> list;
 

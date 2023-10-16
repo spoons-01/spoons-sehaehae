@@ -1,5 +1,6 @@
 package com.spoons.sehaehae.board.dto;
 
+import com.spoons.sehaehae.admin.dto.OrderDTO;
 import com.spoons.sehaehae.member.dto.MemberDTO;
 import com.spoons.sehaehae.member.dto.MyOrderDTO;
 import lombok.Getter;
@@ -23,7 +24,7 @@ public class ReviewDTO {
     private String status;
     private Date deleteDate;
     private Long orderCode;
-    private MyOrderDTO myOrders;
+    private OrderDTO myOrders;
     private int rating;
     private List<ReplyDTO> replyList;
     private AttachmentDTO attachment;

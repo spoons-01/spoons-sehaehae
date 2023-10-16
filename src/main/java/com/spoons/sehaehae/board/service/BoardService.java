@@ -1,5 +1,6 @@
 package com.spoons.sehaehae.board.service;
 
+import com.spoons.sehaehae.admin.dto.OrderDTO;
 import com.spoons.sehaehae.board.dao.BoardMapper;
 import com.spoons.sehaehae.board.dto.AttachmentDTO;
 import com.spoons.sehaehae.board.dto.NoticeDTO;
@@ -7,6 +8,7 @@ import com.spoons.sehaehae.board.dto.QnaDTO;
 import com.spoons.sehaehae.board.dto.ReviewDTO;
 import com.spoons.sehaehae.common.paging.Pagenation;
 import com.spoons.sehaehae.common.paging.SelectCriteria;
+import com.spoons.sehaehae.member.dto.MyOrderDTO;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -124,7 +126,7 @@ public class BoardService {
 
     /* 후기 게시판 */
 
-    public void registReview(ReviewDTO review, AttachmentDTO attachment) {
+    public void registReview(ReviewDTO review, AttachmentDTO attachment, String orderCode) {
 
         boardMapper.insertReview(review);
 
@@ -134,6 +136,8 @@ public class BoardService {
         attachment.setReviewNo(reviewNo);
 
         boardMapper.insertAttachment(attachment);
+
+        boardMapper.updateOrderReviewStatus(orderCode);
 
     }
 
