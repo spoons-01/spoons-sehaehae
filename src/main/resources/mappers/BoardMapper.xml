@@ -74,7 +74,7 @@
 
         <association property="writer" resultMap="memberResultMap"/>
         <association property="attachment" resultMap="attachmentResultMap"/>
-        <association property="myOrders" resultMap="myOrderResultMap"/>
+        <association property="myOrders" resultMap="orderResultMap"/>
 <!--        <collection property="replyList" resultMap="replyResultMap"/>-->
     </resultMap>
 <!--댓글-->
@@ -121,6 +121,27 @@
         <association property="review" resultMap="reviewBoardResultMap"/>
     </resultMap>
 <!--후기 쓸 주문-->
+    <!-- TBL_ORDER -->
+    <resultMap id="orderResultMap" type="com.spoons.sehaehae.admin.dto.OrderDTO">
+        <id property="code" column="ORDER_CODE"/>
+        <result property="orderDate" column="ORDER_DATE"/>
+        <result property="orderRequest" column="ORDER_REQUEST"/>
+        <result property="orderPrice" column="ORDER_PRICE"/>
+        <result property="orderDiscount" column="ORDER_DISCOUNT"/>
+        <result property="orderTotalPrice" column="ORDER_TOTAL_PRICE"/>
+        <result property="memberCode" column="MEMBER_NO"/>
+        <result property="inputZipCode" column="INPUT_ZIP_CODE"/>
+        <result property="inputAddress" column="INPUT_ADDRESS"/>
+        <result property="InputAddress2" column="INPUT_ADDRESS2"/>
+        <result property="orderStatus" column="ORDER_STATUS"/>
+        <result property="useCoupon" column="CP_CODE"/>
+        <result property="usePoint" column="USE_POINT"/>
+        <result property="collectionDate" column="COLLECTION_DATE"/>
+        <result property="deliveryDate" column="DELIVERY_DATE"/>
+        <result property="progressDate" column="PROGRESS_DATE"/>
+        <result property="reviewStatus" column="REVIEW_STATUS"/>
+    </resultMap>
+
     <!-- 내 구매내역 -->
     <resultMap id="myOrderResultMap" type="com.spoons.sehaehae.member.dto.MyOrderDTO">
         <id property="memberNo" column="MEMBER_NO"/>
@@ -128,26 +149,8 @@
         <result property="orderDate" column="ORDER_DATE"/>
         <result property="orderStatus" column="ORDER_STATUS"/>
         <result property="progressDate" column="PROGRESS_DATE"/>
+        <result property="reviewStatus" column="REVIEW_STATUS"/>
     </resultMap>
-    <!-- TBL_ORDER -->
-<!--    <resultMap id="orderResultMap" type="com.spoons.sehaehae.admin.dto.OrderDTO">-->
-<!--        <id property="code" column="ORDER_CODE"/>-->
-<!--        <result property="orderDate" column="ORDER_DATE"/>-->
-<!--        <result property="orderRequest" column="ORDER_REQUEST"/>-->
-<!--        <result property="orderPrice" column="ORDER_PRICE"/>-->
-<!--        <result property="orderDiscount" column="ORDER_DISCOUNT"/>-->
-<!--        <result property="orderTotalPrice" column="ORDER_TOTAL_PRICE"/>-->
-<!--        <result property="memberCode" column="MEMBER_NO"/>-->
-<!--        <result property="inputZipCode" column="INPUT_ZIP_CODE"/>-->
-<!--        <result property="inputAddress" column="INPUT_ADDRESS"/>-->
-<!--        <result property="InputAddress2" column="INPUT_ADDRESS2"/>-->
-<!--        <result property="useCoupon" column="CP_CODE"/>-->
-<!--        <result property="orderStatus" column="ORDER_STATUS"/>-->
-<!--        <result property="usePoint" column="USE_POINT"/>-->
-<!--        <result property="collectionDate" column="COLLECTION_DATE"/>-->
-<!--        <result property="deliveryDate" column="DELIVERY_DATE"/>-->
-<!--        <result property="progressDate" column="PROGRESS_DATE"/>-->
-<!--    </resultMap>-->
 
 
     <!-- 공지사항 -->
@@ -491,6 +494,13 @@
         , #{ thumbnail }
         )
     </insert>
+
+    <update id="updateOrderReviewStatus">
+        UPDATE TBL_ORDER
+        SET REVIEW_STATUS = '작성완료'
+        WHERE REVIEW_STATUS IS NULL
+        AND ORDER_CODE = #{ ordercode }
+    </update>
 
     <select id="reviewTotalCount" resultType="_int" parameterType="hashmap">
         SELECT

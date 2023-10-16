@@ -67,6 +67,7 @@
         <result property="collectionDate" column="COLLECTION_DATE"/>
         <result property="deliveryDate" column="DELIVERY_DATE"/>
         <result property="progressDate" column="PROGRESS_DATE"/>
+        <result property="reviewStatus" column="REVIEW_STATUS"/>
     </resultMap>
 
     <select id="findMyOrderDetails" parameterType="string" resultMap="orderResultMap">
@@ -85,6 +86,7 @@
         <result property="orderDate" column="ORDER_DATE"/>
         <result property="orderStatus" column="ORDER_STATUS"/>
         <result property="progressDate" column="PROGRESS_DATE"/>
+        <result property="reviewStatus" column="REVIEW_STATUS"/>
     </resultMap>
 
     <!-- TBL_COUPON -->

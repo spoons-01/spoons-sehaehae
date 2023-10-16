@@ -13,4 +13,5 @@ public class MyOrderDTO {
     private Date orderDate;
     private String orderStatus;
     private Date progressDate;
+    private String reviewStatus;
 }
