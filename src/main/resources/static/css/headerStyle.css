@@ -2,7 +2,7 @@
 
 /* 래퍼 설정 */
 .wrapper {
-    max-width: 1400px;
+    max-width: 1500px;
     margin: 0 auto;
     padding: 0 4%;
 }
@@ -21,6 +21,7 @@
     justify-content: flex-end;
     transform: scale(0.85);
     font-family: NanumSquareNeo-Variable;
+    width: 600px;
 }
 
 .mypage {

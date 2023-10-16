@@ -24,9 +24,9 @@ public class OrderDTO {
     private String inputZipCode;
     private String inputAddress;
     private String InputAddress2;
-    private int useCoupon;
     private String orderStatus;
     private int usePoint;
+    private Integer useCoupon;
     private String collectionDate;
     private String deliveryDate;
     private Date progressDate;

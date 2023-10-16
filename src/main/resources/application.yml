@@ -49,4 +49,4 @@ logging:
 
 # image upload dir
 image:
-  image-dir: C:/lecture/subproject/spoons-sehaehae/src/main/resources/upload/
+  image-dir: C:/subproject99/src/main/resources/upload/

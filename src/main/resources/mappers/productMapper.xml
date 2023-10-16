@@ -36,6 +36,8 @@
         <id column="MEMBER_NO" property="memberNo"/>
         <result column="NAME" property="name"/>
         <result column="PHONE_NUMBER" property="phone"/>
+        <result column="ZIPCODE" property="zipCode"/>
+        <result column="ADDRESS2" property="address2"/>
         <result column="ADDRESS1" property="address1"/>
     </resultMap>
 
@@ -148,7 +150,9 @@
         MEMBER_NO,
         NAME,
         PHONE_NUMBER,
-        ADDRESS1
+        ADDRESS1,
+        ADDRESS2,
+        ZIPCODE
         FROM TBL_MEMBER
         WHERE MEMBER_NO = #{memberCode}
     </select>
@@ -164,9 +168,9 @@
     <insert id="registOrder">
         INSERT INTO TBL_ORDER
         (ORDER_CODE, ORDER_DATE, ORDER_REQUEST, ORDER_PRICE, ORDER_DISCOUNT, ORDER_TOTAL_PRICE,
-        MEMBER_NO,INPUT_ADDRESS,INPUT_ADDRESS2,CP_CODE,USE_POINT,COLLECTION_DATE,DELIVERY_DATE,ORDER_STATUS)
+        MEMBER_NO,INPUT_ADDRESS,INPUT_ADDRESS2,CP_CODE,USE_POINT,COLLECTION_DATE,DELIVERY_DATE,ORDER_STATUS,INPUT_ZIP_CODE)
         VALUES
-        (#{code},#{orderDate},#{orderRequest},#{orderPrice},#{orderDiscount},#{orderTotalPrice},#{member.memberNo},#{inputAddress},#{InputAddress2},#{useCoupon},#{usePoint},#{collectionDate},#{deliveryDate},'결제완료')
+        (#{code},#{orderDate},#{orderRequest},#{orderPrice},#{orderDiscount},#{orderTotalPrice},#{member.memberNo},#{inputAddress},#{InputAddress2},#{useCoupon},#{usePoint},#{collectionDate},#{deliveryDate},'결제완료',#{inputZipCode})
     </insert>
 
     <update id="modifyProduct">
@@ -190,7 +194,6 @@
         WHERE PRODUCT_CODE IN
         <foreach collection="productMap" item="item" open="(" separator="," close=")">#{item}</foreach>
     </update>
-
     <resultMap id="couponResultMap" type="com.spoons.sehaehae.admin.dto.CouponDTO">
         <id property="cpCode" column="CP_CODE"/>
         <result property="cpName" column="CP_NAME"/>
@@ -203,7 +206,6 @@
         CP_RATE
         FROM TBL_CP
     </select>
-
     <select id="selectProductCount">
         SELECT
         count(*)
@@ -211,7 +213,6 @@
         WHERE USEABLE_STATUS = 'Y'
         AND DELETE_STATUS = 'N'
     </select>
-
     <update id="deletePremium">
         UPDATE TBL_CART
         SET USE_PREMIUM = 'N'
@@ -237,5 +238,10 @@
         AND PRODUCT_CODE = #{code}
     </update>
 
-
+    <insert id="addOrderProduct">
+        INSERT INTO TBL_ORDER_PRODUCT
+        (PRODUCT_CODE, ORDER_CODE, ORDER_AMOUNT)
+        VALUES
+        (#{productCode},#{orderCode},#{amount})
+    </insert>
 </mapper>

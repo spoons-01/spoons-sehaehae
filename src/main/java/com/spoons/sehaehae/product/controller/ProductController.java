@@ -99,6 +99,7 @@ public class ProductController {
 
     @PostMapping("/regist")
     public String productRegist(RedirectAttributes rttr, @ModelAttribute ProductDTO product, @RequestParam(value = "productImage", required = false) MultipartFile productImage) {
+        System.out.println(new Date());
         product.setRegistDate(new Date());
         String originalName = productImage.getOriginalFilename();
         String fileUploadDir = IMG_DIR + "resource/images";
@@ -130,7 +131,8 @@ public class ProductController {
     public ResponseEntity<String> addCart(@ModelAttribute CartDTO cart, @AuthenticationPrincipal MemberDTO member) {
         cart.setMember(member.getMemberNo());
         productService.addCart(cart);
-        return ResponseEntity.ok("장바구니에 추가됨");
+
+        return ResponseEntity.ok("장바구니에 추가됐습니다.");
     }
 
     @GetMapping("/totalPrice")
@@ -167,7 +169,6 @@ public class ProductController {
         List<CategoryDTO> categoryList = productService.selectCategory();
         return ResponseEntity.ok(categoryList);
     }
-
     @GetMapping("/updateCart")
     public ResponseEntity<String> updateCart1(@RequestParam int amount, @RequestParam String productCode, @AuthenticationPrincipal MemberDTO member) {
 
@@ -180,7 +181,6 @@ public class ProductController {
         productService.updateCartList(updateCartMap);
         return ResponseEntity.ok("ddd");
     }
-
     @PostMapping("/deleteCart")
     public @ResponseBody ResponseEntity<String> deleteCart(@RequestBody List<Integer> product, @AuthenticationPrincipal MemberDTO member) {
 
@@ -191,7 +191,6 @@ public class ProductController {
 
         return ResponseEntity.ok("삭제완료");
     }
-
     @GetMapping("/finalPrice")
     public ResponseEntity<Long> abc(@RequestParam(defaultValue = "0") int point, @RequestParam(required = false) int totalPrice, @RequestParam(defaultValue = "10") int rate) {
         System.out.println(totalPrice);
@@ -205,21 +204,29 @@ public class ProductController {
         System.out.println(finalPrice);
         return ResponseEntity.ok(finalPrice);
     }
-
     @PostMapping("/complete")
-    public String complete(@ModelAttribute OrderDTO order, Model model, @AuthenticationPrincipal MemberDTO member,MultipartFile photo) {
-
+    public String complete(@ModelAttribute OrderDTO order, Model model, @AuthenticationPrincipal MemberDTO member,MultipartFile photo, @RequestParam(value = "productCode") List<Integer> productCode, @RequestParam(value = "amount") List<Integer> amount) {
+        System.out.println(productCode);
+        System.out.println(amount);
 
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         int discount = (order.getOrderPrice() + 3000) - order.getOrderTotalPrice();
         String uuid = UUID.randomUUID().toString().substring(0,4);
         String code = simpleDateFormat.format(date) + uuid;
+        List<OrderProductDTO> orderProducts = new ArrayList<>();
+        for(int i = 0; i < productCode.size(); i++){
+            OrderProductDTO orderProduct = new OrderProductDTO();
+            orderProduct.setProductCode(productCode.get(i));
+            orderProduct.setAmount(amount.get(i));
+            orderProduct.setOrderCode(code);
+            orderProducts.add(orderProduct);
+        }
+        System.out.println(orderProducts);
         order.setOrderDiscount(discount);
         order.setCode(code);
         order.setOrderDate(new Date());
         order.setMember(member);
-
         String originalName = photo.getOriginalFilename();
         String fileUploadDir = IMG_DIR + "resource/images";
         File dir = new File(fileUploadDir);
@@ -235,18 +242,14 @@ public class ProductController {
             throw new RuntimeException(e);
         }
         System.out.println(order);
-
-        productService.addOrder(order);
-        model.addAttribute(code);
-        return "/product/ordercomplete";
+        productService.addOrder(order, orderProducts);
+        return "redirect:/product/orderComplete?code="+code;
     }
-    @GetMapping("/ordercomplete")
-    public String orderComplete(Model model, String code){
-        System.out.println(code);
+
+    @GetMapping("/orderComplete")
+    public void Ordercomplete(Model model, @RequestParam String code){
         model.addAttribute("code",code);
-        return "/product/ordercomplete";
     }
-
 
     @GetMapping("/listAdmin")
     public void listAdmin(Model model, String searchValue){

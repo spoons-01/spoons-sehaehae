@@ -22,7 +22,7 @@ public interface ProductMapper {
     List<CategoryDTO> selectCategory();
 
     ProductDTO selectProductByCode(int code);
-    void addCart(CartDTO cart);
+    int addCart(CartDTO cart);
 
     List<CartDTO> cartList(int i);
 
@@ -44,8 +44,6 @@ public interface ProductMapper {
 
     List<CouponDTO> selectCoupon(int memberId);
 
-    int selectProductCount();
-
     void deletePremium(Map<String, Object> map);
 
     void deleteEco(Map<String, Object> map);
@@ -53,4 +51,6 @@ public interface ProductMapper {
     void addOption(Map<String, Object> addoption);
 
     void addPremium(Map<String, Object> addoption);
+
+    void addOrderProduct(OrderProductDTO orderProductDTO);
 }
