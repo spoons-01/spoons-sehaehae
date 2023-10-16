@@ -1,6 +1,7 @@
 package com.spoons.sehaehae.admin.dao;
 
 import com.spoons.sehaehae.admin.dto.OrderDTO;
+import com.spoons.sehaehae.admin.dto.RefundDTO;
 import com.spoons.sehaehae.common.paging.SelectCriteria;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -29,4 +30,8 @@ public interface SearchMapper {
     List<OrderDTO> selectSearchConfirmedList(SelectCriteria selectCriteria);
 
     int calculateTotalOrderAmount(Map<String, String> searchMap);
+
+    List<RefundDTO> selectSearchRefundList(SelectCriteria selectCriteria);
+
+    int selectRefundTotalCount(Map<String, String> searchMap);
 }

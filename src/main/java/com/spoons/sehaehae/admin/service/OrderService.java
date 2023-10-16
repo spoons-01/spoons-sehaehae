@@ -3,6 +3,7 @@ package com.spoons.sehaehae.admin.service;
 
 import com.spoons.sehaehae.admin.dao.SearchMapper;
 import com.spoons.sehaehae.admin.dto.OrderDTO;
+import com.spoons.sehaehae.admin.dto.RefundDTO;
 import com.spoons.sehaehae.common.paging.Pagenation;
 import com.spoons.sehaehae.common.paging.SelectCriteria;
 import lombok.extern.slf4j.Slf4j;
@@ -172,5 +173,22 @@ public class OrderService {
         return searchListAndPaging;
     }
 
+    /*---------------------------------------------환불----------------------------------------------*/
+    public Map<String, Object> selectSearchRefundList(Map<String, String> searchMap, int page) {
+        int totalCount = searchMapper.selectRefundTotalCount(searchMap);
 
+        int limit = 10; //한 페이지에 보여줄 게시물의 수
+        int buttonAmount = 5; // 한 번에 보여질 페이징 버튼의 수
+        SelectCriteria selectCriteria = Pagenation.getSelectCriteria(page, totalCount, limit, buttonAmount, searchMap);
+
+        /* 요청 페이지와 검색 기준에 맞는 게시글 조회 */
+        List<RefundDTO> searchRefundList = searchMapper.selectSearchRefundList(selectCriteria);
+
+        Map<String, Object> searchListAndPaging = new HashMap<>();
+        searchListAndPaging.put("paging", selectCriteria);
+        searchListAndPaging.put("searchRefundList", searchRefundList);
+
+        return searchListAndPaging;
+
+    }
 }

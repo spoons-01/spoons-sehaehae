@@ -277,6 +277,28 @@ public class SearchController {
         return "admin/orderManagement/order-confirmed";
     }
 
+    /*---------------------------------------------환불----------------------------------------------*/
 
+    @GetMapping("/refund")
+    public String selectRefundList(@RequestParam(defaultValue = "1") int page,
+                                      @RequestParam(required = false) String searchCondition,
+                                      @RequestParam(required = false) String searchValue,
+                                      @RequestParam(required = false) String startDate,
+                                      @RequestParam(required = false) String endDate,
+                                      Model model) {
+
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+        searchMap.put("startDate", startDate);
+        searchMap.put("endDate", endDate);
+
+        Map<String, Object> searchListAndPaging = orderService.selectSearchRefundList(searchMap, page);
+        model.addAttribute("paging", searchListAndPaging.get("paging"));
+        model.addAttribute("searchRefundList", searchListAndPaging.get("searchRefundList"));
+
+
+        return "admin/orderManagement/refund";
+    }
 
 }

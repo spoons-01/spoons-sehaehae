@@ -250,22 +250,6 @@ td{
     border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-/*
-#modalContent {
-    padding-left: 10px;
-    display: inline;
-    color: #020202;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    background-color: white;
-    position: absolute;
-    width: 100%;
-    height: 100px;
-
-
-
-}
-
- */
 
 #modalContent {
     padding-left: 10px;
@@ -366,4 +350,50 @@ td{
 
 .content2 th{
     width: 100px;
+    /*border-right : none;*/
+}
+
+/*----------------------환불 버튼---------------------*/
+.refudn-button{
+    display: inline-block;
+}
+
+.refund-subButton{
+    margin: 0px 5px 5px 0px;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+/*------------------------ 환불 거절 모달창----------------------*/
+#refund-modal{
+    width: 1000px;
+    height: 500px;
+    position: absolute;
+    left: 200px;
+    top: 80px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgb(253, 252, 252);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(1.5px);
+    -webkit-backdrop-filter: blur(1.5px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.refund-modal-title{
+    margin-top: 10px;
+}
+
+.refund-reason {
+    margin: 10px;
+    display: flex;
+    color: #020202;
+    border: 1px solid rgba(17, 17, 17, 0.18);
+    background-color: rgba(17, 17, 17, 0.18);
+    position: absolute;
+    width: 100%;
+    height: 100px;
+    align-items: center;
+    justify-content: space-between;
 }
