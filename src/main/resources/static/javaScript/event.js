@@ -44,11 +44,21 @@ window.onload = function () {
     categoryList2Items.forEach(function(item) {
         item.addEventListener("click", handleClick);
     });
-
-    /* 후기작성 별점 평가 */
-
-
 }
+/* 별점 로드 */
+window.addEventListener("load", function() {
+    const rating = document.querySelectorAll(".ratingView");
+
+    rating.forEach(function (item){
+        const targetScore = item.dataset.rate;
+        console.log(targetScore);
+        item.querySelectorAll('svg').forEach(function (star, index) {
+            if (index < targetScore) {
+                star.style.color = '#FFFF00';
+            }
+        });
+    });
+});
 
 
 
