@@ -7,7 +7,7 @@
     <link href="/css/adminManagement.css" rel="stylesheet" type="text/css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-    <script src="/js/admin/admin.js"></script>
+    <script src="/js/admin/admin.js" type="text/javascript"></script>
 
     <title>Document</title>
 </head>
@@ -58,6 +58,23 @@
                 </tr>
 
                 <tr>
+                    <th>기간</th>
+                    <td>
+                        <input type="date" id="start-date" name="startDate" th:value="${paging.startDate}">
+                        ~
+                        <input type="date" id="end-date" name="endDate" th:value="${paging.endDate}">
+                        <span class="but-group">
+                    <input type="button" onclick="searchDate('오늘');" class="sub-btn" value="오늘">
+                    <input type="button" onclick="searchDate('1주');" class="sub-btn" value="1주">
+                    <input type="button" onclick="searchDate('15일');" class="sub-btn" value="15일">
+                    <input type="button" onclick="searchDate('1개월');" class="sub-btn" value="1개월">
+                    <input type="button" onclick="searchDate('3개월');" class="sub-btn" value="3개월">
+                    <input type="button" onclick="searchDate('6개월');" class="sub-btn" value="6개월">
+                </span>
+                    </td>
+                </tr>
+
+                <tr>
                     <td colspan="2" class="search-bottom">
                         <button type="submit" id="searchButton">검색</button>
                         <button type="button" id="resetButton" >초기화</button>
@@ -76,7 +93,7 @@
             </tr>
             <tr>
                 <th><input id="selectAll" type="checkbox" name="checkStatus" value="checkStatus" onclick='selectAll(this)'></th>
-                <th th:style="'width: 80px;'">주문번호</th>
+                <th th:style="'width: 110px;'">주문번호</th>
                 <th>주문일자</th>
                 <th>총결제금액</th>
                 <th>주문자</th>
@@ -84,7 +101,7 @@
                 <th>우편번호</th>
                 <th>주문상태</th>
             </tr>
-            <tr th:each="search : ${ searchPaymentList }">
+            <tr th:each="search : ${ searchLaundryList }">
                 <td><input class="checkStatus" type="checkbox" name="checkStatus" value="checkStatus" th:data-order-id="${search.code}"></td>
                 <td th:text="${ search.code }" th:onclick="|location.href='/orderManagement/orderDetail?code=${search.code}'|" th:style="'border: 1px solid #000000FF; color: blue;'"></td>
                 <td th:text="${ #dates.format(search.orderDate, 'yyy-MM-dd') }" th:style="'border: 1px solid #000000FF;'"></td>
@@ -104,60 +121,60 @@
                 th:if="${ paging.searchCondition != null and paging.searchValue != null }">
             <!-- 맨 앞으로 이동 -->
             <button
-                    th:onclick="'location.href=\'/orderManagement/complete-payment?page=1&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">&lt;&lt;</button>
+                    th:onclick="'location.href=\'/orderManagement/laundry-complete?page=1&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">&lt;&lt;</button>
 
             <!-- 이전 페이지로 이동 -->
             <button
-                    th:onclick="'location.href=\'/orderManagement/complete-payment?page=' + @{${paging.page - 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                    th:onclick="'location.href=\'/orderManagement/laundry-complete?page=' + @{${paging.page - 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
                     th:disabled="${ paging.page <= 1 }">&lt;</button>
 
             <!-- 숫자 버튼 -->
             <th:block
                     th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
                 <button
-                        th:onclick="'location.href=\'/orderManagement/complete-payment?page=' + @{${page}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                        th:onclick="'location.href=\'/orderManagement/laundry-complete?page=' + @{${page}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
                         th:text="${ page }" th:disabled="${ paging.page eq page }">
                 </button>
             </th:block>
 
             <!-- 다음 페이지로 이동 -->
             <button
-                    th:onclick="'location.href=\'/orderManagement/complete-payment?page=' + @{${paging.page + 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                    th:onclick="'location.href=\'/orderManagement/laundry-complete?page=' + @{${paging.page + 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
                     th:disabled="${ paging.page >= paging.maxPage }">></button>
 
             <!-- 맨 끝으로 이동 -->
             <button
-                    th:onclick="'location.href=\'/orderManagement/complete-payment?page=' + @{${paging.maxPage}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">>></button>
+                    th:onclick="'location.href=\'/orderManagement/laundry-complete?page=' + @{${paging.maxPage}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">>></button>
 
         </th:block>
 
         <th:block
                 th:if="${ paging.searchCondition == null ||  paging.searchValue == null }">
             <!-- 맨 앞으로 이동 -->
-            <button th:onclick="'location.href=\'/orderManagement/complete-payment?page=1\''">&lt;&lt;</button>
+            <button th:onclick="'location.href=\'/orderManagement/laundry-complete?page=1\''">&lt;&lt;</button>
 
             <!-- 이전 페이지로 이동 -->
             <button
-                    th:onclick="'location.href=\'/orderManagement/complete-payment?page=' + @{${paging.page - 1}} + '\''"
+                    th:onclick="'location.href=\'/orderManagement/laundry-complete?page=' + @{${paging.page - 1}} + '\''"
                     th:disabled="${ paging.page <= 1 }">&lt;</button>
 
             <!-- 숫자 버튼 -->
             <th:block
                     th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
                 <button
-                        th:onclick="'location.href=\'/orderManagement/complete-payment?page=' + @{${page}} + '\''"
+                        th:onclick="'location.href=\'/orderManagement/laundry-complete?page=' + @{${page}} + '\''"
                         th:text="${ page }" th:disabled="${ paging.page eq page }">
                 </button>
             </th:block>
 
             <!-- 다음 페이지로 이동 -->
             <button
-                    th:onclick="'location.href=\'/orderManagement/complete-payment?page=' + @{${paging.page + 1}} + '\''"
+                    th:onclick="'location.href=\'/orderManagement/laundry-complete?page=' + @{${paging.page + 1}} + '\''"
                     th:disabled="${ paging.page >= paging.maxPage }">></button>
 
             <!-- 맨 끝으로 이동 -->
             <button
-                    th:onclick="'location.href=\'/orderManagement/complete-payment?page=' + @{${paging.maxPage}} + '\''">>></button>
+                    th:onclick="'location.href=\'/orderManagement/laundry-complete?page=' + @{${paging.maxPage}} + '\''">>></button>
         </th:block>
 
     </div>
@@ -170,13 +187,49 @@
         <table class="bottom-table">
             <tr class="bottom-tr">
                 <th class="bottom-th">선택한 주문을</th>
-                <td class="bottom-td"><button type="button" class="bottom-button" onclick="markAsCollected()">수거완료</button></td>
+                <td class="bottom-td"><button type="button" class="bottom-button" onclick="markAsLaundry()">배송준비</button></td>
             </tr>
         </table>
 
     </div>
 
+    <script>
+        function searchDate(range) {
+            var today = new Date();
+            var startDate = new Date();
+            var endDate = new Date();
 
+            if (range == '오늘') {
+                startDate = today;
+                endDate = today;
+            } else if (range == '1주') {
+                startDate.setDate(today.getDate() + 6);
+                endDate.setDate(today.getDate() + 6);
+            } else if (range == '15일') {
+                startDate.setDate(today.getDate() + 14);
+                endDate.setDate(today.getDate() + 14);
+            } else if (range === '1개월') {
+                endDate.setMonth(today.getMonth() + 1);
+                endDate.setDate(1); // 다음 달의 첫 번째 날로 설정
+                startDate = new Date(endDate);
+            } else if (range === '3개월') {
+                endDate.setMonth(today.getMonth() + 3);
+                endDate.setDate(1); // 다음 달의 첫 번째 날로 설정
+                startDate = new Date(endDate);
+            } else if (range === '6개월') {
+                endDate.setMonth(today.getMonth() + 6);
+                endDate.setDate(1); // 다음 달의 첫 번째 날로 설정
+                startDate = new Date(endDate);
+            }
+
+            // input 요소에 날짜 설정
+            document.getElementById('start-date').valueAsDate = startDate;
+            document.getElementById('end-date').valueAsDate = endDate;
+
+        }
+
+
+    </script>
 
 
 </div>

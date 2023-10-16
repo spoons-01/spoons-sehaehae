@@ -1,18 +1,4 @@
-@charset "UTF-8";
-
-@font-face {
-    font-family: 'GangwonState';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/GangwonState.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'NanumSquareNeo-Variable';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
+/* footer -------------------------------------------------------------------------------------------------*/
 
 footer {
     /* width: 1400px; */
@@ -22,11 +8,12 @@ footer {
     margin: 0;
 }
 
-.footer-wrapper{
+.footer-wrapper {
     display: flex;
     justify-content: center;
 }
-.footer1{
+
+.footer1 {
     margin-top: 120px;
     margin-left: 135px;
 }
@@ -43,13 +30,13 @@ footer {
 .footer1 small {
     color: #606060;
     font-size: 16px;
-    font-family: NanumSquareNeo-Variable;
+    font-family: Open Sans;
     font-weight: 400;
     line-height: 24px;
     word-wrap: break-word;
 }
 
-.footer2{
+.footer2 {
     margin-top: 77px;
     margin-left: 150px;
 
@@ -59,9 +46,10 @@ footer {
     margin-bottom: 10px;
     color: #262626;
     font-size: 20px;
-    font-family: NanumSquareNeo-Variable;
+    font-family: Poppins;
     font-weight: 500;
     word-wrap: break-word;
+
 }
 
 .footer2 img {
@@ -70,12 +58,12 @@ footer {
     height: 16px;
 }
 
-.number{
-    margin-top: 0;
-    margin-bottom: 0;
+.number {
+    margin-top: 0px;
+    margin-bottom: 0px;
     color: #262626;
     font-size: 20px;
-    font-family: NanumSquareNeo-Variable;
+    font-family: Poppins;
     font-weight: 500;
     word-wrap: break-word
 }
@@ -83,7 +71,7 @@ footer {
 .number2 {
     color: #262626;
     font-size: 16px;
-    font-family: NanumSquareNeo-Variable;
+    font-family: Poppins;
     font-weight: 300;
     word-wrap: break-word
 }
@@ -91,7 +79,7 @@ footer {
 .text {
     color: #272D2C;
     font-size: 16px;
-    font-family: NanumSquareNeo-Variable;
+    font-family: Open Sans;
     font-weight: 400;
     word-wrap: break-word;
     line-height: 1.5;
@@ -99,6 +87,7 @@ footer {
     opacity: 0.60;
 
 }
+
 .kakao {
     width: 216px;
     height: 38px;
@@ -108,7 +97,7 @@ footer {
     margin-top: 25px;
     margin-bottom: 90px;
     text-align: center;
-    padding : 5px 0;
+    padding: 5px 0;
 
 }
 
@@ -116,8 +105,8 @@ footer {
 .kakao a {
     opacity: 0.60;
     color: #272D2C;
-    font-size: 13px;
-    font-family: NanumSquareNeo-Variable;
+    font-size: 16px;
+    font-family: Open Sans;
     font-weight: 400;
     word-wrap: break-word;
 }
@@ -133,7 +122,7 @@ footer {
 .footer-nav a {
     color: #636363;
     font-size: 16px;
-    font-family: NanumSquareNeo-Variable;
+    font-family: Poppins;
     font-weight: 500;
     word-wrap: break-word;
 }
@@ -141,7 +130,7 @@ footer {
 .point {
     color: #262626;
     font-size: 16px;
-    font-family: NanumSquareNeo-Variable;
+    font-family: Poppins;
     font-weight: 500;
     word-wrap: break-word;
 
@@ -156,7 +145,7 @@ footer {
 .contact-item1 h4 {
     color: #262626;
     font-size: 20px;
-    font-family: NanumSquareNeo-Variable;
+    font-family: Poppins;
     margin-left: 10px;
     /* font-weight: 500;
     word-wrap: break-word; */
@@ -173,3 +162,4 @@ footer {
     width: 35px;
     height: 35px;
 }
+

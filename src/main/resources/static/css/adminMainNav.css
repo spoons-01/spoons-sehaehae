@@ -84,7 +84,7 @@ ul{padding: 0;}
 
 
 .menu>li:hover .member {
-    height: 153px;
+    height: 102px;
     transition-duration: 1s;
 }
 .menu>li:hover .product {
@@ -96,7 +96,7 @@ ul{padding: 0;}
     transition-duration: 1s;
 }
 .menu>li:hover .cancell {
-    height: 102px;
+    height: 51px;
     transition-duration: 1s;
 }
 .menu>li:hover .calculate {
@@ -141,6 +141,7 @@ header{
     vertical-align: middle;
     justify-content: space-between;
 }
+
 
 
 

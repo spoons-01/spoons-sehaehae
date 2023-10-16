@@ -103,7 +103,7 @@
         </form>
     </div>
 </div>
-</body>
+
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
@@ -130,28 +130,6 @@
     }
 </script>
 
-
-<!--<script>-->
-<!--    document.addEventListener('DOMContentLoaded', function () {-->
-<!--    });-->
-
-<!--    document.querySelector('form').addEventListener('submit', function (event) {-->
-<!--        event.preventDefault();-->
-
-<!--        $.ajax({-->
-<!--            url: this.action,-->
-<!--            type: this.method,-->
-<!--            data: $(this).serialize(),-->
-<!--            success: function (response) {-->
-<!--                alert('회원 정보 수정에 성공하였습니다.');-->
-<!--                return "redirect:/user/member/update";-->
-<!--            },-->
-<!--            error: function () {-->
-<!--                alert('회원 정보 수정에 실패하였습니다.');-->
-<!--            }-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
 
 <!-- 이미지 전송 -->
 <script>
@@ -186,10 +164,6 @@
         }
     })();
 </script>
-
-
-<!-- 푸터 -->
-<div th:replace="user/common/footer.html"></div>
-
+</body>
 
 </html>

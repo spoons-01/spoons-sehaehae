@@ -1,8 +1,10 @@
 package com.spoons.sehaehae.board.service;
 
 import com.spoons.sehaehae.board.dao.BoardMapper;
+import com.spoons.sehaehae.board.dto.AttachmentDTO;
 import com.spoons.sehaehae.board.dto.NoticeDTO;
 import com.spoons.sehaehae.board.dto.QnaDTO;
+import com.spoons.sehaehae.board.dto.ReviewDTO;
 import com.spoons.sehaehae.common.paging.Pagenation;
 import com.spoons.sehaehae.common.paging.SelectCriteria;
 import lombok.Setter;
@@ -120,6 +122,46 @@ public class BoardService {
         boardMapper.updateQna(modifyQna);
     }
 
+    /* 후기 게시판 */
 
 
+    public void registReview(ReviewDTO review, AttachmentDTO attachment) {
+
+        boardMapper.insertReview(review);
+
+       // 삽입한 후기글의 reviewNo를 가져옴
+        Long reviewNo = review.getReviewNo();
+
+        attachment.setReviewNo(reviewNo);
+        boardMapper.insertAttachment(attachment);
+
+    }
+
+    public Map<String, Object> selectReviewList(Map<String, String> searchMap, int page) {
+
+        /* 1. 전체 게시글 수 확인 ( 검색어가 있는 경우 포함) => 페이징 처리를 위해 */
+        int totalCount = boardMapper.reviewTotalCount(searchMap);
+
+        /* 2. 페이징 처리와 연관 된 값을 계산하여 SelectCriteris 타입의 객체에 담는다. */
+        int limit = 8;         // 한 페이지에 보여줄 게시물의 수
+        int buttonAmount = 5;   // 한 번에 보여질 페이징 버튼의 수
+        SelectCriteria selectCriteria = Pagenation.getSelectCriteria(page, totalCount, limit, buttonAmount, searchMap);
+
+        /* 3. 요청 페이지와 검색 기준에 맞는 게시글을 조회해온다. */
+        List<ReviewDTO> reviewList = boardMapper.selectReviewList(selectCriteria);
+
+        Map<String, Object> reviewListAndPaging = new HashMap<>();
+        reviewListAndPaging.put("paging", selectCriteria);
+        reviewListAndPaging.put("reviewList", reviewList);
+
+        return reviewListAndPaging;
+    }
+
+    public ReviewDTO selectReviewView(Long no) {
+
+        boardMapper.incrementReviewCount(no);
+
+        return boardMapper.selectReviewView(no);
+
+    }
 }

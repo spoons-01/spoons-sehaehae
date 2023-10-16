@@ -29,6 +29,7 @@ public class OrderDTO {
     private Integer useCoupon;
     private String collectionDate;
     private String deliveryDate;
+    private Date progressDate;
     private String image;
     private List<OrderProductDTO> list;
 }

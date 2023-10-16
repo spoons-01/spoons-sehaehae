@@ -41,19 +41,24 @@
 </div>
 
 <form id="registForm" action="/user/member/regist" method="post">
-    <input type="text" id="emailAuthKey" name="emailAuthKey" value="" autocomplete="off"/>
+    <input type="text" id="emailAuthKey" name="emailAuthKey" value="" autocomplete="off" style="display: none;">
     <!-- 이메일 -->
     <div class="wrapper2">
         <h3>이메일</h3>
     </div>
-    <div class="joinbox2">
+    <div class="email-joinbox">
         <input type="email" id="memberId" name="memberId" class="input" placeholder="이메일을 입력해주세요." required>
         <input type="button" class="btn" value="중복 확인" id="duplicationCheck">
     </div>
 
+    <div class="email-joinbox">
+        <div class="btn-wrapper2">
+            <button type="button" class="btn2" id="btnEmailAuthReg">이메일 인증하기</button>
+        </div>
+    </div>
+
     <div class="joinbox2">
         <input type="text" id="emailAuthVal" name="emailAuthVal" class="input" placeholder="이메일 인증을 입력해주세요.">
-        <button type="button" class="btn" id="btnEmailAuthReg">인증 발송</button>
         <button type="button" class="btn" id="btnEmailAuthVal">인증 검증</button>
     </div>
 

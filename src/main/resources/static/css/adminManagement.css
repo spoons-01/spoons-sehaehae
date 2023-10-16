@@ -1,4 +1,6 @@
 
+
+
 /*------------------ breadcrumb ---------------- */
 
 .nav {
@@ -81,6 +83,8 @@ td{
 #search-method{
     height: 30px;
     width: 100px;
+    appearance: auto;
+    border: 1px solid rgba(0, 0, 0, 0.68);
 
 }
 
@@ -88,21 +92,25 @@ td{
     margin-left: 7px;
     height: 30px;
     width: 300px;
+    border: 1px solid rgba(0, 0, 0, 0.68);
 }
 
 #order-status{
     height: 30px;
     width: 100px;
+
 }
 
 #start-date{
     height: 25.8px;
     margin: 0px 3px 0px 0px;
+    border: 1px solid rgba(0, 0, 0, 0.68);
 }
 
 #end-date{
     height: 25.8px;
     margin: 0px 3px 0px 5px;
+    border: 1px solid rgba(0, 0, 0, 0.68);
 }
 
 .but-group{
@@ -111,6 +119,7 @@ td{
 
 .sub-btn{
     padding: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.68);
 
 }
 
@@ -188,7 +197,7 @@ td{
 .bottom-button{
     margin: 0;
     border: 1px solid rgba(0, 0, 0, 0.37);
-    width: 85px;
+    width: 90px;
     padding: 10px 12px 10px 12px;
     border-radius: 5px;
     background-color: rgb(57, 125, 246);
@@ -269,5 +278,11 @@ td{
 }
 
 
-
+#paging button{
+    border: 1px solid rgba(0, 0, 0, 0.68);
+    border-radius: 5px;
+    margin: 2px;
+    padding: 5px 10px 5px 10px;
+    background-color: rgba(0, 0, 0, 0.09);
+}
 
