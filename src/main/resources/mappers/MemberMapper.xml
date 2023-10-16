@@ -62,11 +62,21 @@
         <result property="inputAddress" column="INPUT_ADDRESS"/>
         <result property="InputAddress2" column="INPUT_ADDRESS2"/>
         <result property="orderStatus" column="ORDER_STATUS"/>
-        <result property="cpCode" column="CP_CODE"/>
+        <result property="useCoupon" column="CP_CODE"/>
         <result property="usePoint" column="USE_POINT"/>
         <result property="collectionDate" column="COLLECTION_DATE"/>
         <result property="deliveryDate" column="DELIVERY_DATE"/>
+        <result property="progressDate" column="PROGRESS_DATE"/>
     </resultMap>
+
+    <select id="findMyOrderDetails" parameterType="string" resultMap="orderResultMap">
+        SELECT
+            *
+        FROM TBL_ORDER
+        WHERE 1=1
+          AND ORDER_CODE = #{orderCode}
+    </select>
+
 
     <!-- 내 구매내역 -->
     <resultMap id="myOrderResultMap" type="com.spoons.sehaehae.member.dto.MyOrderDTO">
@@ -143,17 +153,6 @@
         <association property="review" resultMap="myReviewResultMap"/>
     </resultMap>
 
-    <!-- 후기 resultMap -->
-<!--    <resultMap id="myrefundResultMap" type="com.spoons.sehaehae.admin.dto.RefundDTO">-->
-<!--        <id property="refundCode" column="REFUND_CODE"/>-->
-<!--        <association property="order" javaType="com.spoons.sehaehae.admin.dto.OrderDTO">-->
-<!--            <result property="code" column="ORDER_CODE"/>-->
-<!--            <result property="usePoint" column="USE_POINT"/>-->
-<!--            <result property="useCoupon" column="CP_CODE"/>-->
-<!--        </association>-->
-<!--        <result property="refundReceiptDate" column="REFUND_RECIPT_DATE"/>-->
-<!--        <result property="processStatus" column="PROCESS_STATUS"/>-->
-<!--    </resultMap>-->
 
 
 
@@ -313,7 +312,6 @@
         WHERE 1=1
           AND MEMBER_NO = #{memberNo}
     </select>
-
 
 
     <!-- 동한님 -->
