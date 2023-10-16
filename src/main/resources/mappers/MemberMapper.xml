@@ -99,33 +99,57 @@
         <result property="cpEdate" column="CP_EDATE"/>
     </resultMap>
 
-    <select id="findMyCoupon" resultMap="myCouponResultMap">
-        SELECT A.ID,
-               B.*,
-               C.CP_NAME,
-               C.CP_RATE,
-               C.CP_EDATE
-        FROM TBL_MEMBER A
-                 LEFT JOIN TBL_CPBOX B ON A.MEMBER_NO = B.MEMBER_NO
-                 LEFT JOIN TBL_CP C ON B.CP_CODE = C.CP_CODE
+    <!-- 포인트 조회 -->
+    <resultMap id="myPointResultMap" type="com.spoons.sehaehae.member.dto.MyPointDTO">
+        <id property="memberNo" column="MEMBER_NO"/>
+        <result property="ptCode" column="PT_CODE"/>
+        <result property="point" column="POINT"/>
+        <result property="orderCode" column="ORDER_CODE"/>
+        <result property="reviewNo" column="REVIEW_NO"/>
+    </resultMap>
+
+    <!-- 리뷰 조회 -->
+    <!-- 후기 게시판 -->
+    <resultMap id="myReviewResultMap" type="com.spoons.sehaehae.board.dto.ReviewDTO">
+        <id property="reviewNo" column="REVIEW_NO"/>
+        <result property="title" column="REVIEW_TITLE"/>
+        <result property="body" column="REVIEW_BODY"/>
+        <result property="count" column="REVIEW_COUNT"/>
+        <result property="createdDate" column="REVIEW_CREATED_DATE"/>
+        <result property="modifiedDate" column="REVIEW_MODIFIED_DATE"/>
+        <result property="memberNo" column="MEMBER_NO"/>
+        <result property="status" column="REVIEW_STATUS"/>
+        <result property="deleteDate" column="REVIEW_DELETE_DATE"/>
+        <result property="orderCode" column="ORDER_CODE"/>
+        <result property="rating" column="RATING"/>
+
+        <association property="writer" resultMap="memberResultMap"/>
+        <association property="attachment" resultMap="attachmentResultMap"/>
+        <association property="order" resultMap="myOrderResultMap"/>
+    </resultMap>
+
+    <!--첨부파일 / 첨부 안할거면 빼기 -->
+    <resultMap id="attachmentResultMap" type="com.spoons.sehaehae.board.dto.AttachmentDTO">
+        <id property="no" column="ATTACHED_FILE_NO"/>
+        <result property="name" column="ATTACHED_FILE_NAME"/>
+        <result property="route" column="ATTACHED_FILE_ROUTE"/>
+        <result property="savedName" column="ATTACHED_FILE_SAVE_NAME"/>
+        <result property="extension" column="ATTACHED_FILE_EXTENSION"/>
+        <result property="size" column="ATTACHED_FILE_SIZE"/>
+        <result property="ex" column="ATTACHED_FILE_EX"/>
+        <result property="reviewNo" column="REVIEW_NO"/>
+        <result property="thumbnail" column="ATTACHED_FILE_THUMBNAIL"/>
+
+        <association property="review" resultMap="myReviewResultMap"/>
+    </resultMap>
+
+    <select id="findMyReview" resultMap="myReviewResultMap">
+        SELECT
+            REVIEW_TITLE
+        FROM TBL_REVIEW
         WHERE 1=1
-          AND A.MEMBER_NO = #{ memberNo }
+        AND MEMBER_NO = #{memberNo}
     </select>
-
-
-
-    <!--	<select id="findMyCoupon" resultMap="myCouponResultMap">-->
-    <!--		SELECT-->
-    <!--			A.*,-->
-    <!--			B.CP_NAME,-->
-    <!--			C.ID-->
-    <!--		FROM TBL_CPBOX AS A-->
-    <!--				 LEFT JOIN TBL_CP AS B ON A.CP_CODE = B.CP_CODE-->
-    <!--				 LEFT JOIN TBL_MEMBER AS C ON A.MEMBER_NO = C.MEMBER_NO-->
-    <!--		WHERE MEMBER_STATUS = 'Y'-->
-    <!--		  AND C.ID = #{memberId}-->
-    <!--	</select>-->
-
 
     <!--
         <resultMap type="com.spoons.sehaehae.member.dto.ProfileAttachmentDTO" id="profileAttachmentResultMap">
@@ -245,6 +269,38 @@
           AND ID = #{ memberId }
     </select>
 
+    <select id="findMyOrder" resultMap="myOrderResultMap">
+        SELECT B.*
+        FROM TBL_MEMBER A
+                 LEFT JOIN TBL_ORDER B ON (A.MEMBER_NO = B.MEMBER_NO)
+        WHERE MEMBER_STATUS = 'Y'
+          AND A.ID = #{ memberId }
+    </select>
+
+    <select id="findMyCoupon" resultMap="myCouponResultMap">
+        SELECT A.ID,
+               B.*,
+               C.CP_NAME,
+               C.CP_RATE,
+               C.CP_EDATE
+        FROM TBL_MEMBER A
+                 LEFT JOIN TBL_CPBOX B ON A.MEMBER_NO = B.MEMBER_NO
+                 LEFT JOIN TBL_CP C ON B.CP_CODE = C.CP_CODE
+        WHERE 1=1
+          AND A.MEMBER_NO = #{ memberNo }
+    </select>
+
+
+    <select id="findMyPoint" resultType="int">
+        SELECT SUM(POINT) AS TOTAL_POINT
+        FROM TBL_MEMBER A
+                 LEFT JOIN TBL_PT B ON A.MEMBER_NO = B.MEMBER_NO
+        WHERE B.MEMBER_NO = #{memberNo}
+        GROUP BY B.MEMBER_NO
+    </select>
+
+
+    <!-- 동한님 -->
     <select id="selectMember">
         SELECT MEMBER_NO
              , ID
@@ -345,25 +401,6 @@
 	</select>
 
 
-    <select id="findMyOrder" resultMap="myOrderResultMap">
-        SELECT B.*
-        FROM TBL_MEMBER A
-                 LEFT JOIN TBL_ORDER B ON (A.MEMBER_NO = B.MEMBER_NO)
-        WHERE MEMBER_STATUS = 'Y'
-          AND A.ID = #{ memberId }
-    </select>
-
-
-	<select id="findMyCoupon" resultMap="myCouponResultMap">
-		SELECT
-			A.*,
-			B.CP_NAME
-			C.ID
-		FROM TBL_CPBOX A
-				 LEFT JOIN TBL_CP B ON A.CP_CODE = B.CP_CODE
-				 LEFT JOIN TBL_MEMBER C ON A.MEMBER_NO = C.MEMBER_NO
-		  AND A.MEMBER_NO = #{ memberNo };
-	</select>
 
 </mapper>
 

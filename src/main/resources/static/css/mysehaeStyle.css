@@ -174,23 +174,18 @@ h3 {
     box-shadow: 3px 3px 10px 1px rgba(135, 147, 165, 0.1);
 }
 
-/* 주문 상태 */
 .second-bar-child {
-    display: grid;
-    grid-template-columns: repeat(11, 1fr);
-    justify-content: center;
-    padding: 10px;
+    display: flex;
     align-items: center;
-    grid-gap: 30px
 }
+
 
 .order-status {
     text-align: center;
 }
 
 .ineq {
-    align-items: center;
-    margin-left: 18px;
+    margin: 0 18px;
 }
 
 .num {

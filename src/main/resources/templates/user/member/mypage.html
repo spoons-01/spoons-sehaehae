@@ -40,7 +40,12 @@
         <div class="left-box">
             <div class="photo">
                 <!-- 자리잡기용 임시 사진 -->
-                <img class="profile" src="/images/smile.png">
+                <th:block th:if="${ #authentication.principal.profilePhoto == null}">
+                    <img class="profile" src="/images/smile.png" alt="MYPAGE">
+                </th:block>
+                <th:block th:if="${ #authentication.principal.profilePhoto != null}">
+                    <img class="profile" th:src="${#authentication.principal.profilePhoto}" alt="MYPAGE">
+                </th:block>
                 <p class="nickname" th:text="${ #authentication.principal.nickname }"></p>
                 <div class="button-wrapper">
                     <a href="/user/member/update" class="button">설정</a>
@@ -73,8 +78,8 @@
                 <h3>내가 쓴 후기</h3>
                 <div class="dot-box">
                     <!-- 기본 멘트 -->
-                    <div class="dot-box-content">
-                        <p> + 첫 번째 후기를 올려보세요!</p>
+                    <div class="dot-box-content" th:each="myReview : ${myReviews}">
+                        <p th:text="${myReview.title}"></p>
                     </div>
                 </div>
             </div>

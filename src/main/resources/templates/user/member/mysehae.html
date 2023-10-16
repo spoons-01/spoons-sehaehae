@@ -52,7 +52,7 @@
                 <img class="my-point" src="/images/my-point.png">
                 <div class="first-text">
                     <p>포인트</p>
-                    <p class="first-blue">1</p>
+                    <p class="first-blue" th:text="${myPoint}"></p>
                 </div>
             </div>
             <div class="vertical-line"></div>
@@ -71,49 +71,18 @@
     <div class="box-wrapper">
         <!-- 구매 진행 -->
         <div class="second-bar">
-            <div class="second-bar-child">
+            <div class="second-bar-child" th:each="status : ${orderStatusCounts}">
                 <div class="order-status">
-                    <p>결제완료</p>
-                    <p class="num">0</p>
+                    <p th:text="${status.key}"></p>
+                    <p class="num" th:text="${status.value}"></p>
                 </div>
                 <div class="ineq">
                     <img src="/images/ineq.png">
-                </div>
-                <div class="order-status">
-                    <p>수거완료</p>
-                    <p class="num">0</p>
-                </div>
-                <div class="ineq">
-                    <img src="/images/ineq.png">
-                </div>
-                <div class="order-status">
-                    <p>세탁완료</p>
-                    <p class="num">0</p>
-                </div>
-                <div class="ineq">
-                    <img src="/images/ineq.png">
-                </div>
-                <div class="order-status">
-                    <p>배송준비</p>
-                    <p class="num">0</p>
-                </div>
-                <div class="ineq">
-                    <img src="/images/ineq.png">
-                </div>
-                <div class="order-status">
-                    <p>배송중</p>
-                    <p class="num">0</p>
-                </div>
-                <div class="ineq">
-                    <img src="/images/ineq.png">
-                </div>
-                <div class="order-status">
-                    <p>구매확정</p>
-                    <p class="num">0</p>
                 </div>
             </div>
         </div>
     </div>
+
 
     <div class="box-wrapper">
         <!-- 주문 목록  -->
