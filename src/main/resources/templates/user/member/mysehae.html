@@ -14,6 +14,9 @@
     <link href="https://unpkg.com/ress/dist/ress.min.css" rel="styles heet" type="text/css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- 인선!!!! 모달창 js -->
+    <script src="/javaScript/modalEvent.js" type="text/javascript"></script>
+    <script src="/javaScript/event.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -133,7 +136,7 @@
                         <div class="button-wrapper">
                             <a th:if="${order.orderStatus == '구매확정'}" href="/user/member/refund" class="button">환불하기</a>
                             <a th:unless="${order.orderStatus == '구매확정'}" href="#" class="button disabled">환불하기</a>
-                            <a th:if="${order.orderStatus == '구매확정'}" id="btn-modal" class="button2">후기쓰기</a>
+                            <a th:if="${order.orderStatus == '구매확정'}" class="button2 review-button" th:attr="data-order-code=${order.orderCode}">후기쓰기</a>
                             <a th:unless="${order.orderStatus == '구매확정'}" href="#" class="button2 disabled">후기쓰기</a>
 
                         </div>
@@ -151,8 +154,11 @@
         <div class="reviewModalTitle">
             <h3 class="reviewTitle">후기 쓰기</h3>
         </div>
-        <form id="reviewForm" action="/user/board/regist" method="post" enctype="multipart/form-data" >
+        <form id="reviewForm" action="/user/member/mysehae" method="post" enctype="multipart/form-data" >
             <div class="content">
+                <input type="hidden" name="orderCode">
+                <div class="modal-content">
+                </div>
                 <div class="rating">
                     <span class="text-bold">별점을 선택해주세요</span>
                     <input type="radio" name="rating" value="5" id="rate1"><label
@@ -169,7 +175,7 @@
             </div>
             <div>
                 <h4 class="reviewModal">사진 첨부</h4>
-                <p>사진을 첨부해주세요.(최대 1장)</p>
+                <p class="reviewModal-p">사진을 첨부해주세요.(최대 1장)</p>
                 <div class="reviewBox">
                     <div class="image-area"><img src="/images/camera.png"><p>사진 첨부하기</p></div>
                 </div>
@@ -201,38 +207,6 @@
 </div>
 </div>
 
-<!-- 인선 !!! 모달창 스크립트 -->
-<script>
-    (function (){
-        /* div image area 요소 */
-        const imageArea = document.querySelectorAll(".image-area");
-        /* input type=file 요소 */
-        const fileElements = document.querySelectorAll("[type=file]");
-        /* div 클릭 시 open 함수 동작하여 input type=file 클릭 */
-        imageArea.forEach(item => item.addEventListener('click', open));
-        /* 파일 첨부가 발생하는 상황에 preview 함수 동작 */
-        fileElements.forEach(item => item.addEventListener('change', preview));
-
-        function open() {
-            const index = Array.from(imageArea).indexOf(this);
-            fileElements[index].click();
-        }
-
-        function preview() {
-            const index = Array.from(fileElements).indexOf(this);
-            /* 첨부 된 파일이 존재한다면 */
-            if(this.files && this.files[0]) {
-                const reader = new FileReader();
-                reader.readAsDataURL(this.files[0]);
-                /* 파일 로드 후 동작하는 이벤트 설정 */
-                reader.onload = function () {
-                    console.log(reader.result);
-                    imageArea[index].innerHTML = `<img src='${reader.result}' style='width:50px;height:50px'>`;
-                }
-            }
-        }
-
-    })();
-</script>
+<div th:replace="/user/common/footer.html"></div>
 </body>
 </html>

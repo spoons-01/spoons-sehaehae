@@ -65,6 +65,4 @@ public interface MemberMapper {
 
     int getFifth();
 
-
-
 }

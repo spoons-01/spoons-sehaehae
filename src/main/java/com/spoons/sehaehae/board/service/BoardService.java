@@ -124,7 +124,6 @@ public class BoardService {
 
     /* 후기 게시판 */
 
-
     public void registReview(ReviewDTO review, AttachmentDTO attachment) {
 
         boardMapper.insertReview(review);
@@ -133,6 +132,7 @@ public class BoardService {
         Long reviewNo = review.getReviewNo();
 
         attachment.setReviewNo(reviewNo);
+
         boardMapper.insertAttachment(attachment);
 
     }
@@ -163,5 +163,9 @@ public class BoardService {
 
         return boardMapper.selectReviewView(no);
 
+    }
+
+    public void deleteReview(Integer id) {
+        boardMapper.deleteReview(id);
     }
 }

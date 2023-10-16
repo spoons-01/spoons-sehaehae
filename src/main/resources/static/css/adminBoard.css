@@ -164,6 +164,8 @@
 .detail-date p{
     margin-top: 20px;
     margin-bottom: 20px;
+    font-family: NanumSquareNeo-Variable;
+
 }
 
 .detail-body {
@@ -310,4 +312,32 @@
     appearance: auto;
     border: 1px solid black;
     border-radius: 5px;
+}
+
+/* 후기게시판 디테일 */
+
+ .reviewDNo {
+     display: flex;
+     align-items: center; /* No.과 숫자를 세로 중앙 정렬 */
+     justify-content: center;
+     margin-right: 160px;
+     margin-bottom: 20px;
+     font-family: NanumSquareNeo-Variable;
+ }
+
+.reviewDNo p[name="reviewNo"] {
+    margin-left: 5px; /* 원하는 간격으로 조절 */
+}
+
+.reviewDee {
+    display: flex;
+    flex-direction: row; /* 요소를 가로로 나열 */
+    align-items: center; /* 요소들을 수직 중앙 정렬 */
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.reviewDee td {
+    margin-right: 20px; /* 요소들 사이의 간격 조절 */
+    font-family: NanumSquareNeo-Variable;
 }

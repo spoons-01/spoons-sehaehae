@@ -135,7 +135,7 @@
 
         <association property="writer" resultMap="memberResultMap"/>
         <association property="attachment" resultMap="attachmentResultMap"/>
-        <association property="order" resultMap="myOrderResultMap"/>
+        <association property="myOrders" resultMap="myOrderResultMap"/>
     </resultMap>
 
     <!--첨부파일 / 첨부 안할거면 빼기 -->
