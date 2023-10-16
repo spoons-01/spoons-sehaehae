@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/userBoard.css" rel="stylesheet" type="text/css">
     <link rel="icon" href="/images/favicon.ico">
-<!--    <script src="/javaScript/event.js" type="text/javascript"></script>-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/javaScript/event.js" type="text/javascript"></script>
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js"></script>
     <title>게시판</title>
 </head>
@@ -15,7 +14,7 @@
 
     <div th:replace="/user/common/header.html"></div>
 
-<a href="regist">후기작성인가?</a>
+<!--<a href="regist">후기작성인가?</a>-->
     <div>
     <div class="notice-name">
         <h3>후기 게시판</h3>
@@ -155,50 +154,17 @@
     <div th:replace="/user/common/footer.html"></div>
 
 <script>
-    $(function (){
-        var rating = $('.ratingView');
-
-        rating.each(function (){
-           var targetScore = $(this).attr('data-rate');
-           console.log(targetScore);
-           $(this).find('svg:nth-child(-n+' + targetScore +')').css({color:'#FFFF00'});
-        });
-    });
-
-    // fetch('/')
-    // .then(response => response.json())
-    // .then(data => {
-    // const rating = data.rating;
+    // $(window).on('load', function() {
+    //     var rating = $('.ratingView');
     //
-    // var stars = '';
-    //
-    // switch (rating) {
-    // case 1:
-    // stars = '★☆☆☆☆';
-    // break;
-    // case 2:
-    // stars = '★★☆☆☆';
-    // break;
-    // case 3:
-    // stars = '★★★☆☆';
-    // break;
-    // case 4:
-    // stars = '★★★★☆';
-    // break;
-    // case 5:
-    // stars = '★★★★★';
-    // break;
-    // default:
-    // stars = '☆☆☆☆☆';
-    // }})
-    // .catch(error => {
-    // console.error('데이터를 가져오는 중 오류 발생: ', error);
+    //     rating.each(function (){
+    //         var targetScore = $(this).attr('data-rate');
+    //         console.log(targetScore);
+    //         $(this).find('svg:nth-child(-n+' + targetScore +')').css({color:'#FFFF00'});
+    //     });
     // });
 
 
-
-    // 결과를 웹 페이지에 표시
-    // document.getElementById('starRating').textContent = stars;
 
     // document.addEventListener("DOMContentLoaded", function () {
     //     // HTML 페이지가 로드될 때 실행
