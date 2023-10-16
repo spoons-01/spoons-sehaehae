@@ -74,7 +74,7 @@ h3 {
 
 .couponwrapper {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(3, 1fr);
     margin: 60px auto;
 }
 
@@ -125,9 +125,19 @@ h3 {
     color: #b9b9b9;
 }
 
+.percent {
+    display: flex;
+}
+
 .blue {
     color: #4B93FF;
     font-size: 40px;
+    font-weight: bold;
+}
+
+.blue2 {
+    color: #4B93FF;
+    font-size: 35px;
     font-weight: bold;
 }
 

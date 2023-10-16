@@ -1,5 +1,6 @@
 package com.spoons.sehaehae.member.controller;
 
+import com.spoons.sehaehae.board.dto.ReviewDTO;
 import com.spoons.sehaehae.common.exception.member.MemberModifyException;
 import com.spoons.sehaehae.common.exception.member.MemberRegistException;
 import com.spoons.sehaehae.common.util.EmailUtil;
@@ -31,9 +32,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Controller
@@ -58,6 +57,63 @@ public class MemberController {
         this.couponRepository = couponRepository;
     }
 
+    @GetMapping("/main/main")
+    public void mainPage() {
+    }
+
+    @GetMapping("member/login")
+    public void login() {
+    }
+
+    @PostMapping("/member/loginfail")
+    public String loginFailed(RedirectAttributes rttr) {
+        rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("error.login"));
+        return "redirect:/user/member/login";
+    }
+
+    @GetMapping("/member/regist")
+    public void registPage() {
+    }
+
+    @PostMapping("/member/idDupCheck")
+    public ResponseEntity<String> checkDuplication(@RequestBody MemberDTO member) {
+
+        log.info("Request Check ID : {}", member.getMemberId());
+
+        String result = "사용 가능한 아이디입니다.";
+
+        if (memberService.selectMemberById(member.getMemberId())) {
+            result = "중복된 아이디가 존재합니다.";
+        }
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/member/regist")
+    public String registMember(MemberDTO member,
+                               RedirectAttributes rttr) throws MemberRegistException {
+
+        member.setMemberPwd(passwordEncoder.encode(member.getPassword()));
+
+        log.info("Request regist member : {}", member);
+
+        memberService.registMember(member);
+
+        rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("member.regist"));
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/member/mypage")
+    public String myPage(Model model, Principal principal) {
+        String currentUsername = principal.getName();
+        MemberDTO memberDTO = memberService.findByMemberId(currentUsername);
+        int memberNo = memberDTO.getMemberNo();
+        List<ReviewDTO> myReviews = memberService.findMyReview(memberNo);
+        model.addAttribute("myReviews", myReviews);
+
+        return "/user/member/mypage";
+    }
+
     /* 나의 세해 이동 */
     @GetMapping("/member/mysehae")
     public String mySehae(Model model, Principal principal) {
@@ -74,12 +130,34 @@ public class MemberController {
         int couponCount = couponRepository.countCouponsByMemberNo(memberNo);
         // 3. 내 주문 목록을 불러온다
         List<MyOrderDTO> myOrders = memberService.findMyOrder(currentUsername);
+        // 4. 내 포인트를 불러온다.
+        int myPoint = memberService.findMyPoint(memberNo);
+        // 5. 주문 상태별 개수를 저장할 맵 초기화
+        // 5-2. 주문 상태 배열에 넣기
+        String[] orderedOrderStatuses = {"결제완료", "수거완료", "세탁완료", "배송준비", "배송중", "구매확정"};
+        List<MyOrderDTO> myOrderList = memberService.findMyOrder(currentUsername);
+        // 5-3. 주문 상태별 개수를 저장할 맵 초기화
+        Map<String, Integer> orderStatusCounts = new LinkedHashMap<>();  // 순서가 중요하므로 LinkedHashMap 사용
+        // 5-4. 정렬된 주문 상태 배열을 기반으로 초기화
+        for (String status : orderedOrderStatuses) {
+            orderStatusCounts.put(status, 0);
+        }
+        // 5-5. 주문 목록을 순회하면서 주문 상태 개수 계산
+        for (MyOrderDTO order : myOrderList) {
+            String orderStatus = order.getOrderStatus();
+            orderStatusCounts.put(orderStatus, orderStatusCounts.get(orderStatus) + 1);
+        }
+
+        /* 1 */
+        model.addAttribute("membershipName", membershipName);
+        /* 2 */
+        model.addAttribute("couponCount", couponCount);
+        /* 3 */
         model.addAttribute("myOrders", myOrders);
-
-
-        /* 1 */ model.addAttribute("membershipName", membershipName);
-        /* 2 */ model.addAttribute("couponCount", couponCount);
-        /* 3 */ model.addAttribute("myOrders", myOrders);
+        /* 4 */
+        model.addAttribute("myPoint", myPoint);
+        /* 5 */
+        model.addAttribute("orderStatusCounts", orderStatusCounts);
         return "/user/member/mysehae";
     }
 
@@ -92,24 +170,8 @@ public class MemberController {
                 }
             }
         }
-        return "N/A"; // 값이 로드되지 않았을 때, 기본값 설정
+        return "N/A"; // 기본값
     }
-
-    /* 내 쿠폰 목록 조회*/
-//    @GetMapping("/member/myCoupon")
-//    public String myCoupon(Model model, Principal principal) {
-//        // 현재 로그인한 사용자의 아이디 얻기
-//        String currentUserName = principal.getName();
-//        // 현재 사용자의 MemberDTO를 얻어온다
-//        MemberDTO memberDTO = memberService.findByMemberId(currentUserName);
-//        // 현재 로그인한 회원의 memberNo를 얻는다
-//        int memberNo = memberDTO.getMemberNo();
-//
-//        // 내 쿠폰 목록을 불러온다
-//        List<MyCouponDTO> myCoupons = memberService.findMyCoupon(currentUserName);
-//        model.addAttribute("myCoupons", myCoupons);
-//        return "/user/member/myCoupon";
-//    }
 
     @GetMapping("/member/myCoupon")
     public String myCoupon(Model model, Principal principal) {
@@ -128,73 +190,15 @@ public class MemberController {
 
 
     @GetMapping("/member/myOrder")
-    public void myOrder() {}
-
-    /* 메인페이지 이동 */
-    @GetMapping("/main/main")
-    public void mainPage() {
+    public void myOrder() {
     }
-
-    @GetMapping("member/login")
-    public void login() {
-    }
-
-
-    /* 로그인 실패 시 */
-    @PostMapping("/member/loginfail")
-    public String loginFailed(RedirectAttributes rttr) {
-        rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("error.login"));
-        return "redirect:/user/member/login";
-    }
-
-    /* 회원 가입 페이지 이동 */
-    @GetMapping("/member/regist")
-    public void registPage() {
-    }
-
-    /* 아이디 중복 체크 */
-    @PostMapping("/member/idDupCheck")
-    public ResponseEntity<String> checkDuplication(@RequestBody MemberDTO member) {
-
-        log.info("Request Check ID : {}", member.getMemberId());
-
-        String result = "사용 가능한 아이디입니다.";
-
-        if (memberService.selectMemberById(member.getMemberId())) {
-            result = "중복된 아이디가 존재합니다.";
-        }
-
-        return ResponseEntity.ok(result);
-    }
-
-    /* 회원 가입 */
-    @PostMapping("/member/regist")
-    public String registMember(MemberDTO member,
-                               RedirectAttributes rttr) throws MemberRegistException {
-
-        member.setMemberPwd(passwordEncoder.encode(member.getPassword()));
-
-        log.info("Request regist member : {}", member);
-
-        memberService.registMember(member);
-
-        rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("member.regist"));
-
-        return "redirect:/";
-    }
-
-    /* 마이페이지 이동 */
-    @GetMapping("/member/mypage")
-    public void myPage() {
-    }
-
-
-    /* 마이페이지-설정 이동 */
     @GetMapping("/member/update")
-    public void update() {
+    public void update(@AuthenticationPrincipal MemberDTO loginMember) {
+        if (StringUtils.isBlank(loginMember.getProfilePhoto())) {
+            loginMember.setProfilePhoto("/images/smile.png");
+        }
     }
 
-    /* 마이페이지-설정 수정(회원정보 수정) */
     @PostMapping("/member/update")
     public String modifyMember(MemberDTO modifyMember, MultipartFile attachImage,
                                @AuthenticationPrincipal MemberDTO loginMember, RedirectAttributes rttr) throws MemberModifyException {
@@ -204,7 +208,7 @@ public class MemberController {
         log.info("modifyMember request Member : {}", modifyMember);
         log.info("modifyMember attachImage request : {}", attachImage);
 
-        String fileUploadDir = IMAGE_DIR + "original";
+        String fileUploadDir = IMAGE_DIR + "/original";
 
         File dir = new File(fileUploadDir);
 
@@ -215,7 +219,6 @@ public class MemberController {
 
         // 여러 개의 파일을 받을 게 아니라서, DTO와 리스트는 필요 없다.
         //List<ProfileAttachmentDTO> profileAttachmentList = new ArrayList<>();
-
         try {
             if (attachImage.getSize() > 0) {
                 /* 첨부파일이 실제로 존재하는 경우에만 로직 수행 */
@@ -228,7 +231,7 @@ public class MemberController {
                 log.info("savedFileName : {}", savedFileName);
 
                 /* 서버의 설정 디렉토리에 파일 저장하기 */
-                attachImage.transferTo(new File(fileUploadDir + "/" + savedFileName));
+                attachImage.transferTo(new File(IMAGE_DIR + File.separator + savedFileName));
                 modifyMember.setProfilePhoto("/upload/original/" + savedFileName);
             }
         } catch (IOException e) {
@@ -242,7 +245,7 @@ public class MemberController {
         SecurityContextHolder.getContext().
                 setAuthentication(createNewAuthentication(loginMember.getMemberId()));
 
-        rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("member.modify"));
+//        rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("member.modify"));
 
         return "redirect:/user/member/update";
     }

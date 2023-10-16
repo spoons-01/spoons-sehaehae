@@ -6,13 +6,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--    <script type="text/javascript" src="/js/event.js"></script>-->
-    <script type="text/javascript" src="/js/regist.js"></script>
     <title>마이페이지 | 세탁해병대</title>
-    <link href="/css/mypagestyle.css" rel="stylesheet" type="text/css">
     <link rel="icon" href="/static/images/favicon.ico">
     <link href="https://unpkg.com/ress/dist/ress.min.css" rel="styles heet" type="text/css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!--    <script type="text/javascript" src="/js/regist.js"></script>-->
+    <link href="/css/mypagestyle.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -21,15 +21,15 @@
 
 <!-- 마이페이지 네비 -->
 <ul class="mypage-nav">
-    <a id="profile" href="/user/member/mypage">
-        <li>프로필</li>
-    </a>
-    <a id="mysehae" href="/user/member/mysehae">
-        <li>나의 세해</li>
-    </a>
-    <a is="setting" href="/user/member/update">
-        <li>설정</li>
-    </a>
+    <li>
+        <a id="profile" href="/user/member/mypage">프로필</a>
+    </li>
+    <li>
+        <a id="mysehae" href="/user/member/mysehae">나의 세해</a>
+    </li>
+    <li>
+        <a is="setting" href="/user/member/update">설정</a>
+    </li>
 </ul>
 <hr class="line" style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
 
@@ -40,7 +40,12 @@
         <div class="left-box">
             <div class="photo">
                 <!-- 자리잡기용 임시 사진 -->
-                <img class="profile" src="/images/smile.png">
+                <th:block th:if="${ #authentication.principal.profilePhoto == null}">
+                    <img class="profile" src="/images/smile.png" alt="MYPAGE">
+                </th:block>
+                <th:block th:if="${ #authentication.principal.profilePhoto != null}">
+                    <img class="profile" th:src="${#authentication.principal.profilePhoto}" alt="MYPAGE">
+                </th:block>
                 <p class="nickname" th:text="${ #authentication.principal.nickname }"></p>
                 <div class="button-wrapper">
                     <a href="/user/member/update" class="button">설정</a>
@@ -73,8 +78,8 @@
                 <h3>내가 쓴 후기</h3>
                 <div class="dot-box">
                     <!-- 기본 멘트 -->
-                    <div class="dot-box-content">
-                        <p> + 첫 번째 후기를 올려보세요!</p>
+                    <div class="dot-box-content" th:each="myReview : ${myReviews}">
+                        <p th:text="${myReview.title}"></p>
                     </div>
                 </div>
             </div>

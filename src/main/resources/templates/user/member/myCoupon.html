@@ -42,7 +42,7 @@
         <div class="couponwrapper" th:each="coupon : ${myCoupons}">
             <div class="coupon">
                 <div class="first-line">
-                    <div th:text="${coupon?.cpName}"></div>
+                    <div class="cp-name" th:text="${coupon?.cpName}"></div>
                     <div class="circle-more">
                         <div class="circle">
                             <p>?</p>
@@ -50,20 +50,11 @@
                     </div>
                 </div>
 
-                <p class="blue">10%</p>
-                <li class="cp-date">2023년 10월 20일까지</li>
-            </div>
-
-            <div class="coupon">
-                <p class="cp-name">첫 가입 쿠폰</p>
-                <p class="blue">10%</p>
-                <li class="cp-date">2023년 10월 20일까지</li>
-            </div>
-
-            <div class="coupon">
-                <p class="cp-name">첫 가입 쿠폰</p>
-                <p class="blue">10%</p>
-                <li class="cp-date">2023년 10월 20일까지</li>
+                <div class="percent">
+                <div class="blue" th:text="${coupon?.cpRate}"></div>
+                    <p class="blue2">%</p>
+                </div>
+                <div class="cp-date" th:text="${coupon?.cpEdate}"></div>
             </div>
         </div>
     </div>
