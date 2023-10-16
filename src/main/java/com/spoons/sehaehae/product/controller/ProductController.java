@@ -99,6 +99,7 @@ public class ProductController {
 
     @PostMapping("/regist")
     public String productRegist(RedirectAttributes rttr, @ModelAttribute ProductDTO product, @RequestParam(value = "productImage", required = false) MultipartFile productImage) {
+        System.out.println(new Date());
         product.setRegistDate(new Date());
         String originalName = productImage.getOriginalFilename();
         String fileUploadDir = IMG_DIR + "resource/images";
