@@ -14,7 +14,6 @@
 
     <div th:replace="/user/common/header.html"></div>
 
-<!--<a href="regist">후기작성인가?</a>-->
     <div>
     <div class="notice-name">
         <h3>후기 게시판</h3>
@@ -153,51 +152,5 @@
 
     <div th:replace="/user/common/footer.html"></div>
 
-<script>
-    // $(window).on('load', function() {
-    //     var rating = $('.ratingView');
-    //
-    //     rating.each(function (){
-    //         var targetScore = $(this).attr('data-rate');
-    //         console.log(targetScore);
-    //         $(this).find('svg:nth-child(-n+' + targetScore +')').css({color:'#FFFF00'});
-    //     });
-    // });
-
-
-
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     // HTML 페이지가 로드될 때 실행
-    //
-    //     // 모든 리뷰의 별점 표시
-    //     const starElements = document.querySelectorAll('.star');
-    //     starElements.forEach(function (starElement) {
-    //         const rating = starElement.getAttribute('data-rating'); // data-rating 속성에서 평가 점수 가져오기
-    //         displayRating(starElement, rating);
-    //     });
-    // });
-    //
-    // function displayRating(starElement, rating) {
-    //     // 별표시 함수: rating에 따라 별점 표시/숨김
-    //
-    //     const maxRating = 5; // 최대 별점
-    //
-    //     // 자식 요소의 개수를 가져옴
-    //     const childCount = starElement.children.length;
-    //
-    //     for (let i = 0; i < maxRating; i++) {
-    //         // i가 childCount보다 작을 때만 실행
-    //         if (i < rating) {
-    //             if (i < childCount) {
-    //                 starElement.children[i].style.display = 'inline-block'; // 별 표시
-    //             }
-    //         } else {
-    //             if (i < childCount) {
-    //                 starElement.children[i].style.display = 'none'; // 빈 별 숨김
-    //             }
-    //         }
-    //     }
-    // }
-</script>
 </body>
 </html>

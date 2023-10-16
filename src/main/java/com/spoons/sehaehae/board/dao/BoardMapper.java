@@ -50,4 +50,6 @@ public interface BoardMapper {
     ReviewDTO selectReviewView(Long no);
 
     void incrementReviewCount(Long no);
+
+    void deleteReview(Integer id);
 }

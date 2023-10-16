@@ -2,7 +2,7 @@ package com.spoons.sehaehae.member.service;
 
 
 import com.spoons.sehaehae.admin.dto.OrderDTO;
-import com.spoons.sehaehae.admin.dto.RefundDTO;
+import com.spoons.sehaehae.board.dto.AttachmentDTO;
 import com.spoons.sehaehae.board.dto.ReviewDTO;
 import com.spoons.sehaehae.common.exception.member.MemberModifyException;
 import com.spoons.sehaehae.common.exception.member.MemberRegistException;
