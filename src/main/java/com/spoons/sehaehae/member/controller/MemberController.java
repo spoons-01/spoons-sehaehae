@@ -1,8 +1,9 @@
 package com.spoons.sehaehae.member.controller;
 
-
 import com.spoons.sehaehae.admin.dto.OrderDTO;
+import com.spoons.sehaehae.board.dto.AttachmentDTO;
 import com.spoons.sehaehae.board.dto.ReviewDTO;
+import com.spoons.sehaehae.board.service.BoardService;
 import com.spoons.sehaehae.common.exception.member.MemberModifyException;
 import com.spoons.sehaehae.common.exception.member.MemberRegistException;
 import com.spoons.sehaehae.common.util.EmailUtil;
@@ -11,6 +12,7 @@ import com.spoons.sehaehae.member.service.AuthenticationService;
 import com.spoons.sehaehae.member.service.CouponRepository;
 import com.spoons.sehaehae.member.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,14 +51,17 @@ public class MemberController {
     private final PasswordEncoder passwordEncoder;
     private EmailUtil emailUtil;
     private final CouponRepository couponRepository;
+    private final BoardService boardService; // 인선!!!!
 
-    public MemberController(MemberService memberService, AuthenticationService authenticationService, MessageSourceAccessor messageSourceAccessor, PasswordEncoder passwordEncoder, EmailUtil emailUtil, CouponRepository couponRepository) {
+    public MemberController(MemberService memberService, AuthenticationService authenticationService, MessageSourceAccessor messageSourceAccessor, PasswordEncoder passwordEncoder, EmailUtil emailUtil, CouponRepository couponRepository
+                            ,BoardService boardService ) {
         this.memberService = memberService;
         this.authenticationService = authenticationService;
         this.messageSourceAccessor = messageSourceAccessor;
         this.passwordEncoder = passwordEncoder;
         this.emailUtil = emailUtil;
         this.couponRepository = couponRepository;
+        this.boardService = boardService; // 인선!!!!!
     }
 
     @GetMapping("/main/main")
@@ -368,5 +373,83 @@ public class MemberController {
 
     /* 인선!!!! 후기작성 모달창 ---------------------------------------------------- */
 
+    @PostMapping("/member/mysehae")
+    public String registReview(ReviewDTO review, MultipartFile attachImage,
+                               @AuthenticationPrincipal MemberDTO member,
+                               @AuthenticationPrincipal OrderDTO myOrder,
+                               @RequestParam("rating") int rating,
+                               Model model, Principal principal,
+                               String orderCode) {
+
+        log.info("review request : {}", review);
+        log.info("attachImage request : {}", attachImage);
+
+        // 별점을 ReviewDTO에 설정
+        review.setRating(rating);
+
+        String fileUploadDir = IMAGE_DIR + "original";
+        String thumbnailDir = IMAGE_DIR + "thumbnail";
+
+        File dir1 = new File(fileUploadDir);
+        File dir2 = new File(thumbnailDir);
+
+        /* 디렉토리가 없을 경우 생성한다. */
+        if(!dir1.exists() ) {
+            dir1.mkdirs();
+            dir2.mkdirs();
+        }
+
+        /* 업로드 파일에 대한 정보를 담을 리스트 */
+        AttachmentDTO attachment = new AttachmentDTO();
+
+        try {
+                /* 첨부파일이 실제로 존재하는 경우에만 로직 수행 */
+                    if(attachImage.getSize() > 0) {
+
+                        String originalFileName = attachImage.getOriginalFilename();
+                        log.info("originalFileName : {}", originalFileName);
+
+                        String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
+                        String savedName = UUID.randomUUID() + ext;
+                        log.info("saveName : {}", savedName);
+
+                        Long size = attachImage.getSize();
+
+                        /* 서버의 설정 디렉토리에 파일 저장하기 */
+
+                        attachImage.transferTo(new File(fileUploadDir + "/" + savedName));
+
+                        /* DB에 저장할 파일의 정보 처리 */
+                        AttachmentDTO fileInfo = new AttachmentDTO();
+                        attachment.setName(originalFileName);
+                        attachment.setSavedName(savedName);
+                        attachment.setRoute("/uplode/original");
+                        attachment.setExtension(ext);
+                        attachment.setSize(size);
+                        log.info("fileInfo : {}", attachment);
+                        attachment.setEx("TITLE"); // 대표사진
+
+                            /* 대표 사진에 대한 썸네일을 가공해서 저장한다. */
+                            Thumbnails.of(fileUploadDir + "/" + savedName).size(150,150)
+                                    .toFile(thumbnailDir + "/thumbnail_" + savedName);
+                        attachment.setThumbnail("/upload/thumbnail/thumbnail_" + savedName);
+
+                    }
+
+            }catch (IOException e) {
+        throw new RuntimeException(e);
+        }
+
+        log.info("fileInfo : {}", attachment);
+
+        review.setAttachment(attachment);
+        review.setWriter(member);
+        review.setMyOrders(myOrder);
+        model.addAttribute("myOrders", myOrder);
+
+        boardService.registReview(review, attachment, orderCode);
+
+        return "redirect:/user/member/mysehae";
+        }
 
 }

@@ -28,6 +28,14 @@ img {
     max-width: 100%;
 }
 
+p {
+    font-family: NanumSquareNeo-Variable;
+    color: #8E8585;
+}
+
+h3 {
+    font-family: NanumSquareNeo-Variable;
+}
 
 /* 공지 사항 ---------------------------------------------------*/
 .notice-nav {

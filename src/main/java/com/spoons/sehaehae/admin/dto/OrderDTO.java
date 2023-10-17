@@ -24,12 +24,13 @@ public class OrderDTO {
     private Long inputZipCode;
     private String inputAddress;
     private String InputAddress2;
+    private Integer useCoupon;
     private String orderStatus;
     private int usePoint;
-    private Integer useCoupon;
     private String collectionDate;
     private String deliveryDate;
     private Date progressDate;
+    private String reviewStatus;
     private String image;
     private List<OrderProductDTO> list;
 

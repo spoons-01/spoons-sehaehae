@@ -24,6 +24,7 @@
             <!--                    <th><input type="checkbox" name="selectAll">전체선택</th>-->
             <th class="th1">NO</th>
             <th>주문번호</th>
+            <th>별점</th>
             <th class="th2">제목</th>
             <th class="th3">작성자</th>
             <th class="th4">등록일</th>
@@ -31,7 +32,8 @@
 
           <tr th:each="review : ${ reviewList }" >
             <td th:text="${ review.reviewNo }"></td>
-            <td th:text="${ review.order.code }"></td>
+            <td th:text="${ review.myOrders.orderCode }"></td>
+            <td th:text="${ review.rating }"></td>
             <td th:text="${ review.title }" th:onclick="|location.href='/admin/board/adminReviewView?no=${review.reviewNo}'|"></td>
             <td th:text="${ review.writer.nickname }"></td>
             <td th:text="${ review.createdDate}"></td>
