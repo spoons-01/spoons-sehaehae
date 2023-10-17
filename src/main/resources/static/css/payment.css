@@ -5,7 +5,13 @@
     font-style: normal;
 }
 
-
+.logo{
+    margin-left: 90px;
+    margin-top: 30px;
+}
+.line2{
+    border: 1px solid black;
+}
 .bigcontainer{
 }
 .container p:first-child{

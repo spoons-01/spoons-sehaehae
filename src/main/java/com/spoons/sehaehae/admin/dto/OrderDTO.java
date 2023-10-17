@@ -32,6 +32,7 @@ public class OrderDTO {
     private Date progressDate;
     private String reviewStatus;
     private String image;
+    private int reward;
     private List<OrderProductDTO> list;
 
 }
