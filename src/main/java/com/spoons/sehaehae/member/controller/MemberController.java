@@ -11,6 +11,7 @@ import com.spoons.sehaehae.member.dto.*;
 import com.spoons.sehaehae.member.service.AuthenticationService;
 import com.spoons.sehaehae.member.service.CouponRepository;
 import com.spoons.sehaehae.member.service.MemberService;
+import com.spoons.sehaehae.product.dto.ProductDTO;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.lang3.StringUtils;
@@ -84,11 +85,8 @@ public class MemberController {
 
     @PostMapping("/member/idDupCheck")
     public ResponseEntity<String> checkDuplication(@RequestBody MemberDTO member) {
-
         log.info("Request Check ID : {}", member.getMemberId());
-
         String result = "사용 가능한 아이디입니다.";
-
         if (memberService.selectMemberById(member.getMemberId())) {
             result = "중복된 아이디가 존재합니다.";
         }
@@ -100,11 +98,8 @@ public class MemberController {
                                RedirectAttributes rttr) throws MemberRegistException {
 
         member.setMemberPwd(passwordEncoder.encode(member.getPassword()));
-
         log.info("Request regist member : {}", member);
-
         memberService.registMember(member);
-
         rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("member.regist"));
 
         return "redirect:/";
@@ -129,21 +124,21 @@ public class MemberController {
         // 현재 사용자의 MemberDTO를 얻어온다
         MemberDTO memberDTO = memberService.findByMemberId(currentUsername);
 
-        // 1. MemberDTO에서 membershipName을 추출한다
+        // MemberDTO에서 membershipName을 추출한다
         String membershipName = extractMembershipName(memberDTO);
-        // 2. 현재 로그인한 회원의 memberNo를 얻는다
+
         int memberNo = memberDTO.getMemberNo();
-        // 2-1. MEMBER_NO를 이용하여 쿠폰 개수를 얻어온다
         int couponCount = couponRepository.countCouponsByMemberNo(memberNo);
-        // 3. 내 주문 목록을 불러온다
         List<MyOrderDTO> myOrders = memberService.findMyOrder(currentUsername);
-        // 4. 내 포인트를 불러온다.
         int myPoint = memberService.findMyPoint(memberNo);
+
         // 5. 주문 상태별 개수를 저장할 맵 초기화
         String[] orderedOrderStatuses = {"결제완료", "수거완료", "세탁완료", "배송준비", "배송중", "구매확정"};
         List<MyOrderDTO> myOrderList = memberService.findMyOrder(currentUsername);
+
         // 5-1. 주문 상태별 개수를 저장할 맵 초기화
         Map<String, Integer> orderStatusCounts = new LinkedHashMap<>();  // 순서가 중요하므로 LinkedHashMap 사용
+
         // 5-2. 정렬된 주문 상태 배열을 기반으로 초기화
         for (String status : orderedOrderStatuses) {
             orderStatusCounts.put(status, 0);
@@ -154,15 +149,10 @@ public class MemberController {
             orderStatusCounts.put(orderStatus, orderStatusCounts.get(orderStatus) + 1);
         }
 
-        /* 1 */
         model.addAttribute("membershipName", membershipName);
-        /* 2 */
         model.addAttribute("couponCount", couponCount);
-        /* 3 */
         model.addAttribute("myOrders", myOrders);
-        /* 4 */
         model.addAttribute("myPoint", myPoint);
-        /* 5 */
         model.addAttribute("orderStatusCounts", orderStatusCounts);
         return "/user/member/mysehae";
     }
@@ -192,7 +182,7 @@ public class MemberController {
     @GetMapping("/member/myOrder/{orderCode}")
     public String myOrder(@PathVariable String orderCode, Model model) {
         OrderDTO orderDTO = memberService.findMyOrderDetails(orderCode);
-        model.addAttribute("orderDetails", orderDTO);
+        model.addAttribute("myOrders", orderDTO);
         return "/user/member/myOrder";
     }
 

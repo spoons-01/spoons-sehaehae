@@ -68,16 +68,37 @@
         <result property="deliveryDate" column="DELIVERY_DATE"/>
         <result property="progressDate" column="PROGRESS_DATE"/>
         <result property="reviewStatus" column="REVIEW_STATUS"/>
+
+        <collection property="list" resultMap="orderProductResultMap"/>
     </resultMap>
 
-    <select id="findMyOrderDetails" parameterType="string" resultMap="orderResultMap">
-        SELECT
-            *
-        FROM TBL_ORDER
-        WHERE 1=1
-          AND ORDER_CODE = #{orderCode}
-    </select>
+    <resultMap id="orderProductResultMap" type="com.spoons.sehaehae.product.dto.OrderProductDTO">
+        <id property="productCode" column="PRODUCT_CODE"/>
+        <id property="orderCode" column="ORDER_CODE"/>
+        <result property="amount" column="ORDER_AMOUNT"/>
+        <result property="premium" column="USE_PREMIUM"/>
+        <result property="eco" column="USE_ECO"/>
+    </resultMap>
 
+<!--    <select id="findMyOrderDetails" parameterType="String" resultMap="orderResultMap">-->
+<!--        SELECT-->
+<!--            *-->
+<!--        FROM TBL_ORDER-->
+<!--        WHERE 1=1-->
+<!--          AND ORDER_CODE = #{orderCode}-->
+<!--    </select>-->
+
+    <select id="findMyOrderDetails" parameterType="String" resultMap="orderResultMap">
+        SELECT
+            A.*,
+            B.PRODUCT_CODE,
+            B.ORDER_AMOUNT,
+            B.USE_PREMIUM,
+            B.USE_ECO
+        FROM TBL_ORDER A
+                 LEFT JOIN TBL_ORDER_PRODUCT B ON (A.ORDER_CODE = B.ORDER_CODE)
+        WHERE ORDER_CODE = #{orderCode}
+    </select>
 
     <!-- 내 구매내역 -->
     <resultMap id="myOrderResultMap" type="com.spoons.sehaehae.member.dto.MyOrderDTO">

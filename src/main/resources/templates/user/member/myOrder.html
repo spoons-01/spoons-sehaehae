@@ -34,10 +34,63 @@
 </ul>
 <hr class="line" style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
 
-<div class="wrapper">
+<!-- 주문상세조회 -->
+<div class="order">
+    <div class="wrapper">
+        <h3>주문상세조회</h3>
+        <div class="order-box">
+            <div class="blue-box">
+                <p>구매확정 시 포인트 적립💰<br> <span>리뷰작성시 300P를 지급해드려요!</span></p>
+            </div>
+            <div class="orderNo-orderDate">
+                <div class="orderNo">
+                    <p>주문번호&nbsp&nbsp:&nbsp&nbsp</p>
+                    <p th:text="${orderCode}"></p>
+                </div>
 
+                <p class="gap-code-date">|</p>
 
+                <div class="orderDate">
+                    <p>주문날짜&nbsp&nbsp:&nbsp&nbsp</p>
+                    <p th:text="${myOrders.orderDate}"></p>
+                </div>
+            </div>
+
+            <hr class="line" style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
+
+            <div class="order-detail">
+                <div class="grid">
+                    <div class="container">
+                        <img class="img" src="/images/jjang1.png">
+                    </div>
+                    <div class="order-view">
+                        <p class="order-name">세탁서비스 이용</p>
+
+                        <div class="order-product">
+                            <p>[주문상품]</p>
+                            <p></p>
+                        </div>
+
+                        <div class="order-price">
+                            <p>[주문금액]</p>
+                            <p class="bold" th:text="${myOrders.orderTotalPrice}"></p>
+                        </div>
+
+                        <div class="order-progress">
+                            <p th:text="${myOrders.orderStatus}"></p>
+                            <p th:if="${myOrders.orderStatus == '구매확정'}" th:text="${myOrders.progressDate}"></p>
+                        </div>
+                    </div>
+                    <div class="etc">
+                        <p>자리잡기용 임시</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+<div th:replace="user/common/footer.html"></div>
 </body>
+
 </html>
