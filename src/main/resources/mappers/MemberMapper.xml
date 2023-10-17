@@ -62,11 +62,22 @@
         <result property="inputAddress" column="INPUT_ADDRESS"/>
         <result property="InputAddress2" column="INPUT_ADDRESS2"/>
         <result property="orderStatus" column="ORDER_STATUS"/>
-        <result property="cpCode" column="CP_CODE"/>
+        <result property="useCoupon" column="CP_CODE"/>
         <result property="usePoint" column="USE_POINT"/>
         <result property="collectionDate" column="COLLECTION_DATE"/>
         <result property="deliveryDate" column="DELIVERY_DATE"/>
+        <result property="progressDate" column="PROGRESS_DATE"/>
+        <result property="reviewStatus" column="REVIEW_STATUS"/>
     </resultMap>
+
+    <select id="findMyOrderDetails" parameterType="string" resultMap="orderResultMap">
+        SELECT
+            *
+        FROM TBL_ORDER
+        WHERE 1=1
+          AND ORDER_CODE = #{orderCode}
+    </select>
+
 
     <!-- 내 구매내역 -->
     <resultMap id="myOrderResultMap" type="com.spoons.sehaehae.member.dto.MyOrderDTO">
@@ -75,6 +86,7 @@
         <result property="orderDate" column="ORDER_DATE"/>
         <result property="orderStatus" column="ORDER_STATUS"/>
         <result property="progressDate" column="PROGRESS_DATE"/>
+        <result property="reviewStatus" column="REVIEW_STATUS"/>
     </resultMap>
 
     <!-- TBL_COUPON -->
@@ -125,7 +137,7 @@
 
         <association property="writer" resultMap="memberResultMap"/>
         <association property="attachment" resultMap="attachmentResultMap"/>
-        <association property="order" resultMap="myOrderResultMap"/>
+        <association property="myOrders" resultMap="myOrderResultMap"/>
     </resultMap>
 
     <!--첨부파일 / 첨부 안할거면 빼기 -->
@@ -143,13 +155,10 @@
         <association property="review" resultMap="myReviewResultMap"/>
     </resultMap>
 
-    <select id="findMyReview" resultMap="myReviewResultMap">
-        SELECT
-            REVIEW_TITLE
-        FROM TBL_REVIEW
-        WHERE 1=1
-        AND MEMBER_NO = #{memberNo}
-    </select>
+
+
+
+    <!-- 환불 -->
 
     <!--
         <resultMap type="com.spoons.sehaehae.member.dto.ProfileAttachmentDTO" id="profileAttachmentResultMap">
@@ -290,13 +299,20 @@
           AND A.MEMBER_NO = #{ memberNo }
     </select>
 
-
     <select id="findMyPoint" resultType="int">
         SELECT SUM(POINT) AS TOTAL_POINT
         FROM TBL_MEMBER A
                  LEFT JOIN TBL_PT B ON A.MEMBER_NO = B.MEMBER_NO
         WHERE B.MEMBER_NO = #{memberNo}
         GROUP BY B.MEMBER_NO
+    </select>
+
+    <select id="findMyReview" resultMap="myReviewResultMap">
+        SELECT
+            REVIEW_TITLE
+        FROM TBL_REVIEW
+        WHERE 1=1
+          AND MEMBER_NO = #{memberNo}
     </select>
 
 

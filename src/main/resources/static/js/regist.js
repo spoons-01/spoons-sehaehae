@@ -183,69 +183,6 @@ window.onload = function () {
 
     phoneInput.addEventListener('keyup', phoneCheck);
 
-
-    /*
-    birthday selectbox 동적 생성
-
-    // '출생 년도' 셀렉트 박스 option 목록 동적 생성
-    const birthYearEl = document.querySelector('#birth-year');
-    let isYearOptionExisted = false;
-
-    birthYearEl.addEventListener('focus', function () {
-        if (!isYearOptionExisted) {
-            isYearOptionExisted = true;
-            for (let i = 1920; i <= 2023; i++) {
-                const YearOption = document.createElement('option');
-                YearOption.setAttribute('value', i);
-                YearOption.innerText = i;
-                this.appendChild(YearOption);
-            }
-        }
-    });
-
-    // '월' 셀렉트 박스 option 목록 동적 생성
-    const birthMonthEl = document.querySelector('#birth-month');
-    let isMonthOptionExisted = false;
-
-    birthMonthEl.addEventListener('focus', function () {
-        if (!isMonthOptionExisted) {
-            isMonthOptionExisted = true;
-            for (let i = 1; i <= 12; i++) {
-                const monthOption = document.createElement('option');
-                monthOption.setAttribute('value', i);
-                monthOption.innerText = i + '월';
-                this.appendChild(monthOption);
-            }
-        }
-    });
-
-    // '일' 셀렉트 박스 option 목록 동적 생성
-    const birthDayEl = document.querySelector('#birth-day');
-    let isDayOptionExisted = false;
-
-    birthDayEl.addEventListener('focus', function () {
-        if (!isDayOptionExisted) {
-            isDayOptionExisted = true;
-            const selectedMonth = parseInt(birthMonthEl.value, 10); // 선택된 월 가져오기
-            const lastDay = new Date(2023, selectedMonth, 0).getDate(); // 선택된 월의 마지막 날짜 계산
-            for (let i = 1; i <= lastDay; i++) {
-                const dayOption = document.createElement('option');
-                dayOption.setAttribute('value', i);
-                dayOption.innerText = i + '일';
-                this.appendChild(dayOption);
-            }
-        }
-    });
-
-    // '월' 셀렉트 박스 변경 시 '일' 셀렉트 박스를 업데이트
-    birthMonthEl.addEventListener('change', function () {
-        isDayOptionExisted = false; // '일' 옵션을 다시 생성하기 위해 상태 초기화
-        while (birthDayEl.firstChild) {
-            birthDayEl.removeChild(birthDayEl.firstChild); // 기존 '일' 옵션 제거
-        }
-    });
-
-    */
 }
 
 function emailAuthSnd() {
@@ -335,40 +272,6 @@ function emailAuthChk() {
 //         }
 //     });
 // }
-
-
-// ????
-// function emailAuthChk() {
-//     // 인증 코드와 이메일 입력값을 가져옵니다.
-//     const emailAuthKey = $("#emailAuthKey").val();
-//     const emailAuthInVal = $("#emailAuthVal").val();
-//
-//     // fetch 요청을 보냅니다.
-//     fetch("/user/member/chkEmailAuth", {
-//         method: "POST",
-//         headers: {
-//             'Content-Type': 'application/json;charset=UTF-8'
-//         },
-//         body: JSON.stringify({
-//             emailAuthKey: emailAuthKey,
-//             emailAuthInVal: emailAuthInVal
-//         })
-//     })
-//         .then(response => {
-//             if (response.ok) {
-//                 return response.json();
-//             } else {
-//                 throw new Error("인증 실패");
-//             }
-//         })
-//         .then(data => {
-//             console.log("인증 성공:", data);
-//             alert("인증이 성공했습니다.")
-//         })
-//         .catch(error => {
-//             console.error("인증 오류:", error.message);
-//             alert("인증에 실패했습니다. 인증 번호를 다시 확인해주세요.")
-//         });
 
 
 /**

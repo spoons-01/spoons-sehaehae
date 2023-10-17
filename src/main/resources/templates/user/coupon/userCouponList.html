@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="/css/styleD.css" rel="stylesheet" type="text/css">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:replace="/user/common/header.html"></div>
+
+<div class="coupon_container">
+    <div class="coupon" th:each="coupon : ${coupon}" th:onclick="couponModal([[${coupon}]])">
+
+        <ul>
+            <li style="font-size: 24px" th:text="${coupon.cpName}"></li>
+            <li style="font-size: 15px" th:text="${#dates.format(coupon.cpSdate,'yyyy-MM-dd')}+' ~ '+${#dates.format(coupon.cpEdate,'yyyy-MM-dd')}"></li>
+            <li style="font-size: 24px; color: #4B93FF; text-align: right" th:text="${coupon.cpRate} + '%'"></li>
+            <form id="userInsertCoupon" action="/user/coupon/insert" method="post">
+            <input type="hidden" name="cpCode" th:value="${coupon.cpCode}">
+            <button type="submit" class="buttonD">다운</button>
+            </form>
+        </ul>
+    </div>
+</div>
+
+<div th:replace="/user/common/footer.html"></div>
+</body>
+</html>

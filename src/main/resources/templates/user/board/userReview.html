@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/userBoard.css" rel="stylesheet" type="text/css">
     <link rel="icon" href="/images/favicon.ico">
-<!--    <script src="/javaScript/event.js" type="text/javascript"></script>-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/javaScript/event.js" type="text/javascript"></script>
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js"></script>
     <title>게시판</title>
 </head>
@@ -15,7 +14,6 @@
 
     <div th:replace="/user/common/header.html"></div>
 
-<a href="regist">후기작성인가?</a>
     <div>
     <div class="notice-name">
         <h3>후기 게시판</h3>
@@ -154,84 +152,5 @@
 
     <div th:replace="/user/common/footer.html"></div>
 
-<script>
-    $(function (){
-        var rating = $('.ratingView');
-
-        rating.each(function (){
-           var targetScore = $(this).attr('data-rate');
-           console.log(targetScore);
-           $(this).find('svg:nth-child(-n+' + targetScore +')').css({color:'#FFFF00'});
-        });
-    });
-
-    // fetch('/')
-    // .then(response => response.json())
-    // .then(data => {
-    // const rating = data.rating;
-    //
-    // var stars = '';
-    //
-    // switch (rating) {
-    // case 1:
-    // stars = '★☆☆☆☆';
-    // break;
-    // case 2:
-    // stars = '★★☆☆☆';
-    // break;
-    // case 3:
-    // stars = '★★★☆☆';
-    // break;
-    // case 4:
-    // stars = '★★★★☆';
-    // break;
-    // case 5:
-    // stars = '★★★★★';
-    // break;
-    // default:
-    // stars = '☆☆☆☆☆';
-    // }})
-    // .catch(error => {
-    // console.error('데이터를 가져오는 중 오류 발생: ', error);
-    // });
-
-
-
-    // 결과를 웹 페이지에 표시
-    // document.getElementById('starRating').textContent = stars;
-
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     // HTML 페이지가 로드될 때 실행
-    //
-    //     // 모든 리뷰의 별점 표시
-    //     const starElements = document.querySelectorAll('.star');
-    //     starElements.forEach(function (starElement) {
-    //         const rating = starElement.getAttribute('data-rating'); // data-rating 속성에서 평가 점수 가져오기
-    //         displayRating(starElement, rating);
-    //     });
-    // });
-    //
-    // function displayRating(starElement, rating) {
-    //     // 별표시 함수: rating에 따라 별점 표시/숨김
-    //
-    //     const maxRating = 5; // 최대 별점
-    //
-    //     // 자식 요소의 개수를 가져옴
-    //     const childCount = starElement.children.length;
-    //
-    //     for (let i = 0; i < maxRating; i++) {
-    //         // i가 childCount보다 작을 때만 실행
-    //         if (i < rating) {
-    //             if (i < childCount) {
-    //                 starElement.children[i].style.display = 'inline-block'; // 별 표시
-    //             }
-    //         } else {
-    //             if (i < childCount) {
-    //                 starElement.children[i].style.display = 'none'; // 빈 별 숨김
-    //             }
-    //         }
-    //     }
-    // }
-</script>
 </body>
 </html>

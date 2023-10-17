@@ -9,8 +9,9 @@ import java.util.Date;
 @Getter @Setter @ToString
 public class MyOrderDTO {
     private int memberNo;
-    private int orderCode;
+    private String orderCode;
     private Date orderDate;
     private String orderStatus;
     private Date progressDate;
+    private String reviewStatus;
 }

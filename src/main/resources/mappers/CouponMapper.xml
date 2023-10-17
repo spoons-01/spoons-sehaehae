@@ -12,7 +12,13 @@
         <result property="cpEdate" column="CP_EDATE"/>
         <result property="cpStatus" column="CP_STATUS"/>
     </resultMap>
-    
+
+    <resultMap id="cpBoxResultMap" type="com.spoons.sehaehae.admin.dto.CpBoxDTO">
+        <id property="memberCode" column="MEMBER_NO"/>
+        <result property="couponpCode" column="CP_CODE"/>
+        <result property="useStatus" column="USE_STATUS"/>
+    </resultMap>
+
     <select id="selectCouponList" resultMap="couponResultMap">
         select
             *
@@ -58,5 +64,21 @@
         where   CP_CODE=#{cpCode}
     </update>
 
+    <insert id="userInsertCoupon">
+        insert
+        into TBL_CPBOX
+        (
+         CP_CODE,
+         MEMBER_NO,
+         USE_STATUS
+        )
+        values
+        (
+         #{coupon.cpCode},
+         #{member.memberNo},
+         'Y'
+        )
+
+    </insert>
 
 </mapper>

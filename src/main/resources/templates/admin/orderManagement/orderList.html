@@ -31,6 +31,7 @@
 
 <div class="container1">
     <form id="allSearch" action="/orderManagement/list">
+
         <table>
 
             <tr>
@@ -97,7 +98,7 @@
         </tr>
         <tr th:each="search : ${ searchList }">
             <td></td>
-            <td th:text="${ search.code }" th:onclick="|location.href='/orderManagement/orderDetail?code=${search.code}'|" th:style="'border: 1px solid #000000FF; color: blue;'"></td>
+            <td th:text="${ search.code }"  th:style="'border: 1px solid #000000FF; color: blue; cursor: pointer;'"></td>
             <td th:text="${#dates.format(search.orderDate, 'yyyy-MM-dd')}" th:style="'border: 1px solid #000000FF;'"></td>
             <td th:text="${ search.orderRequest }" th:style="'border: 1px solid #000000FF;'"></td>
             <td th:text="${ search.orderPrice }" th:style="'border: 1px solid #000000FF;'"></td>
@@ -176,6 +177,11 @@
     </div>
 </div>
 
+
+
+
+
+
 <script>
     function searchDate(range) {
         var today = new Date();
@@ -210,6 +216,12 @@
         document.getElementById('end-date').valueAsDate = endDate;
 
     }
+
+
+
+
+
+
 
 
 </script>

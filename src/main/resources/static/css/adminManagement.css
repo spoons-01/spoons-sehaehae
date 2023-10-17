@@ -1,6 +1,3 @@
-
-
-
 /*------------------ breadcrumb ---------------- */
 
 .nav {
@@ -27,6 +24,7 @@
     /* 자식 요소를 세로로 배치 */
     margin-left: 300px;
     width: 1500px;
+    position: relative;
 
 }
 
@@ -71,6 +69,8 @@ table,tr,th{
 
 
 }
+
+
 
 td{
     height: 50px;
@@ -158,8 +158,9 @@ td{
     display: flex;
     flex-direction: column;
     /* 자식 요소를 세로로 배치 */
-
     width: 1500px;
+    position: relative;
+    margin-bottom: 50px;
 
 }
 
@@ -211,72 +212,13 @@ td{
 
 /*----------------------- 디비애들 --------------------*/
 
-#listArea{
-    margin-top: 70px;
 
-}
 
 .container2 {
     margin-bottom: 50px;
-}
-
-/*---------------------모달 창 -------------------------*/
-#modal.modal-overlay {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    backdrop-filter: blur(1.5px);
-    -webkit-backdrop-filter: blur(1.5px);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-}
-#modal .modal-window {
-    background: rgba( 69, 139, 197, 0.70 );
-    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-    backdrop-filter: blur( 13.5px );
-    -webkit-backdrop-filter: blur( 13.5px );
-    border-radius: 10px;
-    border: 1px solid rgba( 255, 255, 255, 0.18 );
-    width: 400px;
-    height: 500px;
     position: relative;
-    top: -100px;
-    padding: 10px;
-}
-#modal .title {
-    padding-left: 10px;
-    display: inline;
-    text-shadow: 1px 1px 2px rgba(128, 128, 128, 0.96);
-    color: white;
 
 }
-#modal .title h2 {
-    display: inline;
-}
-#modal .close-area {
-    display: inline;
-    float: right;
-    padding-right: 10px;
-    cursor: pointer;
-    text-shadow: 1px 1px 2px rgba(128, 128, 128, 0.96);
-    color: white;
-}
-
-#modal .content {
-    margin-top: 20px;
-    padding: 0px 10px;
-    text-shadow: 1px 1px 2px rgba(128, 128, 128, 0.96);
-    color: white;
-}
-
 
 #paging button{
     border: 1px solid rgba(0, 0, 0, 0.68);
@@ -286,3 +228,168 @@ td{
     background-color: rgba(0, 0, 0, 0.09);
 }
 
+/*---------------------모달 창 -------------------------*/
+#modalContainer{
+    width: 1200px;
+
+    position: absolute;
+    left: 200px;
+    top: 80px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(9, 9, 9, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(1.5px);
+    -webkit-backdrop-filter: blur(1.5px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+
+#modalContent {
+    padding-left: 10px;
+    display: flex;
+    color: #020202;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background-color: white;
+    position: absolute;
+    width: 100%;
+    height: 100px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#modalContent p {
+    margin-top: -1px;
+    display: flex;
+    font-size: 20px;
+}
+
+
+
+#modalContainer .close-area {
+    margin: 30px;
+    display: flex;
+    float: right;
+    cursor: pointer;
+    color: #1a1212;
+    font-size: 25px;
+}
+
+#modalContainer .content {
+    border: 1px solid rgba(17, 17, 17, 0.18);
+    margin-top: 150px;
+    padding: 0px;
+    background-color: white;
+    height: 350px;
+}
+
+.content table {
+    color: black;
+    border: 1px solid black;
+    width: 100%;
+}
+
+.content td{
+    font-size: 20px;
+    padding: 20px 0px 20px 10px;
+}
+
+.content th{
+    width: 100px;
+}
+
+/*-------------------------------------------*/
+#modalContainer .content1 {
+    border: 1px solid rgba(17, 17, 17, 0.18);
+    margin-top: 20px;
+    padding: 0px;
+    background-color: white;
+    height: 350px;
+}
+
+.content1 table {
+    color: black;
+    border: 1px solid black;
+    width: 100%;
+}
+
+.content1 td{
+    font-size: 20px;
+    padding: 20px 0px 20px 10px;
+}
+
+.content1 th{
+    width: 100px;
+}
+
+/*-------------------------------------------*/
+#modalContainer .content2 {
+    border: 1px solid rgba(17, 17, 17, 0.18);
+    margin-top: 20px;
+    padding: 0px;
+    background-color: white;
+    height: 350px;
+}
+
+.content2 table {
+    color: black;
+    border: 1px solid black;
+    width: 100%;
+}
+
+.content2 td{
+    font-size: 20px;
+    padding: 20px 0px 20px 10px;
+}
+
+.content2 th{
+    width: 100px;
+    /*border-right : none;*/
+}
+
+/*----------------------환불 버튼---------------------*/
+.refudn-button{
+    display: inline-block;
+}
+
+.refund-subButton{
+    margin: 0px 5px 5px 0px;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+/*------------------------ 환불 거절 모달창----------------------*/
+#refund-modal{
+    width: 1000px;
+    height: 500px;
+    position: absolute;
+    left: 200px;
+    top: 80px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgb(253, 252, 252);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(1.5px);
+    -webkit-backdrop-filter: blur(1.5px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.refund-modal-title{
+    margin-top: 10px;
+}
+
+.refund-reason {
+    margin: 10px;
+    display: flex;
+    color: #020202;
+    border: 1px solid rgba(17, 17, 17, 0.18);
+    background-color: rgba(17, 17, 17, 0.18);
+    position: absolute;
+    width: 100%;
+    height: 100px;
+    align-items: center;
+    justify-content: space-between;
+}
