@@ -1,5 +1,6 @@
 package com.spoons.sehaehae.admin.controller;
 
+import com.spoons.sehaehae.admin.dto.OrderDTO;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 @Controller
 @Slf4j
@@ -39,7 +41,6 @@ public class SearchController {
         searchMap.put("searchValue", searchValue);
         searchMap.put("startDate", startDate);
         searchMap.put("endDate", endDate);
-
 
 
         Map<String, Object> searchListAndPaging = orderService.selectSerchList(searchMap, page);  //list 뿐만 아니라 페이징 처리도 같이 하기 위해서 map사용
@@ -136,8 +137,8 @@ public class SearchController {
 
     @GetMapping("/laundry-complete")
     public String selectlaundryList(@RequestParam(defaultValue = "1") int page,
-                                       @RequestParam(required = false) String searchCondition,
-                                       @RequestParam(required = false) String searchValue,
+                                    @RequestParam(required = false) String searchCondition,
+                                    @RequestParam(required = false) String searchValue,
                                     @RequestParam(required = false) String startDate,
                                     @RequestParam(required = false) String endDate,
                                     Model model) {
@@ -257,11 +258,11 @@ public class SearchController {
 
     @GetMapping("/order-confirmed")
     public String selectconfirmedList(@RequestParam(defaultValue = "1") int page,
-                                     @RequestParam(required = false) String searchCondition,
-                                     @RequestParam(required = false) String searchValue,
-                                     @RequestParam(required = false) String startDate,
-                                     @RequestParam(required = false) String endDate,
-                                     Model model) {
+                                      @RequestParam(required = false) String searchCondition,
+                                      @RequestParam(required = false) String searchValue,
+                                      @RequestParam(required = false) String startDate,
+                                      @RequestParam(required = false) String endDate,
+                                      Model model) {
 
         Map<String, String> searchMap = new HashMap<>();
         searchMap.put("searchCondition", searchCondition);
@@ -277,15 +278,56 @@ public class SearchController {
         return "admin/orderManagement/order-confirmed";
     }
 
+    /*---------------------------------------------상세 페이지----------------------------------------------*/
+
+    @GetMapping("/detail")
+    public ResponseEntity<OrderDTO> selectDetailList(@RequestParam(name = "clickedOrderCode") Long clickedOrderCode) {
+        log.info("{}", clickedOrderCode);
+        OrderDTO order = orderService.getOrderDetailsList(clickedOrderCode);
+
+        if (order != null) {
+            return ResponseEntity.ok(order);
+        } else {
+            // 주문을 찾을 수 없을 경우 에러 응답
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/productDetail")
+    public ResponseEntity<List<OrderDTO>> getOrderProductDetailList(@RequestParam(name = "clickedOrderCode") Long clickedOrderCode) {
+        log.info("{}", clickedOrderCode);
+        List<OrderDTO> order = orderService.getOrderProductDetailList(clickedOrderCode);
+
+        if (order != null) {
+            return ResponseEntity.ok(order);
+        } else {
+            // 주문을 찾을 수 없을 경우 에러 응답
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/paymentDetail")
+    public ResponseEntity<OrderDTO> getPaymentDetailsList(@RequestParam(name = "clickedOrderCode") Long clickedOrderCode) {
+        log.info("{}", clickedOrderCode);
+        OrderDTO order = orderService.getPaymentDetailsList(clickedOrderCode);
+
+        if (order != null) {
+            return ResponseEntity.ok(order);
+        } else {
+            // 주문을 찾을 수 없을 경우 에러 응답
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     /*---------------------------------------------환불----------------------------------------------*/
 
     @GetMapping("/refund")
     public String selectRefundList(@RequestParam(defaultValue = "1") int page,
-                                      @RequestParam(required = false) String searchCondition,
-                                      @RequestParam(required = false) String searchValue,
-                                      @RequestParam(required = false) String startDate,
-                                      @RequestParam(required = false) String endDate,
-                                      Model model) {
+                                   @RequestParam(required = false) String searchCondition,
+                                   @RequestParam(required = false) String searchValue,
+                                   @RequestParam(required = false) String startDate,
+                                   @RequestParam(required = false) String endDate,
+                                   Model model) {
 
         Map<String, String> searchMap = new HashMap<>();
         searchMap.put("searchCondition", searchCondition);
@@ -300,5 +342,4 @@ public class SearchController {
 
         return "admin/orderManagement/refund";
     }
-
 }
