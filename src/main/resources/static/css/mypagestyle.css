@@ -180,22 +180,6 @@ hr {
     margin: 25px auto 25px auto;
 }
 
-/* mini-nav */
-.mini-nav {
-    display: flex;
-    justify-content: space-around;
-}
-
-.mini {
-    width: 40px;
-    height: auto;
-}
-
-.mini p {
-    font-size: 11px;
-    color: #a8a8a8;
-}
-
 /* right box ------------------------------------------ */
 
 .right-box {

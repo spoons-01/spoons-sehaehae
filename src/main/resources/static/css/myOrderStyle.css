@@ -36,33 +36,27 @@ h3 {
     font-family: NanumSquareNeo-Variable;
 }
 
-/* mysehae 설정 --------------------------------------------------------- */
-.wrapper {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 4%;
-}
-
 /* mypage nav ---------------------------------------------------------*/
+
 .mypage-nav {
     display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
     list-style-type: none;
-    justify-content: center;
     font-family: NanumSquareNeo-Variable;
+    margin: 30px auto 30px auto;
 }
 
 .mypage-nav a {
+    display: flex;
     color: black;
     font-weight: bold;
-    margin: -5px 20px 0px 20px;
+    margin: 0 20px; /* 여백 조정 */
+    align-items: center; /* 세로 중앙 정렬 */
 }
 
 .mypage-nav a:hover {
     color: #4B93FF;
-}
-
-.line {
-    margin-top: 30px;
 }
 
 /* 내 주문 페이지 ------------------------------------------------------*/
