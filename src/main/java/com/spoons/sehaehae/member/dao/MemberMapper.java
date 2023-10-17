@@ -38,7 +38,7 @@ public interface MemberMapper {
 
     List<ReviewDTO> findMyReview(int memberNo);
 
-    OrderDTO findMyOrderDetails(String orderCode);
+    MyOrderDTO findMyOrderDetails(String orderCode);
 
 
 

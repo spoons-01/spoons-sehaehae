@@ -36,8 +36,8 @@ public class MemberService {
     }
 
     /* 주문상세보기 */
-    public OrderDTO findMyOrderDetails(String orderCode) {
-        OrderDTO myOrders = memberMapper.findMyOrderDetails(orderCode);
+    public MyOrderDTO findMyOrderDetails(String orderCode) {
+        MyOrderDTO myOrders = memberMapper.findMyOrderDetails(orderCode);
         return myOrders;
     }
 

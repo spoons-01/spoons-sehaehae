@@ -37,7 +37,7 @@
 <!-- 주문상세조회 -->
 <div class="order">
     <div class="wrapper">
-        <h3>주문상세조회</h3>
+        <h2>주문상세조회</h2>
         <div class="order-box">
             <div class="blue-box">
                 <p>구매확정 시 포인트 적립💰<br> <span>리뷰작성시 300P를 지급해드려요!</span></p>
@@ -77,8 +77,8 @@
                         </div>
 
                         <div class="order-progress">
-                            <p th:text="${myOrders.orderStatus}"></p>
-                            <p th:if="${myOrders.orderStatus == '구매확정'}" th:text="${myOrders.progressDate}"></p>
+                            <p class="blue-font" th:text="${myOrders.orderStatus}"></p>
+                            <p th:if="${myOrders.orderStatus == '구매확정'}" th:text="${'('+ myOrders.progressDate + ')'}"></p>
                         </div>
                     </div>
                     <div class="etc">
@@ -86,6 +86,63 @@
                     </div>
                 </div>
             </div>
+
+            <div class="member1">
+                <h3>배송지 정보</h3>
+            </div>
+
+            <hr class="line" style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
+
+            <div class="member2">
+                <div class="member-detail">
+                    <p class="mini-grey">받는 사람</p>
+                    <p th:text="${myOrders.name}"></p>
+                </div>
+
+                <div class="member-detail">
+                    <p class="mini-grey">연락처</p>
+                    <p th:text="${myOrders.phone}"></p>
+                </div>
+
+                <div class="member-detail">
+                    <p class="mini-grey">주소</p>
+                    <p th:text="${myOrders.inputZipCode}"></p>
+                    <p th:text="${myOrders.inputAddress}"></p>
+                    <p th:text="${myOrders.inputAddress2}"></p>
+                </div>
+
+                <div class="member-detail">
+                    <p class="mini-grey">요청사항</p>
+                    <p th:text="${myOrders.orderRequest}"></p>
+                </div>
+            </div>
+
+            <div class="member1">
+                <h3>결제정보</h3>
+            </div>
+
+            <hr class="line" style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
+
+            <div class="member2">
+                <div class="member-detail">
+                    <p class="mini-grey">상품금액</p>
+                    <p th:text="${myOrders.orderPrice}"></p>
+                </div>
+
+                <div class="member-detail">
+                    <p class="mini-grey">할인금액</p>
+                    <p th:text="${myOrders.orderDiscount}"></p>
+                </div>
+
+                <div class="member-detail">
+                    <p class="mini-grey">결제금액</p>
+                    <p th:text="${myOrders.orderTotalPrice}"></p>
+                </div>
+            </div>
+
+            <div class="none"></div>
+
+
         </div>
     </div>
 </div>

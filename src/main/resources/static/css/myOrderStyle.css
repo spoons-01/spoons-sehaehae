@@ -31,6 +31,10 @@ p {
     font-family: NanumSquareNeo-Variable;
 }
 
+h2 {
+    font-family: NanumSquareNeo-Variable;
+}
+
 h3 {
     font-family: NanumSquareNeo-Variable;
 }
@@ -144,8 +148,33 @@ h3 {
 }
 
 .order-progress {
+    display: flex;
     margin-top: 20px;
 }
 
+.blue-font {
+    font-weight: 700;
+    color: #4B93FF;
+    font-size: 18px;
+}
 
+/* 멤버정보 */
+.member1 {
+    margin: 100px auto 20px;
+}
+.member-detail {
+    display: flex;
+    margin-top: 20px;
+}
 
+.mini-grey {
+    color: #6f6f6f;
+    margin-right: 20px;
+}
+
+/* 주문지정보 */
+
+/* 푸터와의 여백 */
+.none {
+    margin-bottom: 100px;
+}

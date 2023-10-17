@@ -181,7 +181,7 @@ public class MemberController {
 
     @GetMapping("/member/myOrder/{orderCode}")
     public String myOrder(@PathVariable String orderCode, Model model) {
-        OrderDTO orderDTO = memberService.findMyOrderDetails(orderCode);
+        MyOrderDTO orderDTO = memberService.findMyOrderDetails(orderCode);
         model.addAttribute("myOrders", orderDTO);
         return "/user/member/myOrder";
     }
