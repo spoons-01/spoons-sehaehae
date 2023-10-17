@@ -24,6 +24,7 @@
             *
         from    TBL_CP
         WHERE   CP_STATUS = 'Y'
+        ORDER BY CP_NAME asc
     </select>
 
     <insert id="insertCoupon">

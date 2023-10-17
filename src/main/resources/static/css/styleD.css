@@ -29,11 +29,34 @@ img {
 
 li{list-style: none}
 
+.member-table td{cursor: pointer}
+.member-table tr:hover {background: #c6c9cc}
+.member-table{
+    border: 1px black solid;
+    width: 1350px;
+    border-spacing: 0;
+}
+thead{
+    background: #4B93FF;
+    color: #FFF;
+}
+td{
+    padding: 5px 5px;
+    border-right: 1px solid #c6c9cc;
+    border-bottom: 1px solid #c6c9cc;
+}
+
+tr:nth-child(even) td {
+    background: #f5f9fc;
+}
+#member-tr:hover {background: #c6c9cc}
+
+
 /*------------------------------------------------------------------------------------------*/
 .container {
     border: black 1px solid;
-    width: 1350px; height: 700px;
-    margin-left: 400px; margin-top: 20px;
+    width: 1350px; height: 665px;
+    margin-left: 400px; margin-top: 55px;
 }
 .chart_container{
     display: grid;
@@ -54,7 +77,7 @@ li{list-style: none}
     grid-template-rows: 1fr 1fr 1fr 1fr;
     padding: 20px;
     gap: 20px 20px;
-    border: black 1px solid;
+    border: #c6c9cc 1px solid;
     width: 1350px; height: 700px;
     margin-left: 400px; margin-top: 55px; margin-bottom: 50px;
 }
@@ -72,26 +95,7 @@ li{list-style: none}
     color: #4B93FF;
 }
 
-table{
-    border: 1px black solid;
-    margin-left: 400px; margin-top: 20px;
-    width: 1350px;
-    border-spacing: 0;
-}
-thead{
-    background: #4B93FF;
-    color: #FFF;
-}
-td{
-    padding: 5px 5px;
-    border-right: 1px solid #c6c9cc;
-    border-bottom: 1px solid #c6c9cc;
-}
 
-
-tr:nth-child(even) td {
-    background: #f5f9fc;
-}
 
 
 /*==================couponmodal=================*/

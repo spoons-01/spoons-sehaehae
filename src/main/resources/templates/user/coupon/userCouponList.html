@@ -19,7 +19,7 @@
             <li style="font-size: 24px; color: #4B93FF; text-align: right" th:text="${coupon.cpRate} + '%'"></li>
             <form id="userInsertCoupon" action="/user/coupon/insert" method="post">
             <input type="hidden" name="cpCode" th:value="${coupon.cpCode}">
-            <button type="submit" class="buttonD">다운</button>
+            <button type="submit" class="buttonD" style="margin-bottom: 20px">다운로드</button>
             </form>
         </ul>
     </div>

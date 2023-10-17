@@ -66,7 +66,7 @@
         <div class="modalBody">
             <h1 style="font-size: 34px; padding: 30px 0px 100px;">쿠폰생성</h1>
             <div>
-                <form id="couponInsert" action="/coupon/insert" method="post">
+                <form id="couponInsert" action="/coupon/insert" method="post" onsubmit="return alertMsg()">
                     <ul style="width: 690px; line-height: 3; margin: 0">
                         <li>
                             <h3>쿠폰명</h3>
@@ -86,7 +86,7 @@
                     <div class="button-zone">
                         <button class="buttonD button-cancel" type="button" th:onclick="'location.href=\'/coupon/list\''">
                             취소</button>
-                        <button style="border-radius:4px; width:94px; height: 35px; background: #4B93FF; color: #fff;" type="submit">생성</button>
+                        <button class="buttonD" type="submit" id="createCoup">생성</button>
                     </div>
                 </form>
             </div>
@@ -112,6 +112,8 @@
     openModal2.addEventListener("click",()=>{
         insert.style.display="flex";
     })
+
+
 
 
 
