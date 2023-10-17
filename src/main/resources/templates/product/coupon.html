@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="/css/couponList.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-보유쿠폰
-<div th:each=" coupon : ${couponList}" style="border:1px solid black; margin-top: 5px">
-    <input type="number" th:value="${coupon.cpCode}" style="display: none" id="code">
-    <p th:text="${coupon.cpName}" id="name"></p>
-    <p th:text="${coupon.cpEdate}"></p>
-    <p th:text="${coupon.cpRate}" id="rate"></p>
-    <button type="submit">사용</button>
+<p class="maintag">보유쿠폰</p>
+<div th:each=" coupon : ${couponList}" class="couponList">
+    <input type="number" th:value="${coupon.code.cpCode}" style="display: none" id="code">
+    <p th:text="${coupon.code.cpName}" id="name"></p>
+
+    <p th:text="${coupon.code.cpRate}" id="rate"></p>
+    <p th:text="${coupon.code.cpEdate}" id="endDate"></p>
+    <button type="submit" id="button">사용</button>
 </div>
 <script>
     const button = document.querySelectorAll("button");

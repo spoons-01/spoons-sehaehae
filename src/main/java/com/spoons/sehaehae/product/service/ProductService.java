@@ -1,13 +1,17 @@
 package com.spoons.sehaehae.product.service;
 
-import com.spoons.sehaehae.admin.dto.CouponDTO;
+import com.spoons.sehaehae.admin.dto.CpBoxDTO;
 import com.spoons.sehaehae.admin.dto.OrderDTO;
+import com.spoons.sehaehae.common.paging.Pagenation;
+import com.spoons.sehaehae.common.paging.SelectCriteria;
 import com.spoons.sehaehae.member.dto.MemberDTO;
+import com.spoons.sehaehae.member.dto.MemberLevelDTO;
 import com.spoons.sehaehae.product.dao.ProductMapper;
 import com.spoons.sehaehae.product.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -93,7 +97,7 @@ public class ProductService {
         return productMapper.selectAllproductAdmin();
     }
 
-    public List<CouponDTO> selectCoupon(int memberId) {
+    public List<CpBoxDTO> selectCoupon(int memberId) {
 
        return productMapper.selectCoupon(memberId);
     }
@@ -115,5 +119,37 @@ public class ProductService {
         }else{
             productMapper.addPremium(addoption);
         }
+    }
+
+    public Map<String, Object> selectProduct2(Map<String, String> searchMap, int page) {
+
+        int totalCount =  productMapper.selectProductCount(searchMap);
+        int limit = 12;
+        int buttonAmount= 5;
+
+        SelectCriteria selectCriteria = Pagenation.getSelectCriteria(page,totalCount,limit,buttonAmount,searchMap);
+        List<ProductDTO> productList = productMapper.selectProduct2(selectCriteria);
+        Map<String, Object> productListAndPaging = new HashMap<>();
+        productListAndPaging.put("paging",selectCriteria);
+        productListAndPaging.put("boardList",productList);
+
+        return productListAndPaging;
+    }
+
+    public void updateInfo(Map<String, Object> map) {
+        productMapper.updatePoint(map);
+        productMapper.updateCoupon(map);
+    }
+
+
+    public PointDTO selectPoint(int memberCode) {
+        return productMapper.selectPoint(memberCode);
+    }
+
+    public String selectMemberLevel(int memberNo) {
+
+       MemberLevelDTO level = productMapper.selectMemberLevel(memberNo);
+
+       return level.getMembershipCode();
     }
 }

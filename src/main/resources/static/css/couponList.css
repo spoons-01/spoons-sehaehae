@@ -1,0 +1,31 @@
+.maintag{
+    font-size: 20px;
+}
+
+.couponList{
+height: 200px;
+    border: 1px solid black;
+    margin-top: 40px;
+    border-radius: 10px;
+    width: 400px;
+    margin-left: 40px;
+}
+#name{
+    font-size: 30px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+#rate{
+    font-size: 20px;
+    margin-top: -20px;
+    margin-left: 20px;
+}
+#button{
+    font-size: 20px;
+    margin-left: 20px;
+    width: 100px;
+    height: 40px;
+}
+#endDate{
+    margin-left: 20px;
+}
