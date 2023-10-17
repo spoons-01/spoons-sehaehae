@@ -36,6 +36,8 @@ window.addEventListener("load", function() {
 
             // 클릭한 버튼에 설정된 고유 식별자를 가져옵니다.
             const orderCode = button.getAttribute("data-order-code");
+            const memberNo = button.getAttribute("data-point");
+
 
             // 모달 내용을 업데이트하고 모달을 표시
             const modalContent = modal.querySelector(".modal-content");
@@ -43,8 +45,12 @@ window.addEventListener("load", function() {
 
             // <input type="hidden" name="orderCode"> 요소를 찾습니다.
             const orderCodeInput = modal.querySelector('input[name="orderCode"]');
+            const orderMemberInput = modal.querySelector('input[name="memberNo"]');
+
             // 찾은 요소의 값을 주문 코드로 설정합니다.
             orderCodeInput.value = orderCode;
+            orderMemberInput.value = memberNo;
+
 
             modal.style.display = "flex";
         });

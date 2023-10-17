@@ -28,5 +28,6 @@ public class ReviewDTO {
     private int rating;
     private List<ReplyDTO> replyList;
     private AttachmentDTO attachment;
+    private ReviewPointDTO point;
 
 }
