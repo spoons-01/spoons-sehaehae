@@ -44,23 +44,23 @@ p {
 /* mypage nav */
 .mypage-nav {
     display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
     list-style-type: none;
-    justify-content: center;
     font-family: NanumSquareNeo-Variable;
+    margin: 30px auto 30px auto;
 }
 
 .mypage-nav a {
+    display: flex;
     color: black;
     font-weight: bold;
-    margin: -5px 20px 0px 20px;
+    margin: 0 20px; /* 여백 조정 */
+    align-items: center; /* 세로 중앙 정렬 */
 }
 
 .mypage-nav a:hover {
     color: #4B93FF;
-}
-
-.line {
-    margin-top: 30px;
 }
 
 
@@ -100,6 +100,7 @@ input {
     font-size: 14px;
     border-radius: 4px;
     padding: 10px;
+    border: #989898 1px solid;
 }
 
 .emailbox,
@@ -160,6 +161,7 @@ label:focus-within {
     height: 50px;
     width: 170px;
     border: none;
+
     font-family: GangwonState;
     font-size : 18px;
 }

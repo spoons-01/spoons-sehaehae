@@ -1,6 +1,8 @@
 package com.spoons.sehaehae.admin.dao;
 
 import com.spoons.sehaehae.admin.dto.CouponDTO;
+import com.spoons.sehaehae.admin.dto.CpBoxDTO;
+import com.spoons.sehaehae.member.dto.MemberDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -14,4 +16,7 @@ public interface CouponMapper {
     void updateCoupon(CouponDTO coupon);
 
     void deleteCoupon(CouponDTO removeCoupon);
+
+
+    void userInsertCoupon(CpBoxDTO cpBox, MemberDTO member, CouponDTO coupon);
 }

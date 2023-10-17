@@ -1,0 +1,69 @@
+
+/* 래퍼 설정 */
+.wrapper2 {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 4%;
+}
+
+/* nav */
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0 20px;
+}
+
+/* 메인 네비게이션 요소 스타일 수정 */
+.main-nav {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-all {
+    display: flex;
+}
+
+.main-nav li {
+    display: flex;
+    margin: 15px auto auto 15px;
+}
+
+
+
+.main-nav a {
+    color: #000000;
+    font-size: 14px;
+    font-family: NanumSquareNeo-Variable;
+}
+
+.main-nav a:hover {
+    color: #4B93FF;
+}
+
+.mypage {
+    border-radius: 100%;
+    max-width: 50px;
+    max-height: 50px;
+    margin-left: 50px;
+}
+
+/* 로그인 상태 단독 */
+.cart {
+    display: flex;
+    transform: scale(0.8);
+    margin-left: 20px;
+}
+
+/* 헤더 상단 고정 */
+.main-set {
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    z-index: 1;
+
+}
+

@@ -74,7 +74,7 @@
 
         <association property="writer" resultMap="memberResultMap"/>
         <association property="attachment" resultMap="attachmentResultMap"/>
-        <association property="order" resultMap="OrderResultMap"/>
+        <association property="myOrders" resultMap="orderResultMap"/>
 <!--        <collection property="replyList" resultMap="replyResultMap"/>-->
     </resultMap>
 <!--댓글-->
@@ -121,7 +121,8 @@
         <association property="review" resultMap="reviewBoardResultMap"/>
     </resultMap>
 <!--후기 쓸 주문-->
-    <resultMap id="OrderResultMap" type="com.spoons.sehaehae.admin.dto.OrderDTO">
+    <!-- TBL_ORDER -->
+    <resultMap id="orderResultMap" type="com.spoons.sehaehae.admin.dto.OrderDTO">
         <id property="code" column="ORDER_CODE"/>
         <result property="orderDate" column="ORDER_DATE"/>
         <result property="orderRequest" column="ORDER_REQUEST"/>
@@ -132,14 +133,25 @@
         <result property="inputZipCode" column="INPUT_ZIP_CODE"/>
         <result property="inputAddress" column="INPUT_ADDRESS"/>
         <result property="InputAddress2" column="INPUT_ADDRESS2"/>
-        <result property="useCoupon" column="CP_CODE"/>
         <result property="orderStatus" column="ORDER_STATUS"/>
+        <result property="useCoupon" column="CP_CODE"/>
         <result property="usePoint" column="USE_POINT"/>
         <result property="collectionDate" column="COLLECTION_DATE"/>
         <result property="deliveryDate" column="DELIVERY_DATE"/>
         <result property="progressDate" column="PROGRESS_DATE"/>
-<!--        <association property="member" resultMap="memberResultMap"/>-->
+        <result property="reviewStatus" column="REVIEW_STATUS"/>
     </resultMap>
+
+    <!-- 내 구매내역 -->
+    <resultMap id="myOrderResultMap" type="com.spoons.sehaehae.member.dto.MyOrderDTO">
+        <id property="memberNo" column="MEMBER_NO"/>
+        <result property="orderCode" column="ORDER_CODE"/>
+        <result property="orderDate" column="ORDER_DATE"/>
+        <result property="orderStatus" column="ORDER_STATUS"/>
+        <result property="progressDate" column="PROGRESS_DATE"/>
+        <result property="reviewStatus" column="REVIEW_STATUS"/>
+    </resultMap>
+
 
     <!-- 공지사항 -->
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
@@ -421,6 +433,13 @@
     </update>
 
     <!-- 후기 게시판 -->
+    <select id="findMyOrder" resultMap="myOrderResultMap">
+        SELECT B.*
+        FROM TBL_MEMBER A
+        LEFT JOIN TBL_ORDER B ON (A.MEMBER_NO = B.MEMBER_NO)
+        WHERE MEMBER_STATUS = 'Y'
+        AND A.ID = #{ memberId }
+    </select>
 
     <insert id="insertReview">
         INSERT
@@ -445,8 +464,7 @@
         , SYSDATE
         , #{ writer.memberNo }
         , 'Y'
-        , 2
-<!--        , #{ order.orderCode }-->
+        , #{ orderCode }
         , #{ rating }
         )
     </insert>
@@ -476,6 +494,13 @@
         , #{ thumbnail }
         )
     </insert>
+
+    <update id="updateOrderReviewStatus">
+        UPDATE TBL_ORDER
+        SET REVIEW_STATUS = '작성완료'
+        WHERE REVIEW_STATUS IS NULL
+        AND ORDER_CODE = #{ ordercode }
+    </update>
 
     <select id="reviewTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
@@ -572,6 +597,13 @@
         TBL_REVIEW A
         SET A.REVIEW_COUNT = A.REVIEW_COUNT + 1
         WHERE A.REVIEW_NO = #{ reviewNo }
+    </update>
+
+    <update id="deleteReview">
+        UPDATE TBL_REVIEW
+        SET REVIEW_STATUS = 'N'
+        WHERE REVIEW_STATUS = 'Y'
+        AND REVIEW_NO = #{ reviewNo }
     </update>
 
 </mapper>

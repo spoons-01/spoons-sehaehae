@@ -1,6 +1,8 @@
 package com.spoons.sehaehae.member.service;
 
 
+import com.spoons.sehaehae.admin.dto.OrderDTO;
+import com.spoons.sehaehae.board.dto.AttachmentDTO;
 import com.spoons.sehaehae.board.dto.ReviewDTO;
 import com.spoons.sehaehae.common.exception.member.MemberModifyException;
 import com.spoons.sehaehae.common.exception.member.MemberRegistException;
@@ -8,7 +10,6 @@ import com.spoons.sehaehae.member.dao.MemberMapper;
 import com.spoons.sehaehae.member.dto.MemberDTO;
 import com.spoons.sehaehae.member.dto.MyCouponDTO;
 import com.spoons.sehaehae.member.dto.MyOrderDTO;
-import com.spoons.sehaehae.member.dto.MyPointDTO;
 import com.spoons.sehaehae.member.util.Naver_Sens_V2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,12 @@ public class MemberService {
         return myOrders;
     }
 
+    /* 주문상세보기 */
+    public OrderDTO findMyOrderDetails(String orderCode) {
+        OrderDTO myOrders = memberMapper.findMyOrderDetails(orderCode);
+        return myOrders;
+    }
+
     /* 내 쿠폰 목록 */
     public List<MyCouponDTO> findMyCoupon(int memberNo) {
         List<MyCouponDTO> myCoupons = memberMapper.findMyCoupon(memberNo);
@@ -51,7 +58,6 @@ public class MemberService {
         List<ReviewDTO> myReviews = memberMapper.findMyReview(memberNo);
         return myReviews;
     }
-
 
     public MemberDTO findByMemberId(String memberId) {
         return memberMapper.findByMemberId(memberId);
@@ -84,29 +90,6 @@ public class MemberService {
         int result = memberMapper.updateMember(modifyMember);
         if(!(result > 0)) {throw new MemberModifyException("회원 정보 수정에 실패하였습니다.");}
     }
-
-    /* SENS 난수 생성 */
-    public String sendRandomMessage(String tel) {
-        Naver_Sens_V2 message = new Naver_Sens_V2();
-        Random rand = new Random();
-        String numStr = "";
-        for (int i = 0; i < 6; i++) {
-            String ran = Integer.toString(rand.nextInt(10));
-            numStr += ran;
-        }
-        System.out.println("회원가입 문자 인증 => " + numStr);
-
-        message.send_msg(tel, numStr);
-
-        return numStr;
-    }
-
-
-    /* 중복된 핸드폰 번호인지 확인 */
-    public int memberTelCount(String tel) {
-        return memberMapper.countMemberByTel(tel);
-    }
-
 
 
 }

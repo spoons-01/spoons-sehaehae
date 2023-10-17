@@ -40,6 +40,8 @@ public class SearchController {
         searchMap.put("startDate", startDate);
         searchMap.put("endDate", endDate);
 
+
+
         Map<String, Object> searchListAndPaging = orderService.selectSerchList(searchMap, page);  //list 뿐만 아니라 페이징 처리도 같이 하기 위해서 map사용
         model.addAttribute("paging", searchListAndPaging.get("paging"));
         model.addAttribute("searchList", searchListAndPaging.get("searchList"));
@@ -252,13 +254,14 @@ public class SearchController {
     }
 
     /*---------------------------------------------구매확정----------------------------------------------*/
+
     @GetMapping("/order-confirmed")
     public String selectconfirmedList(@RequestParam(defaultValue = "1") int page,
                                      @RequestParam(required = false) String searchCondition,
                                      @RequestParam(required = false) String searchValue,
-                                      @RequestParam(required = false) String startDate,
-                                      @RequestParam(required = false) String endDate,
-                                      Model model) {
+                                     @RequestParam(required = false) String startDate,
+                                     @RequestParam(required = false) String endDate,
+                                     Model model) {
 
         Map<String, String> searchMap = new HashMap<>();
         searchMap.put("searchCondition", searchCondition);
@@ -274,5 +277,28 @@ public class SearchController {
         return "admin/orderManagement/order-confirmed";
     }
 
+    /*---------------------------------------------환불----------------------------------------------*/
+
+    @GetMapping("/refund")
+    public String selectRefundList(@RequestParam(defaultValue = "1") int page,
+                                      @RequestParam(required = false) String searchCondition,
+                                      @RequestParam(required = false) String searchValue,
+                                      @RequestParam(required = false) String startDate,
+                                      @RequestParam(required = false) String endDate,
+                                      Model model) {
+
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+        searchMap.put("startDate", startDate);
+        searchMap.put("endDate", endDate);
+
+        Map<String, Object> searchListAndPaging = orderService.selectSearchRefundList(searchMap, page);
+        model.addAttribute("paging", searchListAndPaging.get("paging"));
+        model.addAttribute("searchRefundList", searchListAndPaging.get("searchRefundList"));
+
+
+        return "admin/orderManagement/refund";
+    }
 
 }

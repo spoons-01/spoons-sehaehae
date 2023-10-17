@@ -17,13 +17,13 @@
 <div th:replace="/admin/common/nav.html"></div>
 
 <header>
-    <h3>주문관리 &gt 결제완료</h3>
+    <h3>주문관리 &gt 배송준비</h3>
     <h3 id="login">로그인(로그아웃)</h3>
 </header>
 
 <div class="container">
     <div class="basic-search">
-        <h4 class="top-name">결제완료</h4>
+        <h4 class="top-name">배송준비</h4>
     </div>
 
     <div class="basic-search2">
@@ -104,8 +104,8 @@
             </tr>
             <tr th:each="search : ${ searchPreparingList }">
                 <td><input class="checkStatus" type="checkbox" name="checkStatus" value="checkStatus" th:data-order-id="${search.code}"></td>
-                <td th:text="${ search.code }" th:onclick="|location.href='/orderManagement/orderDetail?code=${search.code}'|" th:style="'border: 1px solid #000000FF; color: blue;'"></td>
-                <td th:text="${ #dates.format(search.orderDate, 'yyy-MM-dd') }" th:style="'border: 1px solid #000000FF;'"></td>
+                <td class="clickable" th:text="${ search.code }"  th:style="'border: 1px solid #000000FF; color: blue;'"></td>
+                <td th:text="${ #dates.format(search.orderDate, 'yyyy-MM-dd') }" th:style="'border: 1px solid #000000FF;'"></td>
                 <td th:text="${ search.orderTotalPrice }" th:style="'border: 1px solid #000000FF;'"></td>
                 <td th:text="${ search.member.name}" th:style="'border: 1px solid #000000FF;'"></td>
                 <td th:text="${ search.member.phone}" th:style="'border: 1px solid #000000FF;'"></td>

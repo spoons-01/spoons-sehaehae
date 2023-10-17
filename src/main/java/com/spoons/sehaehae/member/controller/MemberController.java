@@ -1,6 +1,9 @@
 package com.spoons.sehaehae.member.controller;
 
+import com.spoons.sehaehae.admin.dto.OrderDTO;
+import com.spoons.sehaehae.board.dto.AttachmentDTO;
 import com.spoons.sehaehae.board.dto.ReviewDTO;
+import com.spoons.sehaehae.board.service.BoardService;
 import com.spoons.sehaehae.common.exception.member.MemberModifyException;
 import com.spoons.sehaehae.common.exception.member.MemberRegistException;
 import com.spoons.sehaehae.common.util.EmailUtil;
@@ -9,6 +12,7 @@ import com.spoons.sehaehae.member.service.AuthenticationService;
 import com.spoons.sehaehae.member.service.CouponRepository;
 import com.spoons.sehaehae.member.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,14 +51,17 @@ public class MemberController {
     private final PasswordEncoder passwordEncoder;
     private EmailUtil emailUtil;
     private final CouponRepository couponRepository;
+    private final BoardService boardService; // 인선!!!!
 
-    public MemberController(MemberService memberService, AuthenticationService authenticationService, MessageSourceAccessor messageSourceAccessor, PasswordEncoder passwordEncoder, EmailUtil emailUtil, CouponRepository couponRepository) {
+    public MemberController(MemberService memberService, AuthenticationService authenticationService, MessageSourceAccessor messageSourceAccessor, PasswordEncoder passwordEncoder, EmailUtil emailUtil, CouponRepository couponRepository
+                            ,BoardService boardService ) {
         this.memberService = memberService;
         this.authenticationService = authenticationService;
         this.messageSourceAccessor = messageSourceAccessor;
         this.passwordEncoder = passwordEncoder;
         this.emailUtil = emailUtil;
         this.couponRepository = couponRepository;
+        this.boardService = boardService; // 인선!!!!!
     }
 
     @GetMapping("/main/main")
@@ -126,23 +133,22 @@ public class MemberController {
         String membershipName = extractMembershipName(memberDTO);
         // 2. 현재 로그인한 회원의 memberNo를 얻는다
         int memberNo = memberDTO.getMemberNo();
-        // 2-2. MEMBER_NO를 이용하여 쿠폰 개수를 얻어온다
+        // 2-1. MEMBER_NO를 이용하여 쿠폰 개수를 얻어온다
         int couponCount = couponRepository.countCouponsByMemberNo(memberNo);
         // 3. 내 주문 목록을 불러온다
         List<MyOrderDTO> myOrders = memberService.findMyOrder(currentUsername);
         // 4. 내 포인트를 불러온다.
         int myPoint = memberService.findMyPoint(memberNo);
         // 5. 주문 상태별 개수를 저장할 맵 초기화
-        // 5-2. 주문 상태 배열에 넣기
         String[] orderedOrderStatuses = {"결제완료", "수거완료", "세탁완료", "배송준비", "배송중", "구매확정"};
         List<MyOrderDTO> myOrderList = memberService.findMyOrder(currentUsername);
-        // 5-3. 주문 상태별 개수를 저장할 맵 초기화
+        // 5-1. 주문 상태별 개수를 저장할 맵 초기화
         Map<String, Integer> orderStatusCounts = new LinkedHashMap<>();  // 순서가 중요하므로 LinkedHashMap 사용
-        // 5-4. 정렬된 주문 상태 배열을 기반으로 초기화
+        // 5-2. 정렬된 주문 상태 배열을 기반으로 초기화
         for (String status : orderedOrderStatuses) {
             orderStatusCounts.put(status, 0);
         }
-        // 5-5. 주문 목록을 순회하면서 주문 상태 개수 계산
+        // 5-3. 주문 목록을 순회하면서 주문 상태 개수 계산
         for (MyOrderDTO order : myOrderList) {
             String orderStatus = order.getOrderStatus();
             orderStatusCounts.put(orderStatus, orderStatusCounts.get(orderStatus) + 1);
@@ -161,7 +167,6 @@ public class MemberController {
         return "/user/member/mysehae";
     }
 
-    // MemberDTO에서 membershipName을 추출하는 메소드
     private String extractMembershipName(MemberDTO memberDTO) {
         if (memberDTO != null && memberDTO.getMemberLevelList() != null) {
             for (MemberLevelDTO memberLevelDTO : memberDTO.getMemberLevelList()) {
@@ -170,35 +175,34 @@ public class MemberController {
                 }
             }
         }
-        return "N/A"; // 기본값
+        return "N/A";
     }
 
     @GetMapping("/member/myCoupon")
     public String myCoupon(Model model, Principal principal) {
-        // 현재 로그인한 사용자의 아이디 얻기
         String currentUserName = principal.getName();
-        // 현재 사용자의 MemberDTO를 얻어온다
         MemberDTO memberDTO = memberService.findByMemberId(currentUserName);
-        // 현재 로그인한 회원의 memberNo를 얻는다
         int memberNo = memberDTO.getMemberNo();
 
-        // 내 쿠폰 목록을 불러온다
         List<MyCouponDTO> myCoupons = memberService.findMyCoupon(memberNo);
         model.addAttribute("myCoupons", myCoupons);
         return "/user/member/myCoupon";
     }
 
-
-    @GetMapping("/member/myOrder")
-    public void myOrder() {
+    @GetMapping("/member/myOrder/{orderCode}")
+    public String myOrder(@PathVariable String orderCode, Model model) {
+        OrderDTO orderDTO = memberService.findMyOrderDetails(orderCode);
+        model.addAttribute("orderDetails", orderDTO);
+        return "/user/member/myOrder";
     }
+
+
+    /* 마이페이지-설정 이동 */
     @GetMapping("/member/update")
-    public void update(@AuthenticationPrincipal MemberDTO loginMember) {
-        if (StringUtils.isBlank(loginMember.getProfilePhoto())) {
-            loginMember.setProfilePhoto("/images/smile.png");
-        }
+    public void update() {
     }
 
+    /* 마이페이지-설정 수정(회원정보 수정) */
     @PostMapping("/member/update")
     public String modifyMember(MemberDTO modifyMember, MultipartFile attachImage,
                                @AuthenticationPrincipal MemberDTO loginMember, RedirectAttributes rttr) throws MemberModifyException {
@@ -208,7 +212,7 @@ public class MemberController {
         log.info("modifyMember request Member : {}", modifyMember);
         log.info("modifyMember attachImage request : {}", attachImage);
 
-        String fileUploadDir = IMAGE_DIR + "/original";
+        String fileUploadDir = IMAGE_DIR + "original";
 
         File dir = new File(fileUploadDir);
 
@@ -219,6 +223,7 @@ public class MemberController {
 
         // 여러 개의 파일을 받을 게 아니라서, DTO와 리스트는 필요 없다.
         //List<ProfileAttachmentDTO> profileAttachmentList = new ArrayList<>();
+
         try {
             if (attachImage.getSize() > 0) {
                 /* 첨부파일이 실제로 존재하는 경우에만 로직 수행 */
@@ -231,7 +236,7 @@ public class MemberController {
                 log.info("savedFileName : {}", savedFileName);
 
                 /* 서버의 설정 디렉토리에 파일 저장하기 */
-                attachImage.transferTo(new File(IMAGE_DIR + File.separator + savedFileName));
+                attachImage.transferTo(new File(fileUploadDir + "/" + savedFileName));
                 modifyMember.setProfilePhoto("/upload/original/" + savedFileName);
             }
         } catch (IOException e) {
@@ -245,14 +250,12 @@ public class MemberController {
         SecurityContextHolder.getContext().
                 setAuthentication(createNewAuthentication(loginMember.getMemberId()));
 
-//        rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("member.modify"));
+        rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("member.modify"));
 
         return "redirect:/user/member/update";
     }
 
 
-
-    /* ================================================================== */
 
     protected Authentication createNewAuthentication(String memberId) {
 
@@ -262,43 +265,6 @@ public class MemberController {
 
         return newAuth;
     }
-
-
-    /**/
-    /* 핸드폰 번호 인증 */
-//    @PostMapping("/member/phoneAuth")
-//    @ResponseBody
-//    public Boolean phoneAuth(@RequestParam("tel") String tel, HttpSession session) {
-//
-//        try { // 이미 가입된 전화번호가 있으면
-//            if (memberService.memberTelCount(tel) > 0)
-//                return true;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        String code = memberService.sendRandomMessage(tel);
-//        session.setAttribute("rand", code);
-//
-//        return false;
-//    }
-
-
-//    @PostMapping("/member/phoneAuthOk")
-//    @ResponseBody
-//    public Boolean phoneAuthOk(HttpSession session, HttpServletRequest request) {
-//        String rand = (String) session.getAttribute("rand");
-//        String code = request.getParameter("code");
-//
-//        System.out.println(rand + " : " + code);
-//
-//        if (rand.equals(code)) {
-//            session.removeAttribute("rand");
-//            return false;
-//        }
-//
-//        return true;
-//    }
 
     /**
      * 이메일 인증코드 발송
@@ -324,7 +290,7 @@ public class MemberController {
                     EmailDTO.builder()
                             .email(emailAuthDTO.getEmail())
                             .content(
-                                    "<h1>인증 사용자 : 홍길동</h1>"
+                                    "<h1>인증 사용자 : 세탁해병대</h1>"
                                             + "<h1>인증 요청 시간 : " + DateFormatUtils.format(emailAuthDTO.getRegDt(), "HH:mm:ss (E)") + "</h1>"
                                             + "<h1>인증 번호 : [" + emailAuthDTO.getEmailAuthVal() + "]</h1>"
                                             + "<h1>인증 만료 시간은 10분 입니다. 10분 이내에 입력 하여 주시기 바랍니다.</h1>"
@@ -407,5 +373,83 @@ public class MemberController {
 
     /* 인선!!!! 후기작성 모달창 ---------------------------------------------------- */
 
+    @PostMapping("/member/mysehae")
+    public String registReview(ReviewDTO review, MultipartFile attachImage,
+                               @AuthenticationPrincipal MemberDTO member,
+                               @AuthenticationPrincipal OrderDTO myOrder,
+                               @RequestParam("rating") int rating,
+                               Model model, Principal principal,
+                               String orderCode) {
+
+        log.info("review request : {}", review);
+        log.info("attachImage request : {}", attachImage);
+
+        // 별점을 ReviewDTO에 설정
+        review.setRating(rating);
+
+        String fileUploadDir = IMAGE_DIR + "original";
+        String thumbnailDir = IMAGE_DIR + "thumbnail";
+
+        File dir1 = new File(fileUploadDir);
+        File dir2 = new File(thumbnailDir);
+
+        /* 디렉토리가 없을 경우 생성한다. */
+        if(!dir1.exists() ) {
+            dir1.mkdirs();
+            dir2.mkdirs();
+        }
+
+        /* 업로드 파일에 대한 정보를 담을 리스트 */
+        AttachmentDTO attachment = new AttachmentDTO();
+
+        try {
+                /* 첨부파일이 실제로 존재하는 경우에만 로직 수행 */
+                    if(attachImage.getSize() > 0) {
+
+                        String originalFileName = attachImage.getOriginalFilename();
+                        log.info("originalFileName : {}", originalFileName);
+
+                        String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
+                        String savedName = UUID.randomUUID() + ext;
+                        log.info("saveName : {}", savedName);
+
+                        Long size = attachImage.getSize();
+
+                        /* 서버의 설정 디렉토리에 파일 저장하기 */
+
+                        attachImage.transferTo(new File(fileUploadDir + "/" + savedName));
+
+                        /* DB에 저장할 파일의 정보 처리 */
+                        AttachmentDTO fileInfo = new AttachmentDTO();
+                        attachment.setName(originalFileName);
+                        attachment.setSavedName(savedName);
+                        attachment.setRoute("/uplode/original");
+                        attachment.setExtension(ext);
+                        attachment.setSize(size);
+                        log.info("fileInfo : {}", attachment);
+                        attachment.setEx("TITLE"); // 대표사진
+
+                            /* 대표 사진에 대한 썸네일을 가공해서 저장한다. */
+                            Thumbnails.of(fileUploadDir + "/" + savedName).size(150,150)
+                                    .toFile(thumbnailDir + "/thumbnail_" + savedName);
+                        attachment.setThumbnail("/upload/thumbnail/thumbnail_" + savedName);
+
+                    }
+
+            }catch (IOException e) {
+        throw new RuntimeException(e);
+        }
+
+        log.info("fileInfo : {}", attachment);
+
+        review.setAttachment(attachment);
+        review.setWriter(member);
+        review.setMyOrders(myOrder);
+        model.addAttribute("myOrders", myOrder);
+
+        boardService.registReview(review, attachment, orderCode);
+
+        return "redirect:/user/member/mysehae";
+        }
 
 }
