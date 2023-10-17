@@ -2,6 +2,7 @@ package com.spoons.sehaehae.member.controller;
 
 import com.spoons.sehaehae.admin.dto.OrderDTO;
 import com.spoons.sehaehae.board.dto.AttachmentDTO;
+import com.spoons.sehaehae.board.dto.ReviewPointDTO;
 import com.spoons.sehaehae.board.dto.ReviewDTO;
 import com.spoons.sehaehae.board.service.BoardService;
 import com.spoons.sehaehae.common.exception.member.MemberModifyException;
@@ -377,9 +378,11 @@ public class MemberController {
     public String registReview(ReviewDTO review, MultipartFile attachImage,
                                @AuthenticationPrincipal MemberDTO member,
                                @AuthenticationPrincipal OrderDTO myOrder,
+                               @AuthenticationPrincipal ReviewPointDTO myPoint,
                                @RequestParam("rating") int rating,
                                Model model, Principal principal,
-                               String orderCode) {
+                               String orderCode,
+                               ReviewPointDTO point) {
 
         log.info("review request : {}", review);
         log.info("attachImage request : {}", attachImage);
@@ -423,7 +426,7 @@ public class MemberController {
                         AttachmentDTO fileInfo = new AttachmentDTO();
                         attachment.setName(originalFileName);
                         attachment.setSavedName(savedName);
-                        attachment.setRoute("/uplode/original");
+                        attachment.setRoute("/upload/");
                         attachment.setExtension(ext);
                         attachment.setSize(size);
                         log.info("fileInfo : {}", attachment);
@@ -445,9 +448,12 @@ public class MemberController {
         review.setAttachment(attachment);
         review.setWriter(member);
         review.setMyOrders(myOrder);
-        model.addAttribute("myOrders", myOrder);
 
-        boardService.registReview(review, attachment, orderCode);
+        model.addAttribute("myOrders", myOrder);
+        model.addAttribute("myPoint", myPoint);
+
+
+        boardService.registReview(review, attachment, orderCode, point);
 
         return "redirect:/user/member/mysehae";
         }
