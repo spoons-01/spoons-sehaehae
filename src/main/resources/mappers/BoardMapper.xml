@@ -75,6 +75,8 @@
         <association property="writer" resultMap="memberResultMap"/>
         <association property="attachment" resultMap="attachmentResultMap"/>
         <association property="myOrders" resultMap="orderResultMap"/>
+        <association property="point" resultMap="pointResultMap"/>
+
 <!--        <collection property="replyList" resultMap="replyResultMap"/>-->
     </resultMap>
 <!--댓글-->
@@ -150,6 +152,16 @@
         <result property="orderStatus" column="ORDER_STATUS"/>
         <result property="progressDate" column="PROGRESS_DATE"/>
         <result property="reviewStatus" column="REVIEW_STATUS"/>
+    </resultMap>
+
+    <!-- 포인트 -->
+    <resultMap id="pointResultMap" type="com.spoons.sehaehae.board.dto.ReviewPointDTO">
+        <id property="ptCode" column="PT_CODE"/>
+        <result property="memberNo" column="MEMBER_NO"/>
+        <result property="point" column="POINT"/>
+        <result property="orderCode" column="ORDER_CODE"/>
+        <result property="reviewNo" column="REVIEW_NO"/>
+        <association property="writer" resultMap="memberResultMap"/>
     </resultMap>
 
 
@@ -501,6 +513,26 @@
         WHERE REVIEW_STATUS IS NULL
         AND ORDER_CODE = #{ ordercode }
     </update>
+
+    <insert id="insertPoint">
+        INSERT
+        INTO TBL_PT A
+        (
+        A.PT_CODE
+        , A.MEMBER_NO
+        , A.POINT
+        , A.ORDER_CODE
+        , A.REVIEW_NO
+        )
+        VALUES
+        (
+        SEQ_PT_CODE.NEXTVAL
+        , #{ memberNo }
+        , 300
+        , #{ orderCode }
+        , SEQ_REVIEW_NO.CURRVAL
+        )
+    </insert>
 
     <select id="reviewTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
