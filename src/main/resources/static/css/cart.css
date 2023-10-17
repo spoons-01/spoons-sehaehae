@@ -16,9 +16,10 @@
     margin-left: 100px;
     border: 1px solid black;
     width: 800px;
-    height: 200px;
+    height: 220px;
     border-radius: 14px;
     padding: 15px 0;
+    font-family: Poppins;
 }
 
 .productCode{

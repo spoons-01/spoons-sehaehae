@@ -31,5 +31,6 @@ public class OrderDTO {
     private String deliveryDate;
     private Date progressDate;
     private String image;
+    private int reward;
     private List<OrderProductDTO> list;
 }

@@ -7,12 +7,16 @@
     <title>Document</title>
 </head>
 <body>
+<a href="/">
+    <img class="logo" src="/images/logo.png" alt="HOME">
+</a>
 <div class="container1" style="margin-top: 0px;">
     <p style="font-size: 40px;">주문/결제</p>
 </div>
 
 <div class="big">
     <form method="post" action="/product/complete" id="submit" enctype="multipart/form-data">
+        <input type="hidden" th:value="${point.point}" name="point">
         <div class="containerr">
         <div class="bigcontainer">
             <div class="container a">
@@ -86,11 +90,11 @@
                         <td>배송비</td>
                         <td>3,000원</td>
                     </tr>
-<!--                    <tr>-->
-<!--                        <td>포인트</td>-->
-<!--                        <td><input id="point" type="number" placeholder="사용금액 입력" name="usePoint" value="0"></td>-->
-<!--                        <td th:text="${member.point}+'원 보유'"></td>-->
-<!--                    </tr>-->
+                    <tr>
+                        <td>포인트</td>
+                        <td><input id="point" type="number" placeholder="사용금액 입력" name="usePoint" value="0"></td>
+                        <td th:text="${point.point}+'원 보유'"></td>
+                    </tr>
                     <tr>
                         <td>총 결제금액</td>
                         <td id="finalPrice" th:text="${#numbers.formatInteger(totalPrice+3000,3,'COMMA')}+'원'"></td>
@@ -114,6 +118,8 @@
             <div class="pdinfo" th:each="list:${cartList}">
                 <input type="hidden" th:value="${list.product.code}" name="productCode">
                 <input type="hidden" th:value="${list.amount}" name="amount">
+                <input type="hidden" th:value="${list.useEco}" name="useEco">
+                <input type="hidden" th:value="${list.usePremium}" name="usePremium">
                 <img th:src="${list.product.photo}" style="max-width: 120px; max-height: 100px">
                 <div class="iinfo">
                     <p th:text="${list.product.name}">티셔츠</p>
@@ -131,8 +137,6 @@
 <script>
     const $usecoupon = document.querySelector(".usecoupon")
     console.log($usecoupon.value);
-
-
     const ttotalPrice = '[[${totalPrice}]]'
     const $imagebox = document.querySelector(".replaceimage");
     const $file = document.querySelector(".file");
@@ -198,6 +202,22 @@
         }
     }
     console.log($regist)
+    const point = '[[${point.point}]]'
+    $point.addEventListener("change", function () {
+        if($point.value > Number(point)){
+            alert("보유하신 포인트가 부족합니다.")
+            $point.value = 0;
+        }
+        $rate = document.querySelector("#rate").value;
+        console.log($point.value);
+        console.log($rate)
+        fetch("/product/finalPrice?point=" + $point.value + "&totalPrice=" + ttotalPrice + "&rate=" + $rate)
+            .then(res => res.text())
+            .then(r => $finalPrice2.value = Number(r)+3000)
+            .then(re => $finalPrice.textContent = (Number(re)).toLocaleString('ko-KR')+"원")
+            .catch(error => console.log(error));
+        console.log($finalPrice.textContent);
+    })
 
     function naverpay(data) {
         submit.submit();
@@ -254,7 +274,7 @@
             const $usecoupon = document.querySelector("#usecoupon").value;
             console.log($rate);
             console.log($usecoupon);
-            fetch("/product/finalPrice?rate=" + $rate + "&couponCode=" + $usecoupon + "&totalPrice=" + Number(ttotalPrice))
+            fetch("/product/finalPrice?point=" + $point.value + "&totalPrice=" + ttotalPrice + "&rate=" + $rate)
                 .then(res => res.text())
                 .then(r => $finalPrice2.value = Number(r)+3000)
                 .then(re => $finalPrice.textContent = re.toLocaleString('ko-KR')+"원")
@@ -263,10 +283,11 @@
     }
     const date = new Date;
     const today = date.getFullYear()+"-"+(Number(date.getMonth())+1)+"-"+date.getDate();
+
     $collection.min = today;
     $deliver.min = today;
-</script>
 
+</script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
     const address2 = document.querySelector(".address2");

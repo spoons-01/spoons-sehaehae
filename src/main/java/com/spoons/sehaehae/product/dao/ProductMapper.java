@@ -1,8 +1,10 @@
 package com.spoons.sehaehae.product.dao;
 
-import com.spoons.sehaehae.admin.dto.CouponDTO;
+import com.spoons.sehaehae.admin.dto.CpBoxDTO;
 import com.spoons.sehaehae.admin.dto.OrderDTO;
+import com.spoons.sehaehae.common.paging.SelectCriteria;
 import com.spoons.sehaehae.member.dto.MemberDTO;
+import com.spoons.sehaehae.member.dto.MemberLevelDTO;
 import com.spoons.sehaehae.product.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +44,7 @@ public interface ProductMapper {
 
     List<ProductDTO> selectAllproductAdmin();
 
-    List<CouponDTO> selectCoupon(int memberId);
+    List<CpBoxDTO> selectCoupon(int memberId);
 
     void deletePremium(Map<String, Object> map);
 
@@ -53,4 +55,16 @@ public interface ProductMapper {
     void addPremium(Map<String, Object> addoption);
 
     void addOrderProduct(OrderProductDTO orderProductDTO);
+
+    int selectProductCount(Map<String, String> searchMap);
+
+    List<ProductDTO> selectProduct2(SelectCriteria selectCriteria);
+
+    void updatePoint(Map<String, Object> map);
+
+    void updateCoupon(Map<String, Object> map);
+
+    PointDTO selectPoint(int memberCode);
+
+    MemberLevelDTO selectMemberLevel(int memberNo);
 }

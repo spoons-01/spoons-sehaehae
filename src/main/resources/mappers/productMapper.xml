@@ -168,9 +168,9 @@
     <insert id="registOrder">
         INSERT INTO TBL_ORDER
         (ORDER_CODE, ORDER_DATE, ORDER_REQUEST, ORDER_PRICE, ORDER_DISCOUNT, ORDER_TOTAL_PRICE,
-        MEMBER_NO,INPUT_ADDRESS,INPUT_ADDRESS2,CP_CODE,USE_POINT,COLLECTION_DATE,DELIVERY_DATE,ORDER_STATUS,INPUT_ZIP_CODE)
+        MEMBER_NO,INPUT_ADDRESS,INPUT_ADDRESS2,CP_CODE,USE_POINT,COLLECTION_DATE,DELIVERY_DATE,ORDER_STATUS,INPUT_ZIP_CODE,REWARD)
         VALUES
-        (#{code},#{orderDate},#{orderRequest},#{orderPrice},#{orderDiscount},#{orderTotalPrice},#{member.memberNo},#{inputAddress},#{InputAddress2},#{useCoupon},#{usePoint},#{collectionDate},#{deliveryDate},'결제완료',#{inputZipCode})
+        (#{code},#{orderDate},#{orderRequest},#{orderPrice},#{orderDiscount},#{orderTotalPrice},#{member.memberNo},#{inputAddress},#{InputAddress2},#{useCoupon},#{usePoint},#{collectionDate},#{deliveryDate},'결제완료',#{inputZipCode},#{reward})
     </insert>
 
     <update id="modifyProduct">
@@ -191,6 +191,7 @@
     <update id="deleteProduct">
         UPDATE TBL_PRODUCT
         SET DELETE_STATUS = 'Y'
+        ,DELETE_DATE = SYSDATE
         WHERE PRODUCT_CODE IN
         <foreach collection="productMap" item="item" open="(" separator="," close=")">#{item}</foreach>
     </update>
@@ -198,20 +199,29 @@
         <id property="cpCode" column="CP_CODE"/>
         <result property="cpName" column="CP_NAME"/>
         <result property="cpRate" column="CP_RATE"/>
+        <result property="cpSdate" column="CP_SDATE"/>
+        <result property="cpEdate" column="CP_EDATE"/>
+        <result property="cpStatus" column="CP_STATUS"/>
     </resultMap>
-    <select id="selectCoupon" resultMap="couponResultMap">
+
+    <resultMap id="cpboxResultMap" type="com.spoons.sehaehae.admin.dto.CpBoxDTO">
+        <result property="status" column="USE_STATUS"/>
+        <association property="code" resultMap="couponResultMap"/>
+        <association property="member" resultMap="memberResultMap"/>
+    </resultMap>
+
+    <select id="selectCoupon" resultMap="cpboxResultMap">
         SELECT
-        CP_CODE,
-        CP_NAME,
-        CP_RATE
-        FROM TBL_CP
-    </select>
-    <select id="selectProductCount">
-        SELECT
-        count(*)
-        FROM TBL_PRODUCT
-        WHERE USEABLE_STATUS = 'Y'
-        AND DELETE_STATUS = 'N'
+        A.CP_CODE,
+        B.CP_NAME,
+        B.CP_RATE,
+        B.CP_SDATE,
+        B.CP_EDATE
+        FROM TBL_CPBOX A
+        JOIN TBL_CP B ON(A.CP_CODE = B.CP_CODE)
+        WHERE MEMBER_NO = #{memberNo}
+        AND B.CP_STATUS = 'Y'
+        AND A. USE_STATUS = 'N'
     </select>
     <update id="deletePremium">
         UPDATE TBL_CART
@@ -240,8 +250,48 @@
 
     <insert id="addOrderProduct">
         INSERT INTO TBL_ORDER_PRODUCT
-        (PRODUCT_CODE, ORDER_CODE, ORDER_AMOUNT)
+        (PRODUCT_CODE, ORDER_CODE, ORDER_AMOUNT, USE_PREMIUM, USE_ECO)
         VALUES
-        (#{productCode},#{orderCode},#{amount})
+        (#{productCode},#{orderCode},#{amount},#{usePremium},#{useEco})
     </insert>
+
+
+
+    <update id="updatePoint">
+        UPDATE TBL_POINT
+        SET POINT = #{point}
+        WHERE MEMBER_NO = #{member.memberNo}
+    </update>
+    <update id="updateCoupon">
+        UPDATE TBL_CPBOX
+        SET USE_STATUS = 'Y'
+        WHERE MEMBER_NO = #{member.memberNo}
+        AND CP_CODE = #{usecouponCode}
+    </update>
+
+    <resultMap id="pointResultMap" type="com.spoons.sehaehae.product.dto.PointDTO">
+        <result property="memberNo" column="MEMBER_NO"/>
+        <result property="point" column="POINT"/>
+    </resultMap>
+    <select id="selectPoint" resultMap="pointResultMap">
+        SELECT
+        POINT
+        FROM TBL_POINT
+        WHERE MEMBER_NO = #{memberNo}
+    </select>
+
+    <resultMap id="memberLevelResultMap" type="com.spoons.sehaehae.member.dto.MemberLevelDTO">
+        <id column="MEMBER_NO" property="memberNo"/>
+        <id column="MEMBERSHIP_CODE" property="membershipCode"/>
+    </resultMap>
+
+
+    <select id="selectMemberLevel" resultMap="memberLevelResultMap">
+        SELECT
+        MEMBER_NO,
+        MEMBERSHIP_CODE
+        FROM TBL_MEMBER_LEVEL
+        WHERE MEMBER_NO = #{memberNo}
+    </select>
+
 </mapper>

@@ -23,7 +23,7 @@
                 <div class="line"></div>
             </div>
             <div class="amount1">
-            <span>수량</span><input type="number" id="input1" value="1">
+            <span>수량</span><input type="number" id="input1" value="1" min="1">
             <span id="totalPrice" th:text="${#numbers.formatInteger(product.price,3,'COMMA')+'원'}"></span>
             </div>
             <br>
@@ -99,8 +99,6 @@
                 .then(res=>res.text())
                 .then(res=>alert(res))
                 .catch(error=>alert(error))
-
-
         }
 </script>
 </body>

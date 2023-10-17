@@ -1,8 +1,10 @@
 package com.spoons.sehaehae.product.controller;
 
 import com.spoons.sehaehae.admin.dto.CouponDTO;
+import com.spoons.sehaehae.admin.dto.CpBoxDTO;
 import com.spoons.sehaehae.admin.dto.OrderDTO;
 import com.spoons.sehaehae.member.dto.MemberDTO;
+import com.spoons.sehaehae.member.dto.MemberLevelDTO;
 import com.spoons.sehaehae.product.dto.*;
 import com.spoons.sehaehae.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +42,17 @@ public class ProductController {
     @GetMapping("/list")
     public void productList(Model model,
                             @RequestParam(required = false) String searchValue,
-                            @RequestParam(required = false) String searchCondition
+                            @RequestParam(required = false) String searchCondition,
+                            @RequestParam(defaultValue = "1" ) int page,
+                            @AuthenticationPrincipal MemberDTO member
                             ) {
         Map<String, String> searchMap = new HashMap<>();
         searchMap.put("searchValue", searchValue);
         searchMap.put("searchCondition", searchCondition);
+        System.out.println("point : " + member);
+
+
+
         List<ProductDTO> productList = productService.selectProduct(searchMap);
         List<ProductDTO> allProduct = productService.selectAllproduct(null);
         List<CategoryDTO> categoryList = productService.selectCategory();
@@ -79,10 +87,11 @@ public class ProductController {
 
         MemberDTO member1 = productService.selectMember(memberCode);
         List<CartDTO> cart = productService.cartList(memberCode);
-
+        PointDTO point = productService.selectPoint(memberCode);
         model.addAttribute("totalPrice", totalPrice-3000);
         model.addAttribute("member", member1);
         model.addAttribute("cartList", cart);
+        model.addAttribute("point",point);
     }
 
     @GetMapping("/categoryRegist")
@@ -102,7 +111,8 @@ public class ProductController {
         System.out.println(new Date());
         product.setRegistDate(new Date());
         String originalName = productImage.getOriginalFilename();
-        String fileUploadDir = IMG_DIR + "resource/images";
+        // C:/lecture/sub_project/spoons-sehaehae/src/main/resources/upload/
+        String fileUploadDir = IMG_DIR + "resource/productImage";
         File dir = new File(fileUploadDir);
         if (!dir.exists()) {
             dir.mkdirs();
@@ -110,7 +120,7 @@ public class ProductController {
         try {
             if (productImage.getSize() > 0) {
                 productImage.transferTo(new File(fileUploadDir + "/" + originalName));
-                product.setPhoto("/resource/images/" + originalName);
+                product.setPhoto("/upload/resource/productImage/" + originalName);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -196,7 +206,6 @@ public class ProductController {
         System.out.println(totalPrice);
         System.out.println(rate);
 
-
         float per = (float) rate / 100;
         Long discount = (long) (totalPrice * per);
         System.out.println("discount : " + discount); //할인금액
@@ -205,14 +214,17 @@ public class ProductController {
         return ResponseEntity.ok(finalPrice);
     }
     @PostMapping("/complete")
-    public String complete(@ModelAttribute OrderDTO order, Model model, @AuthenticationPrincipal MemberDTO member,MultipartFile photo, @RequestParam(value = "productCode") List<Integer> productCode, @RequestParam(value = "amount") List<Integer> amount) {
-        System.out.println(productCode);
-        System.out.println(amount);
-
+    public String complete(@ModelAttribute OrderDTO order, @AuthenticationPrincipal MemberDTO member,MultipartFile photo,
+                           @RequestParam(value = "productCode") List<Integer> productCode, @RequestParam(value = "amount") List<Integer> amount,
+                           @RequestParam(value = "usePremium") List<Character> usePremium,@RequestParam(value = "useEco") List<Character> useEco,
+                           @ModelAttribute PointDTO point1) {
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-        int discount = (order.getOrderPrice() + 3000) - order.getOrderTotalPrice();
+
+        int discount = (order.getOrderPrice()) - order.getOrderTotalPrice() + 3000;
+
         String uuid = UUID.randomUUID().toString().substring(0,4);
+
         String code = simpleDateFormat.format(date) + uuid;
         List<OrderProductDTO> orderProducts = new ArrayList<>();
         for(int i = 0; i < productCode.size(); i++){
@@ -220,15 +232,33 @@ public class ProductController {
             orderProduct.setProductCode(productCode.get(i));
             orderProduct.setAmount(amount.get(i));
             orderProduct.setOrderCode(code);
+            orderProduct.setUsePremium(usePremium.get(i));
+            orderProduct.setUseEco(useEco.get(i));
             orderProducts.add(orderProduct);
         }
+        int reward = 0;
+
+        String level = productService.selectMemberLevel(member.getMemberNo());
+        if(level.equals("1")){
+            reward = (int) (order.getOrderTotalPrice() * 0.02);
+        }else if(level.equals("2")){
+            reward = (int) (order.getOrderTotalPrice() * 0.03);
+        }else if(level.equals("3")){
+            reward = (int) (order.getOrderTotalPrice() * 0.04);
+        }else if(level.equals("5")){
+            reward = (int) (order.getOrderTotalPrice() * 0.05);
+        }
+        System.out.println("reward : " + reward);
+
+
         System.out.println(orderProducts);
+        order.setReward(reward);
         order.setOrderDiscount(discount);
         order.setCode(code);
         order.setOrderDate(new Date());
         order.setMember(member);
         String originalName = photo.getOriginalFilename();
-        String fileUploadDir = IMG_DIR + "resource/images";
+        String fileUploadDir = IMG_DIR + "resource/map";
         File dir = new File(fileUploadDir);
         if (!dir.exists()) {
             dir.mkdirs();
@@ -243,6 +273,16 @@ public class ProductController {
         }
         System.out.println(order);
         productService.addOrder(order, orderProducts);
+        System.out.println("memberusePoint : " + order.getUsePoint());
+        int point = point1.getPoint() - order.getUsePoint() + reward;
+        System.out.println("totalPoint : " + point);
+        Map<String,Object> map = new HashMap<>();
+        map.put("usecouponCode",order.getUseCoupon());
+        map.put("member", member);
+        map.put("point", point);
+        productService.updateInfo(map);
+
+
         return "redirect:/product/orderComplete?code="+code;
     }
 
@@ -269,7 +309,7 @@ public class ProductController {
     public String productModify(ProductDTO product, MultipartFile productImage,RedirectAttributes rttr){
         product.setModifyDate(new Date());
         String imageName = productImage.getOriginalFilename();
-        String fileUploadDir = IMG_DIR + "resource/images";
+        String fileUploadDir = IMG_DIR + "/upload/resource/productImage";
         File dir = new File(fileUploadDir);
         if (!dir.exists()) {
             dir.mkdirs();
@@ -277,7 +317,7 @@ public class ProductController {
         try {
             if (productImage.getSize() > 0) {
                 productImage.transferTo(new File(fileUploadDir + "/" + imageName));
-                product.setPhoto("/resource/images/" + imageName);
+                product.setPhoto("/upload/resource/productImage/" + imageName);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -300,7 +340,9 @@ public class ProductController {
     }
     @GetMapping("/coupon")
     public void coupon(Model model, @AuthenticationPrincipal MemberDTO member){
-        List<CouponDTO> couponList = productService.selectCoupon(member.getMemberNo());
+
+        List<CpBoxDTO> couponList = productService.selectCoupon(member.getMemberNo());
+        System.out.println(couponList);
         model.addAttribute("couponList",couponList);
     }
 

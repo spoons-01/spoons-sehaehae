@@ -11,4 +11,6 @@ public class OrderProductDTO {
     private String orderCode;
     private int productCode;
     private int amount;
+    private char useEco;
+    private char usePremium;
 }
