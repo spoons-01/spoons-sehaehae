@@ -167,10 +167,15 @@
 
         replyList.forEach(reply => {
             const $tr = document.createElement('tr');
+            $tr.className='replyTr';
             const $replyBodyTd = document.createElement('td');
+            $replyBodyTd.className='replyBody';
             const $nicknameTd = document.createElement('td');
+            $nicknameTd.className='replyNickname';
             const $createdDateTd = document.createElement('td');
+            $createdDateTd.className='replyDate';
             const $buttonTd = document.createElement('td');
+            $buttonTd.className='replyButton'
 
             // $replyBodyTd.textContent = reply.body;
             // $nicknameTd.textContent = reply.writer.nickname;
@@ -179,6 +184,7 @@
             const $image = document.createElement('img');
             $image.src = '/images/one.png'; // 이미지의 URL을 설정하세요
             $image.alt = '프로필'; // 이미지의 대체 텍스트를 설정하세요
+            $image.className='replyImage';
 
             $replyBodyTd.appendChild($image); // 이미지를 replyBodyTd에 추가
             $replyBodyTd.appendChild(document.createTextNode(reply.body)); // 텍스트 추가
