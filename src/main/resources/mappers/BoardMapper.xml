@@ -680,7 +680,6 @@
             , B.NICKNAME
         FROM TBL_REPLY A
         JOIN TBL_MEMBER B ON (A.MEMBER_NO = B.MEMBER_NO)
-<!--        JOIN TBL_REVIEW C ON (A.REVIEW_NO = C.REVIEW_NO)-->
         WHERE A.REPLY_STATUS = 'Y'
         AND A.REVIEW_NO = #{ reviewNo }
         ORDER BY A.REPLY_NO DESC
@@ -694,4 +693,11 @@
         AND A.REPLY_MODIFIED_DATE IS NULL
         AND A.REPLY_NO = #{ no }
     </update>
+
+    <select id="getCommentCountForReview" resultType="int">
+        SELECT COUNT(*) AS comment_count
+        FROM TBL_REPLY
+        WHERE REVIEW_NO = #{reviewNo}
+        AND REPLY_STATUS = 'Y'
+    </select>
 </mapper>

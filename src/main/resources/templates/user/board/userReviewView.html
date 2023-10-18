@@ -48,7 +48,7 @@
 
             <div class="reviewCountReply">
                 <td>조회수 : <span th:text="${ review.count}"/></td>
-                <img class="reviewReply" src="/images/chat.png"><span class="replyReview"th:text="${review.count}" ></span>
+                <img class="reviewReply" src="/images/chat.png"><span class="replyReview"th:text="${commentCount}" ></span>
             </div>
         </div>
         <div class="reviewDbody">
@@ -62,9 +62,15 @@
         <!-- 댓글 작성 -->
         <table id="replyWrite" class="reviewReplyArea">
             <tr>
-            <td>댓글</td>
-                <td><textarea id="replyBody"></textarea></td>
-                <td><button type="button" id="registReply">작성하기</button></td>
+                <td class="replyTitle">댓글
+                <span class="replyCount" th:text="${commentCount}"></span></td>
+            </tr>
+            <tr class="replyRegist">
+                <td class="replyRegesitLeft">
+                    <img src="/images/one.png"></img>
+                    <textarea id="replyBody"></textarea>
+                </td>
+                <td><button class="replyRegistButton" type="button" id="registReply">작성하기</button></td>
             </tr>
         </table>
 
@@ -72,10 +78,10 @@
 
         <table id="replyResult">
             <tr th:each="reply : ${ review.replyList }">
-
+                <td class="replyRegesitLeft"><img src="/images/one.png"></img></td>
                 <td th:text="${ reply.body }"></td>
                 <td th:text="${ reply.writer.nickname }"></td>
-                <td th:text="${ reply.replyDate }"></td>
+                <td th:text="${reply.replyDate}"></td>
                 <td th:if="${ reply.writer.memberNo == #authentication.principal.memberNo }">
                     <button th:onclick="removeReply([[${reply.reviewNo}]])">댓글 삭제</button>
                 </td>
@@ -154,6 +160,7 @@
     }
 
     /* 댓글 목록 데이터를 테이블화하는 함수 */
+
     function makeReplyTable(replyList) {
         const $table = document.querySelector("#replyResult");
         $table.innerHTML = '';
@@ -165,18 +172,57 @@
             const $createdDateTd = document.createElement('td');
             const $buttonTd = document.createElement('td');
 
-            $replyBodyTd.textContent = reply.body;
+            // $replyBodyTd.textContent = reply.body;
+            // $nicknameTd.textContent = reply.writer.nickname;
+
+            // 이미지 요소 생성 및 설정
+            const $image = document.createElement('img');
+            $image.src = '/images/one.png'; // 이미지의 URL을 설정하세요
+            $image.alt = '프로필'; // 이미지의 대체 텍스트를 설정하세요
+
+            $replyBodyTd.appendChild($image); // 이미지를 replyBodyTd에 추가
+            $replyBodyTd.appendChild(document.createTextNode(reply.body)); // 텍스트 추가
             $nicknameTd.textContent = reply.writer.nickname;
-            $createdDateTd.textContent = reply.replyDate;
+
+            // 날짜 형식 변환
+            const date = new Date(reply.replyDate);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const formattedDate = `${year}-${month}-${day}`;
+            $createdDateTd.textContent = formattedDate;
 
             if (`[[${#authentication.principal.memberNo}]]` == reply.writer.memberNo) {
                 $buttonTd.innerHTML = `<button onclick='removeReply(${reply.no})'>댓글 삭제</button>`;
             }
 
-            $tr.append($replyBodyTd, $nicknameTd, $buttonTd);
+            $tr.append($replyBodyTd, $nicknameTd, $createdDateTd, $buttonTd);
             $table.append($tr);
         });
     }
+    // function makeReplyTable(replyList) {
+    //     const $table = document.querySelector("#replyResult");
+    //     $table.innerHTML = '';
+    //
+    //     replyList.forEach(reply => {
+    //         const $tr = document.createElement('tr');
+    //         const $replyBodyTd = document.createElement('td');
+    //         const $nicknameTd = document.createElement('td');
+    //         const $createdDateTd = document.createElement('td');
+    //         const $buttonTd = document.createElement('td');
+    //
+    //         $replyBodyTd.textContent = reply.body;
+    //         $nicknameTd.textContent = reply.writer.nickname;
+    //         $createdDateTd.textContent = reply.replyDate;
+    //
+    //         if (`[[${#authentication.principal.memberNo}]]` == reply.writer.memberNo) {
+    //             $buttonTd.innerHTML = `<button onclick='removeReply(${reply.no})'>댓글 삭제</button>`;
+    //         }
+    //
+    //         $tr.append($replyBodyTd, $nicknameTd, $createdDateTd, $buttonTd);
+    //         $table.append($tr);
+    //     });
+    // }
 
     /* 댓글 삭제 */
     function removeReply(replyNo) {
@@ -195,100 +241,6 @@
             .catch(error => console.log(error));
     };
 
-    // /* 비동기 통신 예제 */
-    //
-    // /* 댓글 작성 */
-    // if(document.getElementById("registReply")) {
-    //     const $registReply = document.getElementById('registReply');
-    //     const $replyBody = document.getElementById('replyBody');
-    //
-    //     $registReply.onclick = function() {
-    //
-    //         if(!$replyBody.value.trim()) {
-    //             alert('내용을 작성해주세요');
-    //             return;
-    //         }
-    //
-    //
-    //             const urlNo = new URLSearchParams(location.search).get('no');
-    //
-    //             // JSON 데이터를 생성하여 요청 본문에 추가
-    //             const requestData = {
-    //                 reviewNo: urlNo,
-    //                 body: $replyBody.value
-    //             };
-    //
-    //         fetch('/user/board/userReviewView/loadReply', {
-    //             method : 'POST',
-    //             headers : {
-    //                 'Content-Type' : 'application/json; charset=UTF-8'
-    //             },
-    //             body: JSON.stringify(requestData)
-    //         })
-    //             .then(res => {
-    //                 // 댓글 창 비우기
-    //                 $replyBody.value = '';
-    //                 // 최신 댓글 다시 로드하여 입력 된 댓글 확인할 수 있도록 하기
-    //                 loadReply();
-    //             })
-    //             .catch(error => console.log(error));
-    //
-    //     }
-    // }
-    //
-    // /* 댓글 삽입 or 삭제 발생 시 최신 댓글을 다시 로드하는 기능 */
-    // function loadReply() {
-    //
-    //     const refBoardNo = `[[${review.reviewNo}]]`;
-    //
-    //     fetch('/user/board/userReviewView/loadReply?no=' + refBoardNo)
-    //         .then(result => result.json())
-    //         .then(data => makeReplyTable(data))
-    //         .catch(error => console.log(error));
-    //
-    // }
-    //
-    // /* 댓글 목록 데이터를 테이블화 하는 함수 */
-    // function makeReplyTable(replyList) {
-    //
-    //     const $table = document.querySelector('#replyResult');
-    //     $table.innerHTML = '';
-    //
-    //     replyList.forEach(reply => {
-    //
-    //         const $tr = document.createElement('tr');
-    //         const $replyBodyTd = document.createElement('td');
-    //         const $nicknameTd = document.createElement('td');
-    //         const $createdDateTd = document.createElement('td');
-    //         const $buttonTd = document.createElement('td');
-    //
-    //         $replyBodyTd.textContent = reply.body;
-    //         $nicknameTd.textContent = reply.writer.nickname;
-    //         $createdDateTd.textContent = reply.replyDate;
-    //
-    //         if(`[[${#authentication.principal.memberNo}]]` == reply.writer.memberNo) {
-    //             $buttonTd.innerHTML = `<button onclick='removeReply(${reply.no})'>댓글삭제</button>`;
-    //         }
-    //
-    //         $tr.append($replyBodyTd, $nicknameTd, $createdDateTd, $buttonTd);
-    //         $table.append($tr);
-    //     });
-    // }
-    //
-    // /* 댓글 삭제 */
-    // function removeReply(replyNo) {
-    //
-    //     fetch('/user/board/userReviewView/removeReply', {
-    //         method : 'POST',
-    //         headers : {
-    //             'Content-Type' : 'application/json; charset=UTF-8'
-    //         },
-    //         body : JSON.stringify({ no : replyNo })
-    //     })
-    //         .then(() => loadReply())
-    //         .catch(error => console.log(error));
-    //
-    // }
 </script>
 
 </body>
