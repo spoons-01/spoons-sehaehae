@@ -150,6 +150,7 @@ public class MemberController {
             orderStatusCounts.put(orderStatus, orderStatusCounts.get(orderStatus) + 1);
         }
 
+
         model.addAttribute("membershipName", membershipName);
         model.addAttribute("couponCount", couponCount);
         model.addAttribute("myOrders", myOrders);
@@ -194,7 +195,6 @@ public class MemberController {
     /* 환불 페이지 */
     @GetMapping("/member/refund/{orderCode}")
     public String myRefund(@PathVariable String orderCode, Model model) {
-        // 환불 페이지를 보여주는 데 필요한 데이터를 가져오는 로직
         MyRefundDTO refund = memberService.findMyRefund(orderCode);
         model.addAttribute("refund", refund);
         return "/user/member/refund";
