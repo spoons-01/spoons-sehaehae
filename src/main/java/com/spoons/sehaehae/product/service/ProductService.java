@@ -152,4 +152,8 @@ public class ProductService {
 
        return level.getMembershipCode();
     }
+
+    public void deleteCategory(List<Integer> codeList) {
+        productMapper.deleteCategory(codeList);
+    }
 }

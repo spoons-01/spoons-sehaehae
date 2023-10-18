@@ -1,4 +1,5 @@
 @charset "UTF-8";   /* 인코딩 문자 깨짐 방지 */
+
 ul{
     list-style: none;
 }
@@ -24,9 +25,9 @@ ul{
     display: flex;
     margin-left: 400px;
     border-bottom: 1px solid #4E4D4D;
-    width: 1100px;
+    width: 1120px;
     line-height: 80px;
-    padding-left: 40px;
+    padding-left: 20px;
 }
 
 #mainCategory{
@@ -34,7 +35,7 @@ ul{
     text-decoration: none;
     list-style: none;
     column-gap: 18px;
-    font-family: NanumSquareNeo-Variable;
+    font-family: 'NanumSquareNeo';
     font-size: 25px;
     cursor: pointer;
     width: 900px;
@@ -44,7 +45,7 @@ ul{
 }
 
 .search{
-    font-family: NanumSquareNeo-Variable;
+    font-family: 'NanumSquareNeo';
     display: flex;
 }
 .search input{
@@ -64,8 +65,7 @@ ul{
 #container222{
     margin-left: 380px;
     display: flex;
-    font-family: NanumSquareNeo-Variable;
-    height: 130%;
+    font-family: 'NanumSquareNeo';
     margin-top: 40px;
 }
 
@@ -75,11 +75,10 @@ ul{
     font-weight: bold;
     width: 130px;
     cursor: pointer;
-    border-right: 1px solid black;
     padding-top: 30px;
-    padding-bottom: 300px;
     text-align: right;
-    padding-right: 30px;
+    padding-right: -200px;
+    margin-left: -20px;
 }
 .subcategory li{
     list-style: none;
@@ -103,24 +102,30 @@ ul{
     cursor : pointer;
 }
 .imgcontainer{
-    margin-left: 55px;
+    margin-left: 30px;
     display: grid;
     grid-template-columns: 200px 200px 200px 200px;
+    height: 100%;
+    border-left: 1px solid black;
+    margin-top: -40px;
+    padding-left: 50px;
     grid-column-gap: 50px;
-    height: 500px;
-    grid-row-gap: 50px;
-
+    grid-row-gap: -10px;
 }
 .imgcontainer img{
+    margin-top: 30px;
     cursor: pointer;
 }
 .product{
     cursor: pointer;
-    margin-top: 25px;
+    margin-top: 5px;
 }
 .product p:first-child{
     font-size: 20px;
 }
 .product p:last-child{
     margin-top: 20px;
+}
+#price{
+    margin-top: 5px;
 }

@@ -51,8 +51,6 @@ public class ProductController {
         searchMap.put("searchCondition", searchCondition);
         System.out.println("point : " + member);
 
-
-
         List<ProductDTO> productList = productService.selectProduct(searchMap);
         List<ProductDTO> allProduct = productService.selectAllproduct(null);
         List<CategoryDTO> categoryList = productService.selectCategory();
@@ -60,12 +58,9 @@ public class ProductController {
         model.addAttribute("productList", productList);
         model.addAttribute("categoryList", categoryList);
     }
-
     @GetMapping("/productRegist")
     public void registProduct() {
-
     }
-
     @GetMapping("/detail")
     public void productDetail(@RequestParam int code, Model model) {
         ProductDTO product = productService.selectProductByCode(code);
@@ -111,8 +106,7 @@ public class ProductController {
         System.out.println(new Date());
         product.setRegistDate(new Date());
         String originalName = productImage.getOriginalFilename();
-        // C:/lecture/sub_project/spoons-sehaehae/src/main/resources/upload/
-        String fileUploadDir = IMG_DIR + "resource/productImage";
+        String fileUploadDir = IMG_DIR + "/resource/productImage";
         File dir = new File(fileUploadDir);
         if (!dir.exists()) {
             dir.mkdirs();
@@ -181,7 +175,6 @@ public class ProductController {
     }
     @GetMapping("/updateCart")
     public ResponseEntity<String> updateCart1(@RequestParam int amount, @RequestParam String productCode, @AuthenticationPrincipal MemberDTO member) {
-
         System.out.println("amount : " + amount);
         System.out.println("productCode : " + productCode);
         Map<String, Object> updateCartMap = new HashMap<>();
@@ -214,17 +207,15 @@ public class ProductController {
         return ResponseEntity.ok(finalPrice);
     }
     @PostMapping("/complete")
-    public String complete(@ModelAttribute OrderDTO order, @AuthenticationPrincipal MemberDTO member,MultipartFile photo,
+    public String complete(@ModelAttribute OrderDTO order, @AuthenticationPrincipal MemberDTO member,MultipartFile photo1,
                            @RequestParam(value = "productCode") List<Integer> productCode, @RequestParam(value = "amount") List<Integer> amount,
-                           @RequestParam(value = "usePremium") List<Character> usePremium,@RequestParam(value = "useEco") List<Character> useEco,
+                           @RequestParam(value = "usePremium") List<Character> usePremium, @RequestParam(value = "useEco") List<Character> useEco,
                            @ModelAttribute PointDTO point1) {
+        System.out.println("photo : " + photo1);
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-
         int discount = (order.getOrderPrice()) - order.getOrderTotalPrice() + 3000;
-
         String uuid = UUID.randomUUID().toString().substring(0,4);
-
         String code = simpleDateFormat.format(date) + uuid;
         List<OrderProductDTO> orderProducts = new ArrayList<>();
         for(int i = 0; i < productCode.size(); i++){
@@ -249,24 +240,22 @@ public class ProductController {
             reward = (int) (order.getOrderTotalPrice() * 0.05);
         }
         System.out.println("reward : " + reward);
-
-
         System.out.println(orderProducts);
         order.setReward(reward);
         order.setOrderDiscount(discount);
         order.setCode(code);
         order.setOrderDate(new Date());
         order.setMember(member);
-        String originalName = photo.getOriginalFilename();
-        String fileUploadDir = IMG_DIR + "resource/map";
+        String originalName = photo1.getOriginalFilename();
+        String fileUploadDir = IMG_DIR + "/resource/location";
         File dir = new File(fileUploadDir);
         if (!dir.exists()) {
             dir.mkdirs();
         }
         try {
-            if (photo.getSize() > 0) {
-                photo.transferTo(new File(fileUploadDir + "/" + originalName));
-                order.setImage("/resource/images/" + originalName);
+            if (photo1.getSize() > 0) {
+                photo1.transferTo(new File(fileUploadDir + "/" + originalName));
+                order.setImage("/upload/resource/location/" + originalName);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -299,7 +288,6 @@ public class ProductController {
         model.addAttribute("productList",productList);
         model.addAttribute("searchValue",searchValue);
     }
-
     @GetMapping("/productModify")
     public void modify(int code,Model model){
         ProductDTO product = productService.selectProductByCode(code);
@@ -307,6 +295,7 @@ public class ProductController {
     }
     @PostMapping("/modify")
     public String productModify(ProductDTO product, MultipartFile productImage,RedirectAttributes rttr){
+        System.out.println("modify Product : " + product);
         product.setModifyDate(new Date());
         String imageName = productImage.getOriginalFilename();
         String fileUploadDir = IMG_DIR + "/upload/resource/productImage";
@@ -322,10 +311,12 @@ public class ProductController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         System.out.println(product);
         productService.modifyProduct(product);
 
         rttr.addFlashAttribute("message",messageSourceAccessor.getMessage("product.regist"));
+
         return "redirect:/product/listAdmin";
     }
     @PostMapping("/delete")
@@ -364,7 +355,7 @@ public class ProductController {
         return "redirect:/product/cartList";
     }
 
-    @GetMapping("addOption")
+    @GetMapping("/addOption")
     public void addoption(int code, String option,@AuthenticationPrincipal MemberDTO member){
         System.out.println(code);
         System.out.println(option);
@@ -373,6 +364,26 @@ public class ProductController {
         addoption.put("code",code);
         addoption.put("memberCode",member.getMemberNo());
         productService.addOption(addoption);
+    }
+
+    @GetMapping("/categoryList")
+    public void categoryList(Model model){
+        List<CategoryDTO> category =  productService.selectCategory();
+        model.addAttribute("categoryList",category);
+
+    }
+    @PostMapping("/registCategory")
+    public String registCategory(String name){
+
+        productService.registCategory(name);
+        return "redirect:/product/categoryList";
+    }
+    @PostMapping("/deleteCategory")
+    public String deleteCategory(@RequestParam List<Integer> codeList){
+
+        productService.deleteCategory(codeList);
+
+        return "redirect:/product/categoryList";
     }
 
 }

@@ -1,31 +1,41 @@
 .maintag{
-    font-size: 20px;
+    margin-left: 30px;
+    font-family: 'NanumSquareNeo';
+    font-size: 30px;
 }
 
 .couponList{
 height: 200px;
     border: 1px solid black;
-    margin-top: 40px;
+    margin-top: 20px;
     border-radius: 10px;
     width: 400px;
     margin-left: 40px;
 }
 #name{
-    font-size: 30px;
+    font-family: 'NanumSquareNeo';
+    font-size: 25px;
     margin-left: 20px;
     margin-top: 20px;
+    font-weight: bold;
 }
 #rate{
+    font-family: 'NanumSquareNeo';
     font-size: 20px;
-    margin-top: -20px;
+    margin-top: -10px;
     margin-left: 20px;
+    color: #3B83D7;
+    font-weight: bold;
 }
 #button{
+    font-family: 'NanumSquareNeo';
     font-size: 20px;
     margin-left: 20px;
     width: 100px;
     height: 40px;
 }
 #endDate{
+    font-family: 'NanumSquareNeo';
     margin-left: 20px;
+    font-weight: bold;
 }

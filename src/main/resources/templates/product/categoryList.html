@@ -1,13 +1,20 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <link href="/css/admin.css" rel="stylesheet" type="text/css">
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="/css/productRegist.css" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/admin.css" rel="stylesheet" type="text/css">
     <link href="https://webfontworld.github.io/NanumSquareNeo/NanumSquareNeo.css" rel="stylesheet">
+    <link href="/css/listAdmin.css" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <title>Document</title>
+    <script>
+        const message = '[[${message}]]'
+        message && alert(message);
+    </script>
 </head>
+
 <body>
 <nav id="nav">
     <div class="manager">
@@ -102,70 +109,48 @@
     <h3>상품관리 &gt 상품관리</h3>
     <h3 id="login">로그인(로그아웃)</h3>
 </header>
+<br>
+<div style="margin-left: 00px">
+<button  id="delete" class="but">카테고리삭제</button>
+<button onclick="location.href='/product/categoryRegist'" class="but reg" style="margin-left: 275px">카테고리생성</button>
 
-
-<div class="ct">
-    <p class="asdasd">상품 정보 수정</p>
-    <div class="head"></div>
-    <div class="ee">
-        <p class="a"></p>
-        <p class="b">기본정보</p>
-    </div>
-    <div class="info">
-        <form class="insert" method="post" action="/product/modify" enctype="multipart/form-data">
-            <table>
-                <input type="hidden" name="code" th:value="${product.code}">
-                <tr>
-                    <td>상품명</td>
-                    <td><input type="text" name="name" th:value="${product.name}"></td>
-                </tr>
-                <tr>
-                    <td>카테고리</td>
-                    <td><select name="category.code" id="category" th:vlaue="${product.category.code}">
-                    </select></td>
-                </tr>
-                <tr>
-                    <td>일반 가격</td>
-                    <td><input type="number" name="price" th:value="${product.price}"> </td>
-                </tr>
-                <tr>
-                    <td>프리미엄 가격</td>
-                    <td><input type="number" name="premiumPrice" th:value="${product.premiumPrice}"> </td>
-                </tr>
-                <tr>
-                    <td>이미지</td>
-                    <td><input type="file" name="productImage" accept="image/png"></td>
-                </tr>
-                <tr>
-                    <td>사용가능여부</td>
-                    <td><select name="useableStatus" th:value="${product.useableStatus}">
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
-                    </select></td>
-                </tr>
-            </table>
-
-            <div id="bts">
-                <button type="submit" class="regist">수정하기</button>
-                <button  type="button" class="rollback" style="cursor:pointer;" onclick="location.href='/product/listAdmin'">취소하기</button>
-            </div>
-        </form>
-
-    </div>
-
+<table id="table" style="width: 500px">
+    <tr style="height: 50px; background: #d2d2d7">
+        <td></td>
+        <td class="a"colspan="1">번호</td>
+        <td class="a">카테고리이름</td>
+    </tr>
+    <tr th:each=" list : ${categoryList}" class="b">
+        <td><input type="checkbox" class="checkbox" th:value="${list.code}"></td>
+        <td th:text="${listStat.index +1}" class="a" style="text-align: center"></td>
+        <td th:text="${list.code}" style="display: none;" class="code"></td>
+        <td th:text="${list.name}" class="a"></td>
+    </tr>
+    <form style="display: none" action="/product/deleteCategory" method="post" id="form">
+        <input type="hidden" id="input" name="codeList">
+    </form>
+</table>
 </div>
 <script>
-    const $category = document.querySelector("#category");
-    console.log($category);
-    window.onload = function(){
-        fetch("/product/selectAllCategory")
-            .then(res=>res.json())
-            .then(data => data.forEach((list)=>{
-                const $option = document.createElement("option");
-                $option.textContent = list.name;
-                $option.value = list.code;
-                $category.appendChild($option);
-            }))
+    const $delete = document.querySelector("#delete");
+    const input = document.querySelector("#input");
+    const $checkbox = document.querySelectorAll(".checkbox");
+    const productCode = []
+    const form = document.querySelector("#form")
+    $delete.onclick = function(){
+        let choose = confirm("선택하신 카테고리를 삭제하시겠습니까?");
+        if(choose){
+            $checkbox.forEach((box,index)=>{
+                if(box.checked){
+                    productCode.push(box.value);
+                    console.log(productCode)
+                }
+                input.value = productCode;
+                form.submit();
+            })
+        }
     }
 </script>
 </body>
+
+</html>
