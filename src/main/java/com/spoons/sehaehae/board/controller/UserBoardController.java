@@ -10,13 +10,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -118,5 +116,46 @@ public class UserBoardController {
         model.addAttribute("review", reviewView);
 
         return "/user/board/userReviewView";
+    }
+
+    @PostMapping("/userReviewView/registReply")
+    public ResponseEntity<String> registReply(@RequestBody ReplyDTO registReply,
+                                              @AuthenticationPrincipal MemberDTO member) {
+
+
+        registReply.setWriter(member);
+
+        boardService.registReply(registReply);
+
+        return ResponseEntity.ok("댓글 등록 완료");
+    }
+
+//    @GetMapping("/userReviewView/loadReply")
+//    public ResponseEntity<List<ReplyDTO>> loadReply(ReplyDTO loadReply, ReviewDTO review) {
+//
+//        log.info("-------test");
+//        log.info("loadReply refBoardNo : {}", review.getReviewNo());
+//        List<ReplyDTO> replyList = boardService.loadReply(loadReply, review);
+//        log.info("loadReply replyList : {}", replyList);
+//
+//
+//        return ResponseEntity.ok(replyList);
+//    }
+
+    @GetMapping("/userReviewView/loadReply")
+    public ResponseEntity<List<ReplyDTO>> loadReply(@RequestParam("no") Long reviewNo,ReplyDTO loadReply ) {
+        log.info("-------test");
+        log.info("loadReply refBoardNo : {}", reviewNo);
+        List<ReplyDTO> replyList = boardService.loadReply(reviewNo, loadReply);
+        log.info("loadReply replyList : {}", replyList);
+
+        return ResponseEntity.ok(replyList);
+    }
+    @PostMapping("/userReviewView/removeReply")
+    public ResponseEntity<String> removeReply(@RequestBody ReplyDTO removeReply) {
+
+        boardService.removeReply(removeReply);
+
+        return ResponseEntity.ok("댓글 삭제 완료");
     }
 }
