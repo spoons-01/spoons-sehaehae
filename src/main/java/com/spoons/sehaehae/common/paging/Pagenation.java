@@ -30,7 +30,7 @@ public class Pagenation {
         int endRow = startRow + limit - 1;
 
         return new SelectCriteria(page, totalCount, limit, buttonAmount, maxPage, startPage, endPage,
-                startRow, endRow, searchMap.get("searchCondition"), searchMap.get("searchValue"), searchMap.get("startDate"), searchMap.get("endDate"));
+                startRow, endRow, searchMap.get("searchCondition"), searchMap.get("searchValue"), searchMap.get("startDate"), searchMap.get("endDate"), searchMap.get("cardPayment"),searchMap.get("kakaoPayment"));
     }
 
     public static SelectCriteria getSelectCriteria(int page, int totalCount, int limit, int buttonAmount) {

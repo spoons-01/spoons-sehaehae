@@ -25,5 +25,7 @@ public class SelectCriteria {
     private String searchValue;
     private String startDate;
     private String endDate;
+    private String cardPayment;
+    private String kakaoPayment;
 
 }
