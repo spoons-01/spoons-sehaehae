@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>보유 쿠폰 | 세탁해병대</title>
 
-    <link href="/css/myCouponStyle.css" rel="stylesheet" type="text/css">
+    <link href="/css/myRefundStyle.css" rel="stylesheet" type="text/css">
     <link rel="icon" href="/static/images/favicon.ico">
     <link href="https://unpkg.com/ress/dist/ress.min.css" rel="styles heet" type="text/css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -20,23 +20,47 @@
     <div th:replace="/user/common/header2.html"></div>
 </header>
 
-<p>주문 번호</p>
-<p th:text="${orderCode}"></p>
+<!-- 마이페이지 네비 -->
+<ul class="mypage-nav">
+    <a id="profile" href="/user/member/mypage">
+        <li>프로필</li>
+    </a>
+    <a id="mysehae" href="/user/member/mysehae">
+        <li>나의 세해</li>
+    </a>
+    <a is="setting" href="/user/member/update">
+        <li>설정</li>
+    </a>
+</ul>
+<hr class="line" style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
 
-<form id="refundForm" th:action="@{'/user/member/refund/' + ${orderCode}}" method="post">
+<div class="wrapper">
+    <div class="box-wrapper">
+        <div class="bigbox">
+            <h3>환불 신청</h3>
+            <div class="box">
+                <div class="line">
+                    <p class="bold">주문 번호</p>
+                    <p th:text="${orderCode}"></p>
+                </div>
 
-    <!-- 주문 번호 DB 삽입 -->
-    <input type="hidden" name="orderCode" th:value="${orderCode}">
+                <form id="refundForm" th:action="@{'/user/member/refund/' + ${orderCode}}" method="post">
+                    <input type="hidden" name="orderCode" th:value="${orderCode}">
 
-    <p>환불 사유</p>
-    <textarea id="refundReason" name="refundReason" rows="4" cols="50"
-              placeholder="환불 사유를 입력해주세요."></textarea>
+                    <div class="reason">
+                        <p class="bold">환불 사유</p>
+                        <textarea class="refund-reason-box"id="refundReason" name="refundReason" rows="4" cols="50"
+                                  placeholder="환불 사유를 입력해주세요."></textarea>
+                    </div>
+                    <div class="btn-container">
+                        <button type="submit" class="button">환불신청하기</button>
+                    </div>
 
-    <div class="btn-container">
-        <button type="submit" class="button">환불신청하기</button>
+                </form>
+            </div>
+        </div>
     </div>
-
-</form>
+</div>
 
 
 <footer>

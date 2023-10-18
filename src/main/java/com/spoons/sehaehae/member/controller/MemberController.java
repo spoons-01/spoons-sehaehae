@@ -45,7 +45,7 @@ import java.util.*;
 @RequestMapping("/user")
 public class MemberController {
 
-    @Value("${image.image-dir}") // 코드상의 변경 없이 디렉토리 변경 가능(yml)
+    @Value("${image.image-dir}")
     private String IMAGE_DIR;
     private final MemberService memberService;
     private final AuthenticationService authenticationService;
@@ -150,6 +150,7 @@ public class MemberController {
             orderStatusCounts.put(orderStatus, orderStatusCounts.get(orderStatus) + 1);
         }
 
+
         model.addAttribute("membershipName", membershipName);
         model.addAttribute("couponCount", couponCount);
         model.addAttribute("myOrders", myOrders);
@@ -194,7 +195,6 @@ public class MemberController {
     /* 환불 페이지 */
     @GetMapping("/member/refund/{orderCode}")
     public String myRefund(@PathVariable String orderCode, Model model) {
-        // 환불 페이지를 보여주는 데 필요한 데이터를 가져오는 로직
         MyRefundDTO refund = memberService.findMyRefund(orderCode);
         model.addAttribute("refund", refund);
         return "/user/member/refund";
@@ -212,7 +212,10 @@ public class MemberController {
 
     /* 마이페이지-설정 이동 */
     @GetMapping("/member/update")
-    public void update() {
+    public void update( @AuthenticationPrincipal MemberDTO loginMember) {
+        if( StringUtils.isBlank(loginMember.getProfilePhoto()) ) {
+            loginMember.setProfilePhoto("/images/smile.png");
+        }
     }
 
     /* 마이페이지-설정 수정(회원정보 수정) */
@@ -225,7 +228,7 @@ public class MemberController {
         log.info("modifyMember request Member : {}", modifyMember);
         log.info("modifyMember attachImage request : {}", attachImage);
 
-        String fileUploadDir = IMAGE_DIR + "original";
+        String fileUploadDir = IMAGE_DIR + "/original";
 
         File dir = new File(fileUploadDir);
 
@@ -249,7 +252,7 @@ public class MemberController {
                 log.info("savedFileName : {}", savedFileName);
 
                 /* 서버의 설정 디렉토리에 파일 저장하기 */
-                attachImage.transferTo(new File(fileUploadDir + "/" + savedFileName));
+                attachImage.transferTo(new File(IMAGE_DIR + File.separator + savedFileName));
                 modifyMember.setProfilePhoto("/upload/original/" + savedFileName);
             }
         } catch (IOException e) {
@@ -263,11 +266,10 @@ public class MemberController {
         SecurityContextHolder.getContext().
                 setAuthentication(createNewAuthentication(loginMember.getMemberId()));
 
-        rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("member.modify"));
+//        rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("member.modify"));
 
         return "redirect:/user/member/update";
     }
-
 
     /* 이메일 인증 로직 */
 

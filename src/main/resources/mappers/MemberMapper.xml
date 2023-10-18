@@ -280,6 +280,7 @@
           AND A.ID = #{ memberId }
     </select>
 
+
     <select id="selectMemberById" resultType="String">
         SELECT ID
         FROM TBL_MEMBER
@@ -339,6 +340,8 @@
         VALUES ( SEQ_MEMBER_NO.CURRVAL
                , 1)
     </insert>
+
+
     <insert id="insertThumbnailContent"></insert>
 
     <select id="selectEncryptedPwd" resultType="string">
