@@ -2,6 +2,7 @@ package com.spoons.sehaehae.member.dao;
 
 import com.spoons.sehaehae.admin.dto.OrderDTO;
 import com.spoons.sehaehae.admin.dto.RefundDTO;
+import com.spoons.sehaehae.board.dto.ReplyDTO;
 import com.spoons.sehaehae.board.dto.ReviewDTO;
 import com.spoons.sehaehae.member.dto.*;
 import org.apache.ibatis.annotations.Mapper;
@@ -34,6 +35,8 @@ public interface MemberMapper {
     int findMyPoint(int memberNo);
 
     List<ReviewDTO> findMyReview(int memberNo);
+
+    List<ReplyDTO> findMyReply(int memberNo);
 
     MyOrderDTO findMyOrderDetails(String orderCode);
 
@@ -68,5 +71,6 @@ public interface MemberMapper {
     int getFifth();
 
     void insertFirstCoupon();
+
 
 }

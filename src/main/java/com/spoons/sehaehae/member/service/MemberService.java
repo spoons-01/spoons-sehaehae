@@ -3,6 +3,7 @@ package com.spoons.sehaehae.member.service;
 
 import com.spoons.sehaehae.admin.dto.OrderDTO;
 import com.spoons.sehaehae.board.dto.AttachmentDTO;
+import com.spoons.sehaehae.board.dto.ReplyDTO;
 import com.spoons.sehaehae.board.dto.ReviewDTO;
 import com.spoons.sehaehae.common.exception.member.MemberModifyException;
 import com.spoons.sehaehae.common.exception.member.MemberRefundException;
@@ -69,6 +70,12 @@ public class MemberService {
         return myReviews;
     }
 
+    /* 내 덧글 조회 */
+    public List<ReplyDTO> findMyReply(int memberNo) {
+        List<ReplyDTO> myReplys =  memberMapper.findMyReply(memberNo);
+        return myReplys;
+    }
+
     public MemberDTO findByMemberId(String memberId) {
         return memberMapper.findByMemberId(memberId);
     }
@@ -109,6 +116,7 @@ public class MemberService {
         int result = memberMapper.updateMember(modifyMember);
         if(!(result > 0)) {throw new MemberModifyException("회원 정보 수정에 실패하였습니다.");}
     }
+
 
 
 }

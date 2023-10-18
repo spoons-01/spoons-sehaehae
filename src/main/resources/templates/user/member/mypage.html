@@ -150,27 +150,17 @@
                 </div>
             </div>
 
-
-
-            <div class="right-box-child2">
-                <h3>좋아요</h3>
-                <div class="mini-box">
-                    <!-- 기본 멘트 -->
-                    <div class="mini-box-child">
-                        <p>임시 후기 게시판 조회 글</p>
+            <div class="right-box-child">
+                <h3>내가 쓴 댓글</h3>
+                <div class="dot-box">
+                    <div class="dot-box-none"th:if="${myReplys.isEmpty()}">
+                        <p>작성한 댓글이 없습니다.</p>
                     </div>
-                    <div class="mini-box-child">
-                        <p>임시 후기 게시판 조회 글</p>
+                    <div class="dot-box-content" th:each="myReplys, iterStat : ${myReplys}"
+                         th:if="${iterStat.index < 4}">
+                        <p th:text="${myReplys.body}"></p>
                     </div>
-                    <div class="mini-box-child">
-                        <p>임시 후기 게시판 조회 글</p>
-                    </div>
-                    <div class="mini-box-child">
-                        <p>임시 후기 게시판 조회 글</p>
-                    </div>
-                    <!-- 후기 게시판 연동 -->
                 </div>
-
             </div>
         </div>
     </div>
