@@ -416,10 +416,12 @@
           AND MEMBER_NO = #{ memberNo }
     </update>
 
-    <select id="selectMemberList" resultMap="memberResultMap">
-        select A.*
-        from TBL_MEMBER A
-        where MEMBER_STATUS = 'Y'
+   <select id="selectMemberList" resultMap="memberResultMap">
+        select
+            A.*
+        from    TBL_MEMBER A
+        where	MEMBER_STATUS = 'Y'
+        order by MEMBER_NO asc
     </select>
 
     <update id="adUpdateMember">
