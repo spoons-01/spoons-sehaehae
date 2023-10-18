@@ -116,12 +116,30 @@
             </div>
         </div>
 
+<!--        &lt;!&ndash; 오른쪽 박스 &ndash;&gt;-->
+<!--        <div class="right-box">-->
+<!--            <div class="right-box-child">-->
+<!--                <h3>내가 쓴 후기</h3>-->
+<!--                <div class="dot-box">-->
+<!--                    &lt;!&ndash; 기본 멘트 &ndash;&gt;-->
+<!--                    <div class="dot-box-content" th:each="myReview, iterStat : ${myReviews}"-->
+<!--                         th:if="${iterStat.index < 4}">-->
+<!--                        <p th:text="${myReview.title}"></p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="btn-wrapper">-->
+<!--                    <a href="#" class="button">+더보기</a>-->
+<!--                </div>-->
+<!--            </div>-->
+
         <!-- 오른쪽 박스 -->
         <div class="right-box">
             <div class="right-box-child">
                 <h3>내가 쓴 후기</h3>
                 <div class="dot-box">
-                    <!-- 기본 멘트 -->
+                    <div class="dot-box-none"th:if="${myReviews.isEmpty()}">
+                        <p>후기가 없습니다. 후기를 작성해 주세요!</p>
+                    </div>
                     <div class="dot-box-content" th:each="myReview, iterStat : ${myReviews}"
                          th:if="${iterStat.index < 4}">
                         <p th:text="${myReview.title}"></p>
@@ -131,6 +149,7 @@
                     <a href="#" class="button">+더보기</a>
                 </div>
             </div>
+
 
 
             <div class="right-box-child2">
