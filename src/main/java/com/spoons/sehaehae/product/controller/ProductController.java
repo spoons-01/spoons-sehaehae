@@ -333,7 +333,7 @@ public class ProductController {
     public void coupon(Model model, @AuthenticationPrincipal MemberDTO member){
 
         List<CpBoxDTO> couponList = productService.selectCoupon(member.getMemberNo());
-        System.out.println(couponList);
+
         model.addAttribute("couponList",couponList);
     }
 

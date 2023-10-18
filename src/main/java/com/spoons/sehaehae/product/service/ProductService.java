@@ -93,10 +93,6 @@ public class ProductService {
         productMapper.deleteProduct(productMap);
     }
 
-    public List<ProductDTO> selectAllproductAdmin() {
-        return productMapper.selectAllproductAdmin();
-    }
-
     public List<CpBoxDTO> selectCoupon(int memberId) {
 
        return productMapper.selectCoupon(memberId);
