@@ -47,7 +47,7 @@
                         <select id="search-method" name="searchCondition">
                             <option selected>전체</option>
                             <option value="refundCode" th:selected="${paging.searchCondition eq 'refundCode'}">환불번호</option>
-                            <option value="order" th:selected="${paging.searchCondition eq 'order'}">주문자</option>
+                            <option value="member" th:selected="${paging.searchCondition eq 'member'}">주문자</option>
                             <option value="phone" th:selected="${paging.searchCondition eq 'phone'}">전화번호</option>
                             <option value="processStatus" th:selected="${paging.searchCondition eq 'processStatus'}" >처리상태</option>
                         </select>
@@ -103,7 +103,7 @@
                 <th><input id="selectAll" type="checkbox" name="checkStatus" value="checkStatus" onclick='selectAll(this)'></th>
                 <th th:style="'width: 110px;'">환불번호</th>
                 <th>주문번호</th>
-                <th>주문일자</th>
+                <th>환불접수일자</th>
                 <th>주문자</th>
                 <th>전화번호</th>
                 <th>환불완료일자</th>
