@@ -60,4 +60,6 @@ public interface BoardMapper {
     List<ReplyDTO> selectReplyList(Long reviewNo, ReplyDTO loadReply);
 
     void deleteReply(ReplyDTO removeReply);
+
+    int getCommentCountForReview(Long reviewNo);
 }

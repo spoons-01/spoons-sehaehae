@@ -689,15 +689,75 @@ h3 {
     margin-top: 30px;
     text-align: center;
 }
-
-/* 댓글 */
+/* 댓글  ----------------------------------------------------*/
+/* 댓글 작성 영역 */
 .reviewReplyArea {
     margin-top: 100px;
     margin-left: 10px;
-    margin-bottom: 100px;
+    margin-bottom: 80px;
+
 }
 
-.reviewReplyArea p {
+/* 댓글 */
+.replyTitle {
+    font-family: NanumSquareNeo-Variable;
+    font-weight: bold;
     font-size: 20px;
     color: black;
+    border: 0;
 }
+
+/* 댓글 수 */
+.replyCount {
+    border: 0;
+    font-family: NanumSquareNeo-Variable;
+    font-size: 15px;
+    margin-left: 5px;
+}
+
+/* 댓글 쓰기 */
+.replyRegist td{
+    border: 0;
+}
+
+.replyRegesitLeft {
+    display: flex;
+}
+
+.replyRegesitLeft img {
+    width: 45px;
+    height: 45px;
+    margin-left: 15px;
+    margin-top: 15px;
+    vertical-align: middle;
+}
+
+.replyRegist textarea {
+    margin-left: 50px;
+    margin-top: 15px;
+    background: #D9D9D9;
+    border-radius: 15px;
+    width: 650px;
+    resize: none;
+}
+
+/* 작성하기 */
+
+.replyRegistButton {
+    background: #4B93FF;
+    border-radius: 20px;
+    color: white;
+    font-size: 15px;
+    font-family: NanumSquareNeo-Variable;
+    font-weight: 100;
+    padding: 10px;
+    margin-top: 15px;
+    margin-left: 20px;
+}
+
+/* 댓글 리스트 */
+#replyResult {
+    border: 0;
+}
+
+

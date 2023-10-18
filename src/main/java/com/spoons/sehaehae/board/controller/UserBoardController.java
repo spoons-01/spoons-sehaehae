@@ -90,6 +90,24 @@ public class UserBoardController {
 
     /* 후기게시판 */
 
+//    @GetMapping("/userReview")
+//    public String getReview(@RequestParam(defaultValue = "1") int page,
+//                            @RequestParam(required = false) String searchCondition,
+//                            @RequestParam(required = false) String searchValue,
+//                            Model model) {
+//
+//        Map<String, String> searchMap = new HashMap<>();
+//        searchMap.put("searchCondition", searchCondition);
+//        searchMap.put("searchValue", searchValue);
+//
+//        Map<String, Object> reviewListAndPaging = boardService.selectReviewList(searchMap,page);
+//        model.addAttribute("paging",reviewListAndPaging.get("paging"));
+//        model.addAttribute("reviewList", reviewListAndPaging.get("reviewList"));
+//
+//
+//        return "/user/board/userReview";
+//    }
+
     @GetMapping("/userReview")
     public String getReview(@RequestParam(defaultValue = "1") int page,
                             @RequestParam(required = false) String searchCondition,
@@ -100,21 +118,32 @@ public class UserBoardController {
         searchMap.put("searchCondition", searchCondition);
         searchMap.put("searchValue", searchValue);
 
-        Map<String, Object> reviewListAndPaging = boardService.selectReviewList(searchMap,page);
-        model.addAttribute("paging",reviewListAndPaging.get("paging"));
-        model.addAttribute("reviewList", reviewListAndPaging.get("reviewList"));
+        Map<String, Object> reviewListAndPaging = boardService.selectReviewList(searchMap, page);
+
+        List<ReviewDTO> reviewList = (List<ReviewDTO>) reviewListAndPaging.get("reviewList");
+
+        // 각 게시글에 대한 댓글 수를 가져오고 모델에 추가
+        for (ReviewDTO review : reviewList) {
+            int commentCount = boardService.getCommentCountForReview(review.getReviewNo());
+            review.setCommentCount(commentCount);
+        }
+
+        model.addAttribute("paging", reviewListAndPaging.get("paging"));
+        model.addAttribute("reviewList", reviewList);
 
         return "/user/board/userReview";
     }
-
 
     @GetMapping("/userReviewView")
     public String getReviewView(@RequestParam Long no, Model model){
 
         ReviewDTO reviewView = boardService.selectReviewView(no);
 
-        model.addAttribute("review", reviewView);
+        // 댓글 수를 가져옴
+        int commentCount = boardService.getCommentCountForReview(no);
 
+        model.addAttribute("review", reviewView);
+        model.addAttribute("commentCount", commentCount);
         return "/user/board/userReviewView";
     }
 
