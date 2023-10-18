@@ -29,40 +29,158 @@ img {
 
 p {
     font-family: NanumSquareNeo-Variable;
-    color: #8E8585;
+}
+
+h2 {
+    font-family: NanumSquareNeo-Variable;
 }
 
 h3 {
     font-family: NanumSquareNeo-Variable;
 }
 
-/* mysehae 설정 --------------------------------------------------------- */
-.wrapper {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 4%;
-}
-
 /* mypage nav ---------------------------------------------------------*/
+
 .mypage-nav {
     display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
     list-style-type: none;
-    justify-content: center;
     font-family: NanumSquareNeo-Variable;
+    margin: 30px auto 30px auto;
 }
 
 .mypage-nav a {
+    display: flex;
     color: black;
     font-weight: bold;
-    margin: -5px 20px 0px 20px;
+    margin: 0 20px; /* 여백 조정 */
+    align-items: center; /* 세로 중앙 정렬 */
 }
 
 .mypage-nav a:hover {
     color: #4B93FF;
 }
 
-.line {
+/* 내 주문 페이지 ------------------------------------------------------*/
+
+.wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 4%;
+}
+
+.order {
+    margin: 30px auto;
+}
+
+.blue-box {
+    margin-top: 20px;
+    background-color: rgba(196, 231, 255, 0.4);
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.blue-box p {
+    color: #262626;
+    line-height: 22px;
+    font-size: 14px;
+}
+
+.blue-box span {
+    color: #4B93FF;
+    font-weight: bold;
+}
+
+/* 주문 번호 및 날짜 */
+.orderNo-orderDate {
+    display: flex;
+    margin: 35px auto 20px;
+}
+
+.orderNo-orderDate p {
+    font-weight: bold;
+    font-size: 15px;
+    color: #484848;
+}
+
+.orderNo {
+    display: flex;
+}
+
+.gap-code-date {
+    margin: auto 10px;
+}
+
+.orderDate {
+    display: flex;
+}
+
+/* 세탁서비스 이용 */
+.grid {
+    display: grid;
+    grid-template-columns: 2fr 6fr 2fr;
     margin-top: 30px;
 }
 
-/* 내 주문 페이지 ------------------------------------------------------*/
+/* 1. 그리드 */
+.img {
+    border-radius: 10px;
+}
+
+/* 2. 그리드 */
+.order-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* 주문상품 반복문 */
+.product-container {
+    display: flex;
+}
+
+.order-product {
+    display: flex;
+    margin-top: 15px;
+}
+
+.order-price {
+    margin-top: 15px;
+}
+
+.bold {
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.order-progress {
+    display: flex;
+    margin-top: 20px;
+}
+
+.blue-font {
+    font-weight: 700;
+    color: #4B93FF;
+    font-size: 18px;
+}
+
+/* 멤버정보 */
+.member1 {
+    margin: 100px auto 20px;
+}
+.member-detail {
+    display: flex;
+    margin-top: 20px;
+}
+
+.mini-grey {
+    color: #6f6f6f;
+    margin-right: 20px;
+}
+
+/* 주문지정보 */
+
+/* 푸터와의 여백 */
+.none {
+    margin-bottom: 100px;
+}

@@ -17,6 +17,3 @@ public class OrderProductDTO {
     private char useEco;
     private char usePremium;
 }
-
-
-

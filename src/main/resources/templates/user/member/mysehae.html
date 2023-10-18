@@ -20,6 +20,7 @@
 </head>
 
 <body>
+<div th:replace="/user/common/header2.html"></div>
 <!-- 마이페이지 네비 -->
 <ul class="mypage-nav">
     <a id="profile" href="/user/member/mypage">
@@ -71,17 +72,18 @@
     <div class="box-wrapper">
         <!-- 구매 진행 -->
         <div class="second-bar">
-            <div class="second-bar-child" th:each="status : ${orderStatusCounts}">
+            <div class="second-bar-child" th:each="status, iterStat : ${orderStatusCounts}">
                 <div class="order-status">
                     <p th:text="${status.key}"></p>
                     <p class="num" th:text="${status.value}"></p>
                 </div>
-                <div class="ineq">
+                <div class="ineq" th:if="${!iterStat.last}">
                     <img src="/images/ineq.png">
                 </div>
             </div>
         </div>
     </div>
+
 
 
     <div class="box-wrapper">
@@ -119,13 +121,13 @@
                 <div class="order">
                     <div class="order-child1"> <!-- 왼쪽 박스 -->
                         <div class="order-num-date">
-                            <div th:text="${order?.orderCode}"></div>
+                            <p th:text="${order?.orderCode}"></p>
                             <p>|</p>
-                            <div th:text="${order?.orderDate}"></div>
+                            <p th:text="${#dates.format(order?.orderDate, 'yyyy.MM.dd E')}"></p>
                         </div>
                         <div class="greybox">
-                            <div th:text="${order?.progressDate}"></div>
-                            <div th:text="${order?.orderStatus}"></div>
+                            <p th:text="${#dates.format(order?.progressDate, 'yyyy.MM.dd E')}"></p>
+                            <p id="orderStatus"th:text="${order?.orderStatus}"></p>
                         </div>
                     </div>
 
@@ -134,7 +136,7 @@
                             <a th:href="@{'/user/member/myOrder/' + ${order.orderCode}}">상세보기</a>
                         </div>
                         <div class="button-wrapper">
-                            <a th:if="${order.orderStatus == '구매확정'} " href="/user/member/refund" class="button">환불하기</a>
+                            <a th:if="${order.orderStatus == '구매확정'}" th:href="@{'/user/member/refund/' + ${order.orderCode}}" class="button">환불하기</a>
                             <a th:unless="${order.orderStatus == '구매확정'}" href="#" class="button disabled">환불하기</a>
                             <a th:if="${order.orderStatus == '구매확정' && order.reviewStatus != '작성완료'}" class="button2 review-button" th:attr="data-order-code=${order.orderCode}, data-point=${order.memberNo}">후기쓰기</a>
                             <a th:unless="${order.orderStatus == '구매확정'}" href="#" class="button2 disabled">후기쓰기</a>

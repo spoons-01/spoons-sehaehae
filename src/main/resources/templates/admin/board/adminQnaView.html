@@ -25,7 +25,7 @@
             <td ><p name="title" th:text="${ qna.title }"></p></td>
         </tr>
         <tr class="detail-date">
-            <td><p th:text="${ qna.createdDate }"></p></td>
+            <td><p th:text="${ #dates.format(qna.createdDate, 'yyyy-MM-dd') }"></p></td>
         </tr>
         <tr class="detail-body">
             <td><textarea name="body" cols="60" rows="15"

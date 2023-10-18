@@ -76,19 +76,22 @@
         <association property="attachment" resultMap="attachmentResultMap"/>
         <association property="myOrders" resultMap="orderResultMap"/>
         <association property="point" resultMap="pointResultMap"/>
-
-<!--        <collection property="replyList" resultMap="replyResultMap"/>-->
+        <collection property="replyList" resultMap="replyResultMap"/>
     </resultMap>
-<!--댓글-->
-<!--    <resultMap id="replyResultMap" type="com.spoons.sehaehae.board.dto.ReplyDTO">-->
-<!--        <id property="no" column="REPLY_NO"/>-->
-<!--        <result property="reviewNo" column="REVIEW_NO"/>-->
-<!--        <result property="body" column="REPLY_BODY"/>-->
-<!--        <result property="date" column="REPLY_DATE"/>-->
-<!--        <result property="status" column="REPLY_STATUS"/>-->
-<!--        <result property="deleteDate" column="REVIEW_DELETE_DATE"/>-->
-<!--        <result property="modifiedDate" column="REPLY_MODIFIED_DATE"/>-->
 
+<!--댓글-->
+    <resultMap id="replyResultMap" type="com.spoons.sehaehae.board.dto.ReplyDTO">
+        <id property="no" column="REPLY_NO"/>
+        <result property="reviewNo" column="REVIEW_NO"/>
+        <result property="body" column="REPLY_BODY"/>
+        <result property="replyDate" column="REPLY_DATE"/>
+        <result property="status" column="REPLY_STATUS"/>
+        <result property="deleteDate" column="REVIEW_DELETE_DATE"/>
+        <result property="modifiedDate" column="REPLY_MODIFIED_DATE"/>
+        <result property="memberNo" column="MEMBER_NO"/>
+
+<!--        <association property="review" resultMap="reviewBoardResultMap"/>-->
+        <association property="writer" resultMap="memberResultMap"/>
 <!--        <association property="writer" javaType="com.spoons.sehaehae.member.dto.MemberDTO">-->
 <!--            <id property="memberNo" column="MEMBER_NO"/>-->
 <!--            <result property="memberId" column="ID"/>-->
@@ -106,7 +109,7 @@
 <!--            <result property="address1" column="ADDRESS1"/>-->
 <!--            <result property="address2" column="ADDRESS2"/>-->
 <!--        </association>-->
-<!--    </resultMap>-->
+    </resultMap>
 
 <!--첨부파일-->
     <resultMap id="attachmentResultMap" type="com.spoons.sehaehae.board.dto.AttachmentDTO">
@@ -614,12 +617,15 @@
         , B.NICKNAME
         , A.REVIEW_TITLE
         , A.REVIEW_BODY
+        , A.REVIEW_COUNT
         , A.REVIEW_CREATED_DATE
         , C.ORDER_CODE
         , A.RATING
+        , D.ATTACHED_FILE_THUMBNAIL
         FROM TBL_REVIEW A
         JOIN TBL_MEMBER B ON (A.MEMBER_NO = B.MEMBER_NO)
         JOIN TBL_ORDER C ON (A.ORDER_CODE = C.ORDER_CODE)
+        JOIN ATTACHED_FILE D ON(A.REVIEW_NO = D.REVIEW_NO)
         WHERE A.REVIEW_STATUS = 'Y'
         AND A.REVIEW_NO = #{ reviewNo }
     </select>
@@ -634,8 +640,64 @@
     <update id="deleteReview">
         UPDATE TBL_REVIEW
         SET REVIEW_STATUS = 'N'
+        , REVIEW_DELETE_DATE = SYSDATE
         WHERE REVIEW_STATUS = 'Y'
+        AND REVIEW_DELETE_DATE IS NULL
         AND REVIEW_NO = #{ reviewNo }
     </update>
 
+    <!-- 댓글 -->
+    <insert id="insertReply">
+        INSERT
+        INTO TBL_REPLY A
+        (
+              A.REPLY_NO
+            , A.REVIEW_NO
+            , A.REPLY_BODY
+            , A.REPLY_DATE
+            , A.REPLY_STATUS
+            , A.MEMBER_NO
+        )
+        VALUES
+        (
+          SEQ_REPLY_NO.NEXTVAL
+        , #{ reviewNo }
+        , #{ body }
+        , SYSDATE
+        , 'Y'
+        , #{ writer.memberNo }
+        )
+    </insert>
+
+    <select id="selectReplyList" resultMap="replyResultMap">
+        SELECT
+              A.REPLY_NO
+            , A.REVIEW_NO
+            , A.REPLY_BODY
+            , A.REPLY_DATE
+            , A.REPLY_STATUS
+            , B.MEMBER_NO
+            , B.NICKNAME
+        FROM TBL_REPLY A
+        JOIN TBL_MEMBER B ON (A.MEMBER_NO = B.MEMBER_NO)
+        WHERE A.REPLY_STATUS = 'Y'
+        AND A.REVIEW_NO = #{ reviewNo }
+        ORDER BY A.REPLY_NO DESC
+    </select>
+
+    <update id="deleteReply">
+        UPDATE TBL_REPLY A
+        SET A.REPLY_STATUS = 'N',
+        A.REPLY_MODIFIED_DATE = SYSDATE
+        WHERE A.REPLY_STATUS = 'Y'
+        AND A.REPLY_MODIFIED_DATE IS NULL
+        AND A.REPLY_NO = #{ no }
+    </update>
+
+    <select id="getCommentCountForReview" resultType="int">
+        SELECT COUNT(*) AS comment_count
+        FROM TBL_REPLY
+        WHERE REVIEW_NO = #{reviewNo}
+        AND REPLY_STATUS = 'Y'
+    </select>
 </mapper>

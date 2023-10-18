@@ -25,13 +25,13 @@
         </tr>
 
             <tr class="reviewDee">
-                <td>주문번호 : <span th:text="${ review.myOrders.orderCode }"/></td>
+                <td>주문번호 : <span th:text="${ review.myOrders.code }"/></td>
                 <td>별점 : <span th:text="${ review.rating }"/></td>
                 <td>작성자 : <span th:text="${ review.writer.nickname }"/></td>
             </tr>
 
         <tr class="detail-date">
-            <td><p th:text="${ review.createdDate }"></p></td>
+            <td><p th:text="${  #dates.format(review.createdDate, 'yyyy-MM-dd') }"></p></td>
         </tr>
         <tr class="detail-body">
             <td>

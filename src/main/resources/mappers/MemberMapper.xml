@@ -49,20 +49,23 @@
         <result property="membershipName" column="MEMBERSHIP_NAME"/>
     </resultMap>
 
+
     <!-- TBL_ORDER -->
-    <resultMap id="orderResultMap" type="com.spoons.sehaehae.admin.dto.OrderDTO">
-        <id property="code" column="ORDER_CODE"/>
+    <resultMap id="orderResultMap" type="com.spoons.sehaehae.member.dto.MyOrderDTO">
+        <id property="orderCode" column="ORDER_CODE"/>
         <result property="orderDate" column="ORDER_DATE"/>
         <result property="orderRequest" column="ORDER_REQUEST"/>
         <result property="orderPrice" column="ORDER_PRICE"/>
         <result property="orderDiscount" column="ORDER_DISCOUNT"/>
         <result property="orderTotalPrice" column="ORDER_TOTAL_PRICE"/>
-        <result property="memberCode" column="MEMBER_NO"/>
+        <result property="memberNo" column="MEMBER_NO"/>
+        <result property="name" column="NAME"/>
+        <result property="phone" column="PHONE_NUMBER"/>
         <result property="inputZipCode" column="INPUT_ZIP_CODE"/>
         <result property="inputAddress" column="INPUT_ADDRESS"/>
-        <result property="InputAddress2" column="INPUT_ADDRESS2"/>
-        <result property="orderStatus" column="ORDER_STATUS"/>
+        <result property="inputAddress2" column="INPUT_ADDRESS2"/>
         <result property="useCoupon" column="CP_CODE"/>
+        <result property="orderStatus" column="ORDER_STATUS"/>
         <result property="usePoint" column="USE_POINT"/>
         <result property="collectionDate" column="COLLECTION_DATE"/>
         <result property="deliveryDate" column="DELIVERY_DATE"/>
@@ -70,12 +73,57 @@
         <result property="reviewStatus" column="REVIEW_STATUS"/>
     </resultMap>
 
-    <select id="findMyOrderDetails" parameterType="string" resultMap="orderResultMap">
-        SELECT
-            *
-        FROM TBL_ORDER
-        WHERE 1=1
+    <resultMap id="productResultMap" type="com.spoons.sehaehae.member.dto.MyOrderProductDTO">
+        <id property="productCode" column="PRODUCT_CODE"/>
+        <id property="orderCode" column="ORDER_CODE"/>
+        <result property="orderAmount" column="ORDER_AMOUNT"/>
+        <result property="usePremium" column="USE_PREMIUM"/>
+        <result property="useEco" column="USE_ECO"/>
+        <result property="productName" column="PRODUCT_NAME"/>
+        <result property="productPrice" column="PRODUCT_PRICE"/>
+    </resultMap>
+
+    <select id="findMyProduct" parameterType="String" resultMap="productResultMap">
+        SELECT A.PRODUCT_CODE,
+               A.ORDER_CODE,
+               A.ORDER_AMOUNT,
+               A.USE_PREMIUM,
+               A.USE_ECO,
+               B.PRODUCT_NAME,
+               B.PRODUCT_PRICE
+        FROM TBL_ORDER_PRODUCT A
+                 LEFT JOIN TBL_PRODUCT B
+                           ON (A.PRODUCT_CODE = B.PRODUCT_CODE)
+        WHERE 1 = 1
           AND ORDER_CODE = #{orderCode}
+    </select>
+
+
+    <select id="findMyOrderDetails" parameterType="String" resultMap="orderResultMap">
+        SELECT A.MEMBER_NO,
+               A.NAME,
+               A.PHONE_NUMBER,
+               B.ORDER_CODE,
+               B.ORDER_DATE,
+               B.ORDER_REQUEST,
+               B.ORDER_PRICE,
+               B.ORDER_DISCOUNT,
+               B.ORDER_TOTAL_PRICE,
+               B.INPUT_ZIP_CODE,
+               B.INPUT_ADDRESS,
+               B.INPUT_ADDRESS2,
+               B.CP_CODE,
+               B.ORDER_STATUS,
+               B.USE_POINT,
+               B.COLLECTION_DATE,
+               B.DELIVERY_DATE,
+               B.PROGRESS_DATE,
+               B.REVIEW_STATUS,
+               B.REWARD
+        FROM TBL_MEMBER A
+                 LEFT JOIN TBL_ORDER B ON (A.MEMBER_NO = B.MEMBER_NO)
+        WHERE 1 = 1
+          AND B.ORDER_CODE = #{orderCode}
     </select>
 
 
@@ -155,10 +203,37 @@
         <association property="review" resultMap="myReviewResultMap"/>
     </resultMap>
 
-
-
+    <resultMap id="myRefundResultMap" type="com.spoons.sehaehae.member.dto.MyRefundDTO">
+        <id property = "refundCode" column="REFUND_CODE"/>
+        <result property = "orderCode" column="ORDER_CODE"/>
+        <result property = "refundReceiptDate" column="REFUND_RECEIPT_DATE"/>
+        <result property = "processStatus" column="PROCESS_STATUS"/>
+        <result property = "refundReason" column="REASON"/>
+    </resultMap>
+    
+    <!-- 환불 조회 -->
+    <select id="findMyRefund" resultMap="myRefundResultMap">
+        SELECT
+            *
+        FROM TBL_REFUND
+        WHERE ORDER_CODE = #{orderCode}
+    </select>
 
     <!-- 환불 -->
+    <insert id="saveRefund">
+        INSERT INTO TBL_REFUND
+        (REFUND_CODE,
+         ORDER_CODE,
+         REFUND_RECEIPT_DATE,
+         PROCESS_STATUS,
+         REFUND_REASON)
+        VALUES (SEQ_REFUND_CODE.NEXTVAL,
+                #{orderCode},
+                SYSDATE,
+                '환불요청',
+                #{refundReason})
+    </insert>
+
 
     <!--
         <resultMap type="com.spoons.sehaehae.member.dto.ProfileAttachmentDTO" id="profileAttachmentResultMap">
@@ -212,12 +287,7 @@
           AND ID = #{ memberId }
     </select>
 
-    <!--	<select id="countMemberByTel" resultType="String">-->
-    <!--		SELECT-->
-    <!--		    PHONE_NUMBER-->
-    <!--		FROM TBL_MEMBER-->
-    <!--		WHERE PHONE_NUMBER = #{tel}-->
-    <!--	</select>-->
+
 
     <insert id="insertMember">
         INSERT
@@ -295,7 +365,7 @@
         FROM TBL_MEMBER A
                  LEFT JOIN TBL_CPBOX B ON A.MEMBER_NO = B.MEMBER_NO
                  LEFT JOIN TBL_CP C ON B.CP_CODE = C.CP_CODE
-        WHERE 1=1
+        WHERE 1 = 1
           AND A.MEMBER_NO = #{ memberNo }
     </select>
 
@@ -308,10 +378,9 @@
     </select>
 
     <select id="findMyReview" resultMap="myReviewResultMap">
-        SELECT
-            REVIEW_TITLE
+        SELECT REVIEW_TITLE
         FROM TBL_REVIEW
-        WHERE 1=1
+        WHERE 1 = 1
           AND MEMBER_NO = #{memberNo}
     </select>
 
@@ -343,9 +412,9 @@
           , ADDRESS2      = #{ address2 }
           , PROFILE_PHOTO = #{profilePhoto}
 
-		WHERE MEMBER_STATUS = 'Y'
-		  AND MEMBER_NO = #{ memberNo }
-	</update>
+        WHERE MEMBER_STATUS = 'Y'
+          AND MEMBER_NO = #{ memberNo }
+    </update>
 
    <select id="selectMemberList" resultMap="memberResultMap">
         select
@@ -354,25 +423,6 @@
         where	MEMBER_STATUS = 'Y'
         order by MEMBER_NO asc
     </select>
-
-	<update id="adUpdateMember">
-		update TBL_MEMBER
-		set
-			NAME=#{name},
-			ID=#{memberId},
-			NICKNAME=#{nickname},
-			PHONE_NUMBER=#{phone},
-			GENDER=#{gender},
-			BIRTHDAY=#{birthday},
-			ADDRESS1=#{address1}
-		where   MEMBER_NO=#{memberNo}
-	</update>
-
-	<update id="removeMember">
-		update TBL_MEMBER
-		set	   MEMBER_STATUS = 'N'
-		where  MEMBER_NO=${memberNo}
-	</update>
 
     <insert id="insertFirstCoupon">
         insert into TBL_CPBOX
@@ -389,47 +439,65 @@
         )
     </insert>
 
+    <update id="adUpdateMember">
+        update TBL_MEMBER
+        set NAME=#{name},
+            ID=#{memberId},
+            NICKNAME=#{nickname},
+            PHONE_NUMBER=#{phone},
+            GENDER=#{gender},
+            BIRTHDAY=#{birthday},
+            ADDRESS1=#{address1}
+        where MEMBER_NO = #{memberNo}
+    </update>
 
-	<select id="getfNum" parameterType="int">
-		select
-		    count(*)
-		from	TBL_MEMBER
-		where	MEMBER_STATUS='Y' and GENDER = 'F'
-	</select>
+    <update id="removeMember">
+        update TBL_MEMBER
+        set MEMBER_STATUS = 'N'
+        where MEMBER_NO = ${memberNo}
+    </update>
 
-	<select id="getmNum" parameterType="int">
-		select
-			count(*)
-		from	TBL_MEMBER
-		where	MEMBER_STATUS='Y' and GENDER= 'M'
-	</select>
 
-	<select id="getFirst" parameterType="int">
-		SELECT count(*)
-		FROM TBL_MEMBER
-		where TRUNC( (sysdate - BIRTHDAY)/365, -1) <![CDATA[<=]]> 10
-	</select>
-	<select id="getSecond" parameterType="int">
-		SELECT count(*)
-		FROM TBL_MEMBER
-		where TRUNC( (sysdate - BIRTHDAY)/365, -1) = 20
-	</select>
-	<select id="getThird" parameterType="int">
-		SELECT count(*)
-		FROM TBL_MEMBER
-		where TRUNC( (sysdate - BIRTHDAY)/365, -1) = 30
-	</select>
-	<select id="getFourth" parameterType="int">
-		SELECT count(*)
-		FROM TBL_MEMBER
-		where TRUNC( (sysdate - BIRTHDAY)/365, -1) = 40
-	</select>
-	<select id="getFifth" parameterType="int">
-		SELECT count(*)
-		FROM TBL_MEMBER
-		where TRUNC( (sysdate - BIRTHDAY)/365, -1) <![CDATA[>=]]> 50
-	</select>
+    <select id="getfNum" parameterType="int">
+        select count(*)
+        from TBL_MEMBER
+        where MEMBER_STATUS = 'Y'
+          and GENDER = 'F'
+    </select>
 
+
+    <select id="getmNum" parameterType="int">
+        select count(*)
+        from TBL_MEMBER
+        where MEMBER_STATUS = 'Y'
+          and GENDER = 'M'
+    </select>
+
+    <select id="getFirst" parameterType="int">
+        SELECT count(*)
+        FROM TBL_MEMBER
+        where TRUNC((sysdate - BIRTHDAY) / 365, -1) <![CDATA[<=]]> 10
+    </select>
+    <select id="getSecond" parameterType="int">
+        SELECT count(*)
+        FROM TBL_MEMBER
+        where TRUNC((sysdate - BIRTHDAY) / 365, -1) = 20
+    </select>
+    <select id="getThird" parameterType="int">
+        SELECT count(*)
+        FROM TBL_MEMBER
+        where TRUNC((sysdate - BIRTHDAY) / 365, -1) = 30
+    </select>
+    <select id="getFourth" parameterType="int">
+        SELECT count(*)
+        FROM TBL_MEMBER
+        where TRUNC((sysdate - BIRTHDAY) / 365, -1) = 40
+    </select>
+    <select id="getFifth" parameterType="int">
+        SELECT count(*)
+        FROM TBL_MEMBER
+        where TRUNC((sysdate - BIRTHDAY) / 365, -1) <![CDATA[>=]]> 50
+    </select>
 
 
 </mapper>

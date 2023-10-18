@@ -32,11 +32,11 @@
 
           <tr th:each="review : ${ reviewList }" >
             <td th:text="${ review.reviewNo }"></td>
-            <td th:text="${ review.myOrders.orderCode }"></td>
+            <td th:text="${ review.myOrders.code }"></td>
             <td th:text="${ review.rating }"></td>
             <td th:text="${ review.title }" th:onclick="|location.href='/admin/board/adminReviewView?no=${review.reviewNo}'|"></td>
             <td th:text="${ review.writer.nickname }"></td>
-            <td th:text="${ review.createdDate}"></td>
+            <td th:text="${ #dates.format(review.createdDate, 'yyyy-MM-dd')}"></td>
           </tr>
         </table>
       </div>

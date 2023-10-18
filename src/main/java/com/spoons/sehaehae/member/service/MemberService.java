@@ -5,11 +5,10 @@ import com.spoons.sehaehae.admin.dto.OrderDTO;
 import com.spoons.sehaehae.board.dto.AttachmentDTO;
 import com.spoons.sehaehae.board.dto.ReviewDTO;
 import com.spoons.sehaehae.common.exception.member.MemberModifyException;
+import com.spoons.sehaehae.common.exception.member.MemberRefundException;
 import com.spoons.sehaehae.common.exception.member.MemberRegistException;
 import com.spoons.sehaehae.member.dao.MemberMapper;
-import com.spoons.sehaehae.member.dto.MemberDTO;
-import com.spoons.sehaehae.member.dto.MyCouponDTO;
-import com.spoons.sehaehae.member.dto.MyOrderDTO;
+import com.spoons.sehaehae.member.dto.*;
 import com.spoons.sehaehae.member.util.Naver_Sens_V2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,9 +35,20 @@ public class MemberService {
     }
 
     /* 주문상세보기 */
-    public OrderDTO findMyOrderDetails(String orderCode) {
-        OrderDTO myOrders = memberMapper.findMyOrderDetails(orderCode);
+    public MyOrderDTO findMyOrderDetails(String orderCode) {
+        MyOrderDTO myOrders = memberMapper.findMyOrderDetails(orderCode);
         return myOrders;
+    }
+
+    /* 환불 폼 */
+    public MyRefundDTO findMyRefund(String orderCode) {
+        MyRefundDTO myRefund = memberMapper.findMyRefund(orderCode);
+        return myRefund;
+    }
+
+    public List<MyOrderProductDTO> findMyProduct(String orderCode) {
+        List<MyOrderProductDTO> myProduct = memberMapper.findMyProduct(orderCode);
+        return myProduct;
     }
 
     /* 내 쿠폰 목록 */
@@ -80,6 +90,14 @@ public class MemberService {
 
         if (!(result1 > 0 && result2 > 0 && result3 > 0)) throw new MemberRegistException("회원 가입에 실패하였습니다.");
 
+    }
+
+
+    @Transactional
+    public void saveRefund(MyRefundDTO refund) {
+        /* 성공 실패 로직 추가 */
+        int result = memberMapper.saveRefund(refund);
+        if (!(result > 0)) throw new MemberRefundException("환불 신청에 실패하였습니다.");
     }
 
     // @Transactional => 기본 처리 옵션은 RuntimeException 발생할 때  Rollback COmmit ;  그 외적으로는  COmmit ;

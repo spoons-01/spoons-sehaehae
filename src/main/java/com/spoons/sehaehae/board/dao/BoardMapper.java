@@ -54,4 +54,12 @@ public interface BoardMapper {
     void updateOrderReviewStatus(String orderCode);
 
     void insertPoint(ReviewPointDTO point);
+
+    void insertReply(ReplyDTO registReply);
+
+    List<ReplyDTO> selectReplyList(Long reviewNo, ReplyDTO loadReply);
+
+    void deleteReply(ReplyDTO removeReply);
+
+    int getCommentCountForReview(Long reviewNo);
 }
