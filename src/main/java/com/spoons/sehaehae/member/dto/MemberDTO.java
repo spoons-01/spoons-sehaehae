@@ -18,7 +18,7 @@ public class MemberDTO implements UserDetails {
     private String memberPwd;
     private String name;
     private String nickname;
-    private int phone;
+    private String phone;
     private String birthday;
     private char gender;
     private String zipCode;

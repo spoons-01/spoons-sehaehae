@@ -23,7 +23,8 @@
         select
             *
         from    TBL_CP
-        WHERE   CP_STATUS = 'Y'
+        WHERE   CP_STATUS = 'Y' and CP_CODE not in(1,2)
+        ORDER BY CP_NAME asc
     </select>
 
     <insert id="insertCoupon">

@@ -493,7 +493,8 @@ h3 {
 
 .eachReview {
     margin-bottom: 50px;
-    margin-left: 30px;
+
+    margin-left: 40px;
 }
 /*리뷰번호*/
 .reviewNo {
@@ -502,6 +503,7 @@ h3 {
     margin-left: 5px;
     display: flex; /* titleReview를 가로로 정렬하기 위해 flex 사용 */
     justify-content: space-between;
+    width: 200px;
     /*align-items: center; !* 요소를 수직 중앙 정렬 *!*/
     /*width: 100%; !* 부모 div에 맞추기 *!*/
 }
@@ -544,6 +546,7 @@ h3 {
     vertical-align: middle; /* 요소를 세로 가운데 정렬 */
     margin-right: 15px; /* 각 요소 사이의 간격 설정 */
     margin-top: 5px;
+    /*width: 60px;*/
 }
 
 .countReview p {
@@ -557,7 +560,7 @@ h3 {
 }
 
 .replyReview {
-    margin-left: 10px;
+    margin-left: 5px;
     font-family: NanumSquareNeo-Variable;
     vertical-align: middle; /* 요소를 세로 가운데 정렬 */
 }
@@ -614,4 +617,147 @@ h3 {
 .file {
     display: none;
 }
+
+/* 후기 게시판 디테일 */
+
+.reviewTable {
+    margin-top: 100px;
+    margin-left: 500px;
+    width: 900px;
+}
+
+/* 제목*/
+.reviewDname {
+    font-size: 35px;
+    font-family: NanumSquareNeo-Variable;
+    margin-left: 20px;
+}
+
+/* 글번호 */
+.reviewDTitle p {
+    display: inline;
+    font-size: 15px;
+    color: black;
+    margin-left: 10px;
+    font-family: NanumSquareNeo-Variable;
+}
+
+/* 상세보기 별점 */
+.reviewRating {
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+/* 주문번호, 작성자, 작성일 */
+.reviewDinfo {
+    margin-top: 10px;
+    margin-left: 5px;
+}
+.reviewDinfo p{
+    display: inline;
+    margin-left: 10px;
+}
+
+/* 조회수, 댓글 */
+.reviewCountReply {
+    float: right;
+    font-family: NanumSquareNeo-Variable;
+    margin-right: 10px;
+    color: grey;
+}
+/* 댓글 */
+.reviewReply {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+/* 내용 */
+.reviewDbody {
+    margin-top: 40px;
+    border-top: black 1px solid;
+    border-bottom: black 1px solid;
+    text-align: center;
+}
+
+/* 사진 */
+.reviewPhoto {
+    margin-top: 50px;
+}
+
+.reviewDbody textarea {
+    margin-top: 30px;
+    text-align: center;
+}
+/* 댓글  ----------------------------------------------------*/
+/* 댓글 작성 영역 */
+.reviewReplyArea {
+    margin-top: 100px;
+    margin-left: 10px;
+    margin-bottom: 80px;
+
+}
+
+/* 댓글 */
+.replyTitle {
+    font-family: NanumSquareNeo-Variable;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+    border: 0;
+}
+
+/* 댓글 수 */
+.replyCount {
+    border: 0;
+    font-family: NanumSquareNeo-Variable;
+    font-size: 15px;
+    margin-left: 5px;
+}
+
+/* 댓글 쓰기 */
+.replyRegist td{
+    border: 0;
+}
+
+.replyRegesitLeft {
+    display: flex;
+}
+
+.replyRegesitLeft img {
+    width: 45px;
+    height: 45px;
+    margin-left: 15px;
+    margin-top: 15px;
+    vertical-align: middle;
+}
+
+.replyRegist textarea {
+    margin-left: 50px;
+    margin-top: 15px;
+    background: #D9D9D9;
+    border-radius: 15px;
+    width: 650px;
+    resize: none;
+}
+
+/* 작성하기 */
+
+.replyRegistButton {
+    background: #4B93FF;
+    border-radius: 20px;
+    color: white;
+    font-size: 15px;
+    font-family: NanumSquareNeo-Variable;
+    font-weight: 100;
+    padding: 10px;
+    margin-top: 15px;
+    margin-left: 20px;
+}
+
+/* 댓글 리스트 */
+#replyResult {
+    border: 0;
+}
+
 

@@ -3,6 +3,7 @@ package com.spoons.sehaehae.admin.dto;
 
 import com.spoons.sehaehae.member.dto.MemberDTO;
 import com.spoons.sehaehae.product.dto.OrderProductDTO;
+import com.spoons.sehaehae.product.dto.ProductDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
