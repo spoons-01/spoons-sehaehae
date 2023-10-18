@@ -169,4 +169,21 @@ public class BoardService {
     public void deleteReview(Integer id) {
         boardMapper.deleteReview(id);
     }
+
+    /* 댓글 */
+    public void registReply(ReplyDTO registReply) {
+
+        boardMapper.insertReply(registReply);
+    }
+
+
+    public void removeReply(ReplyDTO removeReply) {
+
+        boardMapper.deleteReply(removeReply);
+    }
+
+    public List<ReplyDTO> loadReply(Long reviewNo, ReplyDTO loadReply) {
+
+        return boardMapper.selectReplyList(reviewNo, loadReply);
+    }
 }
