@@ -134,7 +134,13 @@ h3 {
     font-weight: bold;
 }
 
+/* 주문상품 반복문 */
+.product-container {
+    display: flex;
+}
+
 .order-product {
+    display: flex;
     margin-top: 15px;
 }
 

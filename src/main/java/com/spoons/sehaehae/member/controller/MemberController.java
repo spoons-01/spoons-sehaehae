@@ -1,6 +1,7 @@
 package com.spoons.sehaehae.member.controller;
 
 import com.spoons.sehaehae.admin.dto.OrderDTO;
+import com.spoons.sehaehae.admin.dto.RefundDTO;
 import com.spoons.sehaehae.board.dto.AttachmentDTO;
 import com.spoons.sehaehae.board.dto.ReviewPointDTO;
 import com.spoons.sehaehae.board.dto.ReviewDTO;
@@ -12,7 +13,6 @@ import com.spoons.sehaehae.member.dto.*;
 import com.spoons.sehaehae.member.service.AuthenticationService;
 import com.spoons.sehaehae.member.service.CouponRepository;
 import com.spoons.sehaehae.member.service.MemberService;
-import com.spoons.sehaehae.product.dto.ProductDTO;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.lang3.StringUtils;
@@ -56,7 +56,7 @@ public class MemberController {
     private final BoardService boardService; // 인선!!!!
 
     public MemberController(MemberService memberService, AuthenticationService authenticationService, MessageSourceAccessor messageSourceAccessor, PasswordEncoder passwordEncoder, EmailUtil emailUtil, CouponRepository couponRepository
-                            ,BoardService boardService ) {
+            , BoardService boardService) {
         this.memberService = memberService;
         this.authenticationService = authenticationService;
         this.messageSourceAccessor = messageSourceAccessor;
@@ -106,6 +106,7 @@ public class MemberController {
         return "redirect:/";
     }
 
+    /* 마이페이지 메인 */
     @GetMapping("/member/mypage")
     public String myPage(Model model, Principal principal) {
         String currentUsername = principal.getName();
@@ -117,14 +118,13 @@ public class MemberController {
         return "/user/member/mypage";
     }
 
-    /* 나의 세해 이동 */
+    /* 나의 세해 */
     @GetMapping("/member/mysehae")
     public String mySehae(Model model, Principal principal) {
         // 현재 로그인한 사용자의 아이디 얻기
         String currentUsername = principal.getName();
         // 현재 사용자의 MemberDTO를 얻어온다
         MemberDTO memberDTO = memberService.findByMemberId(currentUsername);
-
         // MemberDTO에서 membershipName을 추출한다
         String membershipName = extractMembershipName(memberDTO);
 
@@ -169,6 +169,7 @@ public class MemberController {
         return "N/A";
     }
 
+    /* 쿠폰 목록 조회 */
     @GetMapping("/member/myCoupon")
     public String myCoupon(Model model, Principal principal) {
         String currentUserName = principal.getName();
@@ -180,11 +181,32 @@ public class MemberController {
         return "/user/member/myCoupon";
     }
 
+    /* 주문 상세 조회 */
     @GetMapping("/member/myOrder/{orderCode}")
     public String myOrder(@PathVariable String orderCode, Model model) {
-        MyOrderDTO orderDTO = memberService.findMyOrderDetails(orderCode);
-        model.addAttribute("myOrders", orderDTO);
+        MyOrderDTO myOrder = memberService.findMyOrderDetails(orderCode);
+        List<MyOrderProductDTO> myProduct = memberService.findMyProduct(orderCode);
+        model.addAttribute("myOrders", myOrder);
+        model.addAttribute("myProduct", myProduct);
         return "/user/member/myOrder";
+    }
+
+    /* 환불 페이지 */
+    @GetMapping("/member/refund/{orderCode}")
+    public String myRefund(@PathVariable String orderCode, Model model) {
+        // 환불 페이지를 보여주는 데 필요한 데이터를 가져오는 로직
+        MyRefundDTO refund = memberService.findMyRefund(orderCode);
+        model.addAttribute("refund", refund);
+        return "/user/member/refund";
+    }
+
+    @PostMapping("/member/refund/{orderCode}")
+    public String processRefund(MyRefundDTO refund,
+                                @PathVariable String orderCode,
+                                Model model) {
+        refund.setOrderCode(orderCode);
+        memberService.saveRefund(refund);
+        return "redirect:/user/member/mysehae";
     }
 
 
@@ -247,6 +269,7 @@ public class MemberController {
     }
 
 
+    /* 이메일 인증 로직 */
 
     protected Authentication createNewAuthentication(String memberId) {
 
@@ -387,7 +410,7 @@ public class MemberController {
         File dir2 = new File(thumbnailDir);
 
         /* 디렉토리가 없을 경우 생성한다. */
-        if(!dir1.exists() ) {
+        if (!dir1.exists()) {
             dir1.mkdirs();
             dir2.mkdirs();
         }
@@ -396,41 +419,41 @@ public class MemberController {
         AttachmentDTO attachment = new AttachmentDTO();
 
         try {
-                /* 첨부파일이 실제로 존재하는 경우에만 로직 수행 */
-                    if(attachImage.getSize() > 0) {
+            /* 첨부파일이 실제로 존재하는 경우에만 로직 수행 */
+            if (attachImage.getSize() > 0) {
 
-                        String originalFileName = attachImage.getOriginalFilename();
-                        log.info("originalFileName : {}", originalFileName);
+                String originalFileName = attachImage.getOriginalFilename();
+                log.info("originalFileName : {}", originalFileName);
 
-                        String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
-                        String savedName = UUID.randomUUID() + ext;
-                        log.info("saveName : {}", savedName);
+                String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
+                String savedName = UUID.randomUUID() + ext;
+                log.info("saveName : {}", savedName);
 
-                        Long size = attachImage.getSize();
+                Long size = attachImage.getSize();
 
-                        /* 서버의 설정 디렉토리에 파일 저장하기 */
+                /* 서버의 설정 디렉토리에 파일 저장하기 */
 
-                        attachImage.transferTo(new File(fileUploadDir + "/" + savedName));
+                attachImage.transferTo(new File(fileUploadDir + "/" + savedName));
 
-                        /* DB에 저장할 파일의 정보 처리 */
-                        AttachmentDTO fileInfo = new AttachmentDTO();
-                        attachment.setName(originalFileName);
-                        attachment.setSavedName(savedName);
-                        attachment.setRoute("/upload/");
-                        attachment.setExtension(ext);
-                        attachment.setSize(size);
-                        log.info("fileInfo : {}", attachment);
-                        attachment.setEx("TITLE"); // 대표사진
+                /* DB에 저장할 파일의 정보 처리 */
+                AttachmentDTO fileInfo = new AttachmentDTO();
+                attachment.setName(originalFileName);
+                attachment.setSavedName(savedName);
+                attachment.setRoute("/upload/");
+                attachment.setExtension(ext);
+                attachment.setSize(size);
+                log.info("fileInfo : {}", attachment);
+                attachment.setEx("TITLE"); // 대표사진
 
-                            /* 대표 사진에 대한 썸네일을 가공해서 저장한다. */
-                            Thumbnails.of(fileUploadDir + "/" + savedName).size(150,150)
-                                    .toFile(thumbnailDir + "/thumbnail_" + savedName);
-                        attachment.setThumbnail("/upload/thumbnail/thumbnail_" + savedName);
+                /* 대표 사진에 대한 썸네일을 가공해서 저장한다. */
+                Thumbnails.of(fileUploadDir + "/" + savedName).size(150, 150)
+                        .toFile(thumbnailDir + "/thumbnail_" + savedName);
+                attachment.setThumbnail("/upload/thumbnail/thumbnail_" + savedName);
 
-                    }
+            }
 
-            }catch (IOException e) {
-        throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         log.info("fileInfo : {}", attachment);
@@ -446,6 +469,6 @@ public class MemberController {
         boardService.registReview(review, attachment, orderCode, point);
 
         return "redirect:/user/member/mysehae";
-        }
+    }
 
 }

@@ -3,10 +3,7 @@ package com.spoons.sehaehae.member.dao;
 import com.spoons.sehaehae.admin.dto.OrderDTO;
 import com.spoons.sehaehae.admin.dto.RefundDTO;
 import com.spoons.sehaehae.board.dto.ReviewDTO;
-import com.spoons.sehaehae.member.dto.MemberDTO;
-import com.spoons.sehaehae.member.dto.MyCouponDTO;
-import com.spoons.sehaehae.member.dto.MyOrderDTO;
-import com.spoons.sehaehae.member.dto.MyPointDTO;
+import com.spoons.sehaehae.member.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +37,11 @@ public interface MemberMapper {
 
     MyOrderDTO findMyOrderDetails(String orderCode);
 
+    List<MyOrderProductDTO> findMyProduct(String orderCode);
+
+    MyRefundDTO findMyRefund(String orderCode);
+
+    int saveRefund(MyRefundDTO refund);
 
 
     /* 동한님 */
@@ -64,5 +66,7 @@ public interface MemberMapper {
     int getFourth();
 
     int getFifth();
+
+
 
 }

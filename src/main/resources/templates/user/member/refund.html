@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta charset="UTF-8">
+    <!--    <script type="text/javascript" src="/js/event.js"></script>-->
+    <script type="text/javascript" src="/js/regist.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>보유 쿠폰 | 세탁해병대</title>
+
+    <link href="/css/myCouponStyle.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="/static/images/favicon.ico">
+    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="styles heet" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+<header>
+    <div th:replace="/user/common/header2.html"></div>
+</header>
+
+<p>주문 번호</p>
+<p th:text="${orderCode}"></p>
+
+<form id="refundForm" th:action="@{'/user/member/refund/' + ${orderCode}}" method="post">
+
+    <!-- 주문 번호 DB 삽입 -->
+    <input type="hidden" name="orderCode" th:value="${orderCode}">
+
+    <p>환불 사유</p>
+    <textarea id="refundReason" name="refundReason" rows="4" cols="50"
+              placeholder="환불 사유를 입력해주세요."></textarea>
+
+    <div class="btn-container">
+        <button type="submit" class="button">환불신청하기</button>
+    </div>
+
+</form>
+
+
+<footer>
+    <div th:replace="/user/common/footer.html"></div>
+</footer>
+</body>
+</html>

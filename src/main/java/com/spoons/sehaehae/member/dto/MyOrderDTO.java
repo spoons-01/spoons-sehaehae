@@ -12,7 +12,7 @@ import java.util.List;
 public class MyOrderDTO {
     private int memberNo;
     private String name;
-    private int phone;
+    private String phone;
     private String orderCode;
     private Date orderDate;
     private String orderRequest;
@@ -31,5 +31,9 @@ public class MyOrderDTO {
     private String reviewStatus;
     private String image;
     private int reward;
-    private List<OrderProductDTO> list;
+
+    private int code; // 프로덕트 코드
+    private String productName; // 프로덕트 이름
+    private int price; // 프로덕트 가격
+
 }
