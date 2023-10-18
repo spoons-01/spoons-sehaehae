@@ -374,7 +374,20 @@
 		where  MEMBER_NO=${memberNo}
 	</update>
 
-
+    <insert id="insertFirstCoupon">
+        insert into TBL_CPBOX
+        (
+         CP_CODE,
+         MEMBER_NO,
+         USE_STATUS
+        )
+        values
+        (
+         1,
+         SEQ_MEMBER_NO.CURRVAL,
+         'Y'
+        )
+    </insert>
 
 
 	<select id="getfNum" parameterType="int">
