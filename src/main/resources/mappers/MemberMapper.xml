@@ -424,6 +424,21 @@
         order by MEMBER_NO asc
     </select>
 
+    <insert id="insertFirstCoupon">
+        insert into TBL_CPBOX
+        (
+         CP_CODE,
+         MEMBER_NO,
+         USE_STATUS
+        )
+        values
+        (
+         1,
+         SEQ_MEMBER_NO.CURRVAL,
+         'Y'
+        )
+    </insert>
+
     <update id="adUpdateMember">
         update TBL_MEMBER
         set NAME=#{name},
@@ -449,6 +464,7 @@
         where MEMBER_STATUS = 'Y'
           and GENDER = 'F'
     </select>
+
 
     <select id="getmNum" parameterType="int">
         select count(*)

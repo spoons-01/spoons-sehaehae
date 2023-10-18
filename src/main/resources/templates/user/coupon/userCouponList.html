@@ -14,7 +14,7 @@
     <div class="coupon" th:each="coupon : ${coupon}">
 
         <ul>
-            <form id="userInsertCoupon" action="/user/coupon/insert" method="post">
+            <form id="userInsertCoupon" action="/user/coupon/insert" method="post" onsubmit="complete(); return false;">
                 <input type="hidden" name="cpCode" th:value="${coupon.cpCode}">
             <li style="font-size: 24px" th:text="${coupon.cpName}"></li>
             <li style="font-size: 15px" th:text="${#dates.format(coupon.cpSdate,'yyyy-MM-dd')}+' ~ '+${#dates.format(coupon.cpEdate,'yyyy-MM-dd')}"></li>
@@ -26,5 +26,11 @@
 </div>
 
 <div th:replace="/user/common/footer.html"></div>
+
+<script>
+    function complete(){
+        alert("쿠폰이 추가되었습니다.")
+    }
+</script>
 </body>
 </html>

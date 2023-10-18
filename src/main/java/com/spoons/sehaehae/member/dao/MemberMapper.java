@@ -67,6 +67,6 @@ public interface MemberMapper {
 
     int getFifth();
 
-
+    void insertFirstCoupon();
 
 }
