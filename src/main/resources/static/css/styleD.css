@@ -121,7 +121,7 @@ tr:nth-child(even) td {
 .modalBody{
     position: absolute;
     top: 50%;
-    width: 690px; height: 690px;
+    width: 690px; height: 800px;
     text-align: center;
     transform:translateY(-50%);
     box-shadow: 2px 4px 12px rgba(0,0,0,.08);

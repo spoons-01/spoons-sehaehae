@@ -446,7 +446,7 @@
             NICKNAME=#{nickname},
             PHONE_NUMBER=#{phone},
             GENDER=#{gender},
-            BIRTHDAY=#{birthday},
+            BIRTHDAY=to_char(#{birthday},'yyyy-mm-dd'),
             ADDRESS1=#{address1}
         where MEMBER_NO = #{memberNo}
     </update>
