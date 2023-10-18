@@ -352,7 +352,7 @@
             A.*
         from    TBL_MEMBER A
         where	MEMBER_STATUS = 'Y'
-        order by NAME asc
+        order by MEMBER_NO asc
     </select>
 
 	<update id="adUpdateMember">

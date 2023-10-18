@@ -29,6 +29,8 @@ img {
 
 li{list-style: none}
 
+h1{font-size: 34px; padding: 30px 0px 100px;}
+
 .member-table td{cursor: pointer}
 .member-table tr:hover {background: #c6c9cc}
 .member-table{
@@ -58,18 +60,16 @@ tr:nth-child(even) td {
     width: 1350px; height: 665px;
     margin-left: 400px; margin-top: 55px;
 }
-.chart_container{
+.chart-container{
     display: grid;
     grid-template-columns: 1fr 1fr; gap: 10px 100px;
-    /*border: black 1px solid;*/
     width: 1450px; height: 700px;
-    margin-left: 350px; margin-top: 20px;
+    margin-left: 350px; margin-top: 55px;
 }
-#current_date{
-    margin-right: 100px; margin-top: 20px;
+#current-date{
+    margin-right: 50px; margin-top: 20px;
     text-align: right;
 }
-
 
 .coupon_container{
     display: grid;
@@ -77,9 +77,10 @@ tr:nth-child(even) td {
     grid-template-rows: 1fr 1fr 1fr 1fr;
     padding: 20px;
     gap: 20px 20px;
-    border: #c6c9cc 1px solid;
+    border-top: black 1px solid;
+    border-bottom: black 1px solid;
     width: 1350px; height: 700px;
-    margin-left: 400px; margin-top: 55px; margin-bottom: 50px;
+    margin-left: 350px; margin-top: 55px; margin-bottom: 50px;
 }
 .coupon{
     cursor: pointer;
@@ -87,13 +88,17 @@ tr:nth-child(even) td {
     border: #4B93FF solid 1px;
     box-shadow: 2px 4px 12px rgba(0,0,0,.08);
     padding: 20px;
-    /*border-radius: 18px;*/
+    transition-duration: 0.3s;
+}
+.coupon:hover{
+    transform: scale(1.05);
 }
 #newCoupon{
-    border: #4B93FF dashed 1px;
+    border: #4B93FF dashed 2px;
     text-align: center;
     color: #4B93FF;
 }
+
 
 
 
@@ -124,8 +129,12 @@ tr:nth-child(even) td {
     background: #FFF;
 }
 
-input[type=text]{width:280px; height:56px; border-radius: 4px; border:1px solid #d2d2d7;}
+input[type=text]{width:280px; height:50px; border-radius: 4px; border:1px solid #d2d2d7;}
 input[type=text]:focus{border-color: #4B93FF;}
+input[type=number]{width:280px; height:50px; border-radius: 4px; border:1px solid #d2d2d7;}
+input[type=number]:focus{border-color: #4B93FF;}
+input[type=date]{width:280px; height:50px; border-radius: 4px; border:1px solid #d2d2d7;}
+input[type=date]:focus{border-color: #4B93FF;}
 .buttonD{border-radius:4px; width:94px; height: 35px; background: #4B93FF;color: #fff;}
 #button-delete{background: #f64747}
 .button-cancel{background: #d2d2d7}
