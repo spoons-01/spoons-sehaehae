@@ -9,7 +9,7 @@
     <div th:replace="admin/common/nav.html"></div>
     <header><h3>서비스관리 &gt 쿠폰관리</h3><h3>로그인(로그아웃)</h3></header>
 
-    <div class="coupon_container">
+    <div class="coupon_container" id="main-coupon-container">
         <div class="coupon" th:each="coupon : ${coupon}" th:onclick="couponModal([[${coupon}]])">
             <ul>
                 <li style="font-size: 24px" th:text="${coupon.cpName}"></li>
@@ -19,16 +19,16 @@
         </div>
 
         <div class="coupon openModal2" id="newCoupon">
-            <h1>+</h1>
+            <h3 style="font-size: 40px">+</h3>
         </div>
     </div>
 
     <div class="modal update">
         <div class="modalBody">
-            <h1>쿠폰수정.</h1>
+            <h1>쿠폰수정</h1>
             <div>
                 <form id="couponUpdate" role="form" action="/coupon/update" method="post">
-                    <ul style="width: 690px; margin: 0">
+                    <ul style="width: 690px; line-height: 3;margin: 0">
                         <input type="hidden" name="cpCode" id="cpCode" value="">
                         <li>
                             <h3>쿠폰명</h3>
@@ -43,8 +43,8 @@
                             <input type="Date" name="cpEdate" id="cpEdate">
                         </li>
                         <li>
-                            <h3>할인율</h3>
-                            <input type="number" name="cpRate" id="cpRate">%
+                            <h3>할인율(%)</h3>
+                            <input type="number" name="cpRate" id="cpRate">
                         </li>
                     </ul>
                     <br>
@@ -64,7 +64,7 @@
 
     <div class="modal insert">
         <div class="modalBody">
-            <h1 style="font-size: 34px; padding: 30px 0px 100px;">쿠폰생성</h1>
+            <h1>쿠폰생성</h1>
             <div>
                 <form id="couponInsert" action="/coupon/insert" method="post">
                     <ul style="width: 690px; line-height: 3; margin: 0">
@@ -73,20 +73,23 @@
                             <input type="text" name="cpName" >
                         </li>
                         <li>
-                            <h3>기간</h3>
-                            <input type="date" name="cpSdate">
+                            <h3>시작일</h3>
+                            <input type="Date" name="cpSdate">
                         </li>
-                        <li><input type="date" name="cpEdate"></li>
                         <li>
-                            <h3>할인율</h3>
-                            <input type="number" name="cpRate">%
+                            <h3>종료일</h3>
+                            <input type="Date" name="cpEdate">
+                        </li>
+                        <li>
+                            <h3>할인율(%)</h3>
+                            <input type="number" name="cpRate">
                         </li>
                     </ul>
                     <br>
                     <div class="button-zone">
                         <button class="buttonD button-cancel" type="button" th:onclick="'location.href=\'/coupon/list\''">
                             취소</button>
-                        <button style="border-radius:4px; width:94px; height: 35px; background: #4B93FF; color: #fff;" type="submit">생성</button>
+                        <button class="buttonD" type="submit" id="createCoup">생성</button>
                     </div>
                 </form>
             </div>
@@ -112,6 +115,8 @@
     openModal2.addEventListener("click",()=>{
         insert.style.display="flex";
     })
+
+
 
 
 
