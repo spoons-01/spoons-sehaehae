@@ -63,7 +63,7 @@ public class OrderService {
         return searchListAndPaging;
     }
 
-
+  /*--------------------------------------------- 주문상태 바꾸기 ---------------------------------------*/
     public boolean updateOrderStatus(Long[] orderId, String newStatus) {
 
         try {
@@ -79,6 +79,7 @@ public class OrderService {
             return false;
         }
     }
+
     /*---------------------------------------------수거완료----------------------------------------------*/
     public Map<String, Object> selectSearchCollectionList(Map<String, String> searchMap, int page) {
         int totalCount = searchMapper.selectTotalCount(searchMap);
@@ -206,4 +207,22 @@ public class OrderService {
         return searchListAndPaging;
 
     }
+
+    public boolean updateRefundStatus(Long[] orderId, String newStatus) {
+
+        try {
+            Map<String, Object> updateStatus = new HashMap<>();
+            updateStatus.put("orderId", Arrays.asList(orderId));
+            updateStatus.put("newStatus", newStatus);
+
+            int affectedRows = searchMapper.updateRefundStatus(updateStatus);
+
+            return affectedRows > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("환불 업데이트 중 오류 발생", e);
+            return false;
+        }
+    }
+
 }
