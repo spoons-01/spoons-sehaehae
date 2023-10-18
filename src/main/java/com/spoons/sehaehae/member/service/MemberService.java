@@ -86,6 +86,7 @@ public class MemberService {
         int result1 = memberMapper.insertMember(member);
         int result2 = memberMapper.insertMemberRole();
         int result3 = memberMapper.insertMemberLevel();
+        memberMapper.insertFirstCoupon();                   //첫가입쿠폰 발급
 
         if (!(result1 > 0 && result2 > 0 && result3 > 0)) throw new MemberRegistException("회원 가입에 실패하였습니다.");
 

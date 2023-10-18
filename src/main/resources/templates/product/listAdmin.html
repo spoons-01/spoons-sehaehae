@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/admin.css" rel="stylesheet" type="text/css">
+    <link href="https://webfontworld.github.io/NanumSquareNeo/NanumSquareNeo.css" rel="stylesheet">
     <link href="/css/listAdmin.css" rel="stylesheet" type="text/css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <title>Document</title>
@@ -108,17 +109,20 @@
     <h3>상품관리 &gt 상품관리</h3>
     <h3 id="login">로그인(로그아웃)</h3>
 </header>
-<div style="margin-left: 1300px;">
+<p id="search">검색</p>
+<div class="search">
     <form action="/product/listAdmin">
+        <span>검색어</span>
         <input type="text" name="searchValue" placeholder="검색어 입력" class="searchValue" th:value="${searchValue}">
         <button class="searchButton">검색</button>
     </form>
 </div>
 <br>
-<button style="margin-left: 1110px;" id="delete">선택삭제</button>
-<button onclick="location.href='/product/productRegist'" style="margin-left: 1110px;">상품등록</button>
-<table style="margin-left: 400px; line-height: 50px; font-size: 20px;">
-    <tr>
+<button  id="delete" class="but">선택삭제</button>
+<button onclick="location.href='/product/productRegist'" class="but reg">상품등록</button>
+
+<table id="table">
+    <tr style="height: 50px; background: #d2d2d7">
         <td></td>
         <td class="a"colspan="1">번호</td>
         <td class="a">이미지</td>
@@ -127,19 +131,20 @@
         <td class="a">일반 가격</td>
         <td class="a" colspan="2">프리미엄 가격</td>
         <td class="a">이용가능상태</td>
+        <td class="a"></td>
     </tr>
     <tr th:each=" list : ${productList}" class="b">
         <td><input type="checkbox" class="checkbox"></td>
         <td th:text="${listStat.index +1}" class="a" style="text-align: center"></td>
         <td th:text="${list.code}" style="display: none;" class="code"></td>
-        <td class="a"><img th:src="${list.photo}" width="70px;"></td>
+        <td class="a"><img th:src="${list.photo}"></td>
         <td th:text="${list.name}" class="a"></td>
         <td th:text="${list.category.name}" class="a"></td>
         <td th:text="${#numbers.formatInteger(list.price,3,'COMMA')}"colspan="2" class="a"></td>
         <td th:text="${#numbers.formatInteger(list.premiumPrice,3,'COMMA')}" class="a"></td>
         <td th:text="${list.useableStatus}"></td>
 
-        <td class="a"><button th:onclick="|location.href='/product/productModify?code=${list.code}'|">수정</button></td>
+        <td class="a"><button class="modify"  th:onclick="|location.href='/product/productModify?code=${list.code}'|">수정</button></td>
     </tr>
 </table>
 

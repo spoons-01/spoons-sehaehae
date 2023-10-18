@@ -168,9 +168,9 @@
     <insert id="registOrder">
         INSERT INTO TBL_ORDER
         (ORDER_CODE, ORDER_DATE, ORDER_REQUEST, ORDER_PRICE, ORDER_DISCOUNT, ORDER_TOTAL_PRICE,
-        MEMBER_NO,INPUT_ADDRESS,INPUT_ADDRESS2,CP_CODE,USE_POINT,COLLECTION_DATE,DELIVERY_DATE,ORDER_STATUS,INPUT_ZIP_CODE,REWARD)
+        MEMBER_NO,INPUT_ADDRESS,INPUT_ADDRESS2,CP_CODE,USE_POINT,COLLECTION_DATE,DELIVERY_DATE,ORDER_STATUS,INPUT_ZIP_CODE,REWARD,PAYMETHOD,ORDER_IMAGE)
         VALUES
-        (#{code},#{orderDate},#{orderRequest},#{orderPrice},#{orderDiscount},#{orderTotalPrice},#{member.memberNo},#{inputAddress},#{InputAddress2},#{useCoupon},#{usePoint},#{collectionDate},#{deliveryDate},'결제완료',#{inputZipCode},#{reward})
+        (#{code},#{orderDate},#{orderRequest},#{orderPrice},#{orderDiscount},#{orderTotalPrice},#{member.memberNo},#{inputAddress},#{InputAddress2},#{useCoupon},#{usePoint},#{collectionDate},#{deliveryDate},'결제완료',#{inputZipCode},#{reward},#{payMethod},#{image})
     </insert>
 
     <update id="modifyProduct">
@@ -294,4 +294,8 @@
         WHERE MEMBER_NO = #{memberNo}
     </select>
 
+    <delete id="deleteCategory">
+        DELETE TBL_CATEGORY
+        WHERE CATEGORY_CODE IN <foreach collection="codeList" item="item" open="(" separator="," close=")"> #{item} </foreach>
+    </delete>
 </mapper>

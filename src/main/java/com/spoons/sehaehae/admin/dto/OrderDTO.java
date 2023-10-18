@@ -34,5 +34,6 @@ public class OrderDTO {
     private String reviewStatus;
     private String image;
     private int reward;
+    private String payMethod;
     private List<OrderProductDTO> list;
 }

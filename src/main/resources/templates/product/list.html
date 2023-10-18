@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/productList.css" rel="stylesheet" type="text/css">
+    <link href="https://webfontworld.github.io/NanumSquareNeo/NanumSquareNeo.css" rel="stylesheet">
     <title>Document</title>
-    <script>
-        const message = `[[${message}]]`
-        message && alert(message);
-    </script>
 </head>
 <body>
-<div th:replace="user/common/header.html"></div>
+<div th:replace="user/common/header2.html" style="font-family:'NanumSquareNeo'"></div>
 
 <br>
 <div id="productlist">
@@ -55,14 +52,13 @@
                 <img class="images" th:src="${product.photo}" width="200px" height="190px">
                 <div class="product">
                     <p th:text="${product.name}"/>
-                    <p th:text="${#numbers.formatInteger(product.price,3,'COMMA')}+'원'"/>
+                    <p id="price" th:text="${#numbers.formatInteger(product.price,3,'COMMA')}+'원'"/>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div th:replace="user/common/footer.html"></div>
 <script>
     const $subbar = document.querySelectorAll(".subproduct");
     const $menu = document.querySelectorAll(".menu");

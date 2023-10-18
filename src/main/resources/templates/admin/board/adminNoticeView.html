@@ -22,7 +22,7 @@
             <td ><p name="title" th:text="${ notice.title }"></p></td>
         </tr>
         <tr class="detail-date">
-            <td><p th:text="${ notice.createdDate }"></p></td>
+            <td><p th:text="${ #dates.format(notice.createdDate, 'yyyy-MM-dd') }"></p></td>
         </tr>
         <tr class="detail-body">
             <td><textarea name="body" cols="60" rows="15"

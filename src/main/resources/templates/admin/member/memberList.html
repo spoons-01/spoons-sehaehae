@@ -8,7 +8,8 @@
 <body>
     <div th:replace="/admin/common/nav.html"></div>
     <header><h3>회원관리 &gt 회원목록</h3><h3>로그인(로그아웃)</h3></header>
-    <table>
+<div class="container">
+    <table class="member-table">
             <thead>
             <th>회원번호</th>
             <th>이름</th>
@@ -21,13 +22,13 @@
             <th>가입일</th>
             </thead>
             <tbody>
-            <tr th:each="member : ${member}" th:onclick="memberModal([[${member}]])">
+            <tr id="member-tr" th:each="member : ${member}" th:onclick="memberModal([[${member}]])">
                 <td th:text="${member.memberNo}"></td>
                 <td th:text="${member.name}"></td>
                 <td th:text="${member.memberId}"></td>
                 <td th:text="${member.nickname}"></td>
                 <td th:text="${member.phone}"></td>
-                <td th:text="${member.birthday}"></td>
+                <td th:text="${member.birthday.substring(0,10)}"></td>
                 <td th:if="${member.gender}=='F'">여성</td>
                 <td th:if="${member.gender}=='M'">남성</td>
                 <td th:text="${member.address1} +' '+ ${member.address2}"></td>
@@ -35,6 +36,7 @@
             </tr>
             </tbody>
         </table>
+</div>
 
 <div class="modal updateMember">
  <div class="modalBody">

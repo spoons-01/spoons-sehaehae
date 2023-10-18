@@ -1,7 +1,7 @@
 .cartListpage{
     margin-top: 30px;
     margin-left: 400px;
-    font-family: NanumSquareNeo-Variable;
+    font-family: 'NanumSquareNeo';
 }
 .cartListpage p:first-child{
   font-size: 40px;
@@ -11,6 +11,7 @@
     margin-top: 50px;
 }
 .container3{
+    position: relative;
     display: flex;
     margin-top: 30px;
     margin-left: 100px;
@@ -19,7 +20,7 @@
     height: 220px;
     border-radius: 14px;
     padding: 15px 0;
-    font-family: Poppins;
+    font-family: 'NanumSquareNeo';
 }
 
 .productCode{
@@ -72,7 +73,8 @@ input[type="number"]{
 }
 
 .gg{
-    margin-top: 30px;
+    position: absolute;
+    bottom: 10px;
 }
 #option{
     margin-left: 30px;
@@ -122,3 +124,7 @@ margin-left: 20px;
     margin-left: 15px;
 }
 
+#PremiumBox{
+   display: inline-block;
+    margin-top: 05px;
+}
