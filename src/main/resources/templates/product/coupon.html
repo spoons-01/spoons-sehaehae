@@ -8,6 +8,7 @@
 </head>
 <body>
 <p class="maintag">보유쿠폰</p>
+<p th:if="${#lists.size(couponList)} == 0" style="margin-left: 30px; margin-top: 30px">보유중인 쿠폰이 없습니다</p>
 <div th:each=" coupon : ${couponList}" class="couponList">
     <input type="number" th:value="${coupon.code.cpCode}" style="display: none" id="code">
     <p th:text="${coupon.code.cpName}" id="name"></p>
