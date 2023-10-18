@@ -59,8 +59,8 @@ public class MemberService {
     }
 
     /* 내 포인트 조회 */
-    public int findMyPoint(int memberNo) {
-        int myPoint = memberMapper.findMyPoint(memberNo);
+    public Integer findMyPoint(int memberNo) {
+        Integer myPoint = memberMapper.findMyPoint(memberNo);
         return myPoint;
     }
 

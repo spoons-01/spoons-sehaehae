@@ -377,7 +377,7 @@
           AND A.MEMBER_NO = #{ memberNo }
     </select>
 
-    <select id="findMyPoint" resultType="int">
+    <select id="findMyPoint" resultType="java.lang.Integer">
         SELECT SUM(POINT) AS TOTAL_POINT
         FROM TBL_MEMBER A
                  LEFT JOIN TBL_PT B ON A.MEMBER_NO = B.MEMBER_NO

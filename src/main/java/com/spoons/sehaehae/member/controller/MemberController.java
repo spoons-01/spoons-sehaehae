@@ -139,7 +139,6 @@ public class MemberController {
         List<MyOrderDTO> myOrders = memberService.findMyOrder(currentUsername);
         int myPoint = memberService.findMyPoint(memberNo);
 
-
         // 5. 주문 상태별 개수를 저장할 맵 초기화
         String[] orderedOrderStatuses = {"결제완료", "수거완료", "세탁완료", "배송준비", "배송중", "구매확정"};
         List<MyOrderDTO> myOrderList = memberService.findMyOrder(currentUsername);
