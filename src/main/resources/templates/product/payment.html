@@ -4,133 +4,142 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/payment.css" rel="stylesheet" type="text/css">
+    <link href="https://webfontworld.github.io/NanumSquareNeo/NanumSquareNeo.css" rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
 <a href="/">
     <img class="logo" src="/images/logo.png" alt="HOME">
 </a>
-<div class="container1" style="margin-top: 0px;">
-    <p style="font-size: 40px;">주문/결제</p>
-</div>
+<p style="font-size: 35px; margin-left: 300px">주문/결제</p>
 
 <div class="big">
     <form method="post" action="/product/complete" id="submit" enctype="multipart/form-data">
         <input type="hidden" th:value="${point.point}" name="point">
         <div class="containerr">
-        <div class="bigcontainer">
-            <div class="container a">
-                <div class="info1">
-                    <p>주문자 정보</p>
-                    <table>
-                        <tr>
-                            <td>이름</td>
-                            <td><input type="text" value='${member.name}' id="name"></td>
-                        </tr>
-                        <tr class="r">
-                            <td>연락처</td>
-                            <td><input type="text" value="[[${member.name}]]" id="phone"></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="container2">
-                <div class="c2he">
-                    <p>배송지</p>
-                    <p id="address">주소변경</p>
-                </div>
-                <div class="info2">
-                    <span th:text="${member.address1}" id="zonecode"></span> <span th:text="${member.zipCode}"></span><br><br>
-                    <input type="text" name="inputZipCode" style="display: none" th:value="${member.zipCode}">
-                    <input type="text" name="InputAddress" style="display: none" th:value="${member.address1}">
-                    <input type="text" name="InputAddress2" placeholder="상세주소"  th:value="${member.address2}" class="address2"><br><br>
-                    <span th:text="${member.name}" id="name2"></span><span th:text="${member.phone}" style="margin-left: 20px" id="phone2"></span>
-                </div>
-                <div class="request">
-                    <p>요청사항 :</p>
-                    <input id="orderrequest" type="text" name="orderRequest" placeholder="문 앞에 놔주세요">
-                </div>
-
-                <div class="image">
-                    <p>사진추가</p>
-                    <input type="file" accept="image/png" class="file" name="photo">
-                </div>
-                <div class="replaceimage">
-
-                </div>
-                <p class="ta">세탁물 사진을 보내주시면 더욱 쉽게 수거해갈 수 있습니다</p>
-            </div>
-            <div class="container3">
-                <p>일정선택</p>
-                <div class="date">
-                    <span>수거 :</span><input type="date" id="collection" name="collectionDate"><br>
-                    <div class="aaaaa">
-                        <span>배송 :</span><input type="date" required id="deliver" name="deliveryDate">
+            <div class="bigcontainer">
+                <div class="container a">
+                    <div class="info1">
+                        <p>주문자 정보</p>
+                        <table>
+                            <tr>
+                                <td>이름</td>
+                                <td><input type="text" value='${member.name}' id="name"></td>
+                            </tr>
+                            <tr class="r">
+                                <td>연락처</td>
+                                <td><input type="text" value="[[${member.name}]]" id="phone"></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
-            </div>
-            <div class="container4">
-                <p class="cc">결제정보</p>
-                <table>
-                    <tr>
-                          <td>총 상품가격</td>
-                        <td th:text="|${#numbers.formatInteger(totalPrice,3,'COMMA')}원|"></td>
-                        <input type="number" style="display: none" th:value="${totalPrice}" name="orderPrice">
-                    </tr>
-                    <tr>
-                        <td>쿠폰</td>
-                        <input type="hidden" name="useCoupon" id="usecoupon" class="usecoupon" style="display: none" value="0">
-                        <input type="number" id="rate" style="display: none" value="0">
-                        <td><span id="couponName">선택된쿠폰없음</span></td>
-                        <td>
-                        <button type="button" class="coupon">쿠폰변경</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>배송비</td>
-                        <td>3,000원</td>
-                    </tr>
-                    <tr>
-                        <td>포인트</td>
-                        <td><input id="point" type="number" placeholder="사용금액 입력" name="usePoint" value="0"></td>
-                        <td th:text="${point.point}+'원 보유'"></td>
-                    </tr>
-                    <tr>
-                        <td>총 결제금액</td>
-                        <td id="finalPrice" th:text="${#numbers.formatInteger(totalPrice+3000,3,'COMMA')}+'원'"></td>
-                        <input type="number" name="orderTotalPrice" id="finalPrice2" th:value="${totalPrice+3000}">
-                    </tr>
-                </table>
-                <p class="dd">결제수단</p>
-                <input type="radio" name="paay" value="kakao" id="kakao" class="paymethod"><label
-                    for="kakao">카카오페이</label>
-                <input type="radio" name="paay" value="naver" id="naver" class="paymethod"><label
-                    for="naver">네이버페이</label>
-                <input type="radio" name="paay" value="card" id="card" class="paymethod"><label for="card">카드</label>
+                <div class="container2">
+                    <div class="c2he">
+                        <p>배송지</p>
+                        <p id="address">주소변경</p>
+                    </div>
+                    <div class="info2">
+                        <input type="text" name="inputZipCode" style="display: none" th:value="${member.zipCode}"
+                               id="zipCode">
+                        <input type="text" name="InputAddress" style="display: none" th:value="${member.address1}"
+                               id="address3">
+                        <span th:text="${member.address1}" id="zonecode"></span><br>
+                        <input type="text" name="InputAddress2" placeholder="상세주소를 입력해주세요" th:value="${member.address2}"
+                               class="address2"><br><br>
+                    </div>
+                    <div class="request">
+                        <p id="req">요청사항 :</p>
+                        <input id="orderrequest" type="text" name="orderRequest" placeholder="문 앞에 놔주세요">
+                    </div>
+
+                    <div class="image">
+                        <p>사진추가</p>
+                        <input type="file" accept="image/png" class="file" name="photo1">
+                    </div>
+                    <div class="replaceimage">
+
+                    </div>
+                    <p class="ta">세탁물 사진을 보내주시면 더욱 쉽게 수거해갈 수 있습니다</p>
+                </div>
+                <div class="container3">
+                    <p>일정선택</p>
+                    <div class="date">
+                        <span class="daa">희망 수거 날짜 :</span><input type="date" id="collection" name="collectionDate"
+                                                                  class="skfwk"><br>
+                        <div class="aaaaa">
+                            <span class="daa">희망 배송 날짜 :</span><input type="date" required id="deliver"
+                                                                      name="deliveryDate" class="skfwk">
+                        </div>
+                    </div>
+                </div>
+                <div class="container4">
+                    <p class="cc">결제정보</p>
+                    <table>
+                        <tr>
+                            <td>총 상품가격</td>
+                            <td th:text="|${#numbers.formatInteger(totalPrice,3,'COMMA')}원|"></td>
+                            <input type="number" style="display: none" th:value="${totalPrice}" name="orderPrice">
+                        </tr>
+                        <tr>
+                            <td>사용 쿠폰</td>
+                            <input type="hidden" name="useCoupon" id="usecoupon" class="usecoupon" style="display: none"
+                                   value="0">
+                            <input type="number" id="rate" style="display: none" value="0">
+                            <td><span id="couponName">선택된쿠폰없음</span></td>
+                            <td>
+                                <button type="button" class="coupon ee"> 쿠폰변경</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>배송비</td>
+                            <td>3,000원</td>
+                        </tr>
+                        <tr>
+                            <td>사용 포인트</td>
+                            <td><input id="point" type="number" placeholder="사용금액 입력" name="usePoint" value="0"></td>
+                            <td th:text="${point.point}+'원 보유'" class="ea"></td>
+                        </tr>
+                        <tr>
+                            <td>총 결제금액</td>
+                            <td id="finalPrice" th:text="${#numbers.formatInteger(totalPrice+3000,3,'COMMA')}+'원'"></td>
+                            <input type="number" name="orderTotalPrice" id="finalPrice2" th:value="${totalPrice+3000}"
+                                   style="display: none">
+                        </tr>
+                    </table>
+                    <p class="dd">결제수단</p>
+                    <div class="abbb">
+                        <input type="radio" name="payMethod" value="카카오페이" id="kakao" class="paymethod"><label
+                            for="kakao">카카오페이</label>
+                        <input type="radio" name="payMethod" value="네이버페이" id="naver" class="paymethod"><label
+                            for="naver">네이버페이</label>
+                        <input type="radio" name="payMethod" value="카드결제" id="card" class="paymethod"><label for="card">카드</label>
+                    </div>
+
                 <div>
                     <input type="button" class="regist" value="결제하기">
                     <button class="rollback">취소하기</button>
                 </div>
+                </div>
+
             </div>
-        </div>
-        <div class="order">
-            <p class="z">상품정보</p>
-            <div class="pdinfo" th:each="list:${cartList}">
-                <input type="hidden" th:value="${list.product.code}" name="productCode">
-                <input type="hidden" th:value="${list.amount}" name="amount">
-                <input type="hidden" th:value="${list.useEco}" name="useEco">
-                <input type="hidden" th:value="${list.usePremium}" name="usePremium">
-                <img th:src="${list.product.photo}" style="max-width: 120px; max-height: 100px">
-                <div class="iinfo">
-                    <p th:text="${list.product.name}">티셔츠</p>
-                    <div class="nnn"><span></span>
-                        <p th:if="${list.useEco} == 'Y'">천연세제 사용</p>
-                        <p th:if="${list.usePremium} == 'Y'">프리미엄케어</p>
-                        <sapn type="number" th:text="|수량 : ${list.amount}|"></sapn>
+            <div class="order">
+                <p class="z">상품정보</p>
+                <div class="pdinfo" th:each="list:${cartList}">
+                    <input type="hidden" th:value="${list.product.code}" name="productCode">
+                    <input type="hidden" th:value="${list.amount}" name="amount">
+                    <input type="hidden" th:value="${list.useEco}" name="useEco">
+                    <input type="hidden" th:value="${list.usePremium}" name="usePremium">
+                    <img th:src="${list.product.photo}" style="max-width: 120px; max-height: 100px">
+                    <div class="iinfo">
+                        <p th:text="${list.product.name}">티셔츠</p>
+                        <div class="nnn"><span></span>
+                            <p th:if="${list.useEco} == 'Y'">천연세제 사용</p>
+                            <p th:if="${list.usePremium} == 'Y'">프리미엄케어</p>
+                            <sapn type="number" th:text="|수량 : ${list.amount}|"></sapn>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
     </form>
 </div>
@@ -181,18 +190,19 @@
     const $deliver = document.querySelector("#deliver");
     console.log($payemthod);
     $regist.onclick = function () {
-        if(!address2.value){
+        if (!address2.value) {
             alert("상세주소를 입력해주세요")
             return;
         }
-        if ($collection.value == ''){
+        if ($collection.value == '') {
             alert("수거날짜를 입력해주세요")
             return;
         }
-        if ($deliver.value == ''){
+        if ($deliver.value == '') {
             alert("배송날짜를 입력해주세요")
             return;
         }
+
         if ($kakao.checked) {
             kakaopay();
         } else if ($naver.checked) {
@@ -200,11 +210,12 @@
         } else if ($card.checked) {
             card();
         }
+
     }
     console.log($regist)
     const point = '[[${point.point}]]'
     $point.addEventListener("change", function () {
-        if($point.value > Number(point)){
+        if ($point.value > Number(point)) {
             alert("보유하신 포인트가 부족합니다.")
             $point.value = 0;
         }
@@ -213,8 +224,8 @@
         console.log($rate)
         fetch("/product/finalPrice?point=" + $point.value + "&totalPrice=" + ttotalPrice + "&rate=" + $rate)
             .then(res => res.text())
-            .then(r => $finalPrice2.value = Number(r)+3000)
-            .then(re => $finalPrice.textContent = (Number(re)).toLocaleString('ko-KR')+"원")
+            .then(r => $finalPrice2.value = Number(r) + 3000)
+            .then(re => $finalPrice.textContent = (Number(re)).toLocaleString('ko-KR') + "원")
             .catch(error => console.log(error));
         console.log($finalPrice.textContent);
     })
@@ -224,10 +235,28 @@
     }
 
     function card(data) {
-        submit.submit();
+        const totalPrice = $finalPrice.textContent;//결제금액
+        IMP.init('imp24841453');
+        IMP.request_pay({
+            pg: "html5_inicis",
+            pay_method: "card",
+            merchant_uid: new Date(),
+            name: "의류",
+            amount: 100,
+            buyer_email: 'email@naver.com',
+            buyer_name: '[[${member.name}]]',
+            buyer_tel: '[[${member.phone}]]'
+        }, function (rsp) {
+            if (rsp.success) {
+                alert("결제가 완료되었습니다");
+                submit.submit();
+            } else {
+                alert("결제가 취소되었습니다");
+            }
+        });
     }
+
     function kakaopay(data) {
-        const price = '[[${totalPrice}]]';  //원래그임
         const totalPrice = $finalPrice.textContent;//결제금액
         IMP.init('imp24841453');
         IMP.request_pay({
@@ -276,29 +305,32 @@
             console.log($usecoupon);
             fetch("/product/finalPrice?point=" + $point.value + "&totalPrice=" + ttotalPrice + "&rate=" + $rate)
                 .then(res => res.text())
-                .then(r => $finalPrice2.value = Number(r)+3000)
-                .then(re => $finalPrice.textContent = re.toLocaleString('ko-KR')+"원")
+                .then(r => $finalPrice2.value = Number(r) + 3000)
+                .then(re => $finalPrice.textContent = re.toLocaleString('ko-KR') + "원")
                 .catch(error => console.log(error));
         })
     }
     const date = new Date;
-    const today = date.getFullYear()+"-"+(Number(date.getMonth())+1)+"-"+date.getDate();
-
+    const today = date.getFullYear() + "-" + (Number(date.getMonth()) + 1) + "-" + date.getDate();
     $collection.min = today;
     $deliver.min = today;
-
 </script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
     const address2 = document.querySelector(".address2");
     const $address = document.querySelector("#address");
+    const address3 = document.querySelector("#address3");
     const $zoneCode = document.querySelector("#zonecode");
-
+    const $zipCode = document.querySelector("#zipCode")
     $address.onclick = function () {
         new daum.Postcode({
             oncomplete: function (data) {
-                $zoneCode.textContent = data.address
+                $zoneCode.textContent = data.address;
+                address3.value = data.address;
+                $zipCode.value = data.zonecode;
                 address2.value = '';
+                console.log($zipCode);
+                console.log(address3)
             }
         }).open();
     }

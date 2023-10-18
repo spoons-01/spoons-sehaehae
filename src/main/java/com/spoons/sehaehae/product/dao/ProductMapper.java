@@ -67,4 +67,6 @@ public interface ProductMapper {
     PointDTO selectPoint(int memberCode);
 
     MemberLevelDTO selectMemberLevel(int memberNo);
+
+    void deleteCategory(List<Integer> codeList);
 }

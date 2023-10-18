@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link href="/css/couponList.css" rel="stylesheet" type="text/css">
+    <link href="https://webfontworld.github.io/NanumSquareNeo/NanumSquareNeo.css" rel="stylesheet">
 </head>
 <body>
 <p class="maintag">보유쿠폰</p>
@@ -11,8 +12,8 @@
     <input type="number" th:value="${coupon.code.cpCode}" style="display: none" id="code">
     <p th:text="${coupon.code.cpName}" id="name"></p>
 
-    <p th:text="${coupon.code.cpRate}" id="rate"></p>
-    <p th:text="${coupon.code.cpEdate}" id="endDate"></p>
+    <p th:text="${coupon.code.cpRate}+'%'" id="rate"></p>
+    <p th:text="${coupon.code.cpEdate}+'까지'" id="endDate"></p>
     <button type="submit" id="button">사용</button>
 </div>
 <script>
