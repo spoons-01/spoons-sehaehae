@@ -197,4 +197,12 @@ public class AdminBoardController {
 
         return "admin/board/adminReviewView";
     }
+
+    @GetMapping("/deleteReview")
+    public String deleteReview(Integer id){
+
+        boardService.deleteReview(id);
+
+        return "redirect:/admin/board/adminReview";
+    }
 }

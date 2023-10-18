@@ -16,6 +16,7 @@
         <result property="inputZipCode" column="INPUT_ZIP_CODE"/>
         <result property="inputAddress" column="INPUT_ADDRESS"/>
         <result property="InputAddress2" column="INPUT_ADDRESS2"/>
+        <result property="useCoupon" column="CP_CODE"/>
         <result property="orderStatus" column="ORDER_STATUS"/>
         <result property="usePoint" column="USE_POINT"/>
         <result property="collectionDate" column="COLLECTION_DATE"/>
@@ -28,8 +29,42 @@
 
     <resultMap id="MemberResultMap" type="com.spoons.sehaehae.member.dto.MemberDTO">
         <id property="memberNo" column="MEMBER_NO"/>
+        <result property="memberId" column="ID"/>
+        <result property="memberPwd" column="PASSWORD"/>
         <result property="name" column="NAME"/>
+        <result property="nickname" column="NICKNAME"/>
         <result property="phone" column="PHONE_NUMBER"/>
+        <result property="birthday" column="BIRTHDAY"/>
+        <result property="gender" column="GENDER"/>
+        <result property="zipCode" column="ZIPCODE"/>
+        <result property="subscriptionDate" column="SUBSCRIPTION_DATE"/>
+        <result property="profilePhoto" column="PROFILE_PHOTO"/>
+        <result property="referralCode" column="REFERRAL_CODE"/>
+        <result property="memberStatus" column="MEMBER_STATUS"/>
+        <result property="address1" column="ADDRESS1"/>
+        <result property="address2" column="ADDRESS2"/>
+
+    </resultMap>
+
+    <resultMap id="productResultMap" type="com.spoons.sehaehae.product.dto.ProductDTO">
+        <id property="code" column="PRODUCT_CODE"/>
+        <result property="name" column="PRODUCT_NAME"/>
+        <result property="price" column="PRODUCT_PRICE"/>
+        <result property="premiumPrice" column="PRODUCT_PREMIUM_PRICE"/>
+        <result property="useableStatus" column="USEABLE_STATUS"/>
+        <result property="ecoPrice" column="PRODUCT_ECO_PRICE"/>
+        <result property="registDate" column="REGIST_DATE"/>
+        <result property="modifyDate" column="MODIFY_DATE"/>
+        <result property="deleteDate" column="DELETE_DATE"/>
+        <result property="deleteStatus" column="DELETE_STATUS"/>
+        <result property="photo" column="PRODUCT_PHOTO"/>
+    </resultMap>
+
+    <resultMap id="orderProductResultMap" type="com.spoons.sehaehae.product.dto.OrderProductDTO">
+        <result property="amount" column="ORDER_AMOUNT"/>
+
+        <association property="product" resultMap="productResultMap"/>
+        <association property="order" resultMap="OrderResultMap"/>
     </resultMap>
 
     <resultMap id="RefundResultMap" type="com.spoons.sehaehae.admin.dto.RefundDTO">
@@ -39,8 +74,6 @@
         <result property="refundCompleteDate" column="REFUND_COMPLETE_DATE"/>
         <result property="processStatus" column="PROCESS_STATUS"/>
         <result property="totalRefundAmount" column="TOTAL_REFUND_AMOUNT"/>
-        <result property="usedPoint" column="USED_POINT"/>
-        <result property="usedCupon" column="USED_CUPON"/>
         <result property="refundShippingFee" column="REFUND_SHIPPING_FEE"/>
         <result property="refundReason" column="REFUND_REASON"/>
 
@@ -52,41 +85,41 @@
 
 
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
-    SELECT
-       COUNT(*)
-       FROM TBL_ORDER A
-       <if test="searchCondition == 'member'">
-           JOIN TBL_MEMBER B ON(A.MEMBER_NO = B.MEMBER_NO)
-       </if>
-       <where>
-           <if test="searchCondition == 'code'">
-               AND A.ORDER_CODE = #{searchValue}
-           </if>
+        SELECT
+        COUNT(*)
+        FROM TBL_ORDER A
+        <if test="searchCondition == 'member'">
+            JOIN TBL_MEMBER B ON(A.MEMBER_NO = B.MEMBER_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'code'">
+                AND A.ORDER_CODE = #{searchValue}
+            </if>
 
-           <if test="searchCondition == 'member'">
-               AND (B.NAME = #{searchValue} OR B.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
-           </if>
+            <if test="searchCondition == 'member'">
+                AND (B.NAME = #{searchValue} OR B.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+            </if>
 
-           <if test="searchCondition == 'orderStatus'">
-               AND A.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
-           </if>
+            <if test="searchCondition == 'orderStatus'">
+                AND A.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
+            </if>
 
-           <if test="startDate != '' and endDate == ''">
-               AND A.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
-           </if>
+            <if test="startDate != '' and endDate == ''">
+                AND A.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+            </if>
 
-           <if test="startDate == '' and endDate != ''">
-               AND <![CDATA[A.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
-           </if>
+            <if test="startDate == '' and endDate != ''">
+                AND <![CDATA[A.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
+            </if>
 
-           <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
-               AND A.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
-               AND <![CDATA[A.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
-           </if>
+            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                AND A.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[A.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
+            </if>
 
 
 
-       </where>
+        </where>
 
     </select>
 
@@ -111,22 +144,22 @@
                 AND (C.NAME = #{searchValue} OR C.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
             </if>
 
-<!--            <if test="searchCondition == 'orderStatus'">-->
-<!--                AND A.ORDER_STATUS LIKE '%' || #{searchValue} || '%'-->
-<!--            </if>-->
+            <!--            <if test="searchCondition == 'orderStatus'">-->
+            <!--                AND A.ORDER_STATUS LIKE '%' || #{searchValue} || '%'-->
+            <!--            </if>-->
 
-<!--            <if test="startDate != '' and endDate == ''">-->
-<!--                AND B.PROGRESS_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')-->
-<!--            </if>-->
+            <!--            <if test="startDate != '' and endDate == ''">-->
+            <!--                AND B.PROGRESS_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')-->
+            <!--            </if>-->
 
-<!--            <if test="startDate == '' and endDate != ''">-->
-<!--                AND <![CDATA[B.PROGRESS_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>-->
-<!--            </if>-->
+            <!--            <if test="startDate == '' and endDate != ''">-->
+            <!--                AND <![CDATA[B.PROGRESS_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>-->
+            <!--            </if>-->
 
-<!--            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >-->
-<!--                AND A.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')-->
-<!--                AND <![CDATA[B.PROGRESS_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>-->
-<!--            </if>-->
+            <!--            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >-->
+            <!--                AND A.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')-->
+            <!--                AND <![CDATA[B.PROGRESS_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>-->
+            <!--            </if>-->
 
 
 
@@ -138,7 +171,7 @@
 
     <select id="selectSearchList" resultMap="OrderResultMap">
         SELECT
-         A.ORDER_CODE
+        A.ORDER_CODE
         , A.ORDER_DATE
         , A.ORDER_REQUEST
         , A.ORDER_PRICE
@@ -149,73 +182,73 @@
         , D.PHONE_NUMBER
         , A.INPUT_ZIP_CODE
         , A.ORDER_STATUS
-      FROM (SELECT
-              ROWNUM RNUM
-              , B.ORDER_CODE
-              , B.ORDER_DATE
-              , B.ORDER_REQUEST
-              , B.ORDER_PRICE
-              , B.ORDER_DISCOUNT
-              , B.ORDER_TOTAL_PRICE
-              , B.MEMBER_NO
-              , B.INPUT_ZIP_CODE
-              , B.ORDER_STATUS
-              FROM ( SELECT
-                         C.ORDER_CODE
-                       , C.ORDER_DATE
-                       , C.ORDER_REQUEST
-                       , C.ORDER_PRICE
-                       , C.ORDER_DISCOUNT
-                       , C.ORDER_TOTAL_PRICE
-                       , C.MEMBER_NO
-                       , C.INPUT_ZIP_CODE
-                       , C.ORDER_STATUS
-                      FROM TBL_ORDER C
-                      <if test="searchCondition == 'member'">
-                          JOIN TBL_MEMBER D ON(C.MEMBER_NO = D.MEMBER_NO)
-                      </if>
-                      <where>
-                          <if test="searchCondition == 'code'">
-                              AND C.ORDER_CODE = #{searchValue}
-                          </if>
+        FROM (SELECT
+        ROWNUM RNUM
+        , B.ORDER_CODE
+        , B.ORDER_DATE
+        , B.ORDER_REQUEST
+        , B.ORDER_PRICE
+        , B.ORDER_DISCOUNT
+        , B.ORDER_TOTAL_PRICE
+        , B.MEMBER_NO
+        , B.INPUT_ZIP_CODE
+        , B.ORDER_STATUS
+        FROM ( SELECT
+        C.ORDER_CODE
+        , C.ORDER_DATE
+        , C.ORDER_REQUEST
+        , C.ORDER_PRICE
+        , C.ORDER_DISCOUNT
+        , C.ORDER_TOTAL_PRICE
+        , C.MEMBER_NO
+        , C.INPUT_ZIP_CODE
+        , C.ORDER_STATUS
+        FROM TBL_ORDER C
+        <if test="searchCondition == 'member'">
+            JOIN TBL_MEMBER D ON(C.MEMBER_NO = D.MEMBER_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'code'">
+                AND C.ORDER_CODE = #{searchValue}
+            </if>
 
-                          <if test="searchCondition == 'member'">
-                              AND (D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
-                          </if>
+            <if test="searchCondition == 'member'">
+                AND (D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+            </if>
 
-                          <if test="searchCondition == 'orderStatus'">
-                              AND C.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
-                          </if>
+            <if test="searchCondition == 'orderStatus'">
+                AND C.ORDER_STATUS LIKE '%' || #{searchValue} || '%'
+            </if>
 
-                          <if test="startDate != '' and endDate == ''">
-                              AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
-                          </if>
+            <if test="startDate != '' and endDate == ''">
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+            </if>
 
-                          <if test="startDate == '' and endDate != ''">
-                              AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
-                          </if>
+            <if test="startDate == '' and endDate != ''">
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
+            </if>
 
-                          <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
-                              AND C.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
-                              AND <![CDATA[C.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
-                          </if>
-
-
-
-                      </where>
+            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                AND C.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[C.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
+            </if>
 
 
-                      ORDER BY C.ORDER_CODE DESC
-                      ) B
-                      <![CDATA[
+
+        </where>
+
+
+        ORDER BY C.ORDER_CODE DESC
+        ) B
+        <![CDATA[
                                  WHERE ROWNUM <= #{endRow}
                                  ]]>
-                      ) A
-                      JOIN TBL_MEMBER D ON (A.MEMBER_NO = D.MEMBER_NO)
-                      WHERE A.RNUM >= #{startRow}
-                      ORDER BY 1 DESC
+        ) A
+        JOIN TBL_MEMBER D ON (A.MEMBER_NO = D.MEMBER_NO)
+        WHERE A.RNUM >= #{startRow}
+        ORDER BY 1 DESC
 
-          </select>
+    </select>
 
     <select id="selectSearchPaymentList" resultMap="OrderResultMap">
         SELECT
@@ -638,6 +671,44 @@
 
     </select>
 
+        <select id="getOrderDetailList" resultMap="OrderResultMap">
+            SELECT
+             A.MEMBER_NO
+            ,A.ORDER_DATE
+            ,B.NAME
+            ,B.ID
+            ,B.PHONE_NUMBER
+            ,B.ADDRESS1
+            FROM TBL_ORDER A
+            JOIN TBL_MEMBER B ON (A.MEMBER_NO = B.MEMBER_NO)
+            WHERE A.ORDER_CODE = ${clickedOrderCode}
+        </select>
+
+
+
+        <select id="getOrderProductDetailList" resultMap="orderProductResultMap">
+            SELECT
+            A.PRODUCT_PHOTO
+            ,A.PRODUCT_NAME
+            ,A.PRODUCT_CODE
+            ,A.PRODUCT_PRICE
+            ,B.ORDER_AMOUNT
+            ,A.PRODUCT_PREMIUM_PRICE
+            FROM TBL_PRODUCT A
+            JOIN TBL_ORDER_PRODUCT B ON (A.PRODUCT_CODE = B.PRODUCT_CODE)
+            JOIN TBL_ORDER C ON (B.ORDER_CODE = C.ORDER_CODE)
+            WHERE C.ORDER_CODE = ${clickedOrderCode}
+        </select>
+
+    <select id="getPaymentDetailsList" resultMap="OrderResultMap">
+        SELECT
+        ORDER_PRICE
+        , ORDER_DISCOUNT
+        , ORDER_TOTAL_PRICE
+        FROM TBL_ORDER
+        WHERE ORDER_CODE = ${clickedOrderCode}
+    </select>
+
     <select id="selectSearchRefundList" resultMap="RefundResultMap">
         SELECT
         A.REFUND_CODE
@@ -648,8 +719,8 @@
         , A.TOTAL_REFUND_AMOUNT
         , E.NAME
         , E.PHONE_NUMBER
-        , A.USED_POINT
-        , A.USED_CUPON
+        , D.USE_POINT
+        , D.CP_CODE
         , A.REFUND_SHIPPING_FEE
         , A.REFUND_REASON
         FROM (SELECT
@@ -660,19 +731,15 @@
         , B.REFUND_COMPLETE_DATE
         , B.PROCESS_STATUS
         , B.TOTAL_REFUND_AMOUNT
-        , B.USED_POINT
-        , B.USED_CUPON
         , B.REFUND_SHIPPING_FEE
         , B.REFUND_REASON
         FROM ( SELECT
-          C.REFUND_CODE
+        C.REFUND_CODE
         , C.ORDER_CODE
         , C.REFUND_RECEIPT_DATE
         , C.REFUND_COMPLETE_DATE
         , C.PROCESS_STATUS
         , C.TOTAL_REFUND_AMOUNT
-        , C.USED_POINT
-        , C.USED_CUPON
         , C.REFUND_SHIPPING_FEE
         , C.REFUND_REASON
         FROM TBL_REFUND C
@@ -681,17 +748,17 @@
             JOIN TBL_MEMBER E ON(D.MEMBER_NO = E.MEMBER_NO)
         </if>
         <where>
-        <if test="searchCondition == 'refundCode'">
-            AND C.REFUND_CODE = #{searchValue}
-        </if>
+            <if test="searchCondition == 'refundCode'">
+                AND C.REFUND_CODE = #{searchValue}
+            </if>
 
-        <if test="searchCondition == 'processStatus'">
-            AND C.PROCESS_STATUS = #{searchValue}
-        </if>
+            <if test="searchCondition == 'processStatus'">
+                AND C.PROCESS_STATUS = #{searchValue}
+            </if>
 
-        <if test="searchCondition == 'order'">
-            AND (E.NAME = #{searchValue} OR E.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
-        </if>
+            <if test="searchCondition == 'order'">
+                AND (E.NAME = #{searchValue} OR E.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+            </if>
         </where>
         ORDER BY C.REFUND_CODE DESC
         ) B
@@ -709,3 +776,4 @@
 
 
 </mapper>
+

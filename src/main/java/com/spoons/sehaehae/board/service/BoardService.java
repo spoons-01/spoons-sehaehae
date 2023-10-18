@@ -1,13 +1,10 @@
 package com.spoons.sehaehae.board.service;
 
+import com.spoons.sehaehae.board.dto.ReviewPointDTO;
 import com.spoons.sehaehae.board.dao.BoardMapper;
-import com.spoons.sehaehae.board.dto.AttachmentDTO;
-import com.spoons.sehaehae.board.dto.NoticeDTO;
-import com.spoons.sehaehae.board.dto.QnaDTO;
-import com.spoons.sehaehae.board.dto.ReviewDTO;
+import com.spoons.sehaehae.board.dto.*;
 import com.spoons.sehaehae.common.paging.Pagenation;
 import com.spoons.sehaehae.common.paging.SelectCriteria;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Slf4j
 @Service
@@ -124,8 +120,7 @@ public class BoardService {
 
     /* 후기 게시판 */
 
-
-    public void registReview(ReviewDTO review, AttachmentDTO attachment) {
+    public void registReview(ReviewDTO review, AttachmentDTO attachment, String orderCode, ReviewPointDTO point) {
 
         boardMapper.insertReview(review);
 
@@ -133,7 +128,13 @@ public class BoardService {
         Long reviewNo = review.getReviewNo();
 
         attachment.setReviewNo(reviewNo);
+
         boardMapper.insertAttachment(attachment);
+
+        boardMapper.updateOrderReviewStatus(orderCode);
+
+        boardMapper.insertPoint(point);
+
 
     }
 
@@ -163,5 +164,9 @@ public class BoardService {
 
         return boardMapper.selectReviewView(no);
 
+    }
+
+    public void deleteReview(Integer id) {
+        boardMapper.deleteReview(id);
     }
 }

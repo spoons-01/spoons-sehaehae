@@ -8,6 +8,7 @@ import com.spoons.sehaehae.common.paging.Pagenation;
 import com.spoons.sehaehae.common.paging.SelectCriteria;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.Arrays;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 @Service
 @Slf4j
+@Transactional
 public class OrderService {
 
     private final SearchMapper searchMapper;
@@ -171,6 +173,19 @@ public class OrderService {
         searchListAndPaging.put("searchConfirmedList", searchConfirmedList);
 
         return searchListAndPaging;
+    }
+
+    /*------------------------------- 상세페이지 ----------------------------------------*/
+    public OrderDTO getOrderDetailsList(Long clickedOrderCode) {
+        return searchMapper.getOrderDetailList(clickedOrderCode);
+    }
+
+    public List<OrderDTO> getOrderProductDetailList(Long clickedOrderCode) {
+        return searchMapper.getOrderProductDetailList(clickedOrderCode);
+    }
+
+    public OrderDTO getPaymentDetailsList(Long clickedOrderCode) {
+        return searchMapper.getPaymentDetailsList(clickedOrderCode);
     }
 
     /*---------------------------------------------환불----------------------------------------------*/

@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="stylesheet" type="text/css">-->
     <link href="/css/adminBoard.css" rel="stylesheet" type="text/css">
-    <script src="/javaScript/modalEvent.js" type="text/javascript"></script>
     <title>Title</title>
 </head>
 <body>
@@ -18,21 +17,19 @@
 
 <div class="details">
     <table>
-        <tr>
-            <td>No.<p name="reviewNo" th:text="${ review.reviewNo }"/></td>
-        </tr>
-        <tr>
-            <p>주문번호 : <span th:text="${ review.order.code }"/></p>
-        </tr>
-        <tr>
-            <p>별점 : <span th:text="${ review.rating }"/></p>
+        <tr class="reviewDNo">
+            <td>No.<span name="reviewNo" th:text="${ review.reviewNo }"/></td>
         </tr>
         <tr class="detail-name">
-            <td ><p name="title" th:text="${ review.title }"></p></td>
+            <td ><span name="title" th:text="${ review.title }"></span></td>
         </tr>
-        <tr>
-            <p>작성자 : <span th:text="${ review.writer.nickname }"/></p>
-        </tr>
+
+            <tr class="reviewDee">
+                <td>주문번호 : <span th:text="${ review.myOrders.orderCode }"/></td>
+                <td>별점 : <span th:text="${ review.rating }"/></td>
+                <td>작성자 : <span th:text="${ review.writer.nickname }"/></td>
+            </tr>
+
         <tr class="detail-date">
             <td><p th:text="${ review.createdDate }"></p></td>
         </tr>
@@ -42,7 +39,7 @@
                           readonly th:text="${ review.body }">
                                     </textarea></td>
         </tr>
-        <img th:src="${ review.attachment.thumbnail}">
+
     </table>
 </div>
 <div class="noticeDML">

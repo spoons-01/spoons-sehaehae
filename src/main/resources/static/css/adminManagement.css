@@ -1,7 +1,3 @@
-
-
-
-
 /*------------------ breadcrumb ---------------- */
 
 .nav {
@@ -225,24 +221,21 @@ td{
 }
 
 #paging button{
-     border: 1px solid rgba(0, 0, 0, 0.68);
-     border-radius: 5px;
-     margin: 2px;
-     padding: 5px 10px 5px 10px;
-     background-color: rgba(0, 0, 0, 0.09);
- }
+    border: 1px solid rgba(0, 0, 0, 0.68);
+    border-radius: 5px;
+    margin: 2px;
+    padding: 5px 10px 5px 10px;
+    background-color: rgba(0, 0, 0, 0.09);
+}
 
 /*---------------------모달 창 -------------------------*/
 #modalContainer{
     width: 1200px;
-
     position: absolute;
     left: 200px;
-    top: 80px;
     display: none;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     background: rgba(9, 9, 9, 0.3);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     backdrop-filter: blur(1.5px);
@@ -283,7 +276,7 @@ td{
 
 #modalContainer .content {
     border: 1px solid rgba(17, 17, 17, 0.18);
-    margin-top: 150px;
+    margin-top: 130px;
     padding: 0px;
     background-color: white;
     height: 350px;
@@ -292,7 +285,7 @@ td{
 .content table {
     color: black;
     border: 1px solid black;
-    width: 100%;
+    width: 1200px;
 }
 
 .content td{
@@ -310,28 +303,30 @@ td{
     margin-top: 20px;
     padding: 0px;
     background-color: white;
-    height: 350px;
+    height: 100%;
 }
 
 .content1 table {
     color: black;
     border: 1px solid black;
-    width: 100%;
+    width: 1200px;
 }
 
 .content1 td{
     font-size: 20px;
     padding: 20px 0px 20px 10px;
+    text-align: center;
+    border: 1px solid black;
 }
 
 .content1 th{
     width: 100px;
 }
 
+
 /*-------------------------------------------*/
 #modalContainer .content2 {
-    border: 1px solid rgba(17, 17, 17, 0.18);
-    margin-top: 20px;
+    margin-top: 30px;
     padding: 0px;
     background-color: white;
     height: 350px;
@@ -339,18 +334,39 @@ td{
 
 .content2 table {
     color: black;
-    border: 1px solid black;
-    width: 100%;
+    border-collapse: separate; !important;
+    width: 1200px;
+    border: none;
+    padding-bottom: 150px;
 }
 
 .content2 td{
     font-size: 20px;
     padding: 20px 0px 20px 10px;
+
+
+}
+.content2 tr{
+
+
 }
 
 .content2 th{
     width: 100px;
-    /*border-right : none;*/
+    border: none;
+    border-top: 1px solid black; !important;
+}
+
+.coin{
+    text-align: right; !important;
+}
+
+.coin p{
+   margin: 0;!important;
+}
+
+.content p{
+    margin: 0;
 }
 
 /*----------------------환불 버튼---------------------*/
@@ -396,4 +412,6 @@ td{
     height: 100px;
     align-items: center;
     justify-content: space-between;
+
 }
+

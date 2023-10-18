@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/adminManagement.css" rel="stylesheet" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/js/admin/admin.js" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <title>Document</title>
@@ -29,33 +30,33 @@
         <p>기본검색</p>
     </div>
 
-<div class="container1">
-    <form id="allSearch" action="/orderManagement/list">
+    <div class="container1">
+        <form id="allSearch" action="/orderManagement/list">
 
-        <table>
+            <table>
 
-            <tr>
-                <th>검색</th>
-                <td>
-                    <select id="search-method" name="searchCondition">
-                        <option selected>전체</option>
-                        <option value="code" th:selected="${paging.searchCondition eq 'code'}">주문번호</option>
-                        <option value="member" th:selected="${paging.searchCondition eq 'member'}">주문자</option>
-                        <option value="phone" th:selected="${paging.searchCondition eq 'phone'}">전화번호</option>
-                        <option value="orderStatus" th:selected="${paging.searchCondition eq 'orderStatus'}" >주문상태</option>
-                    </select>
-                    <input type="search" id="searchValue" name="searchValue" th:value="${paging.searchValue}" placeholder="입력하세요">
-                </td>
+                <tr>
+                    <th>검색</th>
+                    <td>
+                        <select id="search-method" name="searchCondition">
+                            <option selected>전체</option>
+                            <option value="code" th:selected="${paging.searchCondition eq 'code'}">주문번호</option>
+                            <option value="member" th:selected="${paging.searchCondition eq 'member'}">주문자</option>
+                            <option value="phone" th:selected="${paging.searchCondition eq 'phone'}">전화번호</option>
+                            <option value="orderStatus" th:selected="${paging.searchCondition eq 'orderStatus'}" >주문상태</option>
+                        </select>
+                        <input type="search" id="searchValue" name="searchValue" th:value="${paging.searchValue}" placeholder="입력하세요">
+                    </td>
 
-            </tr>
+                </tr>
 
-            <tr>
-                <th>기간</th>
-                <td>
-                    <input type="date" id="start-date" name="startDate" th:value="${paging.startDate}">
-                    ~
-                    <input type="date" id="end-date" name="endDate" th:value="${paging.endDate}">
-                    <span class="but-group">
+                <tr>
+                    <th>기간</th>
+                    <td>
+                        <input type="date" id="start-date" name="startDate" th:value="${paging.startDate}">
+                        ~
+                        <input type="date" id="end-date" name="endDate" th:value="${paging.endDate}">
+                        <span class="but-group">
                     <input type="button" onclick="searchDate('오늘');" class="sub-btn" value="오늘">
                     <input type="button" onclick="searchDate('1주');" class="sub-btn" value="1주">
                     <input type="button" onclick="searchDate('15일');" class="sub-btn" value="15일">
@@ -63,173 +64,343 @@
                     <input type="button" onclick="searchDate('3개월');" class="sub-btn" value="3개월">
                     <input type="button" onclick="searchDate('6개월');" class="sub-btn" value="6개월">
                 </span>
-                </td>
-            </tr>
+                    </td>
+                </tr>
 
-            <tr>
-                <td colspan="2" class="search-bottom">
-                    <button type="submit" id="searchButton">검색</button>
-                    <button type="button" id="resetButton" >초기화</button>
+                <tr>
+                    <td colspan="2" class="search-bottom">
+                        <button type="submit" id="searchButton">검색</button>
+                        <button type="button" id="resetButton" >초기화</button>
 
-                </td>
-            </tr>
+                    </td>
+                </tr>
 
-        </table>
-    </form>
-</div>
-
-<div class="container2" align="center">
-    <table id="listArea" style="text-align:center">
-        <tr>
-            <td></td>
-        </tr>
-        <tr>
-            <th></th>
-            <th th:style="'width: 110px;'">주문번호</th>
-            <th>주문일자</th>
-            <th>요청사항</th>
-            <th>상품금액</th>
-            <th>할인금액</th>
-            <th>총결제금액</th>
-            <th>주문자</th>
-            <th>전화번호</th>
-            <th>우편번호</th>
-            <th>주문상태</th>
-        </tr>
-        <tr th:each="search : ${ searchList }">
-            <td></td>
-            <td th:text="${ search.code }"  th:style="'border: 1px solid #000000FF; color: blue; cursor: pointer;'"></td>
-            <td th:text="${#dates.format(search.orderDate, 'yyyy-MM-dd')}" th:style="'border: 1px solid #000000FF;'"></td>
-            <td th:text="${ search.orderRequest }" th:style="'border: 1px solid #000000FF;'"></td>
-            <td th:text="${ search.orderPrice }" th:style="'border: 1px solid #000000FF;'"></td>
-            <td th:text="${ search.orderDiscount }" th:style="'border: 1px solid #000000FF;'"></td>
-            <td th:text="${ search.orderTotalPrice }" th:style="'border: 1px solid #000000FF;'"></td>
-            <td th:text="${ search.member.name}" th:style="'border: 1px solid #000000FF;'"></td>
-            <td th:text="${ search.member.phone}" th:style="'border: 1px solid #000000FF;'"></td>
-            <td th:text="${ search.inputZipCode }" th:style="'border: 1px solid #000000FF;'"></td>
-            <td th:text="${ search.orderStatus }" th:style="'border: 1px solid #000000FF;'"></td>
-        </tr>
-    </table>
-
-    <!-- 페이징 바 -->
-    <div id="paging" align="center" style="margin-top: 20px; ">
-
-        <th:block
-                th:if="${ paging.searchCondition != null and paging.searchValue != null }">
-            <!-- 맨 앞으로 이동 -->
-            <button
-                    th:onclick="'location.href=\'/orderManagement/list?page=1&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">&lt;&lt;</button>
-
-            <!-- 이전 페이지로 이동 -->
-            <button
-                    th:onclick="'location.href=\'/orderManagement/list?page=' + @{${paging.page - 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
-                    th:disabled="${ paging.page <= 1 }">&lt;</button>
-
-            <!-- 숫자 버튼 -->
-            <th:block
-                    th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
-                <button
-                        th:onclick="'location.href=\'/orderManagement/list?page=' + @{${page}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
-                        th:text="${ page }" th:disabled="${ paging.page eq page }">
-                </button>
-            </th:block>
-
-            <!-- 다음 페이지로 이동 -->
-            <button
-                    th:onclick="'location.href=\'/orderManagement/list?page=' + @{${paging.page + 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
-                    th:disabled="${ paging.page >= paging.maxPage }">></button>
-
-            <!-- 맨 끝으로 이동 -->
-            <button
-                    th:onclick="'location.href=\'/orderManagement/list?page=' + @{${paging.maxPage}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">>></button>
-
-        </th:block>
-
-        <th:block
-                th:if="${ paging.searchCondition == null ||  paging.searchValue == null }">
-            <!-- 맨 앞으로 이동 -->
-            <button th:onclick="'location.href=\'/orderManagement/list?page=1\''">&lt;&lt;</button>
-
-            <!-- 이전 페이지로 이동 -->
-            <button
-                    th:onclick="'location.href=\'/orderManagement/list?page=' + @{${paging.page - 1}} + '\''"
-                    th:disabled="${ paging.page <= 1 }">&lt;</button>
-
-            <!-- 숫자 버튼 -->
-            <th:block
-                    th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
-                <button
-                        th:onclick="'location.href=\'/orderManagement/list?page=' + @{${page}} + '\''"
-                        th:text="${ page }" th:disabled="${ paging.page eq page }">
-                </button>
-            </th:block>
-
-            <!-- 다음 페이지로 이동 -->
-            <button
-                    th:onclick="'location.href=\'/orderManagement/list?page=' + @{${paging.page + 1}} + '\''"
-                    th:disabled="${ paging.page >= paging.maxPage }">></button>
-
-            <!-- 맨 끝으로 이동 -->
-            <button
-                    th:onclick="'location.href=\'/orderManagement/list?page=' + @{${paging.maxPage}} + '\''">>></button>
-        </th:block>
-
+            </table>
+        </form>
     </div>
-</div>
+
+    <div class="container2" align="center">
+        <table id="listArea" style="text-align:center">
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <th></th>
+                <th th:style="'width: 110px;'">주문번호</th>
+                <th>주문일자</th>
+                <th>요청사항</th>
+                <th>상품금액</th>
+                <th>할인금액</th>
+                <th>총결제금액</th>
+                <th>주문자</th>
+                <th>전화번호</th>
+                <th>우편번호</th>
+                <th>주문상태</th>
+            </tr>
+            <tr th:each="search : ${ searchList }">
+                <td></td>
+                <td th:text="${ search.code }"  th:style="'border: 1px solid #000000FF; color: blue; cursor: pointer;'" th:onclick="searchDetail([[${search.code}]])"></td>
+                <td th:text="${#dates.format(search.orderDate, 'yyyy-MM-dd')}" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.orderRequest }" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.orderPrice }" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.orderDiscount }" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.orderTotalPrice }" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.member.name}" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.member.phone}" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.inputZipCode }" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.orderStatus }" th:style="'border: 1px solid #000000FF;'"></td>
+            </tr>
+        </table>
+
+        <!-- 페이징 바 -->
+        <div id="paging" align="center" style="margin-top: 20px; ">
+
+            <th:block
+                    th:if="${ paging.searchCondition != null and paging.searchValue != null }">
+                <!-- 맨 앞으로 이동 -->
+                <button
+                        th:onclick="'location.href=\'/orderManagement/list?page=1&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">&lt;&lt;</button>
+
+                <!-- 이전 페이지로 이동 -->
+                <button
+                        th:onclick="'location.href=\'/orderManagement/list?page=' + @{${paging.page - 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                        th:disabled="${ paging.page <= 1 }">&lt;</button>
+
+                <!-- 숫자 버튼 -->
+                <th:block
+                        th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
+                    <button
+                            th:onclick="'location.href=\'/orderManagement/list?page=' + @{${page}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                            th:text="${ page }" th:disabled="${ paging.page eq page }">
+                    </button>
+                </th:block>
+
+                <!-- 다음 페이지로 이동 -->
+                <button
+                        th:onclick="'location.href=\'/orderManagement/list?page=' + @{${paging.page + 1}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''"
+                        th:disabled="${ paging.page >= paging.maxPage }">></button>
+
+                <!-- 맨 끝으로 이동 -->
+                <button
+                        th:onclick="'location.href=\'/orderManagement/list?page=' + @{${paging.maxPage}} + '&searchCondition=' + @{${paging.searchCondition}} + '&searchValue=' + @{${paging.searchValue}} + '\''">>></button>
+
+            </th:block>
+
+            <th:block
+                    th:if="${ paging.searchCondition == null ||  paging.searchValue == null }">
+                <!-- 맨 앞으로 이동 -->
+                <button th:onclick="'location.href=\'/orderManagement/list?page=1\''">&lt;&lt;</button>
+
+                <!-- 이전 페이지로 이동 -->
+                <button
+                        th:onclick="'location.href=\'/orderManagement/list?page=' + @{${paging.page - 1}} + '\''"
+                        th:disabled="${ paging.page <= 1 }">&lt;</button>
+
+                <!-- 숫자 버튼 -->
+                <th:block
+                        th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
+                    <button
+                            th:onclick="'location.href=\'/orderManagement/list?page=' + @{${page}} + '\''"
+                            th:text="${ page }" th:disabled="${ paging.page eq page }">
+                    </button>
+                </th:block>
+
+                <!-- 다음 페이지로 이동 -->
+                <button
+                        th:onclick="'location.href=\'/orderManagement/list?page=' + @{${paging.page + 1}} + '\''"
+                        th:disabled="${ paging.page >= paging.maxPage }">></button>
+
+                <!-- 맨 끝으로 이동 -->
+                <button
+                        th:onclick="'location.href=\'/orderManagement/list?page=' + @{${paging.maxPage}} + '\''">>></button>
+            </th:block>
+
+        </div>
+    </div>
+
+
+    <div id="modalContainer" class="modalOverlay">
+        <div id="modalContent">
+            <p>주문상세페이지</p>
+            <div class="close-area" onclick="closeModal()">X</div>
+        </div>
+                <div class="content">
+                    <table>
+                        <tr>
+                            <td>주문자 정보</td>
+                        </tr>
+                        <tr>
+                            <th th:style="'background-color : #0909090F;'">주문번호</th>
+                            <th><p name="memberCode" id="memberCode"></th>
+                            <th th:style="'background-color : #0909090F;'">주문일자</th>
+                            <th><p name="orderDate" id="orderDate"></th>
+                        </tr>
+                        <tr>
+                            <th th:style="'background-color : #0909090F;'">주문자이름</th>
+                            <th><p name="member.name" id="member.name"></th>
+                            <th th:style="'background-color : #0909090F;'">주문자메일</th>
+                            <th><p name="member.memberId" id="member.memberId"></th>
+                        </tr>
+                        <tr>
+                            <th th:style="'background-color : #0909090F;'">주문자핸드폰</th>
+                            <th><p name="member.phone" id="member.phone"></th>
+                            <th th:style="'background-color : #0909090F;'">기본주소</th>
+                            <th><p name="member.address1" id="member.address1"></th>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div class="content1">
+                    <table>
+                        <thead>
+                        <tr>
+                            <td colspan='7' th:style="'text-align : left;'">주문 상품 리스트</td>
+                        </tr>
+                        <tr>
+                            <th th:style="'width : 10px'"></th>
+                            <th th:style="'width: 110px;'">상품이미지</th>
+                            <th>상품명</th>
+                            <th>상품코드</th>
+                            <th>상품금액</th>
+                            <th>개수</th>
+                            <th>피리미엄금액</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tbody id="productDetailTable">
+
+                        </tbody>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="content2">
+                    <form id="Payment-details" action="orderManagement/detail">
+                        <table>
+                            <tr>
+                                <p th:style="'margin: 20px 0px 0px 10px; font-size: 20px;'">결제 상세정보 확인</p>
+                            </tr>
+                            <tr>
+                                <th th:style="'text-align: left;'">총상품금액</th>
+                                <th class="coin"><p name="orderPrice" id="orderPrice"></th>
+                            </tr>
+                            <tr>
+                                <th th:style="'text-align: left;'">할인금액</th>
+                                <th class="coin"><p name="orderDiscount" id="orderDiscount"></th>
+                            </tr>
+                            <tr>
+                                <th th:style="'text-align: left;'">총결제금액</th>
+                                <th class="coin"><p name="orderTotalCount" id="orderTotalPrice"></th>
+                            </tr>
+
+                        </table>
+                    </form>
+                </div>
+    </div>
 
 
 
+    <script>
+        function searchDate(range) {
+            var today = new Date();
+            var startDate = new Date();
+            var endDate = new Date();
 
+            if (range == '오늘') {
+                startDate = today;
+                endDate = today;
+            } else if (range == '1주') {
+                startDate.setDate(today.getDate() + 6);
+                endDate.setDate(today.getDate() + 6);
+            } else if (range == '15일') {
+                startDate.setDate(today.getDate() + 14);
+                endDate.setDate(today.getDate() + 14);
+            } else if (range === '1개월') {
+                endDate.setMonth(today.getMonth() + 1);
+                endDate.setDate(1); // 다음 달의 첫 번째 날로 설정
+                startDate = new Date(endDate);
+            } else if (range === '3개월') {
+                endDate.setMonth(today.getMonth() + 3);
+                endDate.setDate(1); // 다음 달의 첫 번째 날로 설정
+                startDate = new Date(endDate);
+            } else if (range === '6개월') {
+                endDate.setMonth(today.getMonth() + 6);
+                endDate.setDate(1); // 다음 달의 첫 번째 날로 설정
+                startDate = new Date(endDate);
+            }
 
+            // input 요소에 날짜 설정
+            document.getElementById('start-date').valueAsDate = startDate;
+            document.getElementById('end-date').valueAsDate = endDate;
 
-<script>
-    function searchDate(range) {
-        var today = new Date();
-        var startDate = new Date();
-        var endDate = new Date();
-
-        if (range == '오늘') {
-            startDate = today;
-            endDate = today;
-        } else if (range == '1주') {
-            startDate.setDate(today.getDate() + 6);
-            endDate.setDate(today.getDate() + 6);
-        } else if (range == '15일') {
-            startDate.setDate(today.getDate() + 14);
-            endDate.setDate(today.getDate() + 14);
-        } else if (range === '1개월') {
-            endDate.setMonth(today.getMonth() + 1);
-            endDate.setDate(1); // 다음 달의 첫 번째 날로 설정
-            startDate = new Date(endDate);
-        } else if (range === '3개월') {
-            endDate.setMonth(today.getMonth() + 3);
-            endDate.setDate(1); // 다음 달의 첫 번째 날로 설정
-            startDate = new Date(endDate);
-        } else if (range === '6개월') {
-            endDate.setMonth(today.getMonth() + 6);
-            endDate.setDate(1); // 다음 달의 첫 번째 날로 설정
-            startDate = new Date(endDate);
         }
 
-        // input 요소에 날짜 설정
-        document.getElementById('start-date').valueAsDate = startDate;
-        document.getElementById('end-date').valueAsDate = endDate;
 
-    }
+        /*-------------------------- 상세 페이지 ------------------------*/
+        function searchDetail(code) {
+            const modalOverlay = document.querySelector('.modalOverlay');
+            modalOverlay.style.display = "flex";
 
-
-
-
-
+            const clickedOrderCode = code;
+            console.log("Clicked Order Code: " + clickedOrderCode);
 
 
+            $.ajax({
+                url: '/orderManagement/detail', // 서버 API 엔드포인트를 지정
+                method: 'GET',
+                data: { clickedOrderCode },
+                success: function (data) {
+                    // 서버에서 반환한 데이터를 처리
+                    console.log(data);
 
-</script>
+                    document.getElementById('memberCode').textContent = data.memberCode;
+                    document.getElementById('orderDate').textContent = data.orderDate;
+                    document.getElementById('member.name').textContent = data.member.name;
+                    document.getElementById('member.memberId').textContent = data.member.memberId;
+                    document.getElementById('member.phone').textContent = data.member.phone;
+                    document.getElementById('member.address1').textContent = data.member.address1;
+
+                    // data.orderDate는 ISO 형식(예: "2023-10-16T08:30:00.000Z")의 문자열로 가정합니다.
+                    const orderDate = new Date(data.orderDate);
+
+                    // 날짜를 "년-월-일" 형식으로 포맷합니다.
+                    const formattedDate = orderDate.getFullYear() + '-' + (orderDate.getMonth() + 1).toString().padStart(2, '0') + '-' + orderDate.getDate().toString().padStart(2, '0');
+
+                    // HTML 요소에 날짜를 설정합니다.
+                    document.getElementById('orderDate').textContent = formattedDate;
+                },
+                error: function (error) {
+                    console.error("Error fetching order details: " + error);
+                }
+            });
+
+            $.ajax({
+                url: '/orderManagement/productDetail', // 서버 API 엔드포인트를 지정
+                method: 'GET',
+                data: { clickedOrderCode },
+                success: function (data) {
+                    // 서버에서 반환한 데이터를 처리
+                    console.log(data);
+                    const productDetailTable = $('#productDetailTable');
+                    productDetailTable.find('tr:gt(0)').remove(); // 기존 테이블 내용 제거
+
+                    $.each(data, function (index, product) {
+                        // 각 주문 상품 정보를 테이블에 추가
+                        productDetailTable.append(
+                            `<tr>
+                        <td>${index + 1}</td>
+                        <td><img src="${product.product.photo}" alt="상품 이미지" width="50"></td>
+                        <td>${product.product.name}</td>
+                        <td>${product.product.code}</td>
+                        <td>${product.product.price}</td>
+                        <td>${product.amount}</td>
+                        <td>${product.product.premiumPrice}</td>
+
+
+                    </tr>`
+                        );
+                    });
+
+                },
+                error: function (error) {
+                    console.error("Error fetching order details: " + error);
+                }
+            });
+
+            // jQuery를 사용하여 서버에 데이터 요청
+            $.ajax({
+                url: '/orderManagement/paymentDetail', // 서버 API 엔드포인트를 지정
+                method: 'GET',
+                data: { clickedOrderCode },
+                success: function (data) {
+                    // 서버에서 반환한 데이터를 처리
+                    console.log(data);
+
+                    document.getElementById('orderPrice').textContent = data.orderPrice;
+                    document.getElementById('orderDiscount').textContent = data.orderDiscount;
+                    document.getElementById('orderTotalPrice').textContent = data.orderTotalPrice;
+                },
+                error: function (error) {
+                    console.error("Error fetching order details: " + error);
+                }
+            });
+
+
+        }
+
+        function closeModal() {
+            const modalContainer = document.querySelector('.modalOverlay'); // 수정된 부분
+            if (modalContainer) {
+                modalContainer.style.display = "none";
+            }
+        }
+
+    </script>
 
 </div>
 </body>
 
 </html>
-
-
-

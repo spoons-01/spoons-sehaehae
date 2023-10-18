@@ -62,11 +62,22 @@
         <result property="inputAddress" column="INPUT_ADDRESS"/>
         <result property="InputAddress2" column="INPUT_ADDRESS2"/>
         <result property="orderStatus" column="ORDER_STATUS"/>
-        <result property="cpCode" column="CP_CODE"/>
+        <result property="useCoupon" column="CP_CODE"/>
         <result property="usePoint" column="USE_POINT"/>
         <result property="collectionDate" column="COLLECTION_DATE"/>
         <result property="deliveryDate" column="DELIVERY_DATE"/>
+        <result property="progressDate" column="PROGRESS_DATE"/>
+        <result property="reviewStatus" column="REVIEW_STATUS"/>
     </resultMap>
+
+    <select id="findMyOrderDetails" parameterType="string" resultMap="orderResultMap">
+        SELECT
+            *
+        FROM TBL_ORDER
+        WHERE 1=1
+          AND ORDER_CODE = #{orderCode}
+    </select>
+
 
     <!-- 내 구매내역 -->
     <resultMap id="myOrderResultMap" type="com.spoons.sehaehae.member.dto.MyOrderDTO">
@@ -75,6 +86,7 @@
         <result property="orderDate" column="ORDER_DATE"/>
         <result property="orderStatus" column="ORDER_STATUS"/>
         <result property="progressDate" column="PROGRESS_DATE"/>
+        <result property="reviewStatus" column="REVIEW_STATUS"/>
     </resultMap>
 
     <!-- TBL_COUPON -->
@@ -125,7 +137,7 @@
 
         <association property="writer" resultMap="memberResultMap"/>
         <association property="attachment" resultMap="attachmentResultMap"/>
-        <association property="order" resultMap="myOrderResultMap"/>
+        <association property="myOrders" resultMap="myOrderResultMap"/>
     </resultMap>
 
     <!--첨부파일 / 첨부 안할거면 빼기 -->
@@ -143,17 +155,6 @@
         <association property="review" resultMap="myReviewResultMap"/>
     </resultMap>
 
-    <!-- 후기 resultMap -->
-<!--    <resultMap id="myrefundResultMap" type="com.spoons.sehaehae.admin.dto.RefundDTO">-->
-<!--        <id property="refundCode" column="REFUND_CODE"/>-->
-<!--        <association property="order" javaType="com.spoons.sehaehae.admin.dto.OrderDTO">-->
-<!--            <result property="code" column="ORDER_CODE"/>-->
-<!--            <result property="usePoint" column="USE_POINT"/>-->
-<!--            <result property="useCoupon" column="CP_CODE"/>-->
-<!--        </association>-->
-<!--        <result property="refundReceiptDate" column="REFUND_RECIPT_DATE"/>-->
-<!--        <result property="processStatus" column="PROCESS_STATUS"/>-->
-<!--    </resultMap>-->
 
 
 
@@ -315,7 +316,6 @@
     </select>
 
 
-
     <!-- 동한님 -->
     <select id="selectMember">
         SELECT MEMBER_NO
@@ -346,7 +346,7 @@
 		WHERE MEMBER_STATUS = 'Y'
 		  AND MEMBER_NO = #{ memberNo }
 	</update>
-  
+
    <select id="selectMemberList" resultMap="memberResultMap">
         select
             A.*

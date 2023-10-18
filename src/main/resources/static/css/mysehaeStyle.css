@@ -266,6 +266,7 @@ hr {
     border-radius: 5px;
     background-color: rgb(255, 255, 255);
     box-shadow: 3px 3px 10px 1px rgba(135, 147, 165, 0.1);
+    margin-bottom: 100px;
 }
 
 .select-box-wrapper {
@@ -390,8 +391,9 @@ hr {
 }
 
 /* 후기 작성하기 모달창 ------------------------------------------- */
+
 #modal.modal-overlay {
-    top: 50%;
+    top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
     position: absolute;   /* 페이지 위에 띄우기*/
@@ -404,7 +406,6 @@ hr {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
 }
 
 .modal-detail {
@@ -418,7 +419,7 @@ hr {
     color: black;
 }
 .reviewTitle {
-    font-size: 45px;
+    font-size: 30px;
     margin-top: 10px;
 }
 #modal .close-area {
@@ -427,7 +428,7 @@ hr {
     color: black;
     float: right;
     margin-right: 20px;
-    font-size: 25px;
+    font-size: 20px;
 }
 
 #modal .content {
@@ -437,13 +438,23 @@ hr {
 }
 .content p {
     margin-left: 20px;
-    font-size: 13px;
+    font-size: 15px;
+}
+
+.modal-content {
+    font-family: NanumSquareNeo-Variable;
+    font-size: 15px;
+    font-weight: bold;
 }
 .reviewModal {
     font-family: NanumSquareNeo-Variable;
-    font-size: 20px;
+    font-size: 15px;
     line-height: 50px;
     margin-left: 10px;
+}
+.reviewModal-p {
+    margin-left: 15px;
+    font-size: 10px;
 }
 
 /* 후기쓰기에 별점 */
@@ -451,6 +462,7 @@ hr {
     display: inline-block;
     direction: rtl;
     border:0;
+    margin-left: 20px;
 }
 .rating legend{
     text-align: right;
@@ -459,7 +471,7 @@ hr {
     display: none;
 }
 .rating label{
-    font-size: 3em;
+    font-size: 2.5em;
     color: transparent;
     text-shadow: 0 0 0 #f0f0f0;
 }
@@ -471,6 +483,9 @@ hr {
 }
 .rating input[type=radio]:checked ~ label{
     text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+}
+.text-bold {
+    font-size: 13px;
 }
 
 .reviewBox {
@@ -488,14 +503,14 @@ hr {
 }
 
 .image-area img {
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
 }
 
 .image-area p {
     margin-left: 0;
     font-family: NanumSquareNeo-Variable;
-    font-size: 15px;
+    font-size: 13px;
 }
 .reviewregist-name {
     border-radius: 10px;
@@ -508,14 +523,14 @@ hr {
     border-radius: 10px;
     border: 2px #4B93FF solid;
     width: 700px;
-    height: 200px;
+    height: 150px;
 }
 
 .reviewDML2 {
     background: #4B93FF;
     border-radius: 20px;
     width: 700px;
-    height: 50px;
+    height: 40px;
     display: flex;
     justify-content: center;
     margin-bottom: 30px;
@@ -524,5 +539,5 @@ hr {
 .reviewDML2 button {
     color: white;
     font-family: NanumSquareNeo-Variable;
-    font-size: 24px;
+    font-size: 20px;
 }
