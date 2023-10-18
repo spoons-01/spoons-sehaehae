@@ -6,6 +6,8 @@ window.onload = function() {
         document.getElementById('searchValue').value = '';
         document.getElementById('start-date').value = '';
         document.getElementById('end-date').value = '';
+        document.getElementById('card-payment').checked = false;
+        document.getElementById('kakao-payment').checked = false;
     });
 }
     /*---------- 날짜 ---------*/
@@ -231,12 +233,41 @@ function markAsRefundOk() {
     //주문번호 목록을 서버에 보내고 업데이트 요청 처리
     if (orderId.length > 0) {
         $.ajax({
-            url: '/orderManagement/update-order-status', // 서버 업데이트 엔드포인트
+            url: '/orderManagement/update-refund-Ok', // 서버 업데이트 엔드포인트
             method: 'POST', // 또는 PUT, PATCH 등 업데이트에 적합한 HTTP 메서드 사용
             data: {orderId},
             success: function (response) {
                 if (response === 'success') {
-                    alert('주문상태가 "수거완료" (으)로 업데이트되었습니다.');
+                    alert('"환불승인" 처리가 완료 되었습니다.');
+
+                    //페이지 새로고침
+                    location.reload();
+                } else {
+                    alert('주문상태 업데이트에 실패하였습니다');
+                }
+            }
+
+        });
+    }
+}
+
+function markAsRefundNo() {
+    const checkboxes = $('input.checkStatus:checked');
+    console.log(checkboxes);
+    const orderId = checkboxes.map(function () {
+        // 각 체크된 체크박스의 데이터 식별자를 가져오기 (주문번호)
+        return $(this).data('order-id'); // HTML에서 data-order-id 속성을 설정해야 합니다.
+    }).get();
+    console.log(orderId);
+    //주문번호 목록을 서버에 보내고 업데이트 요청 처리
+    if (orderId.length > 0) {
+        $.ajax({
+            url: '/orderManagement/update-refund-No', // 서버 업데이트 엔드포인트
+            method: 'POST', // 또는 PUT, PATCH 등 업데이트에 적합한 HTTP 메서드 사용
+            data: {orderId},
+            success: function (response) {
+                if (response === 'success') {
+                    alert('"환불거절" 처리가 완료 되었습니다.');
 
                     //페이지 새로고침
                     location.reload();
@@ -253,22 +284,4 @@ function markAsRefundOk() {
     /*-------------------------------------------------------------*/
 
 
-// 페이지 로드 후 실행할 코드
-//     document.addEventListener('DOMContentLoaded', function () {
-//         // .clickable 클래스가 지정된 모든 요소에 대한 클릭 이벤트 핸들러를 등록합니다.
-//         const clickableElements = document.querySelectorAll('.clickable');
-//
-//         clickableElements.forEach(function (element) {
-//             element.addEventListener('click', function () {
-//                 // 클릭된 요소의 데이터 검색 코드를 가져와서 모달 열기 함수로 전달합니다.
-//                 const searchCode = element.textContent;
-//                 openModal(searchCode);
-//             });
-//         });
-//     });
-//
-//     function openModal(code) {
-//         // 클릭된 요소의 데이터 검색 코드를 기반으로 모달 열기 및 데이터 가져오기 로직을 수행합니다.
-//         // 이전 답변의 "openModal" 함수 내용을 여기에 구현하세요.
-//     }
 

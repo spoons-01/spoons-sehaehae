@@ -57,6 +57,8 @@ public class SearchController {
                                     @RequestParam(required = false) String searchValue,
                                     @RequestParam(required = false) String startDate,
                                     @RequestParam(required = false) String endDate,
+                                    @RequestParam(name = "cardPayment", required = false) String cardPayment,
+                                    @RequestParam(name = "kakaoPayment", required = false) String kakaoPayment,
                                     Model model) {
 
         Map<String, String> searchMap = new HashMap<>();
@@ -64,6 +66,8 @@ public class SearchController {
         searchMap.put("searchValue", searchValue);
         searchMap.put("startDate", startDate);
         searchMap.put("endDate", endDate);
+        searchMap.put("cardPayment", cardPayment);
+        searchMap.put("kakaoPayment", kakaoPayment);
 
         Map<String, Object> searchListAndPaging = orderService.selectSearchPaymentList(searchMap, page);
         model.addAttribute("paging", searchListAndPaging.get("paging"));
@@ -341,5 +345,39 @@ public class SearchController {
 
 
         return "admin/orderManagement/refund";
+    }
+
+    @PostMapping("/update-refund-Ok")
+    public ResponseEntity<String> updateRefundStatusOk(@RequestParam(name = "orderId[]") Long[] orderId) {
+        log.info("{}", Arrays.toString(orderId));
+        String newStatus = "환불승인"; // 이 부분은 고정된 값으로 설정하거나 요구사항에 따라 동적으로 처리해야 합니다.
+
+        boolean update = orderService.updateRefundStatus(orderId, newStatus);
+
+        log.info("update: {}", update);
+
+        if (update) {
+            return ResponseEntity.ok("success");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("주문 상태 업데이트에 실패했습니다.");
+        }
+    }
+
+    @PostMapping("/update-refund-No")
+    public ResponseEntity<String> updateRefundStatusNo(@RequestParam(name = "orderId[]") Long[] orderId) {
+        log.info("{}", Arrays.toString(orderId));
+        String newStatus = "환불거절"; // 이 부분은 고정된 값으로 설정하거나 요구사항에 따라 동적으로 처리해야 합니다.
+
+        boolean update = orderService.updateRefundStatus(orderId, newStatus);
+
+        log.info("update: {}", update);
+
+        if (update) {
+            return ResponseEntity.ok("success");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("주문 상태 업데이트에 실패했습니다.");
+        }
     }
 }

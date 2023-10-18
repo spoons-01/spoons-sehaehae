@@ -1,0 +1,132 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'GangwonState';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/GangwonState.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NanumSquareNeo-Variable';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+    font-size: 100%;
+}
+
+a {
+    text-decoration: none;
+    font-family: NanumSquareNeo-Variable;
+}
+
+img {
+    max-width: 100%;
+}
+
+p {
+    font-family: NanumSquareNeo-Variable;
+}
+
+h2 {
+    font-family: NanumSquareNeo-Variable;
+}
+
+h3 {
+    font-family: NanumSquareNeo-Variable;
+}
+
+/* mypage nav ---------------------------------------------------------*/
+
+.mypage-nav {
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    list-style-type: none;
+    font-family: NanumSquareNeo-Variable;
+    margin: 30px auto 30px auto;
+}
+
+.mypage-nav a {
+    display: flex;
+    color: black;
+    font-weight: bold;
+    margin: 0 20px; /* 여백 조정 */
+    align-items: center; /* 세로 중앙 정렬 */
+}
+
+.mypage-nav a:hover {
+    color: #4B93FF;
+}
+
+
+/* 환불하기 */
+.wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 4%;
+}
+
+.box-wrapper {
+    margin: 60px auto 100px auto;
+    display: flex;
+    justify-content: center;
+}
+
+.bigbox {
+    width: 600px;
+    height: auto;
+    border-radius: 4px;
+    border: 1px solid #d9d6d6;
+    padding: 60px 100px 60px 100px;
+}
+
+.box {
+    margin-top: 50px;
+}
+
+.line {
+    display: flex;
+}
+
+.bold {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.reason {
+    margin-top: 20px;
+}
+
+.refund-reason-box {
+    display: flex;
+    margin-top: 10px;
+    font-family: NanumSquareNeo-Variable;
+    font-size: 14px;
+    resize: none;
+    height: 200px;
+    border: #d9d6d6 1px solid;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.btn-container {
+    margin-top: 20px;
+}
+
+.button {
+    background-color: #4B93FF;
+    color: #ffffff;
+    font-size: 13px;
+    padding: 10px 10px;
+    border-radius: 7px;
+    border: none;
+    cursor: pointer;
+    font-family: NanumSquareNeo-Variable;
+    letter-spacing: 1px;
+    text-align: center;
+    width: 200px;
+}
