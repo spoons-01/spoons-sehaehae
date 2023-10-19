@@ -81,7 +81,7 @@ public class SearchController {
 
 
     @PostMapping("/update-order-status")
-    public ResponseEntity<String> updateOrderStatus(@RequestParam(name = "orderId[]") Long[] orderId) {
+    public ResponseEntity<String> updateOrderStatus(@RequestParam(name = "orderId[]") String[] orderId) {
         log.info("{}", Arrays.toString(orderId));
         String newStatus = "수거완료"; // 이 부분은 고정된 값으로 설정하거나 요구사항에 따라 동적으로 처리해야 합니다.
 
@@ -106,6 +106,8 @@ public class SearchController {
                                        @RequestParam(required = false) String searchValue,
                                        @RequestParam(required = false) String startDate,
                                        @RequestParam(required = false) String endDate,
+                                       @RequestParam(name = "cardPayment", required = false) String cardPayment,
+                                       @RequestParam(name = "kakaoPayment", required = false) String kakaoPayment,
                                        Model model) {
 
         Map<String, String> searchMap = new HashMap<>();
@@ -113,6 +115,8 @@ public class SearchController {
         searchMap.put("searchValue", searchValue);
         searchMap.put("startDate", startDate);
         searchMap.put("endDate", endDate);
+        searchMap.put("cardPayment", cardPayment);
+        searchMap.put("kakaoPayment", kakaoPayment);
 
         Map<String, Object> searchListAndPaging = orderService.selectSearchCollectionList(searchMap, page);
         model.addAttribute("paging", searchListAndPaging.get("paging"));
@@ -124,7 +128,7 @@ public class SearchController {
 
 
     @PostMapping("/update-order-status2")
-    public ResponseEntity<String> updateOrderStatus2(@RequestParam(name = "orderId[]") Long[] orderId) {
+    public ResponseEntity<String> updateOrderStatus2(@RequestParam(name = "orderId[]") String[] orderId) {
         log.info("{}", Arrays.toString(orderId));
         String newStatus = "세탁완료"; // 이 부분은 고정된 값으로 설정하거나 요구사항에 따라 동적으로 처리해야 합니다.
 
@@ -148,6 +152,8 @@ public class SearchController {
                                     @RequestParam(required = false) String searchValue,
                                     @RequestParam(required = false) String startDate,
                                     @RequestParam(required = false) String endDate,
+                                    @RequestParam(name = "cardPayment", required = false) String cardPayment,
+                                    @RequestParam(name = "kakaoPayment", required = false) String kakaoPayment,
                                     Model model) {
 
         Map<String, String> searchMap = new HashMap<>();
@@ -155,6 +161,8 @@ public class SearchController {
         searchMap.put("searchValue", searchValue);
         searchMap.put("startDate", startDate);
         searchMap.put("endDate", endDate);
+        searchMap.put("cardPayment", cardPayment);
+        searchMap.put("kakaoPayment", kakaoPayment);
 
         Map<String, Object> searchListAndPaging = orderService.selectSearchLaundryList(searchMap, page);
         model.addAttribute("paging", searchListAndPaging.get("paging"));
@@ -164,7 +172,7 @@ public class SearchController {
     }
 
     @PostMapping("/update-order-status3")
-    public ResponseEntity<String> updateOrderStatus3(@RequestParam(name = "orderId[]") Long[] orderId) {
+    public ResponseEntity<String> updateOrderStatus3(@RequestParam(name = "orderId[]") String[] orderId) {
         log.info("{}", Arrays.toString(orderId));
         String newStatus = "배송준비"; // 이 부분은 고정된 값으로 설정하거나 요구사항에 따라 동적으로 처리해야 합니다.
 
@@ -188,6 +196,8 @@ public class SearchController {
                                       @RequestParam(required = false) String searchValue,
                                       @RequestParam(required = false) String startDate,
                                       @RequestParam(required = false) String endDate,
+                                      @RequestParam(name = "cardPayment", required = false) String cardPayment,
+                                      @RequestParam(name = "kakaoPayment", required = false) String kakaoPayment,
                                       Model model) {
 
         Map<String, String> searchMap = new HashMap<>();
@@ -195,6 +205,8 @@ public class SearchController {
         searchMap.put("searchValue", searchValue);
         searchMap.put("startDate", startDate);
         searchMap.put("endDate", endDate);
+        searchMap.put("cardPayment", cardPayment);
+        searchMap.put("kakaoPayment", kakaoPayment);
 
         Map<String, Object> searchListAndPaging = orderService.selectSearchPreparingList(searchMap, page);
         model.addAttribute("paging", searchListAndPaging.get("paging"));
@@ -204,7 +216,7 @@ public class SearchController {
     }
 
     @PostMapping("/update-order-status4")
-    public ResponseEntity<String> updateOrderStatus4(@RequestParam(name = "orderId[]") Long[] orderId) {
+    public ResponseEntity<String> updateOrderStatus4(@RequestParam(name = "orderId[]") String[] orderId) {
         log.info("{}", Arrays.toString(orderId));
         String newStatus = "배송중"; // 이 부분은 고정된 값으로 설정하거나 요구사항에 따라 동적으로 처리해야 합니다.
 
@@ -229,6 +241,8 @@ public class SearchController {
                                      @RequestParam(required = false) String searchValue,
                                      @RequestParam(required = false) String startDate,
                                      @RequestParam(required = false) String endDate,
+                                     @RequestParam(name = "cardPayment", required = false) String cardPayment,
+                                     @RequestParam(name = "kakaoPayment", required = false) String kakaoPayment,
                                      Model model) {
 
         Map<String, String> searchMap = new HashMap<>();
@@ -236,6 +250,8 @@ public class SearchController {
         searchMap.put("searchValue", searchValue);
         searchMap.put("startDate", startDate);
         searchMap.put("endDate", endDate);
+        searchMap.put("cardPayment", cardPayment);
+        searchMap.put("kakaoPayment", kakaoPayment);
 
         Map<String, Object> searchListAndPaging = orderService.selectSearchDeliveryList(searchMap, page);
         model.addAttribute("paging", searchListAndPaging.get("paging"));
@@ -245,7 +261,7 @@ public class SearchController {
     }
 
     @PostMapping("/update-order-status5")
-    public ResponseEntity<String> updateOrderStatus5(@RequestParam(name = "orderId[]") Long[] orderId) {
+    public ResponseEntity<String> updateOrderStatus5(@RequestParam(name = "orderId[]") String[] orderId) {
         log.info("{}", Arrays.toString(orderId));
         String newStatus = "구매확정"; // 이 부분은 고정된 값으로 설정하거나 요구사항에 따라 동적으로 처리해야 합니다.
 
@@ -288,7 +304,7 @@ public class SearchController {
     /*---------------------------------------------상세 페이지----------------------------------------------*/
 
     @GetMapping("/detail")
-    public ResponseEntity<OrderDTO> selectDetailList(@RequestParam(name = "clickedOrderCode") Long clickedOrderCode) {
+    public ResponseEntity<OrderDTO> selectDetailList(@RequestParam(name = "clickedOrderCode") String clickedOrderCode) {
         log.info("{}", clickedOrderCode);
         OrderDTO order = orderService.getOrderDetailsList(clickedOrderCode);
 
@@ -301,7 +317,7 @@ public class SearchController {
     }
 
     @GetMapping("/productDetail")
-    public ResponseEntity<List<OrderDTO>> getOrderProductDetailList(@RequestParam(name = "clickedOrderCode") Long clickedOrderCode) {
+    public ResponseEntity<List<OrderDTO>> getOrderProductDetailList(@RequestParam(name = "clickedOrderCode") String clickedOrderCode) {
         log.info("{}", clickedOrderCode);
         List<OrderDTO> order = orderService.getOrderProductDetailList(clickedOrderCode);
 
@@ -314,7 +330,7 @@ public class SearchController {
     }
 
     @GetMapping("/paymentDetail")
-    public ResponseEntity<OrderDTO> getPaymentDetailsList(@RequestParam(name = "clickedOrderCode") Long clickedOrderCode) {
+    public ResponseEntity<OrderDTO> getPaymentDetailsList(@RequestParam(name = "clickedOrderCode") String clickedOrderCode) {
         log.info("{}", clickedOrderCode);
         OrderDTO order = orderService.getPaymentDetailsList(clickedOrderCode);
 
@@ -351,7 +367,7 @@ public class SearchController {
     }
 
     @PostMapping("/update-refund-Ok")
-    public ResponseEntity<String> updateRefundStatusOk(@RequestParam(name = "orderId[]") Long[] orderId) {
+    public ResponseEntity<String> updateRefundStatusOk(@RequestParam(name = "orderId[]") String[] orderId) {
         log.info("{}", Arrays.toString(orderId));
         String newStatus = "환불승인"; // 이 부분은 고정된 값으로 설정하거나 요구사항에 따라 동적으로 처리해야 합니다.
 
@@ -368,7 +384,7 @@ public class SearchController {
     }
 
     @PostMapping("/update-refund-No")
-    public ResponseEntity<String> updateRefundStatusNo(@RequestParam(name = "orderId[]") Long[] orderId) {
+    public ResponseEntity<String> updateRefundStatusNo(@RequestParam(name = "orderId[]") String[] orderId) {
         log.info("{}", Arrays.toString(orderId));
         String newStatus = "환불거절"; // 이 부분은 고정된 값으로 설정하거나 요구사항에 따라 동적으로 처리해야 합니다.
 

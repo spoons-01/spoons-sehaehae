@@ -64,7 +64,7 @@ public class OrderService {
     }
 
   /*--------------------------------------------- 주문상태 바꾸기 ---------------------------------------*/
-    public boolean updateOrderStatus(Long[] orderId, String newStatus) {
+    public boolean updateOrderStatus(String[] orderId, String newStatus) {
 
         try {
             Map<String, Object> updateStatus = new HashMap<>();
@@ -177,15 +177,15 @@ public class OrderService {
     }
 
     /*------------------------------- 상세페이지 ----------------------------------------*/
-    public OrderDTO getOrderDetailsList(Long clickedOrderCode) {
+    public OrderDTO getOrderDetailsList(String clickedOrderCode) {
         return searchMapper.getOrderDetailList(clickedOrderCode);
     }
 
-    public List<OrderDTO> getOrderProductDetailList(Long clickedOrderCode) {
+    public List<OrderDTO> getOrderProductDetailList(String clickedOrderCode) {
         return searchMapper.getOrderProductDetailList(clickedOrderCode);
     }
 
-    public OrderDTO getPaymentDetailsList(Long clickedOrderCode) {
+    public OrderDTO getPaymentDetailsList(String clickedOrderCode) {
         return searchMapper.getPaymentDetailsList(clickedOrderCode);
     }
 
@@ -208,7 +208,7 @@ public class OrderService {
 
     }
 
-    public boolean updateRefundStatus(Long[] orderId, String newStatus) {
+    public boolean updateRefundStatus(String[] orderId, String newStatus) {
 
         try {
             Map<String, Object> updateStatus = new HashMap<>();

@@ -250,8 +250,8 @@ public class MemberController {
                 String originalFileName = attachImage.getOriginalFilename();
                 log.info("originalFileName : {}", originalFileName);
 
-                String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
-                String savedFileName = UUID.randomUUID() + ext;
+                String ext = originalFileName.substring(originalFileName.lastIndexOf(".")); // 원본 이름에서 확장자 추출
+                String savedFileName = UUID.randomUUID() + ext; // 중복을 방지하기 위해 랜덤한 아이디 생성 후 확장자 삽입 후 새로운 이름에 할당
                 log.info("savedFileName : {}", savedFileName);
 
                 /* 서버의 설정 디렉토리에 파일 저장하기 */

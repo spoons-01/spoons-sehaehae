@@ -27,43 +27,37 @@
 
 
     <div class="container1">
+        <ol>
+            <li class="calculateLi">
+                총 입금 금액
 
+            </li>
 
+            <li class="calculateDate">
 
+                <select id="search-method" name="searchCondition">
+                    <option selected>전체</option>
+                    <option value=" ">입금일</option>
+                    <option value="member">세탁기간</option>
+                </select>
 
-        <form id="allSearch" action="/orderManagement/calculate">
-            <table>
+                <input type="date" id="start-date" name="startDate" th:style="'margin-left : 5px'" >
+                ~
+                <input type="date" id="end-date" name="endDate" >
+                <span class="but-group">
+                    <input type="button" onclick="searchDate('1분기');" class="sub-btn" value="1분기">
+                    <input type="button" onclick="searchDate('2분기');" class="sub-btn" value="2분기">
+                    <input type="button" onclick="searchDate('3분기');" class="sub-btn" value="3분기">
+                    <input type="button" onclick="searchDate('4분기');" class="sub-btn" value="4분기">
+               </span>
 
-                <tr>
-                    <th>기간</th>
-                    <td>
-<!--                        <input type="date" id="start-date" name="startDate" th:value="${paging.startDate}">-->
-<!--                        ~-->
-<!--                        <input type="date" id="end-date" name="endDate" th:value="${paging.endDate}">-->
-                        <span class="but-group">
-                    <input type="button" onclick="searchDate('오늘');" class="sub-btn" value="오늘">
-                    <input type="button" onclick="searchDate('1주');" class="sub-btn" value="1주">
-                    <input type="button" onclick="searchDate('15일');" class="sub-btn" value="15일">
-                    <input type="button" onclick="searchDate('1개월');" class="sub-btn" value="1개월">
-                    <input type="button" onclick="searchDate('3개월');" class="sub-btn" value="3개월">
-                    <input type="button" onclick="searchDate('6개월');" class="sub-btn" value="6개월">
-                </span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td colspan="2" class="search-bottom">
-                        <button type="submit" id="searchButton">검색</button>
-                        <button type="button" id="resetButton" >초기화</button>
-
-                    </td>
-                </tr>
-
-            </table>
-        </form>
-    </div>
+                <button type="submit" id="searchButton">검색</button>
+            </li>
+        </ol>
 
     </div>
+
+</div>
 
 <!--    &lt;!&ndash; 페이징 바 &ndash;&gt;-->
 <!--    <div id="paging" align="center" style="margin-top: 20px; ">-->
@@ -131,43 +125,37 @@
 <!--    </div>-->
 
 
-    <script>
-        function searchDate(range) {
-            var today = new Date();
-            var startDate = new Date();
-            var endDate = new Date();
+<script>
+    function searchDate(range) {
+        var today = new Date();
+        var startDate = new Date();
+        var endDate = new Date();
 
-            if (range == '오늘') {
-                startDate = today;
-                endDate = today;
-            } else if (range == '1주') {
-                startDate.setDate(today.getDate() + 6);
-                endDate.setDate(today.getDate() + 6);
-            } else if (range == '15일') {
-                startDate.setDate(today.getDate() + 14);
-                endDate.setDate(today.getDate() + 14);
-            } else if (range === '1개월') {
-                endDate.setMonth(today.getMonth() + 1);
-                endDate.setDate(1); // 다음 달의 첫 번째 날로 설정
-                startDate = new Date(endDate);
-            } else if (range === '3개월') {
-                endDate.setMonth(today.getMonth() + 3);
-                endDate.setDate(1); // 다음 달의 첫 번째 날로 설정
-                startDate = new Date(endDate);
-            } else if (range === '6개월') {
-                endDate.setMonth(today.getMonth() + 6);
-                endDate.setDate(1); // 다음 달의 첫 번째 날로 설정
-                startDate = new Date(endDate);
-            }
-
-            // input 요소에 날짜 설정
-            document.getElementById('start-date').valueAsDate = startDate;
-            document.getElementById('end-date').valueAsDate = endDate;
-
+        if (range === '1분기') {
+            // 1분기는 1월 1일부터 3월 31일까지
+            startDate = new Date(today.getFullYear(), 0, 1); // 1월 1일
+            endDate = new Date(today.getFullYear(), 2, 31); // 3월 31일
+        } else if (range === '2분기') {
+            // 2분기는 4월 1일부터 6월 30일까지
+            startDate = new Date(today.getFullYear(), 3, 1); // 4월 1일
+            endDate = new Date(today.getFullYear(), 5, 30); // 6월 30일
+        } else if (range === '3분기') {
+            // 3분기는 7월 1일부터 9월 30일까지
+            startDate = new Date(today.getFullYear(), 6, 1); // 7월 1일
+            endDate = new Date(today.getFullYear(), 8, 30); // 9월 30일
+        } else if (range === '4분기') {
+            // 4분기는 10월 1일부터 12월 31일까지
+            startDate = new Date(today.getFullYear(), 9, 1); // 10월 1일
+            endDate = new Date(today.getFullYear(), 11, 31); // 12월 31일
         }
+        // input 요소에 날짜 설정
+        document.getElementById('start-date').valueAsDate = startDate;
+        document.getElementById('end-date').valueAsDate = endDate;
+
+    }
 
 
-    </script>
+</script>
 
 
 </div>

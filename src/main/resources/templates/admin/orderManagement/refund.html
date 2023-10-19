@@ -110,7 +110,6 @@
                 <th>총환불액</th>
                 <th>사용한포인트</th>
                 <th>사용한쿠폰</th>
-                <th>환불배송비</th>
                 <th>처리상태</th>
                 <th>환불사유</th>
 
@@ -126,7 +125,6 @@
                 <td th:text="${ search.totalRefundAmount }" th:style="'border: 1px solid #000000FF;'"></td>
                 <td th:text="${ search.order.usePoint}" th:style="'border: 1px solid #000000FF;'"></td>
                 <td th:text="${ search.order.useCoupon}" th:style="'border: 1px solid #000000FF;'"></td>
-                <td th:text="${ search.refundShippingFee }" th:style="'border: 1px solid #000000FF;'"></td>
                 <td th:text="${ search.processStatus }" th:style="'border: 1px solid #000000FF;'"></td>
                 <td th:text="${ search.refundReason }" th:style="'border: 1px solid #000000FF;'"></td>
             </tr>

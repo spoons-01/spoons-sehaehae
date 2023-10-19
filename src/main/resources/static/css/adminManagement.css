@@ -417,3 +417,70 @@ td{
 
 }
 
+#login{
+    cursor: pointer;
+
+}
+
+#login:active{
+    cursor: pointer;
+    position: relative;
+    top:2px;
+}
+
+/*--------------------------정산관리------------------------------*/
+
+.calculateLi{
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 20px 0px 40px 30px;
+    font-size: 24px;
+    margin: 50px 0px 50px 13px;
+}
+
+.calculateDate{
+    border-radius: 5px;
+    padding: 20px 0px 40px 0px;
+    font-size: 24px;
+    margin: 0px 0px 50px 13px;
+}
+
+.calculateDate > #start-date{
+    border: 1px solid rgba(0, 0, 0, 0.68);
+    border-radius: 5px;
+    padding: 0px 5px 0px 5px;
+    height: 40px;
+    font-size: 18px;
+}
+
+.calculateDate > #end-date{
+    border: 1px solid rgba(0, 0, 0, 0.68);
+    border-radius: 5px;
+    padding: 0px 5px 0px 5px;
+    height: 40px;
+    font-size: 18px;
+}
+
+.calculateDate > #search-method{
+    border: 1px solid rgba(0, 0, 0, 0.68);
+    border-radius: 5px;
+    padding: 0px 5px 0px 5px;
+    height: 40px;
+    font-size: 18px;
+}
+
+.calculateDate > .but-group > .sub-btn{
+    border: 1px solid rgba(0, 0, 0, 0.68);
+    border-radius: 5px;
+    padding: 0px 5px 0px 5px;
+    height: 40px;
+    font-size: 18px;
+}
+
+.calculateDate > .search-bottom{
+    border: 1px solid rgba(0, 0, 0, 0.68);
+    border-radius: 5px;
+    padding: 0px 5px 0px 5px;
+    height: 40px;
+    font-size: 18px;
+}
