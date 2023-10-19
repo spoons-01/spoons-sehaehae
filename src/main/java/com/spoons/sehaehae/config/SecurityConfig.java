@@ -52,6 +52,9 @@ public class SecurityConfig {
                 /* 요청에 대한 권한 체크 */
                 .authorizeHttpRequests()
                 .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                .antMatchers("/admember/list", "/chart/list", "/coupon/list").hasRole("ADMIN")
+//                .antMatchers("/board/**", "/thumbnail/**", "/user/member/update", "/user/member/delete").hasRole("MEMBER")
+                /* 관리자만 사용 가능한 권한도 추후 추가 */
                 .antMatchers("/board/**", "/thumbnail/**", "/user/member/update", "/user/member/delete").hasRole("MEMBER")
 
 
