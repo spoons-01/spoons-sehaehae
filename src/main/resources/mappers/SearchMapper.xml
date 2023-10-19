@@ -92,6 +92,7 @@
             JOIN TBL_MEMBER B ON(A.MEMBER_NO = B.MEMBER_NO)
         </if>
         <where>
+
             <if test="cardPayment != null and cardPayment != ''">
                 AND A.PAYMETHOD = #{cardPayment, jdbcType=VARCHAR}
             </if>
@@ -348,10 +349,24 @@
 
     </select>
 
+<!--    <update id="updateOrderStatus">-->
+<!--        UPDATE TBL_ORDER-->
+<!--        SET ORDER_STATUS = #{newStatus}-->
+<!--        ,PROGRESS_DATE = SYSDATE-->
+<!--        WHERE ORDER_CODE IN-->
+<!--        <foreach collection="orderId" item="orderId" open="(" separator="," close=")">-->
+<!--            #{orderId}-->
+<!--        </foreach>-->
+<!--    </update>-->
+
     <update id="updateOrderStatus">
         UPDATE TBL_ORDER
         SET ORDER_STATUS = #{newStatus}
-        ,PROGRESS_DATE = SYSDATE
+        <choose>
+            <when test="newStatus == '구매확정'">
+                , PROGRESS_DATE = SYSDATE
+            </when>
+        </choose>
         WHERE ORDER_CODE IN
         <foreach collection="orderId" item="orderId" open="(" separator="," close=")">
             #{orderId}
