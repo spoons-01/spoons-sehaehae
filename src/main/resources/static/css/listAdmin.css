@@ -1,3 +1,11 @@
+.naaav{
+    padding-top: 30px; display: block;
+    font-size: 1.17em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;"
+}
 table, td, th {
     font-family: 'NanumSquareNeo';
     border : 1px solid #EFEFEF;
@@ -60,7 +68,7 @@ table, td, th {
     font-size: 23px;
     line-height: 30px;
     font-family: 'NanumSquareNeo';
-    padding-top: 100px;
+    padding-top: 50px;
 }
 #table{
     margin-left: 400px;
@@ -72,3 +80,4 @@ table, td, th {
     height: 60px;
 
 }
+

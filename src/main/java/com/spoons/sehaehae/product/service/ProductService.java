@@ -24,8 +24,6 @@ public class ProductService {
     }
     public void registCategory(String categoryName) {
         productMapper.registCategory(categoryName);
-
-
     }
 
     public void registProduct(ProductDTO product) {
@@ -135,6 +133,8 @@ public class ProductService {
     public void updateInfo(Map<String, Object> map) {
         productMapper.updatePoint(map);
         productMapper.updateCoupon(map);
+        productMapper.updatePt(map);
+        productMapper.deleteCartList(map);
     }
 
 
@@ -145,7 +145,6 @@ public class ProductService {
     public String selectMemberLevel(int memberNo) {
 
        MemberLevelDTO level = productMapper.selectMemberLevel(memberNo);
-
        return level.getMembershipCode();
     }
 

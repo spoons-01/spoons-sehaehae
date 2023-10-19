@@ -13,24 +13,24 @@
 <br>
 <div id="productlist">
     <div id="page2">
-    <div id="page1">
-        <ul id="mainCategory">
-            <li>&#60;</li>
-            <li onclick="location.href='/product/list'">ALL</li>
-            <th:block th:each="category : ${categoryList}">
-                <li th:text="${category.name}"
-                    th:onclick="'location.href=\'/product/list?searchCondition=' + @{${category.name}} + '\''"
-                    id="categoryList9"></li>
-            </th:block>
-            <li>&#62;</li>
-        </ul>
-    </div>
-    <div class="search">
-        <form method="get" action="/product/list">
-            <input type="text" name="searchValue" placeholder="상품명 입력">
-            <button type="submit">검색</button>
-        </form>
-    </div>
+        <div id="page1">
+            <ul id="mainCategory">
+                <li>&#60;</li>
+                <li onclick="location.href='/product/list'">ALL</li>
+                <th:block th:each="category : ${categoryList}">
+                    <li th:text="${category.name}"
+                        th:onclick="'location.href=\'/product/list?searchCondition=' + @{${category.name}} + '\''"
+                        id="categoryList9"></li>
+                </th:block>
+                <li>&#62;</li>
+            </ul>
+        </div>
+        <div class="search">
+            <form method="get" action="/product/list">
+                <input type="text" name="searchValue" placeholder="상품명 입력">
+                <button type="submit">검색</button>
+            </form>
+        </div>
     </div>
     <div id="container222">
         <nav id="subp">
@@ -58,6 +58,7 @@
         </div>
     </div>
 </div>
+<div th:replace="user/common/footer.html" style="font-family:'NanumSquareNeo'"></div>
 
 <script>
     const $subbar = document.querySelectorAll(".subproduct");
@@ -79,7 +80,6 @@
             }
         })
     })
-
     const $categoryList = document.querySelector("#mainCategory")
     console.log($categoryList);
 
@@ -87,8 +87,6 @@
         console.log(e.target);
         e.target.classList.add("focus")
     }
-
-
 </script>
 </body>
 </html>

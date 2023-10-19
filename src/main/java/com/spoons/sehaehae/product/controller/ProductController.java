@@ -256,6 +256,8 @@ public class ProductController {
             if (photo1.getSize() > 0) {
                 photo1.transferTo(new File(fileUploadDir + "/" + originalName));
                 order.setImage("/upload/resource/location/" + originalName);
+            }else{
+                order.setImage("null");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -269,6 +271,8 @@ public class ProductController {
         map.put("usecouponCode",order.getUseCoupon());
         map.put("member", member);
         map.put("point", point);
+        map.put("order",order);
+
         productService.updateInfo(map);
 
 
