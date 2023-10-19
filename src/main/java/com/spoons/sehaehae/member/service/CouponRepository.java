@@ -26,7 +26,7 @@ public class CouponRepository {
             memberNo = memberDTO.getMemberNo();
 
             // SQL 쿼리 실행
-            String sql = "SELECT COUNT(*) FROM TBL_CPBOX WHERE MEMBER_NO = ?";
+            String sql = "SELECT COUNT(*) FROM TBL_CPBOX WHERE MEMBER_NO = ? and USE_STATUS = 'N'";
             return jdbcTemplate.queryForObject(sql, new Object[]{memberNo}, Integer.class);
         }
 

@@ -135,10 +135,8 @@ public class ProductController {
         cart.setMember(member.getMemberNo());
         String message = "장바구니에 추가 됐습니다.";
 
+        productService.addCart(cart);
 
-        if(productService.addCart(cart) == false){
-            message = "이미 장바구니에 담긴 상품입니다.";
-        }
 
         return ResponseEntity.ok(message);
     }
