@@ -216,7 +216,7 @@ public class ProductController {
         System.out.println("photo : " + photo1);
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-        int discount = (order.getOrderPrice()) - order.getOrderTotalPrice() + 3000;
+        int discount = (order.getOrderPrice()) - order.getOrderTotalPrice();
         String uuid = UUID.randomUUID().toString().substring(0,4);
         String code = simpleDateFormat.format(date) + uuid;
         List<OrderProductDTO> orderProducts = new ArrayList<>();
