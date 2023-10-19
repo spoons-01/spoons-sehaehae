@@ -47,7 +47,7 @@
                         <select id="search-method" name="searchCondition">
                             <option selected>전체</option>
                             <option value="refundCode" th:selected="${paging.searchCondition eq 'refundCode'}">환불번호</option>
-                            <option value="order" th:selected="${paging.searchCondition eq 'order'}">주문자</option>
+                            <option value="member" th:selected="${paging.searchCondition eq 'member'}">주문자</option>
                             <option value="phone" th:selected="${paging.searchCondition eq 'phone'}">전화번호</option>
                             <option value="processStatus" th:selected="${paging.searchCondition eq 'processStatus'}" >처리상태</option>
                         </select>
@@ -84,9 +84,14 @@
             </table>
         </form>
     </div>
+
+
+
+
     <div class="refudn-button">
-        <button type="button" class="refund-ok refund-subButton" onclick="markAsRefundOk()">환불승인</button>
-        <button type="button" class="refund-no refund-subButton" onclick="markAsCollected()">환불거절</button>
+        <p th:style="'display : inline;'" class="refundTotal" th:inline="text">전체: [[${#lists.size(searchRefundList)}]] 건 조회</p>
+        <button th:style="'margin-left : 1212px;'" type="button" class="refund-ok refund-subButton" onclick="markAsRefundOk()">환불승인</button>
+        <button type="button" class="refund-no refund-subButton" onclick="markAsRefundNo()">환불거절</button>
     </div>
 
     <div align="center">
@@ -98,7 +103,7 @@
                 <th><input id="selectAll" type="checkbox" name="checkStatus" value="checkStatus" onclick='selectAll(this)'></th>
                 <th th:style="'width: 110px;'">환불번호</th>
                 <th>주문번호</th>
-                <th>주문일자</th>
+                <th>환불접수일자</th>
                 <th>주문자</th>
                 <th>전화번호</th>
                 <th>환불완료일자</th>
@@ -112,15 +117,15 @@
             </tr>
             <tr th:each="search : ${ searchRefundList }">
                 <td><input class="checkStatus" type="checkbox" name="checkStatus" value="checkStatus" th:data-order-id="${search.refundCode}"></td>
-                <td th:text="${ search.refundCode }"  th:style="'border: 1px solid #000000FF; color: blue;'"></td>
-                <td th:text="${ search.orderCode }"  th:style="'border: 1px solid #000000FF; color: blue;'"></td>
+                <td th:text="${ search.refundCode }"  th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.order.code }"  th:style="'border: 1px solid #000000FF; color: blue;'" th:onclick="searchDetail([[${search.order.code}]])"></td>
                 <td th:text="${ #dates.format(search.refundReceiptDate, 'yyyy-MM-dd') }" th:style="'border: 1px solid #000000FF;'"></td>
                 <td th:text="${ search.order.member.name}" th:style="'border: 1px solid #000000FF;'"></td>
                 <td th:text="${ search.order.member.phone}" th:style="'border: 1px solid #000000FF;'"></td>
                 <td th:text="${ #dates.format(search.refundCompleteDate, 'yyyy-MM-dd') }" th:style="'border: 1px solid #000000FF;'"></td>
                 <td th:text="${ search.totalRefundAmount }" th:style="'border: 1px solid #000000FF;'"></td>
-                <td th:text="${ search.usedPoint}" th:style="'border: 1px solid #000000FF;'"></td>
-                <td th:text="${ search.usedCupon}" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.order.usePoint}" th:style="'border: 1px solid #000000FF;'"></td>
+                <td th:text="${ search.order.useCoupon}" th:style="'border: 1px solid #000000FF;'"></td>
                 <td th:text="${ search.refundShippingFee }" th:style="'border: 1px solid #000000FF;'"></td>
                 <td th:text="${ search.processStatus }" th:style="'border: 1px solid #000000FF;'"></td>
                 <td th:text="${ search.refundReason }" th:style="'border: 1px solid #000000FF;'"></td>
@@ -193,15 +198,87 @@
 
     </div>
 
-    <div id="refund-modal">
-        <div class="refund-modal-title">
-            <p>주문리스트</p>
+
+    <div id="modalContainer" class="modalOverlay">
+        <div id="modalContent">
+            <p>주문상세페이지</p>
+            <div class="close-area" onclick="closeModal()">X</div>
         </div>
-        <div class="refund-reason">
-            <input type="text" value="서버에서 가져온 내용">
+        <div class="content">
+            <table>
+                <tr>
+                    <td>주문자 정보</td>
+                </tr>
+                <tr>
+                    <th th:style="'background-color : #0909090F;'">주문번호</th>
+                    <th><p name="memberCode" id="memberCode"></th>
+                    <th th:style="'background-color : #0909090F;'">주문일자</th>
+                    <th><p name="orderDate" id="orderDate"></th>
+                </tr>
+                <tr>
+                    <th th:style="'background-color : #0909090F;'">주문자이름</th>
+                    <th><p name="member.name" id="member.name"></th>
+                    <th th:style="'background-color : #0909090F;'">주문자메일</th>
+                    <th><p name="member.memberId" id="member.memberId"></th>
+                </tr>
+                <tr>
+                    <th th:style="'background-color : #0909090F;'">주문자핸드폰</th>
+                    <th><p name="member.phone" id="member.phone"></th>
+                    <th th:style="'background-color : #0909090F;'">기본주소</th>
+                    <th><p name="member.address1" id="member.address1"></th>
+                </tr>
+            </table>
+
         </div>
-        <button type="submit" class="refund-completed">확인</button>
-        <button type="button" class="refund-completed">취소</button>
+
+        <div class="content1">
+            <table>
+                <thead>
+                <tr>
+                    <td colspan='7' th:style="'text-align : left;'">주문 상품 리스트</td>
+                </tr>
+                <tr>
+                    <th th:style="'width : 10px'"></th>
+                    <th th:style="'width: 110px;'">상품이미지</th>
+                    <th>상품명</th>
+                    <th>상품코드</th>
+                    <th>상품금액</th>
+                    <th>개수</th>
+                    <th>피리미엄금액</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tbody id="productDetailTable">
+
+                </tbody>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="content2">
+            <form id="Payment-details" action="orderManagement/detail">
+                <table>
+                    <tr>
+                        <p th:style="'margin: 20px 0px 0px 10px; font-size: 20px;'">결제 상세정보 확인</p>
+                    </tr>
+                    <tr>
+                        <th th:style="'text-align: left;'">총상품금액</th>
+                        <th class="coin"><p name="orderPrice" id="orderPrice"></th>
+                    </tr>
+                    <tr>
+                        <th th:style="'text-align: left;'">할인금액</th>
+                        <th class="coin"><p name="orderDiscount" id="orderDiscount"></th>
+                    </tr>
+                    <tr>
+                        <th th:style="'text-align: left;'">총결제금액</th>
+                        <th class="coin"><p name="orderTotalCount" id="orderTotalPrice"></th>
+                    </tr>
+
+                </table>
+            </form>
+        </div>
     </div>
 
 
@@ -239,6 +316,106 @@
             document.getElementById('end-date').valueAsDate = endDate;
 
         }
+
+        /*-------------------------- 상세 페이지 ------------------------*/
+        function searchDetail(code) {
+            const modalOverlay = document.querySelector('.modalOverlay');
+            modalOverlay.style.display = "flex";
+
+            const clickedOrderCode = code;
+            console.log("Clicked Order Code: " + clickedOrderCode);
+
+
+            $.ajax({
+                url: '/orderManagement/detail', // 서버 API 엔드포인트를 지정
+                method: 'GET',
+                data: { clickedOrderCode },
+                success: function (data) {
+                    // 서버에서 반환한 데이터를 처리
+                    console.log(data);
+
+                    document.getElementById('memberCode').textContent = data.memberCode;
+                    document.getElementById('orderDate').textContent = data.orderDate;
+                    document.getElementById('member.name').textContent = data.member.name;
+                    document.getElementById('member.memberId').textContent = data.member.memberId;
+                    document.getElementById('member.phone').textContent = data.member.phone;
+                    document.getElementById('member.address1').textContent = data.member.address1;
+
+                    // data.orderDate는 ISO 형식(예: "2023-10-16T08:30:00.000Z")의 문자열로 가정합니다.
+                    const orderDate = new Date(data.orderDate);
+
+                    // 날짜를 "년-월-일" 형식으로 포맷합니다.
+                    const formattedDate = orderDate.getFullYear() + '-' + (orderDate.getMonth() + 1).toString().padStart(2, '0') + '-' + orderDate.getDate().toString().padStart(2, '0');
+
+                    // HTML 요소에 날짜를 설정합니다.
+                    document.getElementById('orderDate').textContent = formattedDate;
+                },
+                error: function (error) {
+                    console.error("Error fetching order details: " + error);
+                }
+            });
+
+            $.ajax({
+                url: '/orderManagement/productDetail', // 서버 API 엔드포인트를 지정
+                method: 'GET',
+                data: { clickedOrderCode },
+                success: function (data) {
+                    // 서버에서 반환한 데이터를 처리
+                    console.log(data);
+                    const productDetailTable = $('#productDetailTable');
+                    productDetailTable.find('tr:gt(0)').remove(); // 기존 테이블 내용 제거
+
+                    $.each(data, function (index, product) {
+                        // 각 주문 상품 정보를 테이블에 추가
+                        productDetailTable.append(
+                            `<tr>
+                        <td>${index + 1}</td>
+                        <td><img src="${product.product.photo}" alt="상품 이미지" width="50"></td>
+                        <td>${product.product.name}</td>
+                        <td>${product.product.code}</td>
+                        <td>${product.product.price}</td>
+                        <td>${product.amount}</td>
+                        <td>${product.product.premiumPrice}</td>
+
+
+                    </tr>`
+                        );
+                    });
+
+                },
+                error: function (error) {
+                    console.error("Error fetching order details: " + error);
+                }
+            });
+
+            // jQuery를 사용하여 서버에 데이터 요청
+            $.ajax({
+                url: '/orderManagement/paymentDetail', // 서버 API 엔드포인트를 지정
+                method: 'GET',
+                data: { clickedOrderCode },
+                success: function (data) {
+                    // 서버에서 반환한 데이터를 처리
+                    console.log(data);
+
+                    document.getElementById('orderPrice').textContent = data.orderPrice;
+                    document.getElementById('orderDiscount').textContent = data.orderDiscount;
+                    document.getElementById('orderTotalPrice').textContent = data.orderTotalPrice;
+                },
+                error: function (error) {
+                    console.error("Error fetching order details: " + error);
+                }
+            });
+
+
+        }
+
+        function closeModal() {
+            const modalContainer = document.querySelector('.modalOverlay'); // 수정된 부분
+            if (modalContainer) {
+                modalContainer.style.display = "none";
+            }
+        }
+
 
 
     </script>

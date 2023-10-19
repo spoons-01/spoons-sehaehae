@@ -78,9 +78,9 @@
 
         <table id="replyResult">
             <tr th:each="reply : ${ review.replyList }">
-                <td class="replyRegesitLeft"><img src="/images/one.png"></img></td>
+                <td> <img src="/images/one.png"></img></td>
+                <td class="replyNickname" th:text="${ reply.writer.nickname }"></td>
                 <td th:text="${ reply.body }"></td>
-                <td th:text="${ reply.writer.nickname }"></td>
                 <td th:text="${reply.replyDate}"></td>
                 <td th:if="${ reply.writer.memberNo == #authentication.principal.memberNo }">
                     <button th:onclick="removeReply([[${reply.reviewNo}]])">댓글 삭제</button>
@@ -163,66 +163,50 @@
 
     function makeReplyTable(replyList) {
         const $table = document.querySelector("#replyResult");
+        $table.className='replyTable'
         $table.innerHTML = '';
 
         replyList.forEach(reply => {
             const $tr = document.createElement('tr');
-            const $replyBodyTd = document.createElement('td');
+            $tr.className='replyTr';
             const $nicknameTd = document.createElement('td');
+            $nicknameTd.className='replyNickname';
+            const $replyBodyTd = document.createElement('td');
+            $replyBodyTd.className='replyBody';
             const $createdDateTd = document.createElement('td');
+            $createdDateTd.className='replyDate';
             const $buttonTd = document.createElement('td');
+            $buttonTd.className='replyButton'
 
-            // $replyBodyTd.textContent = reply.body;
-            // $nicknameTd.textContent = reply.writer.nickname;
+            $replyBodyTd.textContent = reply.body;
+            $nicknameTd.textContent = reply.writer.nickname;
 
             // 이미지 요소 생성 및 설정
             const $image = document.createElement('img');
             $image.src = '/images/one.png'; // 이미지의 URL을 설정하세요
             $image.alt = '프로필'; // 이미지의 대체 텍스트를 설정하세요
+            $image.className='replyImage';
 
-            $replyBodyTd.appendChild($image); // 이미지를 replyBodyTd에 추가
-            $replyBodyTd.appendChild(document.createTextNode(reply.body)); // 텍스트 추가
-            $nicknameTd.textContent = reply.writer.nickname;
+            // $nicknameTd.appendChild($image); // 이미지를 닉네임 옆에 추가
+            // $nicknameTd.appendChild(document.createTextNode(reply.writer.nickname)); // 닉네임 추가
+            // $replyBodyTd.textContent = reply.body; // 댓글 내용 추가
 
             // 날짜 형식 변환
             const date = new Date(reply.replyDate);
-            const year = date.getFullYear();
+            const year = date.getFullYear().toString().slice(-2);
             const month = String(date.getMonth() + 1).padStart(2, '0');
             const day = String(date.getDate()).padStart(2, '0');
-            const formattedDate = `${year}-${month}-${day}`;
+            const formattedDate = `${year}/${month}/${day}`;
             $createdDateTd.textContent = formattedDate;
 
             if (`[[${#authentication.principal.memberNo}]]` == reply.writer.memberNo) {
-                $buttonTd.innerHTML = `<button onclick='removeReply(${reply.no})'>댓글 삭제</button>`;
+                $buttonTd.innerHTML = `<button onclick='removeReply(${reply.no})'>삭제</button>`;
             }
 
-            $tr.append($replyBodyTd, $nicknameTd, $createdDateTd, $buttonTd);
+            $tr.append($image, $nicknameTd, $replyBodyTd, $createdDateTd, $buttonTd);
             $table.append($tr);
         });
     }
-    // function makeReplyTable(replyList) {
-    //     const $table = document.querySelector("#replyResult");
-    //     $table.innerHTML = '';
-    //
-    //     replyList.forEach(reply => {
-    //         const $tr = document.createElement('tr');
-    //         const $replyBodyTd = document.createElement('td');
-    //         const $nicknameTd = document.createElement('td');
-    //         const $createdDateTd = document.createElement('td');
-    //         const $buttonTd = document.createElement('td');
-    //
-    //         $replyBodyTd.textContent = reply.body;
-    //         $nicknameTd.textContent = reply.writer.nickname;
-    //         $createdDateTd.textContent = reply.replyDate;
-    //
-    //         if (`[[${#authentication.principal.memberNo}]]` == reply.writer.memberNo) {
-    //             $buttonTd.innerHTML = `<button onclick='removeReply(${reply.no})'>댓글 삭제</button>`;
-    //         }
-    //
-    //         $tr.append($replyBodyTd, $nicknameTd, $createdDateTd, $buttonTd);
-    //         $table.append($tr);
-    //     });
-    // }
 
     /* 댓글 삭제 */
     function removeReply(replyNo) {

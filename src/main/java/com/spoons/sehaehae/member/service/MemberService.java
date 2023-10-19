@@ -3,6 +3,7 @@ package com.spoons.sehaehae.member.service;
 
 import com.spoons.sehaehae.admin.dto.OrderDTO;
 import com.spoons.sehaehae.board.dto.AttachmentDTO;
+import com.spoons.sehaehae.board.dto.ReplyDTO;
 import com.spoons.sehaehae.board.dto.ReviewDTO;
 import com.spoons.sehaehae.common.exception.member.MemberModifyException;
 import com.spoons.sehaehae.common.exception.member.MemberRefundException;
@@ -10,6 +11,7 @@ import com.spoons.sehaehae.common.exception.member.MemberRegistException;
 import com.spoons.sehaehae.member.dao.MemberMapper;
 import com.spoons.sehaehae.member.dto.*;
 import com.spoons.sehaehae.member.util.Naver_Sens_V2;
+import com.spoons.sehaehae.product.dto.PointDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,8 +60,8 @@ public class MemberService {
     }
 
     /* 내 포인트 조회 */
-    public int findMyPoint(int memberNo) {
-        int myPoint = memberMapper.findMyPoint(memberNo);
+    public Integer findMyPoint(int memberNo) {
+        Integer myPoint = memberMapper.findMyPoint(memberNo);
         return myPoint;
     }
 
@@ -69,9 +71,16 @@ public class MemberService {
         return myReviews;
     }
 
+    /* 내 덧글 조회 */
+    public List<ReplyDTO> findMyReply(int memberNo) {
+        List<ReplyDTO> myReplys =  memberMapper.findMyReply(memberNo);
+        return myReplys;
+    }
+
     public MemberDTO findByMemberId(String memberId) {
         return memberMapper.findByMemberId(memberId);
     }
+
 
     public boolean selectMemberById(String memberId) {
 
@@ -86,7 +95,9 @@ public class MemberService {
         int result1 = memberMapper.insertMember(member);
         int result2 = memberMapper.insertMemberRole();
         int result3 = memberMapper.insertMemberLevel();
+
         memberMapper.insertFirstCoupon();                   //첫가입쿠폰 발급
+        memberMapper.insertFirstPoint();
 
         if (!(result1 > 0 && result2 > 0 && result3 > 0)) throw new MemberRegistException("회원 가입에 실패하였습니다.");
 
@@ -105,10 +116,10 @@ public class MemberService {
     // => RUntimeException 되어야됨.
     @Transactional
     public void modifyMember(MemberDTO modifyMember) throws MemberModifyException {
-        //memberMapper.insertThumbnailContent(modifyMember);
         int result = memberMapper.updateMember(modifyMember);
         if(!(result > 0)) {throw new MemberModifyException("회원 정보 수정에 실패하였습니다.");}
     }
+
 
 
 }

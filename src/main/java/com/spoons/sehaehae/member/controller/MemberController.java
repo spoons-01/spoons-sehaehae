@@ -3,6 +3,7 @@ package com.spoons.sehaehae.member.controller;
 import com.spoons.sehaehae.admin.dto.OrderDTO;
 import com.spoons.sehaehae.admin.dto.RefundDTO;
 import com.spoons.sehaehae.board.dto.AttachmentDTO;
+import com.spoons.sehaehae.board.dto.ReplyDTO;
 import com.spoons.sehaehae.board.dto.ReviewPointDTO;
 import com.spoons.sehaehae.board.dto.ReviewDTO;
 import com.spoons.sehaehae.board.service.BoardService;
@@ -13,6 +14,7 @@ import com.spoons.sehaehae.member.dto.*;
 import com.spoons.sehaehae.member.service.AuthenticationService;
 import com.spoons.sehaehae.member.service.CouponRepository;
 import com.spoons.sehaehae.member.service.MemberService;
+import com.spoons.sehaehae.product.dto.PointDTO;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.lang3.StringUtils;
@@ -45,7 +47,7 @@ import java.util.*;
 @RequestMapping("/user")
 public class MemberController {
 
-    @Value("${image.image-dir}") // 코드상의 변경 없이 디렉토리 변경 가능(yml)
+    @Value("${image.image-dir}")
     private String IMAGE_DIR;
     private final MemberService memberService;
     private final AuthenticationService authenticationService;
@@ -70,6 +72,7 @@ public class MemberController {
     public void mainPage() {
     }
 
+    /* 로그인 */
     @GetMapping("member/login")
     public void login() {
     }
@@ -80,6 +83,7 @@ public class MemberController {
         return "redirect:/user/member/login";
     }
 
+    /* 회원가입 */
     @GetMapping("/member/regist")
     public void registPage() {
     }
@@ -112,9 +116,12 @@ public class MemberController {
         String currentUsername = principal.getName();
         MemberDTO memberDTO = memberService.findByMemberId(currentUsername);
         int memberNo = memberDTO.getMemberNo();
-        List<ReviewDTO> myReviews = memberService.findMyReview(memberNo);
-        model.addAttribute("myReviews", myReviews);
 
+        List<ReviewDTO> myReviews = memberService.findMyReview(memberNo);
+        List<ReplyDTO> myReplys = memberService.findMyReply(memberNo);
+
+        model.addAttribute("myReviews", myReviews);
+        model.addAttribute("myReplys", myReplys);
         return "/user/member/mypage";
     }
 
@@ -149,6 +156,7 @@ public class MemberController {
             String orderStatus = order.getOrderStatus();
             orderStatusCounts.put(orderStatus, orderStatusCounts.get(orderStatus) + 1);
         }
+
 
         model.addAttribute("membershipName", membershipName);
         model.addAttribute("couponCount", couponCount);
@@ -191,10 +199,9 @@ public class MemberController {
         return "/user/member/myOrder";
     }
 
-    /* 환불 페이지 */
+    /* 환불 요청 */
     @GetMapping("/member/refund/{orderCode}")
     public String myRefund(@PathVariable String orderCode, Model model) {
-        // 환불 페이지를 보여주는 데 필요한 데이터를 가져오는 로직
         MyRefundDTO refund = memberService.findMyRefund(orderCode);
         model.addAttribute("refund", refund);
         return "/user/member/refund";
@@ -209,11 +216,19 @@ public class MemberController {
         return "redirect:/user/member/mysehae";
     }
 
-
-    /* 마이페이지-설정 이동 */
     @GetMapping("/member/update")
-    public void update() {
+    public void update( @AuthenticationPrincipal MemberDTO loginMember) {
+        if( StringUtils.isBlank(loginMember.getProfilePhoto()) ) {
+            loginMember.setProfilePhoto("/images/smile.png");
+        }
     }
+
+//    @GetMapping("/member/update")
+//    public String update(@AuthenticationPrincipal MemberDTO loginMember, Model model) {
+//        String profilePhoto = loginMember.getProfilePhoto();
+//        model.addAttribute("profilePhoto", profilePhoto);
+//        return "/user/member/update";
+//    }
 
     /* 마이페이지-설정 수정(회원정보 수정) */
     @PostMapping("/member/update")
@@ -225,32 +240,27 @@ public class MemberController {
         log.info("modifyMember request Member : {}", modifyMember);
         log.info("modifyMember attachImage request : {}", attachImage);
 
-        String fileUploadDir = IMAGE_DIR + "original";
+        String fileUploadDir = IMAGE_DIR + "/original";
 
         File dir = new File(fileUploadDir);
 
-        /* 디렉토리가 없을 경우 생성한다. */
         if (!dir.exists()) {
             dir.mkdirs();
         }
 
-        // 여러 개의 파일을 받을 게 아니라서, DTO와 리스트는 필요 없다.
-        //List<ProfileAttachmentDTO> profileAttachmentList = new ArrayList<>();
-
         try {
             if (attachImage.getSize() > 0) {
-                /* 첨부파일이 실제로 존재하는 경우에만 로직 수행 */
 
                 String originalFileName = attachImage.getOriginalFilename();
                 log.info("originalFileName : {}", originalFileName);
 
-                String ext = originalFileName.substring(originalFileName.lastIndexOf(".")); // 원본 이름에서 확장자 추출
-                String savedFileName = UUID.randomUUID() + ext; // 중복을 방지하기 위해 랜덤한 아이디 생성 후 확장자 삽입 후 새로운 이름에 할당
+                String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
+                String savedFileName = UUID.randomUUID() + ext;
                 log.info("savedFileName : {}", savedFileName);
 
                 /* 서버의 설정 디렉토리에 파일 저장하기 */
-                attachImage.transferTo(new File(fileUploadDir + "/" + savedFileName));
-                modifyMember.setProfilePhoto("/upload/original/" + savedFileName);
+                attachImage.transferTo(new File(IMAGE_DIR + File.separator + savedFileName));
+                modifyMember.setProfilePhoto("/upload/" + savedFileName);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -258,8 +268,6 @@ public class MemberController {
 
         memberService.modifyMember(modifyMember);
 
-        /* 로그인 시 저장 된 Authentication 객체를 변경 된 정보로 교체한다.
-         * 수정 된 정보로 로그인 한 것과 동일한 효과를 얻을 수 있다. */
         SecurityContextHolder.getContext().
                 setAuthentication(createNewAuthentication(loginMember.getMemberId()));
 
@@ -269,8 +277,7 @@ public class MemberController {
     }
 
 
-    /* 이메일 인증 로직 */
-
+    /* 이메일 인증 */
     protected Authentication createNewAuthentication(String memberId) {
 
         UserDetails newPrincipal = authenticationService.loadUserByUsername(memberId);
@@ -294,7 +301,6 @@ public class MemberController {
     @ResponseBody
     public EmailAuthDTO regEmailAuth(HttpSession session, @RequestBody EmailAuthDTO emailAuthDTO) throws MessagingException {
         log.info("emailDTO : {}", emailAuthDTO);
-
         log.info("인증 이메일 : {}", emailAuthDTO.getEmail());
         log.info("인증 세션 : {}", emailAuthDTO.getEmailAuthKey());
         log.info("인증 번호 : {}", emailAuthDTO.getEmailAuthVal());

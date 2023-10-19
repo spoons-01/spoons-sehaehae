@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/productDetail.css" rel="stylesheet" type="text/css">
+    <link href="https://webfontworld.github.io/NanumSquareNeo/NanumSquareNeo.css" rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
-<div th:replace="user/common/header.html"></div>
+<div th:replace="user/common/header2.html"></div>
 <div class="page">
 
     <div class="container">
@@ -96,9 +97,14 @@
             }
             const product = '[[${product.code}]]'
             fetch("/product/addCart?product.code="+product+"&amount="+$inputNumber.value+"&useEco="+useEco+"&usePremium="+usePremium)
-                .then(res=>res.text())
+                .then(res=>{
+                    if(!res.ok){
+                        throw new Error('1');
+                    }
+                    return res.text();
+                })
                 .then(res=>alert(res))
-                .catch(error=>alert(error))
+                .catch(error=>alert("이미 장바구니에 담겨있는 상품입니다."))
         }
 </script>
 </body>

@@ -17,7 +17,7 @@
                 <nav>
                     <ul class="main-nav">
                         <li><a id="login" href="/user/member/login">로그인</a></li>
-                        <li><a href="3_service.html">
+                        <li><a href="/product/list">
                             <li>서비스</li>
                         </a></li>
                         <li><a href="/user/board/userReview">
@@ -40,11 +40,15 @@
             <div class="nav-all">
                 <nav>
                     <ul class="main-nav">
-                        <li><a id="admin" href="/admember/list">관리자</a></li>
+                        <th:block sec:authorize="${#authentication != null and #authentication.principal.memberRoleList != null}">
+                            <th:block th:each="role : ${#authentication.principal.memberRoleList}">
+                                <li><a id="admin" th:if="${role.authorityCode == 1}" href="/admember/list">관리자</a></li>
+                            </th:block>
+                        </th:block>
                         <li><a id="logout" href="/user/member/logout">
                             <li>로그아웃</li>
                         </a></li>
-                        <li><a href="3_service.html">
+                        <li><a href="/product/list">
                             <li>서비스</li>
                         </a></li>
                         <li><a href="/user/board/userReview">

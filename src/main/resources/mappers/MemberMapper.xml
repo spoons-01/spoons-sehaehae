@@ -188,6 +188,13 @@
         <association property="myOrders" resultMap="myOrderResultMap"/>
     </resultMap>
 
+    <resultMap id="myRePlyResultMap" type="com.spoons.sehaehae.board.dto.ReplyDTO">
+       <id property="no" column="REPLY_NO"></id>
+       <result property="body" column="REPLY_BODY"></result>
+       <result property="memberNo" column="MEMBER_NO"></result>
+        <result property="status" column="REPLY_STATUS"></result>
+    </resultMap>
+
     <!--첨부파일 / 첨부 안할거면 빼기 -->
     <resultMap id="attachmentResultMap" type="com.spoons.sehaehae.board.dto.AttachmentDTO">
         <id property="no" column="ATTACHED_FILE_NO"/>
@@ -280,13 +287,13 @@
           AND A.ID = #{ memberId }
     </select>
 
+
     <select id="selectMemberById" resultType="String">
         SELECT ID
         FROM TBL_MEMBER
         WHERE MEMBER_STATUS = 'Y'
           AND ID = #{ memberId }
     </select>
-
 
 
     <insert id="insertMember">
@@ -339,6 +346,8 @@
         VALUES ( SEQ_MEMBER_NO.CURRVAL
                , 1)
     </insert>
+
+
     <insert id="insertThumbnailContent"></insert>
 
     <select id="selectEncryptedPwd" resultType="string">
@@ -369,7 +378,7 @@
           AND A.MEMBER_NO = #{ memberNo }
     </select>
 
-    <select id="findMyPoint" resultType="int">
+    <select id="findMyPoint" resultType="java.lang.Integer">
         SELECT SUM(POINT) AS TOTAL_POINT
         FROM TBL_MEMBER A
                  LEFT JOIN TBL_PT B ON A.MEMBER_NO = B.MEMBER_NO
@@ -384,9 +393,15 @@
           AND MEMBER_NO = #{memberNo}
     </select>
 
+    <select id="findMyReply" resultMap="myRePlyResultMap">
+        SELECT REPLY_BODY
+        FROM TBL_REPLY
+        WHERE 1=1
+        AND MEMBER_NO = #{memberNo}
+        AND REPLY_STATUS = 'Y'
+    </select>
 
-    <!-- 동한님 -->
-    <select id="selectMember">
+    <select id="selectMember" resultMap="memberResultMap">
         SELECT MEMBER_NO
              , ID
              , NICKNAME
@@ -416,6 +431,11 @@
           AND MEMBER_NO = #{ memberNo }
     </update>
 
+
+
+    <!-- 동한님 -->
+
+
    <select id="selectMemberList" resultMap="memberResultMap">
         select
             A.*
@@ -437,6 +457,22 @@
          SEQ_MEMBER_NO.CURRVAL,
          'Y'
         )
+    </insert>
+
+    <insert id="insertFirstPoint">
+        INSERT INTO TBL_PT
+        (
+         PT_CODE,
+         MEMBER_NO,
+         POINT
+         )
+        VALUES
+        (
+         SEQ_PT_CODE.NEXTVAL,
+         SEQ_MEMBER_NO.CURRVAL,
+         0
+        )
+
     </insert>
 
     <update id="adUpdateMember">
@@ -498,6 +534,7 @@
         FROM TBL_MEMBER
         where TRUNC((sysdate - BIRTHDAY) / 365, -1) <![CDATA[>=]]> 50
     </select>
+
 
 
 </mapper>

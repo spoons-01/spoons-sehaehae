@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -23,6 +24,10 @@ public class SecurityConfig {
         return new DefaultHttpFirewall();
     }
 
+    @Bean
+    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+        return new GrantedAuthorityDefaults("");
+    }
 
     private final AuthenticationService authenticationService;
     private final DomainFailureHandler domainFailureHandler;
@@ -47,8 +52,10 @@ public class SecurityConfig {
                 /* 요청에 대한 권한 체크 */
                 .authorizeHttpRequests()
                 .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
-//                .antMatchers("/board/**", "/thumbnail/**", "/user/member/update", "/user/member/delete").hasRole("MEMBER")
-                /* 관리자만 사용 가능한 권한도 추후 추가 */
+                .antMatchers("/board/**", "/thumbnail/**", "/user/member/update", "/user/member/delete").hasRole("MEMBER")
+
+
+//                .antMatchers("/orderManagement/list").hasRole("ADMIN")
 
                 /* 위에 서술 된 패턴 외의 요청은 인증 되지 않은 사용자도 요청 허가 */
                 .anyRequest().permitAll()
@@ -69,10 +76,10 @@ public class SecurityConfig {
                 .invalidateHttpSession(true)
                 .logoutSuccessUrl("/")
                 .and()
-//                /* 인증이 필요하면 로그인 페이지로 이동하므로 인가 처리만 설정  */
-//                .exceptionHandling()
-//                .accessDeniedPage("/error/denied")
-//                .and()
+                /* 인증이 필요하면 로그인 페이지로 이동하므로 인가 처리만 설정  */
+                .exceptionHandling()
+                .accessDeniedPage("/error/denied")
+                .and()
                 .build();
     }
 

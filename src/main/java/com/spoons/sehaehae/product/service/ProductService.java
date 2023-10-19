@@ -93,10 +93,6 @@ public class ProductService {
         productMapper.deleteProduct(productMap);
     }
 
-    public List<ProductDTO> selectAllproductAdmin() {
-        return productMapper.selectAllproductAdmin();
-    }
-
     public List<CpBoxDTO> selectCoupon(int memberId) {
 
        return productMapper.selectCoupon(memberId);
@@ -151,5 +147,9 @@ public class ProductService {
        MemberLevelDTO level = productMapper.selectMemberLevel(memberNo);
 
        return level.getMembershipCode();
+    }
+
+    public void deleteCategory(List<Integer> codeList) {
+        productMapper.deleteCategory(codeList);
     }
 }

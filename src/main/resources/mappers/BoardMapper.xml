@@ -285,8 +285,7 @@
         , #{ body }
         , SYSDATE
         , 0
-        , 23
-        <!--        , #{ writer.memberNo }-->
+        , #{ writer.memberNo }
         , 'Y'
         )
     </insert>
@@ -423,7 +422,7 @@
         (
         SEQ_QNA_NO.NEXTVAL
         , #{ categoryNo }
-        , 23
+        , #{ writer.memberNo }
         , #{ title }
         , #{ body }
         , SYSDATE

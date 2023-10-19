@@ -22,6 +22,7 @@
         <result property="collectionDate" column="COLLECTION_DATE"/>
         <result property="deliveryDate" column="DELIVERY_DATE"/>
         <result property="progressDate" column="PROGRESS_DATE"/>
+        <result property="payMethod" column="PAYMETHOD"/>
 
         <association property="member" resultMap="MemberResultMap"/>
 
@@ -69,7 +70,6 @@
 
     <resultMap id="RefundResultMap" type="com.spoons.sehaehae.admin.dto.RefundDTO">
         <id property="refundCode" column="REFUND_CODE"/>
-        <result property="orderCode" column="ORDER_CODE"/>
         <result property="refundReceiptDate" column="REFUND_RECEIPT_DATE"/>
         <result property="refundCompleteDate" column="REFUND_COMPLETE_DATE"/>
         <result property="processStatus" column="PROCESS_STATUS"/>
@@ -88,16 +88,27 @@
         SELECT
         COUNT(*)
         FROM TBL_ORDER A
-        <if test="searchCondition == 'member'">
+        <if test="searchCondition == 'member' or searchCondition == 'phone'">
             JOIN TBL_MEMBER B ON(A.MEMBER_NO = B.MEMBER_NO)
         </if>
         <where>
+            <if test="cardPayment != null and cardPayment != ''">
+                AND A.PAYMETHOD = #{cardPayment, jdbcType=VARCHAR}
+            </if>
+            <if test="kakaoPayment != null and kakaoPayment != ''">
+                AND A.PAYMETHOD = #{kakaoPayment, jdbcType=VARCHAR}
+            </if>
+
             <if test="searchCondition == 'code'">
                 AND A.ORDER_CODE = #{searchValue}
             </if>
 
             <if test="searchCondition == 'member'">
-                AND (B.NAME = #{searchValue} OR B.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+                AND B.NAME = #{searchValue}
+            </if>
+
+            <if test="searchCondition == 'phone'">
+                AND B.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'
             </if>
 
             <if test="searchCondition == 'orderStatus'">
@@ -127,7 +138,7 @@
         SELECT
         COUNT(*)
         FROM TBL_REFUND A
-        <if test="searchCondition == 'order'">
+        <if test="searchCondition == 'member' or searchCondition == 'phone'">
             JOIN TBL_ORDER B ON(A.ORDER_CODE = B.ORDER_CODE)
             JOIN TBL_MEMBER C ON(B.MEMBER_NO = C.MEMBER_NO)
         </if>
@@ -140,26 +151,27 @@
                 AND A.PROCESS_STATUS = #{searchValue}
             </if>
 
-            <if test="searchCondition == 'order'">
-                AND (C.NAME = #{searchValue} OR C.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+            <if test="searchCondition == 'member'">
+                AND D.NAME = #{searchValue}
             </if>
 
-            <!--            <if test="searchCondition == 'orderStatus'">-->
-            <!--                AND A.ORDER_STATUS LIKE '%' || #{searchValue} || '%'-->
-            <!--            </if>-->
+            <if test="searchCondition == 'phone'">
+                AND D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'
+            </if>
 
-            <!--            <if test="startDate != '' and endDate == ''">-->
-            <!--                AND B.PROGRESS_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')-->
-            <!--            </if>-->
 
-            <!--            <if test="startDate == '' and endDate != ''">-->
-            <!--                AND <![CDATA[B.PROGRESS_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>-->
-            <!--            </if>-->
+                        <if test="startDate != '' and endDate == ''">
+                            AND A.REFUND_RECEIPT_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                        </if>
 
-            <!--            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >-->
-            <!--                AND A.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')-->
-            <!--                AND <![CDATA[B.PROGRESS_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>-->
-            <!--            </if>-->
+                        <if test="startDate == '' and endDate != ''">
+                            AND <![CDATA[A.REFUND_RECEIPT_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
+                        </if>
+
+                        <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                            AND A.REFUND_RECEIPT_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                            AND <![CDATA[A.REFUND_RECEIPT_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
+                        </if>
 
 
 
@@ -204,7 +216,7 @@
         , C.INPUT_ZIP_CODE
         , C.ORDER_STATUS
         FROM TBL_ORDER C
-        <if test="searchCondition == 'member'">
+        <if test="searchCondition == 'member' or searchCondition == 'phone'">
             JOIN TBL_MEMBER D ON(C.MEMBER_NO = D.MEMBER_NO)
         </if>
         <where>
@@ -213,7 +225,11 @@
             </if>
 
             <if test="searchCondition == 'member'">
-                AND (D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+                AND D.NAME = #{searchValue}
+            </if>
+
+            <if test="searchCondition == 'phone'">
+                AND D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'
             </if>
 
             <if test="searchCondition == 'orderStatus'">
@@ -259,6 +275,7 @@
         , D.NAME
         , D.PHONE_NUMBER
         , A.INPUT_ZIP_CODE
+        , A.PAYMETHOD
         , A.ORDER_STATUS
         FROM (SELECT
         ROWNUM RNUM
@@ -267,6 +284,7 @@
         , B.ORDER_TOTAL_PRICE
         , B.MEMBER_NO
         , B.INPUT_ZIP_CODE
+        , B.PAYMETHOD
         , B.ORDER_STATUS
         FROM ( SELECT
         C.ORDER_CODE
@@ -274,18 +292,30 @@
         , C.ORDER_TOTAL_PRICE
         , C.MEMBER_NO
         , C.INPUT_ZIP_CODE
+        , C.PAYMETHOD
         , C.ORDER_STATUS
         FROM TBL_ORDER C
-        <if test="searchCondition == 'member'">
+        <if test="searchCondition == 'member' or searchCondition == 'phone'">
             JOIN TBL_MEMBER D ON(C.MEMBER_NO = D.MEMBER_NO)
         </if>
         <where>
+            <if test="cardPayment != null and cardPayment != ''">
+                AND C.PAYMETHOD = #{cardPayment, jdbcType=VARCHAR}
+            </if>
+            <if test="kakaoPayment != null and kakaoPayment != ''">
+                AND C.PAYMETHOD = #{kakaoPayment, jdbcType=VARCHAR}
+            </if>
+
             <if test="searchCondition == 'code'">
                 AND C.ORDER_CODE = #{searchValue}
             </if>
 
             <if test="searchCondition == 'member'">
-                AND (D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+                AND D.NAME = #{searchValue}
+            </if>
+
+            <if test="searchCondition == 'phone'">
+                AND D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'
             </if>
 
             <if test="searchCondition == 'orderStatus'">
@@ -328,6 +358,19 @@
         </foreach>
     </update>
 
+    <update id="updateRefundStatus">
+        UPDATE TBL_REFUND
+        SET PROCESS_STATUS = #{newStatus}
+        ,REFUND_COMPLETE_DATE = SYSDATE
+        WHERE REFUND_CODE IN
+        <foreach collection="orderId" item="orderId" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </update>
+
+
+
+
     <select id="selectSearchCollectionList" resultMap="OrderResultMap">
         SELECT
         A.ORDER_CODE
@@ -337,6 +380,7 @@
         , D.NAME
         , D.PHONE_NUMBER
         , A.INPUT_ZIP_CODE
+        , A.PAYMETHOD
         , A.ORDER_STATUS
         FROM (SELECT
         ROWNUM RNUM
@@ -345,6 +389,7 @@
         , B.ORDER_TOTAL_PRICE
         , B.MEMBER_NO
         , B.INPUT_ZIP_CODE
+        , B.PAYMETHOD
         , B.ORDER_STATUS
         FROM ( SELECT
         C.ORDER_CODE
@@ -352,18 +397,29 @@
         , C.ORDER_TOTAL_PRICE
         , C.MEMBER_NO
         , C.INPUT_ZIP_CODE
+        , C.PAYMETHOD
         , C.ORDER_STATUS
         FROM TBL_ORDER C
-        <if test="searchCondition == 'member'">
+        <if test="searchCondition == 'member' or searchCondition == 'phone'">
             JOIN TBL_MEMBER D ON(C.MEMBER_NO = D.MEMBER_NO)
         </if>
         <where>
+            <if test="cardPayment != null and cardPayment != ''">
+                AND C.PAYMETHOD = #{cardPayment, jdbcType=VARCHAR}
+            </if>
+            <if test="kakaoPayment != null and kakaoPayment != ''">
+                AND C.PAYMETHOD = #{kakaoPayment, jdbcType=VARCHAR}
+            </if>
             <if test="searchCondition == 'code'">
                 AND C.ORDER_CODE = #{searchValue}
             </if>
 
             <if test="searchCondition == 'member'">
-                AND (D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+                AND D.NAME = #{searchValue}
+            </if>
+
+            <if test="searchCondition == 'phone'">
+                AND D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'
             </if>
 
             <if test="searchCondition == 'orderStatus'">
@@ -405,6 +461,7 @@
         , D.NAME
         , D.PHONE_NUMBER
         , A.INPUT_ZIP_CODE
+        , A.PAYMETHOD
         , A.ORDER_STATUS
         FROM (SELECT
         ROWNUM RNUM
@@ -413,6 +470,7 @@
         , B.ORDER_TOTAL_PRICE
         , B.MEMBER_NO
         , B.INPUT_ZIP_CODE
+        , B.PAYMETHOD
         , B.ORDER_STATUS
         FROM ( SELECT
         C.ORDER_CODE
@@ -420,18 +478,29 @@
         , C.ORDER_TOTAL_PRICE
         , C.MEMBER_NO
         , C.INPUT_ZIP_CODE
+        , C.PAYMETHOD
         , C.ORDER_STATUS
         FROM TBL_ORDER C
-        <if test="searchCondition == 'member'">
+        <if test="searchCondition == 'member' or searchCondition == 'phone'">
             JOIN TBL_MEMBER D ON(C.MEMBER_NO = D.MEMBER_NO)
         </if>
         <where>
+            <if test="cardPayment != null and cardPayment != ''">
+                AND C.PAYMETHOD = #{cardPayment, jdbcType=VARCHAR}
+            </if>
+            <if test="kakaoPayment != null and kakaoPayment != ''">
+                AND C.PAYMETHOD = #{kakaoPayment, jdbcType=VARCHAR}
+            </if>
             <if test="searchCondition == 'code'">
                 AND C.ORDER_CODE = #{searchValue}
             </if>
 
             <if test="searchCondition == 'member'">
-                AND (D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+                AND D.NAME = #{searchValue}
+            </if>
+
+            <if test="searchCondition == 'phone'">
+                AND D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'
             </if>
 
             <if test="searchCondition == 'orderStatus'">
@@ -474,6 +543,7 @@
         , D.NAME
         , D.PHONE_NUMBER
         , A.INPUT_ZIP_CODE
+        , A.PAYMETHOD
         , A.ORDER_STATUS
         FROM (SELECT
         ROWNUM RNUM
@@ -482,6 +552,7 @@
         , B.ORDER_TOTAL_PRICE
         , B.MEMBER_NO
         , B.INPUT_ZIP_CODE
+        , B.PAYMETHOD
         , B.ORDER_STATUS
         FROM ( SELECT
         C.ORDER_CODE
@@ -489,18 +560,29 @@
         , C.ORDER_TOTAL_PRICE
         , C.MEMBER_NO
         , C.INPUT_ZIP_CODE
+        , C.PAYMETHOD
         , C.ORDER_STATUS
         FROM TBL_ORDER C
-        <if test="searchCondition == 'member'">
+        <if test="searchCondition == 'member' or searchCondition == 'phone'">
             JOIN TBL_MEMBER D ON(C.MEMBER_NO = D.MEMBER_NO)
         </if>
         <where>
+            <if test="cardPayment != null and cardPayment != ''">
+                AND C.PAYMETHOD = #{cardPayment, jdbcType=VARCHAR}
+            </if>
+            <if test="kakaoPayment != null and kakaoPayment != ''">
+                AND C.PAYMETHOD = #{kakaoPayment, jdbcType=VARCHAR}
+            </if>
             <if test="searchCondition == 'code'">
                 AND C.ORDER_CODE = #{searchValue}
             </if>
 
             <if test="searchCondition == 'member'">
-                AND (D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+                AND D.NAME = #{searchValue}
+            </if>
+
+            <if test="searchCondition == 'phone'">
+                AND D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'
             </if>
 
             <if test="searchCondition == 'orderStatus'">
@@ -542,6 +624,7 @@
         , D.NAME
         , D.PHONE_NUMBER
         , A.INPUT_ZIP_CODE
+        , A.PAYMETHOD
         , A.ORDER_STATUS
         FROM (SELECT
         ROWNUM RNUM
@@ -550,6 +633,7 @@
         , B.ORDER_TOTAL_PRICE
         , B.MEMBER_NO
         , B.INPUT_ZIP_CODE
+        , B.PAYMETHOD
         , B.ORDER_STATUS
         FROM ( SELECT
         C.ORDER_CODE
@@ -557,18 +641,29 @@
         , C.ORDER_TOTAL_PRICE
         , C.MEMBER_NO
         , C.INPUT_ZIP_CODE
+        , C.PAYMETHOD
         , C.ORDER_STATUS
         FROM TBL_ORDER C
-        <if test="searchCondition == 'member'">
+        <if test="searchCondition == 'member' or searchCondition == 'phone'">
             JOIN TBL_MEMBER D ON(C.MEMBER_NO = D.MEMBER_NO)
         </if>
         <where>
+            <if test="cardPayment != null and cardPayment != ''">
+                AND C.PAYMETHOD = #{cardPayment, jdbcType=VARCHAR}
+            </if>
+            <if test="kakaoPayment != null and kakaoPayment != ''">
+                AND C.PAYMETHOD = #{kakaoPayment, jdbcType=VARCHAR}
+            </if>
             <if test="searchCondition == 'code'">
                 AND C.ORDER_CODE = #{searchValue}
             </if>
 
             <if test="searchCondition == 'member'">
-                AND (D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+                AND D.NAME = #{searchValue}
+            </if>
+
+            <if test="searchCondition == 'phone'">
+                AND D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'
             </if>
 
             <if test="searchCondition == 'orderStatus'">
@@ -612,6 +707,7 @@
         , D.NAME
         , D.PHONE_NUMBER
         , A.INPUT_ZIP_CODE
+        , A.PAYMETHOD
         , A.ORDER_STATUS
         FROM (SELECT
         ROWNUM RNUM
@@ -620,6 +716,7 @@
         , B.ORDER_TOTAL_PRICE
         , B.MEMBER_NO
         , B.INPUT_ZIP_CODE
+        , B.PAYMETHOD
         , B.ORDER_STATUS
         FROM ( SELECT
         C.ORDER_CODE
@@ -627,18 +724,29 @@
         , C.ORDER_TOTAL_PRICE
         , C.MEMBER_NO
         , C.INPUT_ZIP_CODE
+        , C.PAYMETHOD
         , C.ORDER_STATUS
         FROM TBL_ORDER C
-        <if test="searchCondition == 'member'">
+        <if test="searchCondition == 'member' or searchCondition == 'phone'">
             JOIN TBL_MEMBER D ON(C.MEMBER_NO = D.MEMBER_NO)
         </if>
         <where>
+            <if test="cardPayment != null and cardPayment != ''">
+                AND C.PAYMETHOD = #{cardPayment, jdbcType=VARCHAR}
+            </if>
+            <if test="kakaoPayment != null and kakaoPayment != ''">
+                AND C.PAYMETHOD = #{kakaoPayment, jdbcType=VARCHAR}
+            </if>
             <if test="searchCondition == 'code'">
                 AND C.ORDER_CODE = #{searchValue}
             </if>
 
             <if test="searchCondition == 'member'">
-                AND (D.NAME = #{searchValue} OR D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+                AND D.NAME = #{searchValue}
+            </if>
+
+            <if test="searchCondition == 'phone'">
+                AND D.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'
             </if>
 
             <if test="searchCondition == 'orderStatus'">
@@ -684,8 +792,6 @@
             WHERE A.ORDER_CODE = ${clickedOrderCode}
         </select>
 
-
-
         <select id="getOrderProductDetailList" resultMap="orderProductResultMap">
             SELECT
             A.PRODUCT_PHOTO
@@ -711,7 +817,7 @@
 
     <select id="selectSearchRefundList" resultMap="RefundResultMap">
         SELECT
-        A.REFUND_CODE
+          A.REFUND_CODE
         , A.ORDER_CODE
         , A.REFUND_RECEIPT_DATE
         , A.REFUND_COMPLETE_DATE
@@ -743,7 +849,7 @@
         , C.REFUND_SHIPPING_FEE
         , C.REFUND_REASON
         FROM TBL_REFUND C
-        <if test="searchCondition == 'order'">
+        <if test="searchCondition == 'member' or searchCondition == 'phone'">
             JOIN TBL_ORDER D ON(C.ORDER_CODE = D.ORDER_CODE)
             JOIN TBL_MEMBER E ON(D.MEMBER_NO = E.MEMBER_NO)
         </if>
@@ -756,8 +862,25 @@
                 AND C.PROCESS_STATUS = #{searchValue}
             </if>
 
-            <if test="searchCondition == 'order'">
-                AND (E.NAME = #{searchValue} OR E.PHONE_NUMBER LIKE '%' || #{searchValue} || '%')
+            <if test="searchCondition == 'member'">
+            AND E.NAME = #{searchValue}
+           </if>
+
+            <if test="searchCondition == 'phone'">
+                AND E.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'
+            </if>
+
+            <if test="startDate != '' and endDate == ''">
+                AND C.REFUND_RECEIPT_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+            </if>
+
+            <if test="startDate == '' and endDate != ''">
+                AND <![CDATA[C.REFUND_RECEIPT_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
+            </if>
+
+            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                AND C.REFUND_RECEIPT_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[C.REFUND_RECEIPT_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
             </if>
         </where>
         ORDER BY C.REFUND_CODE DESC
