@@ -45,8 +45,7 @@ public class ProductService {
 
     public Boolean addCart(CartDTO cart) {
 
-        if(productMapper.checkProduct()){
-
+        if(productMapper.checkProduct(cart)){
             return false;
         }
 

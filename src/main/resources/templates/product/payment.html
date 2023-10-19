@@ -91,18 +91,14 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>배송비</td>
-                            <td>3,000원</td>
-                        </tr>
-                        <tr>
                             <td>사용 포인트</td>
                             <td><input id="point" type="number" placeholder="사용금액 입력" name="usePoint" value="0"></td>
                             <td th:text="${point.point}+'원 보유'" class="ea"></td>
                         </tr>
                         <tr>
                             <td>총 결제금액</td>
-                            <td id="finalPrice" th:text="${#numbers.formatInteger(totalPrice+3000,3,'COMMA')}+'원'"></td>
-                            <input type="number" name="orderTotalPrice" id="finalPrice2" th:value="${totalPrice+3000}"
+                            <td id="finalPrice" th:text="${#numbers.formatInteger(totalPrice,3,'COMMA')}+'원'"></td>
+                            <input type="number" name="orderTotalPrice" id="finalPrice2" th:value="${totalPrice}"
                                    style="display: none">
                         </tr>
                     </table>
@@ -223,7 +219,11 @@
         console.log($rate)
         fetch("/product/finalPrice?point=" + $point.value + "&totalPrice=" + ttotalPrice + "&rate=" + $rate)
             .then(res => res.text())
-            .then(r => $finalPrice2.value = Number(r) + 3000)
+            .then(r => $finalPrice2.value = Number(r)
+
+
+
+            )
             .then(re => $finalPrice.textContent = (Number(re)).toLocaleString('ko-KR') + "원")
             .catch(error => console.log(error));
         console.log($finalPrice.textContent);
@@ -304,7 +304,7 @@
             console.log($usecoupon);
             fetch("/product/finalPrice?point=" + $point.value + "&totalPrice=" + ttotalPrice + "&rate=" + $rate)
                 .then(res => res.text())
-                .then(r => $finalPrice2.value = Number(r) + 3000)
+                .then(r => $finalPrice2.value = Number(r))
                 .then(re => $finalPrice.textContent = re.toLocaleString('ko-KR') + "원")
                 .catch(error => console.log(error));
         })

@@ -74,5 +74,5 @@ public interface ProductMapper {
 
     void deleteCartList(Map<String, Object> map);
 
-    boolean checkProduct();
+    boolean checkProduct(CartDTO cart);
 }

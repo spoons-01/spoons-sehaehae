@@ -84,13 +84,10 @@
 
 
     <div class="total">
-        <span>총 결제금액</span>
-        <span id="final1" th:text="${#numbers.formatInteger(totalPrice,3,'COMMA')+'원'}"></span>
-        <span>+</span>
-        <span>배송비 3,000원</span>
-        <span>=</span>
-        <span id="final2" th:text="|${#numbers.formatInteger(totalPrice+3000,3,'COMMA')}원|"></span>
-        <input type="hidden" id="final3" th:value="${totalPrice}+3000">
+        <span style="display: inline-block; margin-left: 250px;">총 결제금액</span>
+        <span id="final1" th:text="${#numbers.formatInteger(totalPrice,3,'COMMA')+'원'}" style="text-align: center;width: 300px;"></span>
+        <span id="final2" th:text="|${#numbers.formatInteger(totalPrice,3,'COMMA')}원|" style="display: none"></span>
+        <input type="hidden" id="final3" th:value="${totalPrice}">
         <button class="order">주문/결제</button>
     </div>
 </div>
@@ -116,10 +113,10 @@
                 tp[index].value = this.value * Number($price2[index].textContent);
             } else if (eco[index].value === 'Y' && premium[index].value === 'Y') {
                 $price[index].textContent = this.value * Number($price2[index].textContent) + 3000 + Number(premiumPrice[index].value)+"원";
-                tp[index].value = this.value * Number($price2[index].textContent) + 3000 + Number(premiumPrice[index].value);
+                tp[index].value = this.value * Number($price2[index].textContent) + Number(premiumPrice[index].value);
             } else if (eco[index].value === 'Y' && premium[index].value === 'N') {
-                $price[index].textContent = this.value * Number($price2[index].textContent) + 3000+"원";
-                tp[index].value = this.value * Number($price2[index].textContent) + 3000;
+                $price[index].textContent = this.value * Number($price2[index].textContent)+"원";
+                tp[index].value = this.value * Number($price2[index].textContent);
             } else if (eco[index].value === 'N' && premium[index].value === 'Y') {
                 $price[index].textContent = this.value * Number($price2[index].textContent) + Number(premiumPrice[index].value)+"원";
                 tp[index].value = this.value * Number($price2[index].textContent) + Number(premiumPrice[index].value);
@@ -128,7 +125,7 @@
             tp.forEach((i) => totalprice += Number(i.value))
             $finalPrice1.textContent = totalprice.toLocaleString('ko-KR') + "원";
             $finalPrice2.textContent = (Number(totalprice) + 3000).toLocaleString('ko-KR') +"원";
-            $finalPrice3.value =  Number(totalprice) + 3000;
+            $finalPrice3.value =  Number(totalprice);
         })
     })
     $amount.forEach((amount) => {
