@@ -58,6 +58,8 @@ public class SecurityConfig {
                 .antMatchers("/board/**", "/thumbnail/**", "/user/member/update", "/user/member/delete").hasRole("MEMBER")
                 /* 인선 */
                 .antMatchers("/admin/board/**").hasRole("ADMIN")
+                .antMatchers("/user/board/userReviewView/**").hasRole("ADMIN")
+                .antMatchers("/user/board/userReviewView/**").hasRole("MEMBER")
                 /* TODO = 동한님 링크로 바꾸기 */
                 .antMatchers("/orderManagement/list").hasRole("ADMIN")
 
