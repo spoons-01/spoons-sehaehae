@@ -53,26 +53,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
                 .antMatchers("/admember/list", "/chart/list", "/coupon/list").hasRole("ADMIN")
-//                .antMatchers("/board/**", "/thumbnail/**", "/user/member/update", "/user/member/delete").hasRole("MEMBER")
-                /* 관리자만 사용 가능한 권한도 추후 추가 */
+
                 .antMatchers("/board/**", "/thumbnail/**", "/user/member/update", "/user/member/delete").hasRole("MEMBER")
-                /* 인선 */
                 .antMatchers("/admin/board/**").hasRole("ADMIN")
-                /* TODO = 동한님 링크로 바꾸기 */
+                .antMatchers("/user/board/userReviewView/**").hasRole("ADMIN")
+                .antMatchers("/user/board/userReviewView/**").hasRole("MEMBER")
+
                 .antMatchers("/orderManagement/list").hasRole("ADMIN")
-
                 .antMatchers("/orderManagement/**").hasRole("ADMIN")
 
-
-//                .antMatchers("/orderManagement/list").hasRole("ADMIN")
-
-
-
                 .antMatchers("/orderManagement/**").hasRole("ADMIN")
-
-
-//                .antMatchers("/orderManagement/list").hasRole("ADMIN")
-
 
                 /* 위에 서술 된 패턴 외의 요청은 인증 되지 않은 사용자도 요청 허가 */
                 .antMatchers("/product/cartList","/product/orderComplete","/product/payment","/product/coupon").hasRole("MEMBER")

@@ -73,7 +73,7 @@ public class MemberController {
     }
 
     /* 로그인 */
-    @GetMapping("member/login")
+    @GetMapping("/member/login")
     public void login() {
     }
 
@@ -82,6 +82,9 @@ public class MemberController {
         rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("error.login"));
         return "redirect:/user/member/login";
     }
+
+    @GetMapping("/member/findMyId")
+    public void findMyId() {}
 
     /* 회원가입 */
     @GetMapping("/member/regist")
@@ -222,13 +225,6 @@ public class MemberController {
             loginMember.setProfilePhoto("/images/smile.png");
         }
     }
-
-//    @GetMapping("/member/update")
-//    public String update(@AuthenticationPrincipal MemberDTO loginMember, Model model) {
-//        String profilePhoto = loginMember.getProfilePhoto();
-//        model.addAttribute("profilePhoto", profilePhoto);
-//        return "/user/member/update";
-//    }
 
     /* 마이페이지-설정 수정(회원정보 수정) */
     @PostMapping("/member/update")
