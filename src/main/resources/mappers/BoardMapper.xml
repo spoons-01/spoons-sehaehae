@@ -610,7 +610,7 @@
         ORDER BY 1 DESC
     </select>
 
-    <select id="selectReviewView" resultMap="reviewBoardResultMap">
+    <select id="selectReviewView"  resultMap="reviewBoardResultMap">
         SELECT
         A.REVIEW_NO
         , B.MEMBER_NO
