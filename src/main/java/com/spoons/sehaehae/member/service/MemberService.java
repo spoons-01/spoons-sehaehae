@@ -11,6 +11,7 @@ import com.spoons.sehaehae.common.exception.member.MemberRegistException;
 import com.spoons.sehaehae.member.dao.MemberMapper;
 import com.spoons.sehaehae.member.dto.*;
 import com.spoons.sehaehae.member.util.Naver_Sens_V2;
+import com.spoons.sehaehae.product.dto.PointDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,6 +81,7 @@ public class MemberService {
         return memberMapper.findByMemberId(memberId);
     }
 
+
     public boolean selectMemberById(String memberId) {
 
         String result = memberMapper.selectMemberById(memberId);
@@ -93,7 +95,9 @@ public class MemberService {
         int result1 = memberMapper.insertMember(member);
         int result2 = memberMapper.insertMemberRole();
         int result3 = memberMapper.insertMemberLevel();
+
         memberMapper.insertFirstCoupon();                   //첫가입쿠폰 발급
+        memberMapper.insertFirstPoint();
 
         if (!(result1 > 0 && result2 > 0 && result3 > 0)) throw new MemberRegistException("회원 가입에 실패하였습니다.");
 
@@ -112,7 +116,6 @@ public class MemberService {
     // => RUntimeException 되어야됨.
     @Transactional
     public void modifyMember(MemberDTO modifyMember) throws MemberModifyException {
-        //memberMapper.insertThumbnailContent(modifyMember);
         int result = memberMapper.updateMember(modifyMember);
         if(!(result > 0)) {throw new MemberModifyException("회원 정보 수정에 실패하였습니다.");}
     }

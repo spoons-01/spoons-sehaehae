@@ -401,9 +401,7 @@
         AND REPLY_STATUS = 'Y'
     </select>
 
-
-    <!-- 동한님 -->
-    <select id="selectMember">
+    <select id="selectMember" resultMap="memberResultMap">
         SELECT MEMBER_NO
              , ID
              , NICKNAME
@@ -433,6 +431,11 @@
           AND MEMBER_NO = #{ memberNo }
     </update>
 
+
+
+    <!-- 동한님 -->
+
+
    <select id="selectMemberList" resultMap="memberResultMap">
         select
             A.*
@@ -454,6 +457,22 @@
          SEQ_MEMBER_NO.CURRVAL,
          'Y'
         )
+    </insert>
+
+    <insert id="insertFirstPoint">
+        INSERT INTO TBL_PT
+        (
+         PT_CODE,
+         MEMBER_NO,
+         POINT
+         )
+        VALUES
+        (
+         SEQ_PT_CODE.NEXTVAL,
+         SEQ_MEMBER_NO.CURRVAL,
+         0
+        )
+
     </insert>
 
     <update id="adUpdateMember">
@@ -515,6 +534,7 @@
         FROM TBL_MEMBER
         where TRUNC((sysdate - BIRTHDAY) / 365, -1) <![CDATA[>=]]> 50
     </select>
+
 
 
 </mapper>
