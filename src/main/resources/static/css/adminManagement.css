@@ -436,13 +436,15 @@ td{
     padding: 20px 0px 40px 30px;
     font-size: 24px;
     margin: 50px 0px 50px 13px;
+    height: 230px;
+    box-shadow: 5px 5px 5px 5px rgba(128, 128, 128, 0.34);
 }
 
 .calculateDate{
     border-radius: 5px;
     padding: 20px 0px 40px 0px;
     font-size: 24px;
-    margin: 0px 0px 50px 13px;
+    margin: 0px 0px 20px 13px;
 }
 
 .calculateDate > #start-date{
@@ -467,6 +469,7 @@ td{
     padding: 0px 5px 0px 5px;
     height: 40px;
     font-size: 18px;
+    argin-right: 10px;
 }
 
 .calculateDate > .but-group > .sub-btn{
@@ -477,10 +480,34 @@ td{
     font-size: 18px;
 }
 
-.calculateDate > .search-bottom{
+.calculateDate > #searchButton{
     border: 1px solid rgba(0, 0, 0, 0.68);
     border-radius: 5px;
     padding: 0px 5px 0px 5px;
     height: 40px;
     font-size: 18px;
+    margin-left: 5px;
+
+    width: 100px;
+    background-color: rgb(57, 125, 246);
+    color: white;
 }
+
+.calculateDate > #resetButton{
+    border: 1px solid rgba(0, 0, 0, 0.68);
+    border-radius: 5px;
+    padding: 0px 5px 0px 5px;
+    height: 40px;
+    font-size: 18px;
+    margin-left: 5px;
+
+    width: 100px;
+    background-color: rgb(57, 125, 246);
+    color: white;
+}
+
+.payArea table, tr, td, th{
+    border: 1px solid black;
+}
+
+
