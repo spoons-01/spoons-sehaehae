@@ -1,6 +1,7 @@
 package com.spoons.sehaehae.admin.controller;
 
 import com.spoons.sehaehae.admin.dto.OrderDTO;
+import com.spoons.sehaehae.common.paging.SelectCriteria;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -44,6 +45,7 @@ public class SearchController {
 
 
         Map<String, Object> searchListAndPaging = orderService.selectSerchList(searchMap, page);  //list 뿐만 아니라 페이징 처리도 같이 하기 위해서 map사용
+        model.addAttribute("totalCount", ((SelectCriteria)searchListAndPaging.get("paging")).getTotalCount());
         model.addAttribute("paging", searchListAndPaging.get("paging"));
         model.addAttribute("searchList", searchListAndPaging.get("searchList"));
 
@@ -115,6 +117,7 @@ public class SearchController {
         Map<String, Object> searchListAndPaging = orderService.selectSearchCollectionList(searchMap, page);
         model.addAttribute("paging", searchListAndPaging.get("paging"));
         model.addAttribute("searchCollectionList", searchListAndPaging.get("searchCollectionList"));
+
 
         return "admin/orderManagement/collection-completed";
     }
@@ -380,4 +383,16 @@ public class SearchController {
                     .body("주문 상태 업데이트에 실패했습니다.");
         }
     }
+
+
+    /*---------------------------------------------정산----------------------------------------------*/
+    @GetMapping("/calculate")
+    public String selectCalculateList() {
+
+
+
+        return "admin/orderManagement/calculate";
+    }
+
+
 }

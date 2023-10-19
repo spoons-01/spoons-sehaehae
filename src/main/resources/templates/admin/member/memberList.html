@@ -7,7 +7,7 @@
 </head>
 <body>
     <div th:replace="/admin/common/nav.html"></div>
-    <header><h3>회원관리 &gt 회원목록</h3><h3>로그인(로그아웃)</h3></header>
+    <header><h3>회원관리 &gt 회원목록</h3><a href="/user/member/logout"><h3 id="login">로그아웃<img src="/images/sign-out.png" th:style="'margin-left : 10px'"></h3></a></header>
 <div class="container">
     <table class="member-table">
             <thead>
@@ -22,7 +22,7 @@
             <th>가입일</th>
             </thead>
             <tbody>
-            <tr id="member-tr" th:each="member : ${member}" th:onclick="memberModal([[${member}]])">
+            <tr th:each="member : ${member}" th:onclick="memberModal([[${member}]])">
                 <td th:text="${member.memberNo}"></td>
                 <td th:text="${member.name}"></td>
                 <td th:text="${member.memberId}"></td>
@@ -57,7 +57,7 @@
                 <h3>전화번호</h3><input type="text" name="phone" id="phone">
              </li>
              <li>
-                <h3>생년월일</h3><input type="date" name="birthday" id="birthday">
+                <h3>생년월일</h3><input type="text" name="birthday" id="birthday">
              </li>
              <li>
                 <h3>성별</h3><input type="text" name="gender" id="gender">
@@ -89,7 +89,7 @@
         document.getElementById("memberId").value=e.memberId
         document.getElementById("nickname").value=e.nickname
         document.getElementById("phone").value=e.phone
-        document.getElementById("birthday").value=e.birthday
+        document.getElementById("birthday").value=e.birthday.substring(0,10)
         document.getElementById("gender").value=e.gender
         document.getElementById("address1").value=e.address1
         document.getElementById("address2").value=e.address2

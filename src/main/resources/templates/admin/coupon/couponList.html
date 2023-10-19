@@ -7,7 +7,7 @@
 </head>
 <body>
     <div th:replace="admin/common/nav.html"></div>
-    <header><h3>서비스관리 &gt 쿠폰관리</h3><h3>로그인(로그아웃)</h3></header>
+    <header><h3>서비스관리 &gt 쿠폰관리</h3><a href="/user/member/logout"><h3 id="login">로그아웃<img src="/images/sign-out.png" th:style="'margin-left : 10px'"></h3></a></header>
 
     <div class="coupon_container" id="main-coupon-container">
         <div class="coupon" th:each="coupon : ${coupon}" th:onclick="couponModal([[${coupon}]])">
@@ -53,7 +53,7 @@
                             취소</button>
                         <div>
                         <button class="buttonD" type="submit">수정</button>
-                        <button class="buttonD" id="button-delete" formaction="/coupon/remove">삭제</button>
+                        <button class="buttonD" id="button-delete" formaction="/coupon/remove" onclick="confirmDelete()">삭제</button>
                         </div>
                     </div>
                 </form>
@@ -98,6 +98,14 @@
 
 
 <script>
+    function confirmDelete(){
+        if(!confirm("정말 삭제하시겠습니까?")){
+            alert("취소되었습니다."); return false;
+        }else {
+            alert("삭제되었습니다."); return true;
+        }
+
+    }
     function couponModal(e){
         const update = document.querySelector('.update')
         update.style.display="flex"

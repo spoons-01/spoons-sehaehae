@@ -78,7 +78,6 @@ public class ProductController {
     @GetMapping("/payment")
     public void payemnt(Model model, @RequestParam int totalPrice, @AuthenticationPrincipal MemberDTO member) {
         int memberCode = member.getMemberNo();
-        System.out.println(totalPrice);
 
         MemberDTO member1 = productService.selectMember(memberCode);
         List<CartDTO> cart = productService.cartList(memberCode);
@@ -134,9 +133,12 @@ public class ProductController {
     @GetMapping("/addCart")
     public ResponseEntity<String> addCart(@ModelAttribute CartDTO cart, @AuthenticationPrincipal MemberDTO member) {
         cart.setMember(member.getMemberNo());
+        String message = "장바구니에 추가 됐습니다.";
+
         productService.addCart(cart);
 
-        return ResponseEntity.ok("장바구니에 추가됐습니다.");
+
+        return ResponseEntity.ok(message);
     }
 
     @GetMapping("/totalPrice")
@@ -256,6 +258,8 @@ public class ProductController {
             if (photo1.getSize() > 0) {
                 photo1.transferTo(new File(fileUploadDir + "/" + originalName));
                 order.setImage("/upload/resource/location/" + originalName);
+            }else{
+                order.setImage("null");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -269,6 +273,8 @@ public class ProductController {
         map.put("usecouponCode",order.getUseCoupon());
         map.put("member", member);
         map.put("point", point);
+        map.put("order",order);
+
         productService.updateInfo(map);
 
 

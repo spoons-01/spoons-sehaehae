@@ -374,7 +374,7 @@
         FROM TBL_MEMBER A
                  LEFT JOIN TBL_CPBOX B ON A.MEMBER_NO = B.MEMBER_NO
                  LEFT JOIN TBL_CP C ON B.CP_CODE = C.CP_CODE
-        WHERE 1 = 1
+        WHERE 1 = 1 and B.USE_STATUS = 'N'
           AND A.MEMBER_NO = #{ memberNo }
     </select>
 
@@ -450,12 +450,13 @@
          CP_CODE,
          MEMBER_NO,
          USE_STATUS
+         USE_STATUS
         )
         values
         (
          1,
          SEQ_MEMBER_NO.CURRVAL,
-         'Y'
+         'N'
         )
     </insert>
 
@@ -482,8 +483,9 @@
             NICKNAME=#{nickname},
             PHONE_NUMBER=#{phone},
             GENDER=#{gender},
-            BIRTHDAY=#{birthday},
-            ADDRESS1=#{address1}
+            BIRTHDAY = (to_date(#{ birthday }, 'MM-DD-YYYY')),
+            ADDRESS1=#{address1},
+            ADDRESS2=#{address2}
         where MEMBER_NO = #{memberNo}
     </update>
 
