@@ -43,9 +43,15 @@ public class ProductService {
         return productMapper.selectProductByCode(code);
     }
 
-    public int addCart(CartDTO cart) {
+    public Boolean addCart(CartDTO cart) {
 
-        return productMapper.addCart(cart);
+        if(productMapper.checkProduct()){
+
+            return false;
+        }
+
+        productMapper.addCart(cart);
+        return true;
     }
 
 

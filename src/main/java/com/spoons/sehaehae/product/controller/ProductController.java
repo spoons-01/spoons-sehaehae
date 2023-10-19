@@ -78,7 +78,6 @@ public class ProductController {
     @GetMapping("/payment")
     public void payemnt(Model model, @RequestParam int totalPrice, @AuthenticationPrincipal MemberDTO member) {
         int memberCode = member.getMemberNo();
-        System.out.println(totalPrice);
 
         MemberDTO member1 = productService.selectMember(memberCode);
         List<CartDTO> cart = productService.cartList(memberCode);
@@ -134,9 +133,14 @@ public class ProductController {
     @GetMapping("/addCart")
     public ResponseEntity<String> addCart(@ModelAttribute CartDTO cart, @AuthenticationPrincipal MemberDTO member) {
         cart.setMember(member.getMemberNo());
-        productService.addCart(cart);
+        String message = "장바구니에 추가 됐습니다.";
 
-        return ResponseEntity.ok("장바구니에 추가됐습니다.");
+
+        if(productService.addCart(cart) == false){
+            message = "이미 장바구니에 담긴 상품입니다.";
+        }
+
+        return ResponseEntity.ok(message);
     }
 
     @GetMapping("/totalPrice")

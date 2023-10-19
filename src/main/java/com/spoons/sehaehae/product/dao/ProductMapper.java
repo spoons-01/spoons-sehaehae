@@ -73,4 +73,6 @@ public interface ProductMapper {
     void updatePt(Map<String, Object> map);
 
     void deleteCartList(Map<String, Object> map);
+
+    boolean checkProduct();
 }
