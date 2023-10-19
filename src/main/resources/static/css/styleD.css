@@ -53,7 +53,6 @@ td{
 
 /*------------------------------------------------------------------------------------------*/
 .container {
-    border: black 1px solid;
     width: 1350px; height: 665px;
     margin-left: 400px; margin-top: 55px;
 }

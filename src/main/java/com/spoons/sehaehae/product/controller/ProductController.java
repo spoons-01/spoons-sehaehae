@@ -82,7 +82,7 @@ public class ProductController {
         MemberDTO member1 = productService.selectMember(memberCode);
         List<CartDTO> cart = productService.cartList(memberCode);
         PointDTO point = productService.selectPoint(memberCode);
-        model.addAttribute("totalPrice", totalPrice-3000);
+        model.addAttribute("totalPrice", totalPrice);
         model.addAttribute("member", member1);
         model.addAttribute("cartList", cart);
         model.addAttribute("point",point);
