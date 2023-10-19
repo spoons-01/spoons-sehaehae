@@ -27,7 +27,7 @@
 
 |박민서|김동한|
 |:---:|:---:|
-||<img src="https://github.com/spoons-01/spoons-sehaehae/assets/138549341/395f09ff-a7ed-40e6-b25a-10935aa0f7d6" width="100" height="150"/>|
+|<img src="https://github.com/spoons-01/spoons-sehaehae/assets/138549341/24c7aa7c-3fba-47da-86b0-c513a31a76f2" width="100" height="150"/>|<img src="https://github.com/spoons-01/spoons-sehaehae/assets/138549341/395f09ff-a7ed-40e6-b25a-10935aa0f7d6" width="100" height="150"/>|
 |https://github.com/gongryongyi|https://github.com/dhnn412|
 |배송관리, 정산관리|회원관리, 서비스관리 ,혜택관리|
   
