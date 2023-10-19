@@ -1,0 +1,86 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'GangwonState';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/GangwonState.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NanumSquareNeo-Variable';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+    font-size: 100%;
+}
+
+a {
+    text-decoration: none;
+    font-family: NanumSquareNeo-Variable;
+}
+
+p {
+    font-family: NanumSquareNeo-Variable;
+}
+
+h3 {
+    font-family: NanumSquareNeo-Variable;
+}
+
+/* 아이디찾기 페이지 ------------------------------------------------------------------- */
+
+.wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 4%;
+}
+
+.gap {
+    margin-top: 60px;
+}
+
+.box-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 4%;
+}
+
+.logo-wrapper {
+    margin: 50px auto auto -10px;
+}
+
+.box-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bigbox {
+    width: 800px;
+    height: auto;
+    border-radius: 4px;
+    border: 1px solid #d9d6d6;
+    padding: 60px 100px 60px 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.h3 {
+    font-family: NanumSquareNeo-Variable;
+}
+
+.find-text {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.input-box {
+    display: flex;
+}
+

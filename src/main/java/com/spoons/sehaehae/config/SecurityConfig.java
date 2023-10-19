@@ -54,9 +54,6 @@ public class SecurityConfig {
                 .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
                 .antMatchers("/board/**", "/thumbnail/**", "/user/member/update", "/user/member/delete").hasRole("MEMBER")
 
-
-//                .antMatchers("/orderManagement/list").hasRole("ADMIN")
-
                 /* 위에 서술 된 패턴 외의 요청은 인증 되지 않은 사용자도 요청 허가 */
                 .anyRequest().permitAll()
                 .and()
