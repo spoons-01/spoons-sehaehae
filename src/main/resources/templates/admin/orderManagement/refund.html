@@ -24,7 +24,7 @@
 
 <header>
     <h3>환불관리 &gt 환불요청</h3>
-    <h3 id="login">로그인(로그아웃)</h3>
+    <a href="/user/member/logout"><h3 id="login">로그아웃<img src="/images/sign-out.png" th:style="'margin-left : 10px'"></h3></a>
 </header>
 
 <div class="container">
@@ -47,7 +47,7 @@
                         <select id="search-method" name="searchCondition">
                             <option selected>전체</option>
                             <option value="refundCode" th:selected="${paging.searchCondition eq 'refundCode'}">환불번호</option>
-                            <option value="order" th:selected="${paging.searchCondition eq 'order'}">주문자</option>
+                            <option value="member" th:selected="${paging.searchCondition eq 'member'}">주문자</option>
                             <option value="phone" th:selected="${paging.searchCondition eq 'phone'}">전화번호</option>
                             <option value="processStatus" th:selected="${paging.searchCondition eq 'processStatus'}" >처리상태</option>
                         </select>
@@ -103,7 +103,7 @@
                 <th><input id="selectAll" type="checkbox" name="checkStatus" value="checkStatus" onclick='selectAll(this)'></th>
                 <th th:style="'width: 110px;'">환불번호</th>
                 <th>주문번호</th>
-                <th>주문일자</th>
+                <th>환불접수일자</th>
                 <th>주문자</th>
                 <th>전화번호</th>
                 <th>환불완료일자</th>
@@ -363,7 +363,7 @@
                     // 서버에서 반환한 데이터를 처리
                     console.log(data);
                     const productDetailTable = $('#productDetailTable');
-                    productDetailTable.find('tr:gt(0)').remove(); // 기존 테이블 내용 제거
+                    productDetailTable.empty(); // 기존 테이블 내용 제거
 
                     $.each(data, function (index, product) {
                         // 각 주문 상품 정보를 테이블에 추가

@@ -23,7 +23,7 @@ public class SecurityConfig {
     public HttpFirewall defaultHttpFirewall() {
         return new DefaultHttpFirewall();
     }
-
+  
     @Bean
     public GrantedAuthorityDefaults grantedAuthorityDefaults() {
         return new GrantedAuthorityDefaults("");
@@ -52,9 +52,21 @@ public class SecurityConfig {
                 /* 요청에 대한 권한 체크 */
                 .authorizeHttpRequests()
                 .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                .antMatchers("/admember/list", "/chart/list", "/coupon/list").hasRole("ADMIN")
+//                .antMatchers("/board/**", "/thumbnail/**", "/user/member/update", "/user/member/delete").hasRole("MEMBER")
+                /* 관리자만 사용 가능한 권한도 추후 추가 */
                 .antMatchers("/board/**", "/thumbnail/**", "/user/member/update", "/user/member/delete").hasRole("MEMBER")
+
                 /* TODO = 동한님 링크로 바꾸기 */
                 .antMatchers("/orderManagement/list").hasRole("ADMIN")
+
+
+                .antMatchers("/orderManagement/**").hasRole("ADMIN")
+
+
+//                .antMatchers("/orderManagement/list").hasRole("ADMIN")
+
+
                 /* 위에 서술 된 패턴 외의 요청은 인증 되지 않은 사용자도 요청 허가 */
                 .antMatchers("/product/cartList","/product/orderComplete","/product/payment","/product/coupon").hasRole("MEMBER")
                 .antMatchers("/product/listAdmin","/product/categoryList","/product/categoryRegist","/product/productModify","/product/productRegist").hasRole("ADMIN")
@@ -86,7 +98,6 @@ public class SecurityConfig {
     /* 사용자 인증을 위해서 사용할 Service 등록 & 비밀번호 인코딩 방식 지정 */
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-
         return http
                 .getSharedObject(AuthenticationManagerBuilder.class)
                 .userDetailsService(authenticationService)

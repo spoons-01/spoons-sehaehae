@@ -757,5 +757,56 @@ h3 {
 
 /* 댓글 리스트 */
 
+.replyTable {
+    margin-bottom: 100px;
+    /*padding: 50px;*/
+    border-collapse: separate; /* 테이블 셀 사이의 간격을 개별로 설정 */
+    border-spacing: 0 20px; /* 가로(10px)와 세로(0) 간격 설정 */
+}
+
+.replyTable td {
+    border: 0;
+}
+
+.replyImage {
+    width: 45px;
+    height: 45px;
+    margin-left: 25px;
+    /*margin-top: 15px;*/
+    margin-right: 10px;
+    vertical-align: middle;
+
+}
+
+.replyNickname  {
+    font-family: NanumSquareNeo-Variable;
+    font-weight: bold;
+    width: 200px;
+}
+
+.replyBody {
+    font-family: NanumSquareNeo-Variable;
+    font-size: 18px;
+    width: 400px;
+}
+
+.replyDate {
+    font-family: NanumSquareNeo-Variable;
+    width: 150px;
+    font-size: 13px;
+}
+
+.replyButton {
+    font-family: NanumSquareNeo-Variable;
+    color: #6f6f6f;
+}
+
+.replyButton button{
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+
 
 

@@ -26,7 +26,7 @@ servlet:
     max-file-size: 300MB
     max-request-size: 300MB
     location: C:/sub_project/uploadFile
-#    location: C:/lecture/subproject/spoons-sehaehae
+#    location: C:/lecture/sub_project/spoons-sehaehae
 
 # Mybatis config
 mybatis:
