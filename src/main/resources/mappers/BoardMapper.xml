@@ -606,6 +606,7 @@
         JOIN TBL_MEMBER E ON(A.MEMBER_NO = E.MEMBER_NO)
         JOIN TBL_ORDER F ON(A.ORDER_CODE = F.ORDER_CODE)
         WHERE A.RNUM >= #{ startRow }
+
         ORDER BY 1 DESC
     </select>
 
