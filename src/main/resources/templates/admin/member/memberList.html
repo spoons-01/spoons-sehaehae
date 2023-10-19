@@ -22,7 +22,7 @@
             <th>가입일</th>
             </thead>
             <tbody>
-            <tr id="member-tr" th:each="member : ${member}" th:onclick="memberModal([[${member}]])">
+            <tr th:each="member : ${member}" th:onclick="memberModal([[${member}]])">
                 <td th:text="${member.memberNo}"></td>
                 <td th:text="${member.name}"></td>
                 <td th:text="${member.memberId}"></td>
@@ -89,7 +89,7 @@
         document.getElementById("memberId").value=e.memberId
         document.getElementById("nickname").value=e.nickname
         document.getElementById("phone").value=e.phone
-        document.getElementById("birthday").value=e.birthday
+        document.getElementById("birthday").value=e.birthday.substring(0,10)
         document.getElementById("gender").value=e.gender
         document.getElementById("address1").value=e.address1
         document.getElementById("address2").value=e.address2

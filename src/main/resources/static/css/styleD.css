@@ -32,7 +32,7 @@ li{list-style: none}
 h1{font-size: 34px; padding: 30px 0px 100px;}
 
 .member-table td{cursor: pointer}
-.member-table tr:hover {background: #c6c9cc}
+tbody>tr:hover {background:  #f5f9fc}
 .member-table{
     border: 1px black solid;
     width: 1350px;
@@ -48,10 +48,7 @@ td{
     border-bottom: 1px solid #c6c9cc;
 }
 
-tr:nth-child(even) td {
-    background: #f5f9fc;
-}
-#member-tr:hover {background: #c6c9cc}
+
 
 
 /*------------------------------------------------------------------------------------------*/

@@ -53,7 +53,7 @@
                             취소</button>
                         <div>
                         <button class="buttonD" type="submit">수정</button>
-                        <button class="buttonD" id="button-delete" formaction="/coupon/remove">삭제</button>
+                        <button class="buttonD" id="button-delete" formaction="/coupon/remove" onclick="confirmDelete()">삭제</button>
                         </div>
                     </div>
                 </form>
@@ -98,6 +98,14 @@
 
 
 <script>
+    function confirmDelete(){
+        if(!confirm("정말 삭제하시겠습니까?")){
+            alert("취소되었습니다."); return false;
+        }else {
+            alert("삭제되었습니다."); return true;
+        }
+
+    }
     function couponModal(e){
         const update = document.querySelector('.update')
         update.style.display="flex"
