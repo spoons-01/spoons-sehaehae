@@ -17,7 +17,7 @@
 
 <header>
     <h3>주문관리 &gt 수거완료</h3>
-    <h3 id="login">로그인(로그아웃)</h3>
+    <a href="/user/member/logout"><h3 id="login">로그아웃<img src="/images/sign-out.png" th:style="'margin-left : 10px'"></h3></a>
 </header>
 
 <div class="container">
@@ -357,7 +357,7 @@
                     // 서버에서 반환한 데이터를 처리
                     console.log(data);
                     const productDetailTable = $('#productDetailTable');
-                    productDetailTable.find('tr:gt(0)').remove(); // 기존 테이블 내용 제거
+                    productDetailTable.empty(); // 기존 테이블 내용 제거
 
                     $.each(data, function (index, product) {
                         // 각 주문 상품 정보를 테이블에 추가

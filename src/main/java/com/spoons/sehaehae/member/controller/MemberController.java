@@ -14,6 +14,7 @@ import com.spoons.sehaehae.member.dto.*;
 import com.spoons.sehaehae.member.service.AuthenticationService;
 import com.spoons.sehaehae.member.service.CouponRepository;
 import com.spoons.sehaehae.member.service.MemberService;
+import com.spoons.sehaehae.product.dto.PointDTO;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.lang3.StringUtils;
@@ -215,8 +216,6 @@ public class MemberController {
         return "redirect:/user/member/mysehae";
     }
 
-
-    /* 유저 정보 업데이트 */
     @GetMapping("/member/update")
     public void update( @AuthenticationPrincipal MemberDTO loginMember) {
         if( StringUtils.isBlank(loginMember.getProfilePhoto()) ) {
@@ -224,6 +223,14 @@ public class MemberController {
         }
     }
 
+//    @GetMapping("/member/update")
+//    public String update(@AuthenticationPrincipal MemberDTO loginMember, Model model) {
+//        String profilePhoto = loginMember.getProfilePhoto();
+//        model.addAttribute("profilePhoto", profilePhoto);
+//        return "/user/member/update";
+//    }
+
+    /* 마이페이지-설정 수정(회원정보 수정) */
     @PostMapping("/member/update")
     public String modifyMember(MemberDTO modifyMember, MultipartFile attachImage,
                                @AuthenticationPrincipal MemberDTO loginMember, RedirectAttributes rttr) throws MemberModifyException {
@@ -253,7 +260,7 @@ public class MemberController {
 
                 /* 서버의 설정 디렉토리에 파일 저장하기 */
                 attachImage.transferTo(new File(IMAGE_DIR + File.separator + savedFileName));
-                modifyMember.setProfilePhoto("/upload/original/" + savedFileName);
+                modifyMember.setProfilePhoto("/upload/" + savedFileName);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -261,13 +268,14 @@ public class MemberController {
 
         memberService.modifyMember(modifyMember);
 
-        /* 로그인 시 저장 된 Authentication 객체를 변경 된 정보로 교체한다.
-         * 수정 된 정보로 로그인 한 것과 동일한 효과를 얻을 수 있다. */
         SecurityContextHolder.getContext().
                 setAuthentication(createNewAuthentication(loginMember.getMemberId()));
 
+        rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("member.modify"));
+
         return "redirect:/user/member/update";
     }
+
 
     /* 이메일 인증 */
     protected Authentication createNewAuthentication(String memberId) {
@@ -293,7 +301,6 @@ public class MemberController {
     @ResponseBody
     public EmailAuthDTO regEmailAuth(HttpSession session, @RequestBody EmailAuthDTO emailAuthDTO) throws MessagingException {
         log.info("emailDTO : {}", emailAuthDTO);
-
         log.info("인증 이메일 : {}", emailAuthDTO.getEmail());
         log.info("인증 세션 : {}", emailAuthDTO.getEmailAuthKey());
         log.info("인증 번호 : {}", emailAuthDTO.getEmailAuthVal());
