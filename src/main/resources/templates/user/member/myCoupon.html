@@ -18,71 +18,77 @@
 
 <body>
 <!-- 헤더 -->
-<header>
-    <div class="main-set">
-        <header class="page-header wrapper2">
-            <div class="logo-header">
-                <a href="/">
-                    <img class="logo" src="/images/logo.png" alt="HOME">
+<div class="main-set">
+    <header class="page-header wrapper2">
+        <div class="logo-header">
+            <a href="/">
+                <img class="logo" src="/images/logo.png" alt="HOME">
+            </a>
+        </div>
+        <th:block sec:authorize="isAnonymous()">
+            <div class="nav-all">
+                <nav>
+                    <ul class="main-nav">
+                        <li><a id="login" href="/user/member/login">로그인</a></li>
+                        <li><a href="/product/list">
+                            <li>서비스</li>
+                        </a></li>
+                        <li><a href="/user/board/userReview">
+                            <li>게시판</li>
+                        </a></li>
+                        <li><a href="/user/board/userNotice">
+                            <li>고객센터</li>
+                            <li><a href="/user/coupon/list">
+                                <li>쿠폰</li>
+                            </a></li>
+                    </ul>
+                </nav>
+                <a href="/user/member/login">
+                    <img class="mypage" src="/images/smile.png" alt="MYPAGE">
                 </a>
             </div>
-            <th:block sec:authorize="isAnonymous()">
-                <div class="nav-all">
-                    <nav>
-                        <ul class="main-nav">
-                            <li><a id="login" href="/user/member/login">로그인</a></li>
-                            <li><a href="3_service.html">
-                                <li>서비스</li>
-                            </a></li>
-                            <li><a href="/user/board/userReview">
-                                <li>게시판</li>
-                            </a></li>
-                            <li><a href="/user/board/userNotice">
-                                <li>고객센터</li>
-                            </a></li>
-                        </ul>
-                    </nav>
-                    <a href="/user/member/login">
+        </th:block>
+
+        <th:block sec:authorize="isAuthenticated()">
+            <div class="nav-all">
+                <nav>
+                    <ul class="main-nav">
+                        <th:block sec:authorize="${#authentication != null and #authentication.principal.memberRoleList != null}">
+                            <th:block th:each="role : ${#authentication.principal.memberRoleList}">
+                                <li><a id="admin" th:if="${role.authorityCode == 1}" href="/admin/member/memberList">관리자</a></li>
+                            </th:block>
+                        </th:block>
+                        <li><a id="logout" href="/user/member/logout">
+                            <li>로그아웃</li>
+                        </a></li>
+                        <li><a href="/product/list">
+                            <li>서비스</li>
+                        </a></li>
+                        <li><a href="/user/board/userReview">
+                            <li>게시판</li>
+                        </a></li>
+                        <li><a href="/user/board/userNotice">
+                            <li>고객센터</li>
+                        </a></li>
+                        <li><a href="/user/coupon/list">
+                            <li>쿠폰</li>
+                        </a></li>
+                    </ul>
+                </nav>
+                <a href="/product/cartList"><img class="cart" src="/images/cart.png"></a>
+                <a href="/user/member/mypage">
+                    <th:block th:if="${ #authentication.principal.profilePhoto == null}">
                         <img class="mypage" src="/images/smile.png" alt="MYPAGE">
-                    </a>
-                </div>
-            </th:block>
-
-            <th:block sec:authorize="isAuthenticated()">
-                <div class="nav-all">
-                    <nav>
-                        <ul class="main-nav">
-                            <li><a id="admin" href="/admember/list">관리자</a></li>
-                            <li><a id="logout" href="/user/member/logout">
-                                <li>로그아웃</li>
-                            </a></li>
-                            <li><a href="3_service.html">
-                                <li>서비스</li>
-                            </a></li>
-                            <li><a href="/user/board/userReview">
-                                <li>게시판</li>
-                            </a></li>
-                            <li><a href="/user/board/userNotice">
-                                <li>고객센터</li>
-                            </a></li>
-                        </ul>
-                    </nav>
-                    <a href="/product/cartList"><img class="cart" src="/images/cart.png"></a>
-                    <a href="/user/member/mypage">
-                        <th:block th:if="${ #authentication.principal.profilePhoto == null}">
-                            <img class="mypage" src="/images/smile.png" alt="MYPAGE">
-                        </th:block>
-                        <th:block th:if="${ #authentication.principal.profilePhoto != null}">
-                            <img class="mypage" th:src="${#authentication.principal.profilePhoto}" alt="MYPAGE">
-                        </th:block>
-                    </a>
-                </div>
-            </th:block>
-        </header>
-        <hr style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
-    </div>
-</header>
-
+                    </th:block>
+                    <th:block th:if="${ #authentication.principal.profilePhoto != null}">
+                        <img class="mypage" th:src="${#authentication.principal.profilePhoto}" alt="MYPAGE">
+                    </th:block>
+                </a>
+            </div>
+        </th:block>
+    </header>
+    <hr style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
+</div>
 
 <!-- 마이페이지 네비 -->
 <ul class="mypage-nav">

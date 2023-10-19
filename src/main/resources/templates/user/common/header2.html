@@ -40,8 +40,10 @@
             <div class="nav-all">
                 <nav>
                     <ul class="main-nav">
-                        <th:block th:each="role : ${memberRoleList}">
-                            <li><a id="admin" th:if="${role.authorityCode == 1}" href="/admin/member/memberList">관리자</a></li>
+                        <th:block sec:authorize="${#authentication != null and #authentication.principal.memberRoleList != null}">
+                            <th:block th:each="role : ${#authentication.principal.memberRoleList}">
+                                <li><a id="admin" th:if="${role.authorityCode == 1}" href="/admember/list">관리자</a></li>
+                            </th:block>
                         </th:block>
                         <li><a id="logout" href="/user/member/logout">
                             <li>로그아웃</li>

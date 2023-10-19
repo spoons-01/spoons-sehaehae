@@ -47,6 +47,7 @@ public interface MemberMapper {
     int saveRefund(MyRefundDTO refund);
 
 
+
     /* 동한님 */
 
     List<MemberDTO> selectMemberList();
@@ -71,6 +72,8 @@ public interface MemberMapper {
     int getFifth();
 
     void insertFirstCoupon();
+
+    void insertFirstPoint();
 
 
 }
