@@ -374,7 +374,7 @@
         FROM TBL_MEMBER A
                  LEFT JOIN TBL_CPBOX B ON A.MEMBER_NO = B.MEMBER_NO
                  LEFT JOIN TBL_CP C ON B.CP_CODE = C.CP_CODE
-        WHERE 1 = 1 and B.USE_STATUS = 'N'
+        WHERE 1 = 1
           AND A.MEMBER_NO = #{ memberNo }
           AND B.USE_STATUS = 'N'
     </select>
@@ -450,7 +450,6 @@
         (
          CP_CODE,
          MEMBER_NO,
-         USE_STATUS
          USE_STATUS
         )
         values

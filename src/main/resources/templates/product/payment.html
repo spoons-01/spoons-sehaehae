@@ -77,8 +77,9 @@
                     <table>
                         <tr>
                             <td>총 상품가격</td>
+                            <input type="number" th:value="${totalPrice}">
                             <td th:text="|${#numbers.formatInteger(totalPrice,3,'COMMA')}원|"></td>
-                            <input type="number" style="display: none" th:value="${totalPrice}" name="orderPrice">
+                            <input type="number" th:value="${totalPrice}" name="orderPrice">
                         </tr>
                         <tr>
                             <td>사용 쿠폰</td>
@@ -98,8 +99,7 @@
                         <tr>
                             <td>총 결제금액</td>
                             <td id="finalPrice" th:text="${#numbers.formatInteger(totalPrice,3,'COMMA')}+'원'"></td>
-                            <input type="number" name="orderTotalPrice" id="finalPrice2" th:value="${totalPrice}"
-                                   style="display: none">
+                            <input type="number" name="orderTotalPrice" id="finalPrice2" th:value="${totalPrice}">
                         </tr>
                     </table>
                     <p class="dd">결제수단</p>
