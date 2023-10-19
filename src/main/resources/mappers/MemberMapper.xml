@@ -451,7 +451,6 @@
          CP_CODE,
          MEMBER_NO,
          USE_STATUS
-         USE_STATUS
         )
         values
         (
