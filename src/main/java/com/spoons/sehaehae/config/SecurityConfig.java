@@ -57,6 +57,8 @@ public class SecurityConfig {
                 /* 관리자만 사용 가능한 권한도 추후 추가 */
                 .antMatchers("/board/**", "/thumbnail/**", "/user/member/update", "/user/member/delete").hasRole("MEMBER")
 
+                .antMatchers("/orderManagement/**").hasRole("ADMIN")
+
 
 //                .antMatchers("/orderManagement/list").hasRole("ADMIN")
 
