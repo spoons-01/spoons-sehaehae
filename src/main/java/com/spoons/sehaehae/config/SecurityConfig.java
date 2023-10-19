@@ -23,7 +23,7 @@ public class SecurityConfig {
     public HttpFirewall defaultHttpFirewall() {
         return new DefaultHttpFirewall();
     }
-  
+
     @Bean
     public GrantedAuthorityDefaults grantedAuthorityDefaults() {
         return new GrantedAuthorityDefaults("");
@@ -62,6 +62,12 @@ public class SecurityConfig {
                 .antMatchers("/user/board/userReviewView/**").hasRole("MEMBER")
                 /* TODO = 동한님 링크로 바꾸기 */
                 .antMatchers("/orderManagement/list").hasRole("ADMIN")
+
+                .antMatchers("/orderManagement/**").hasRole("ADMIN")
+
+
+//                .antMatchers("/orderManagement/list").hasRole("ADMIN")
+
 
 
                 .antMatchers("/orderManagement/**").hasRole("ADMIN")
