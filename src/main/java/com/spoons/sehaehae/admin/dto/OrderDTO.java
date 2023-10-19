@@ -26,6 +26,7 @@ public class OrderDTO {
     private String inputAddress;
     private String InputAddress2;
     private Integer useCoupon;
+    private CouponDTO coupon;
     private String orderStatus;
     private int usePoint;
     private String collectionDate;

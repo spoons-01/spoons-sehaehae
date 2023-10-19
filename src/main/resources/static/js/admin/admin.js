@@ -73,14 +73,14 @@ window.onload = function() {
         console.log(checkboxes);
         const orderId = checkboxes.map(function () {
             // 각 체크된 체크박스의 데이터 식별자를 가져오기 (주문번호)
-            return $(this).data('order-id'); // HTML에서 data-order-id 속성을 설정해야 합니다.
+            return $(this).data('order-id'); // HTML에서 data-order-id 속성을 설정해야 한다.
         }).get();
         console.log(orderId);
         //주문번호 목록을 서버에 보내고 업데이트 요청 처리
         if (orderId.length > 0) {
             $.ajax({
-                url: '/orderManagement/update-order-status', // 서버 업데이트 엔드포인트
-                method: 'POST', // 또는 PUT, PATCH 등 업데이트에 적합한 HTTP 메서드 사용
+                url: '/orderManagement/update-order-status',
+                method: 'POST', //  업데이트에 적합한 HTTP 메서드 사용
                 data: {orderId},
                 success: function (response) {
                     if (response === 'success') {
