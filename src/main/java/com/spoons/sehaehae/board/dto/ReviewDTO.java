@@ -23,7 +23,7 @@ public class ReviewDTO {
     private MemberDTO writer;
     private String status;
     private Date deleteDate;
-    private Long orderCode;
+    private String orderCode;
     private OrderDTO myOrders;
     private int rating;
     private List<ReplyDTO> replyList;
