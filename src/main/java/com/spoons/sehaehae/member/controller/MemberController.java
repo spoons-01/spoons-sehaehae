@@ -240,17 +240,12 @@ public class MemberController {
 
         File dir = new File(fileUploadDir);
 
-        /* 디렉토리가 없을 경우 생성한다. */
         if (!dir.exists()) {
             dir.mkdirs();
         }
 
-        // 여러 개의 파일을 받을 게 아니라서, DTO와 리스트는 필요 없다.
-        //List<ProfileAttachmentDTO> profileAttachmentList = new ArrayList<>();
-
         try {
             if (attachImage.getSize() > 0) {
-                /* 첨부파일이 실제로 존재하는 경우에만 로직 수행 */
 
                 String originalFileName = attachImage.getOriginalFilename();
                 log.info("originalFileName : {}", originalFileName);
@@ -269,12 +264,10 @@ public class MemberController {
 
         memberService.modifyMember(modifyMember);
 
-        /* 로그인 시 저장 된 Authentication 객체를 변경 된 정보로 교체한다.
-         * 수정 된 정보로 로그인 한 것과 동일한 효과를 얻을 수 있다. */
         SecurityContextHolder.getContext().
                 setAuthentication(createNewAuthentication(loginMember.getMemberId()));
 
-//        rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("member.modify"));
+        rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("member.modify"));
 
         return "redirect:/user/member/update";
     }
