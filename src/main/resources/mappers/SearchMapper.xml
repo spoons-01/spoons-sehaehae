@@ -74,7 +74,6 @@
         <result property="refundCompleteDate" column="REFUND_COMPLETE_DATE"/>
         <result property="processStatus" column="PROCESS_STATUS"/>
         <result property="totalRefundAmount" column="TOTAL_REFUND_AMOUNT"/>
-        <result property="refundShippingFee" column="REFUND_SHIPPING_FEE"/>
         <result property="refundReason" column="REFUND_REASON"/>
 
 
@@ -161,18 +160,18 @@
             </if>
 
 
-                        <if test="startDate != '' and endDate == ''">
-                            AND A.REFUND_RECEIPT_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
-                        </if>
+            <if test="startDate != '' and endDate == ''">
+                AND A.REFUND_RECEIPT_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+            </if>
 
-                        <if test="startDate == '' and endDate != ''">
-                            AND <![CDATA[A.REFUND_RECEIPT_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
-                        </if>
+            <if test="startDate == '' and endDate != ''">
+                AND <![CDATA[A.REFUND_RECEIPT_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
+            </if>
 
-                        <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
-                            AND A.REFUND_RECEIPT_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
-                            AND <![CDATA[A.REFUND_RECEIPT_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
-                        </if>
+            <if test="startDate != '' and endDate != '' and startDate != null and endDate != null" >
+                AND A.REFUND_RECEIPT_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[A.REFUND_RECEIPT_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
+            </if>
 
 
 
@@ -349,15 +348,15 @@
 
     </select>
 
-<!--    <update id="updateOrderStatus">-->
-<!--        UPDATE TBL_ORDER-->
-<!--        SET ORDER_STATUS = #{newStatus}-->
-<!--        ,PROGRESS_DATE = SYSDATE-->
-<!--        WHERE ORDER_CODE IN-->
-<!--        <foreach collection="orderId" item="orderId" open="(" separator="," close=")">-->
-<!--            #{orderId}-->
-<!--        </foreach>-->
-<!--    </update>-->
+    <!--    <update id="updateOrderStatus">-->
+    <!--        UPDATE TBL_ORDER-->
+    <!--        SET ORDER_STATUS = #{newStatus}-->
+    <!--        ,PROGRESS_DATE = SYSDATE-->
+    <!--        WHERE ORDER_CODE IN-->
+    <!--        <foreach collection="orderId" item="orderId" open="(" separator="," close=")">-->
+    <!--            #{orderId}-->
+    <!--        </foreach>-->
+    <!--    </update>-->
 
     <update id="updateOrderStatus">
         UPDATE TBL_ORDER
@@ -794,32 +793,32 @@
 
     </select>
 
-        <select id="getOrderDetailList" resultMap="OrderResultMap">
-            SELECT
-             A.MEMBER_NO
-            ,A.ORDER_DATE
-            ,B.NAME
-            ,B.ID
-            ,B.PHONE_NUMBER
-            ,B.ADDRESS1
-            FROM TBL_ORDER A
-            JOIN TBL_MEMBER B ON (A.MEMBER_NO = B.MEMBER_NO)
-            WHERE A.ORDER_CODE = ${clickedOrderCode}
-        </select>
+    <select id="getOrderDetailList" resultMap="OrderResultMap">
+        SELECT
+        A.MEMBER_NO
+        ,A.ORDER_DATE
+        ,B.NAME
+        ,B.ID
+        ,B.PHONE_NUMBER
+        ,B.ADDRESS1
+        FROM TBL_ORDER A
+        JOIN TBL_MEMBER B ON (A.MEMBER_NO = B.MEMBER_NO)
+        WHERE A.ORDER_CODE = '${clickedOrderCode}'
+    </select>
 
-        <select id="getOrderProductDetailList" resultMap="orderProductResultMap">
-            SELECT
-            A.PRODUCT_PHOTO
-            ,A.PRODUCT_NAME
-            ,A.PRODUCT_CODE
-            ,A.PRODUCT_PRICE
-            ,B.ORDER_AMOUNT
-            ,A.PRODUCT_PREMIUM_PRICE
-            FROM TBL_PRODUCT A
-            JOIN TBL_ORDER_PRODUCT B ON (A.PRODUCT_CODE = B.PRODUCT_CODE)
-            JOIN TBL_ORDER C ON (B.ORDER_CODE = C.ORDER_CODE)
-            WHERE C.ORDER_CODE = ${clickedOrderCode}
-        </select>
+    <select id="getOrderProductDetailList" resultMap="orderProductResultMap">
+        SELECT
+        A.PRODUCT_PHOTO
+        ,A.PRODUCT_NAME
+        ,A.PRODUCT_CODE
+        ,A.PRODUCT_PRICE
+        ,B.ORDER_AMOUNT
+        ,A.PRODUCT_PREMIUM_PRICE
+        FROM TBL_PRODUCT A
+        JOIN TBL_ORDER_PRODUCT B ON (A.PRODUCT_CODE = B.PRODUCT_CODE)
+        JOIN TBL_ORDER C ON (B.ORDER_CODE = C.ORDER_CODE)
+        WHERE C.ORDER_CODE = '${clickedOrderCode}'
+    </select>
 
     <select id="getPaymentDetailsList" resultMap="OrderResultMap">
         SELECT
@@ -827,12 +826,12 @@
         , ORDER_DISCOUNT
         , ORDER_TOTAL_PRICE
         FROM TBL_ORDER
-        WHERE ORDER_CODE = ${clickedOrderCode}
+        WHERE ORDER_CODE = '${clickedOrderCode}'
     </select>
 
     <select id="selectSearchRefundList" resultMap="RefundResultMap">
         SELECT
-          A.REFUND_CODE
+        A.REFUND_CODE
         , A.ORDER_CODE
         , A.REFUND_RECEIPT_DATE
         , A.REFUND_COMPLETE_DATE
@@ -842,7 +841,6 @@
         , E.PHONE_NUMBER
         , D.USE_POINT
         , D.CP_CODE
-        , A.REFUND_SHIPPING_FEE
         , A.REFUND_REASON
         FROM (SELECT
         ROWNUM RNUM
@@ -852,7 +850,6 @@
         , B.REFUND_COMPLETE_DATE
         , B.PROCESS_STATUS
         , B.TOTAL_REFUND_AMOUNT
-        , B.REFUND_SHIPPING_FEE
         , B.REFUND_REASON
         FROM ( SELECT
         C.REFUND_CODE
@@ -861,7 +858,6 @@
         , C.REFUND_COMPLETE_DATE
         , C.PROCESS_STATUS
         , C.TOTAL_REFUND_AMOUNT
-        , C.REFUND_SHIPPING_FEE
         , C.REFUND_REASON
         FROM TBL_REFUND C
         <if test="searchCondition == 'member' or searchCondition == 'phone'">
@@ -878,8 +874,8 @@
             </if>
 
             <if test="searchCondition == 'member'">
-            AND E.NAME = #{searchValue}
-           </if>
+                AND E.NAME = #{searchValue}
+            </if>
 
             <if test="searchCondition == 'phone'">
                 AND E.PHONE_NUMBER LIKE '%' || #{searchValue} || '%'

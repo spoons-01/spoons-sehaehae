@@ -36,9 +36,9 @@ public interface SearchMapper {
     int selectRefundTotalCount(Map<String, String> searchMap);
 
     /* 주문 상세 페이지 */
-    OrderDTO getOrderDetailList(Long clickedOrderCode);
-    List<OrderDTO> getOrderProductDetailList(Long clickedOrderCode);
-    OrderDTO getPaymentDetailsList(Long clickedOrderCode);
+    OrderDTO getOrderDetailList(String clickedOrderCode);
+    List<OrderDTO> getOrderProductDetailList(String clickedOrderCode);
+    OrderDTO getPaymentDetailsList(String clickedOrderCode);
 
 
 
