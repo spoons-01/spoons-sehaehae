@@ -12,7 +12,7 @@
 <span style="margin-left: 400px;margin-top: 40px;display: inline-block; font-size: 30px">주문번호 : </span><span th:text="${code}" style="font-size: 30px"></span>
 <br>
 <button type="button" style="margin-left: 400px; margin-top: 80px; border:1px solid black; font-size: 30px; padding:16px 50px" onclick="location.href='/'">홈으로</button>
-<button type="button" style="margin-left: 20px; margin-top: 30px; border:1px solid black; font-size: 30px; margin-bottom: 120px; padding:16px 50px">주문확인</button>
+<button type="button" style="margin-left: 20px; margin-top: 30px; border:1px solid black; font-size: 30px; margin-bottom: 120px; padding:16px 50px" th:onclick="'location.href=\'/user/member/mysehae?orderCode=' + @{${code}} + '\''">주문확인</button>
 <div th:replace="user/common/footer.html"></div>
 
 </body>
