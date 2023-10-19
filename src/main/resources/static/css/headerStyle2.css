@@ -1,4 +1,3 @@
-
 /* 래퍼 설정 */
 .wrapper2 {
     max-width: 1400px;
@@ -37,8 +36,11 @@
     color: #000000;
     font-size: 14px;
     font-family: NanumSquareNeo-Variable;
-}
 
+}
+a{
+    text-decoration: none;
+}
 .main-nav a:hover {
     color: #4B93FF;
 }
