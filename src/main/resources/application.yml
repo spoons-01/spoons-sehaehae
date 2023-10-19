@@ -20,7 +20,7 @@ spring:
     username: C##SPOONS
     password: SPOONS
 
-# file upload config
+#file upload config
 servlet:
   multipart:
     max-file-size: 300MB

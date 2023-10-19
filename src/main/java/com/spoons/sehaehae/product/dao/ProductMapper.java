@@ -69,4 +69,8 @@ public interface ProductMapper {
     MemberLevelDTO selectMemberLevel(int memberNo);
 
     void deleteCategory(List<Integer> codeList);
+
+    void updatePt(Map<String, Object> map);
+
+    void deleteCartList(Map<String, Object> map);
 }

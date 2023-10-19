@@ -7,7 +7,6 @@
     <link href="/css/admin.css" rel="stylesheet" type="text/css">
     <link href="https://webfontworld.github.io/NanumSquareNeo/NanumSquareNeo.css" rel="stylesheet">
     <link href="/css/listAdmin.css" rel="stylesheet" type="text/css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <title>Document</title>
     <script>
         const message = '[[${message}]]'
@@ -17,6 +16,8 @@
 
 <body>
 <div th:replace="admin/common/nav.html"></div>
+<span style="display: inline-block; margin-left: 300px; padding-top: 30px; font-weight: bold; font-size: 1.2rem">상품관리 > 상품 목록</span><span style="display: inline-block; margin-left: 1100px; font-weight: bold; font-size: 1.2rem;"><a href="/user/member/logout">로그아웃<img src="/images/sign-out.png" th:style="'margin-left : 10px'"></a></span>
+
 <p id="search">검색</p>
 <div class="search">
     <form action="/product/listAdmin">
@@ -28,7 +29,6 @@
 <br>
 <button  id="delete" class="but">선택삭제</button>
 <button onclick="location.href='/product/productRegist'" class="but reg">상품등록</button>
-
 <table id="table">
     <tr style="height: 50px; background: #d2d2d7">
         <td></td>

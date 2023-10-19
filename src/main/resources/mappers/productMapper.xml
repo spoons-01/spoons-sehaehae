@@ -298,4 +298,16 @@
         DELETE TBL_CATEGORY
         WHERE CATEGORY_CODE IN <foreach collection="codeList" item="item" open="(" separator="," close=")"> #{item} </foreach>
     </delete>
+
+
+    <insert id="updatePt">
+        INSERT  INTO TBL_PT
+        (PT_CODE, MEMBER_NO, POINT, ORDER_CODE)
+        VALUES
+        (SEQ_PT_CODE.NEXTVAL,#{order.member.memberNo},#{order.reward},#{order.code})
+    </insert>
+    <delete id="deleteCartList">
+        DELETE TBL_CART
+        WHERE MEMBER_NO = #{order.member.memberNo}
+    </delete>
 </mapper>
