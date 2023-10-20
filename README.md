@@ -19,25 +19,32 @@
 
 ## 2. 🧑‍🤝‍🧑 팀원 소개
 
-|양슬기|이승민|강인선|
-|:----:|:---:|:---:|
-|테스트1|테스트2|테스트3|
-|https://github.com/asoong2|https://github.com/meen0|https://github.com/popipopipoi|
-|로그인, 마이페이지, 메인페이지|주문하기, 상품 관리|후기관리,게시판관리, 메인페이지|
+![스푼즈](https://github.com/spoons-01/spoons-sehaehae/assets/138549341/0a65951d-5a47-45d6-888d-980bbb9e0eb0)
 
-|박민서|김동한|
-|:---:|:---:|
-|<img src="https://github.com/spoons-01/spoons-sehaehae/assets/138549341/24c7aa7c-3fba-47da-86b0-c513a31a76f2" width="100" height="150"/>|<img src="https://github.com/spoons-01/spoons-sehaehae/assets/138549341/395f09ff-a7ed-40e6-b25a-10935aa0f7d6" width="100" height="150"/>|
-|https://github.com/gongryongyi|https://github.com/dhnn412|
-|배송관리, 정산관리|회원관리, 서비스관리 ,혜택관리|
+- [양슬기](https://github.com/asoong2)
+- [박민서](https://github.com/gongryongyi)
+- [이승민](https://github.com/meen0)
+- [김동환](https://github.com/dhnn412)
+- [강인선](https://github.com/popipopipoi)
+
   
 > ### 저희 팀 문화는 수평관계 입니다. 찐 막내부터 찐 어르신까지 평등한 세상.
 
 --- 
 
 ## 3. 📟 핵심 기능
-![123](https://github.com/spoons-01/spoons-sehaehae/assets/138549341/960a90ba-338c-4981-beef-16aaa194e0bb)
-![456](https://github.com/spoons-01/spoons-sehaehae/assets/138549341/b1004e33-6a2f-474c-9632-f580acd47261)
+
+- <h3>사용자</h3>
+
+|A) 로그인|B) 마이페이지|C) 주문하기|D) 커뮤니티|E) 혜택|
+|---|---|---|---|---|
+|자체로그인, 회원가입,이메일 인증|내 정보, 정보 수정, 보유 쿠폰, 보유 포인트, 주문 조회,<br> 이용 내역, 환불, 로그아웃, 회원 등급, 내가 쓴 글 확인|장바구니, 결제 및 환불, 쿠폰 사용, 서비스 선택| 실시간 후기, 공지사항, 자주하는 질문|첫 가입 쿠폰, 포인트|
+
+- <h3>관리자</h3>
+
+|A) 회원 관리|B) 서비스 관리|C) 게시판 관리|D) 주문 정보 관리|E) 정산 관리|F) 통계 분석|G) 혜택 관리|
+|---|---|---|---|---|---|---|
+|회원 정보 조회, 수정, 삭제|세탁 서비스 관리, 수정, 삭제|공지사항(조회, 수정, 삭제), 자주 묻는 질문(조회, 수정, 삭제), 후기(조회, 삭제)|주문 확인, 주문 상태, 환불|금액 조회(기간별로)|회원 통계, 주문 통계|쿠폰 관리|
 
 ---
 
