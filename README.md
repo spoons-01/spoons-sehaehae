@@ -19,17 +19,14 @@
 
 ## 2. 🧑‍🤝‍🧑 팀원 소개
 
-|양슬기|이승민|강인선|
-|:----:|:---:|:---:|
-|테스트1|테스트2|<img src="https://github.com/spoons-01/spoons-sehaehae/assets/138549341/25a8a7d5-60cf-4ca5-a73f-602de93a1224" width="100" height="150"/>|
-|https://github.com/asoong2|https://github.com/meen0|https://github.com/popipopipoi|
-|로그인, 마이페이지, 메인페이지|주문하기, 상품 관리|후기관리,게시판관리, 메인페이지|
+![스푼즈](https://github.com/spoons-01/spoons-sehaehae/assets/138549341/0a65951d-5a47-45d6-888d-980bbb9e0eb0)
 
-|박민서|김동한|
-|:---:|:---:|
-|<img src="https://github.com/spoons-01/spoons-sehaehae/assets/138549341/24c7aa7c-3fba-47da-86b0-c513a31a76f2" width="100" height="150"/>|<img src="https://github.com/spoons-01/spoons-sehaehae/assets/138549341/395f09ff-a7ed-40e6-b25a-10935aa0f7d6" width="100" height="150"/>|
-|https://github.com/gongryongyi|https://github.com/dhnn412|
-|배송관리, 정산관리|회원관리, 서비스관리 ,혜택관리|
+- [양슬기](https://github.com/asoong2)
+- [박민서](https://github.com/gongryongyi)
+- [이승민](https://github.com/meen0)
+- [김동환](https://github.com/dhnn412)
+- [강인선](https://github.com/popipopipoi)
+
   
 > ### 저희 팀 문화는 수평관계 입니다. 찐 막내부터 찐 어르신까지 평등한 세상.
 
