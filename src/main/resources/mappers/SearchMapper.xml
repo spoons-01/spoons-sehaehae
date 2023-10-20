@@ -24,6 +24,7 @@
         <result property="progressDate" column="PROGRESS_DATE"/>
         <result property="payMethod" column="PAYMETHOD"/>
 
+        <association property="coupon" resultMap="CouponResultMap"/>
         <association property="member" resultMap="MemberResultMap"/>
 
     </resultMap>
@@ -79,6 +80,11 @@
 
         <association property="order" resultMap="OrderResultMap"/>
 
+    </resultMap>
+
+    <resultMap id="CouponResultMap" type="com.spoons.sehaehae.admin.dto.CouponDTO">
+        <id property="cpCode" column="CP_CODE"/>
+        <result property="cpRate" column="CP_RATE"/>
     </resultMap>
 
 
@@ -176,6 +182,41 @@
 
 
         </where>
+
+    </select>
+
+    <select id="selectCalculateTotalCount" resultType="_int" parameterType="hashmap">
+        SELECT
+        COUNT(*)
+        FROM TBL_ORDER
+        WHERE PROGRESS_DATE IS NOT NULL
+            <if test="searchCondition == 'orderDate' and startDate != '' and endDate == ''">
+                AND ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+            </if>
+
+            <if test="searchCondition == 'orderDate' and startDate == '' and endDate != ''">
+                AND <![CDATA[ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
+            </if>
+
+            <if test="searchCondition == 'orderDate' and startDate != '' and endDate != '' and startDate != null and endDate != null">
+                AND ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
+            </if>
+
+            <if test="searchCondition == 'progressDate' and startDate != '' and endDate == ''">
+                AND PROGRESS_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+            </if>
+
+            <if test="searchCondition == 'progressDate' and startDate == '' and endDate != ''">
+                AND <![CDATA[PROGRESS_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
+            </if>
+
+            <if test="searchCondition == 'progressDate' and startDate != '' and endDate != '' and startDate != null and endDate != null">
+                AND PROGRESS_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[PROGRESS_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
+            </if>
+
+
 
     </select>
 
@@ -906,6 +947,71 @@
         ORDER BY 1 DESC
 
     </select>
+
+    <select id="selectCalculateList" resultMap="OrderResultMap">
+        SELECT
+        A.ORDER_DATE
+        , A.PROGRESS_DATE
+        , A.ORDER_PRICE
+        , A.USE_POINT
+        , A.CP_CODE
+        , D.CP_RATE
+        , A.ORDER_TOTAL_PRICE
+        FROM (SELECT
+        ROWNUM RNUM
+        , B.ORDER_DATE
+        , B.PROGRESS_DATE
+        , B.ORDER_PRICE
+        , B.USE_POINT
+        , B.CP_CODE
+        , B.ORDER_TOTAL_PRICE
+        FROM ( SELECT
+          C.ORDER_DATE
+        , C.PROGRESS_DATE
+        , C.ORDER_PRICE
+        , C.USE_POINT
+        , C.CP_CODE
+        , C.ORDER_TOTAL_PRICE
+        FROM TBL_ORDER C
+        WHERE PROGRESS_DATE IS NOT NULL
+            <if test="searchCondition == 'orderDate' and startDate != '' and endDate == ''">
+                AND C.ORDER_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+            </if>
+
+            <if test="searchCondition == 'orderDate' and startDate == '' and endDate != ''">
+                AND <![CDATA[C.ORDER_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
+            </if>
+
+            <if test="searchCondition == 'orderDate' and startDate != '' and endDate != '' and startDate != null and endDate != null">
+                AND C.ORDER_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[C.ORDER_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
+            </if>
+
+            <if test="searchCondition == 'progressDate' and startDate != '' and endDate == ''">
+                AND C.PROGRESS_DATE >= TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+            </if>
+
+            <if test="searchCondition == 'progressDate' and startDate == '' and endDate != ''">
+                AND <![CDATA[C.PROGRESS_DATE <= TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')]]>
+            </if>
+
+            <if test="searchCondition == 'progressDate' and startDate != '' and endDate != '' and startDate != null and endDate != null">
+                AND C.PROGRESS_DATE > TO_DATE(#{startDate, jdbcType=VARCHAR}, 'yyyy-MM-dd')
+                AND <![CDATA[C.PROGRESS_DATE < TO_DATE(#{endDate, jdbcType=VARCHAR}, 'yyyy-MM-dd') + 1]]>
+            </if>
+        ORDER BY C.ORDER_DATE DESC
+        ) B
+        <![CDATA[
+                                 WHERE ROWNUM <= #{endRow}
+                                 ]]>
+        ) A
+        JOIN TBL_CP D ON (A.CP_CODE = D.CP_CODE)
+        WHERE A.RNUM >= #{startRow}
+        ORDER BY 1 DESC
+
+    </select>
+
+
 
 
 
