@@ -83,7 +83,7 @@ public class SearchController {
     @PostMapping("/update-order-status")
     public ResponseEntity<String> updateOrderStatus(@RequestParam(name = "orderId[]") String[] orderId) {
         log.info("{}", Arrays.toString(orderId));
-        String newStatus = "수거완료"; // 이 부분은 고정된 값으로 설정하거나 요구사항에 따라 동적으로 처리해야 합니다.
+        String newStatus = "수거완료"; // 고정된 값 설정.
 
         boolean update = orderService.updateOrderStatus(orderId, newStatus);
 
@@ -403,7 +403,22 @@ public class SearchController {
 
     /*---------------------------------------------정산----------------------------------------------*/
     @GetMapping("/calculate")
-    public String selectCalculateList() {
+    public String selectCalculateList(@RequestParam(defaultValue = "1") int page,
+                                      @RequestParam(required = false) String searchCondition,
+                                      @RequestParam(required = false) String searchValue,
+                                      @RequestParam(required = false) String startDate,
+                                      @RequestParam(required = false) String endDate,
+                                      Model model) {
+
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+        searchMap.put("startDate", startDate);
+        searchMap.put("endDate", endDate);
+
+        Map<String, Object> searchListAndPaging = orderService.selectCalculateList(searchMap, page);
+        model.addAttribute("paging", searchListAndPaging.get("paging"));
+        model.addAttribute("searchCalculateList", searchListAndPaging.get("searchCalculateList"));
 
 
 
