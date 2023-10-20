@@ -132,12 +132,12 @@
                         <p>후기가 없습니다. 후기를 작성해 주세요!</p>
                     </div>
                     <div class="dot-box-content" th:each="myReview, iterStat : ${myReviews}"
-                         th:if="${iterStat.index < 4}">
+                         th:if="${iterStat.index < 4}" >
                         <p th:text="${myReview.title}"></p>
                     </div>
                 </div>
                 <div class="btn-wrapper">
-                    <a href="#" class="button">+더보기</a>
+                    <a href="/user/board/userReview" class="button">+더보기</a>
                 </div>
             </div>
 
@@ -220,6 +220,7 @@
         </div>
     </div>
 </footer>
+
 </body>
 
 

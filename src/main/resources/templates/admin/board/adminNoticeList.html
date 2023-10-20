@@ -35,7 +35,6 @@
         </tr>
 
         <tr th:each="notice : ${ noticeList }" >
-            <!--                                    <td><input type="checkbox" name="noticeCheckbox" value="${notice.no}"/></td>-->
             <td th:text="${ notice.no }"></td>
             <td th:text="${ notice.title }" th:onclick="|location.href='/admin/board/adminNoticeView?no=${notice.no}'|"></td>
             <td th:text="${ notice.count }"></td>

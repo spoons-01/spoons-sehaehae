@@ -607,7 +607,7 @@
         JOIN TBL_ORDER F ON(A.ORDER_CODE = F.ORDER_CODE)
         WHERE A.RNUM >= #{ startRow }
 
-        ORDER BY 1 DESC
+        ORDER BY REVIEW_CREATED_DATE DESC
     </select>
 
     <select id="selectReviewView"  resultMap="reviewBoardResultMap">
