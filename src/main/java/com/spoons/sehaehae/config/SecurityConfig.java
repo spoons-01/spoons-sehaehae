@@ -54,10 +54,10 @@ public class SecurityConfig {
                 .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
                 .antMatchers("/admember/list", "/chart/list", "/coupon/list").hasRole("ADMIN")
 
-                .antMatchers("/board/**", "/thumbnail/**", "/user/member/update", "/user/member/delete").hasRole("MEMBER")
+                .antMatchers("/board/**", "/thumbnail/**", "/user/member/update", "/user/member/delete").hasAnyRole("MEMBER", "ADMIN")
+
                 .antMatchers("/admin/board/**").hasRole("ADMIN")
-                .antMatchers("/user/board/userReviewView/**").hasRole("ADMIN")
-                .antMatchers("/user/board/userReviewView/**").hasRole("MEMBER")
+                .antMatchers("/user/board/userReviewView/**").hasAnyRole("ADMIN", "MEMBER")
 
                 .antMatchers("/orderManagement/list").hasRole("ADMIN")
                 .antMatchers("/orderManagement/**").hasRole("ADMIN")
@@ -65,7 +65,7 @@ public class SecurityConfig {
                 .antMatchers("/orderManagement/**").hasRole("ADMIN")
 
                 /* 위에 서술 된 패턴 외의 요청은 인증 되지 않은 사용자도 요청 허가 */
-                .antMatchers("/product/cartList","/product/orderComplete","/product/payment","/product/coupon").hasRole("MEMBER")
+                .antMatchers("/product/cartList","/product/orderComplete","/product/payment","/product/coupon").hasAnyRole("MEMBER", "ADMIN")
                 .antMatchers("/product/listAdmin","/product/categoryList","/product/categoryRegist","/product/productModify","/product/productRegist").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()

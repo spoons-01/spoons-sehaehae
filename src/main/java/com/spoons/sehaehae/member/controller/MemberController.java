@@ -402,9 +402,6 @@ public class MemberController {
         log.info("review request : {}", review);
         log.info("attachImage request : {}", attachImage);
 
-        // 별점을 ReviewDTO에 설정
-        review.setRating(rating);
-
         String fileUploadDir = IMAGE_DIR + "original";
         String thumbnailDir = IMAGE_DIR + "thumbnail";
 
@@ -463,6 +460,8 @@ public class MemberController {
         review.setAttachment(attachment);
         review.setWriter(member);
         review.setMyOrders(myOrder);
+        // 별점을 ReviewDTO에 설정
+        review.setRating(rating);
 
         model.addAttribute("myOrders", myOrder);
         model.addAttribute("myPoint", myPoint);
