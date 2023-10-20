@@ -43,9 +43,9 @@ public class ProductController {
     public void productList(Model model,
                             @RequestParam(required = false) String searchValue,
                             @RequestParam(required = false) String searchCondition,
-                            @RequestParam(defaultValue = "1" ) int page,
+                            @RequestParam(defaultValue = "1") int page,
                             @AuthenticationPrincipal MemberDTO member
-                            ) {
+    ) {
         Map<String, String> searchMap = new HashMap<>();
         searchMap.put("searchValue", searchValue);
         searchMap.put("searchCondition", searchCondition);
@@ -54,13 +54,15 @@ public class ProductController {
         List<ProductDTO> productList = productService.selectProduct(searchMap);
         List<ProductDTO> allProduct = productService.selectAllproduct(null);
         List<CategoryDTO> categoryList = productService.selectCategory();
-        model.addAttribute("allProduct",allProduct);
+        model.addAttribute("allProduct", allProduct);
         model.addAttribute("productList", productList);
         model.addAttribute("categoryList", categoryList);
     }
+
     @GetMapping("/productRegist")
     public void registProduct() {
     }
+
     @GetMapping("/detail")
     public void productDetail(@RequestParam int code, Model model) {
         ProductDTO product = productService.selectProductByCode(code);
@@ -85,7 +87,7 @@ public class ProductController {
         model.addAttribute("totalPrice", totalPrice);
         model.addAttribute("member", member1);
         model.addAttribute("cartList", cart);
-        model.addAttribute("point",point);
+        model.addAttribute("point", point);
     }
 
     @GetMapping("/categoryRegist")
@@ -119,7 +121,7 @@ public class ProductController {
             throw new RuntimeException(e);
         }
         productService.registProduct(product);
-        rttr.addFlashAttribute("message",messageSourceAccessor.getMessage("product.regist"));
+        rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("product.regist"));
         return "redirect:/product/listAdmin";
     }
 
@@ -135,7 +137,10 @@ public class ProductController {
         cart.setMember(member.getMemberNo());
         String message = "장바구니에 추가 됐습니다.";
 
-        productService.addCart(cart);
+        if (productService.addCart(cart) == false) {
+            message = "이미 장바구니에 추가된 상품입니다.";
+        }
+
 
 
         return ResponseEntity.ok(message);
@@ -158,16 +163,16 @@ public class ProductController {
         System.out.println(list);
         for (int i = 0; list.size() > i; i++) {
             totalPrice += list.get(i).getProduct().getPrice() * list.get(i).getAmount();
-            if(list.get(i).getUseEco().equals("Y")){
+            if (list.get(i).getUseEco().equals("Y")) {
                 totalPrice += 3000;
             }
-            if(list.get(i).getUsePremium().equals("Y")){
+            if (list.get(i).getUsePremium().equals("Y")) {
                 totalPrice += list.get(i).getProduct().getPremiumPrice();
             }
         }
         model.addAttribute("cartList", list);
         model.addAttribute("totalPrice", totalPrice);
-        model.addAttribute("ecoPrice",3000);
+        model.addAttribute("ecoPrice", 3000);
     }
 
     @GetMapping("/selectAllCategory")
@@ -175,6 +180,7 @@ public class ProductController {
         List<CategoryDTO> categoryList = productService.selectCategory();
         return ResponseEntity.ok(categoryList);
     }
+
     @GetMapping("/updateCart")
     public ResponseEntity<String> updateCart1(@RequestParam int amount, @RequestParam String productCode, @AuthenticationPrincipal MemberDTO member) {
         System.out.println("amount : " + amount);
@@ -186,6 +192,7 @@ public class ProductController {
         productService.updateCartList(updateCartMap);
         return ResponseEntity.ok("ddd");
     }
+
     @PostMapping("/deleteCart")
     public @ResponseBody ResponseEntity<String> deleteCart(@RequestBody List<Integer> product, @AuthenticationPrincipal MemberDTO member) {
 
@@ -196,6 +203,7 @@ public class ProductController {
 
         return ResponseEntity.ok("삭제완료");
     }
+
     @GetMapping("/finalPrice")
     public ResponseEntity<Long> abc(@RequestParam(defaultValue = "0") int point, @RequestParam(required = false) int totalPrice, @RequestParam(defaultValue = "10") int rate) {
         System.out.println(totalPrice);
@@ -204,12 +212,13 @@ public class ProductController {
         float per = (float) rate / 100;
         Long discount = (long) (totalPrice * per);
         System.out.println("discount : " + discount); //할인금액
-        Long finalPrice = totalPrice-point-discount;
+        Long finalPrice = totalPrice - point - discount;
         System.out.println(finalPrice);
         return ResponseEntity.ok(finalPrice);
     }
+
     @PostMapping("/complete")
-    public String complete(@ModelAttribute OrderDTO order, @AuthenticationPrincipal MemberDTO member,MultipartFile photo1,
+    public String complete(@ModelAttribute OrderDTO order, @AuthenticationPrincipal MemberDTO member, MultipartFile photo1,
                            @RequestParam(value = "productCode") List<Integer> productCode, @RequestParam(value = "amount") List<Integer> amount,
                            @RequestParam(value = "usePremium") List<Character> usePremium, @RequestParam(value = "useEco") List<Character> useEco,
                            @ModelAttribute PointDTO point1) {
@@ -217,10 +226,10 @@ public class ProductController {
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         int discount = (order.getOrderPrice()) - order.getOrderTotalPrice();
-        String uuid = UUID.randomUUID().toString().substring(0,4);
+        String uuid = UUID.randomUUID().toString().substring(0, 4);
         String code = simpleDateFormat.format(date) + uuid;
         List<OrderProductDTO> orderProducts = new ArrayList<>();
-        for(int i = 0; i < productCode.size(); i++){
+        for (int i = 0; i < productCode.size(); i++) {
             OrderProductDTO orderProduct = new OrderProductDTO();
             orderProduct.setProductCode(productCode.get(i));
             orderProduct.setAmount(amount.get(i));
@@ -232,13 +241,13 @@ public class ProductController {
         int reward = 0;
 
         String level = productService.selectMemberLevel(member.getMemberNo());
-        if(level.equals("1")){
+        if (level.equals("1")) {
             reward = (int) (order.getOrderTotalPrice() * 0.02);
-        }else if(level.equals("2")){
+        } else if (level.equals("2")) {
             reward = (int) (order.getOrderTotalPrice() * 0.03);
-        }else if(level.equals("3")){
+        } else if (level.equals("3")) {
             reward = (int) (order.getOrderTotalPrice() * 0.04);
-        }else if(level.equals("5")){
+        } else if (level.equals("5")) {
             reward = (int) (order.getOrderTotalPrice() * 0.05);
         }
         System.out.println("reward : " + reward);
@@ -258,7 +267,7 @@ public class ProductController {
             if (photo1.getSize() > 0) {
                 photo1.transferTo(new File(fileUploadDir + "/" + originalName));
                 order.setImage("/upload/resource/location/" + originalName);
-            }else{
+            } else {
                 order.setImage("null");
             }
         } catch (IOException e) {
@@ -269,38 +278,40 @@ public class ProductController {
         System.out.println("memberusePoint : " + order.getUsePoint());
         int point = point1.getPoint() - order.getUsePoint() + reward;
         System.out.println("totalPoint : " + point);
-        Map<String,Object> map = new HashMap<>();
-        map.put("usecouponCode",order.getUseCoupon());
+        Map<String, Object> map = new HashMap<>();
+        map.put("usecouponCode", order.getUseCoupon());
         map.put("member", member);
         map.put("point", point);
-        map.put("order",order);
+        map.put("order", order);
 
         productService.updateInfo(map);
 
 
-        return "redirect:/product/orderComplete?code="+code;
+        return "redirect:/product/orderComplete?code=" + code;
     }
 
     @GetMapping("/orderComplete")
-    public void Ordercomplete(Model model, @RequestParam String code){
-        model.addAttribute("code",code);
+    public void Ordercomplete(Model model, @RequestParam String code) {
+        model.addAttribute("code", code);
     }
 
     @GetMapping("/listAdmin")
-    public void listAdmin(Model model, String searchValue){
-        Map<String,Object> searchMap = new HashMap<>();
-        searchMap.put("searchValue",searchValue);
+    public void listAdmin(Model model, String searchValue) {
+        Map<String, Object> searchMap = new HashMap<>();
+        searchMap.put("searchValue", searchValue);
         List<ProductDTO> productList = productService.selectAllproduct(searchMap);
-        model.addAttribute("productList",productList);
-        model.addAttribute("searchValue",searchValue);
+        model.addAttribute("productList", productList);
+        model.addAttribute("searchValue", searchValue);
     }
+
     @GetMapping("/productModify")
-    public void modify(int code,Model model){
+    public void modify(int code, Model model) {
         ProductDTO product = productService.selectProductByCode(code);
-        model.addAttribute("product",product);
+        model.addAttribute("product", product);
     }
+
     @PostMapping("/modify")
-    public String productModify(ProductDTO product, MultipartFile productImage,RedirectAttributes rttr){
+    public String productModify(ProductDTO product, MultipartFile productImage, RedirectAttributes rttr) {
         System.out.println("modify Product : " + product);
         product.setModifyDate(new Date());
         String imageName = productImage.getOriginalFilename();
@@ -321,71 +332,76 @@ public class ProductController {
         System.out.println(product);
         productService.modifyProduct(product);
 
-        rttr.addFlashAttribute("message",messageSourceAccessor.getMessage("product.regist"));
+        rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("product.regist"));
 
         return "redirect:/product/listAdmin";
     }
+
     @PostMapping("/delete")
-    public ResponseEntity<String> delete(@RequestBody List<Integer> productCode){
+    public ResponseEntity<String> delete(@RequestBody List<Integer> productCode) {
         System.out.println(productCode);
 
-        Map<String,List<Integer>> productMap = new HashMap<>();
-        productMap.put("productMap",productCode);
+        Map<String, List<Integer>> productMap = new HashMap<>();
+        productMap.put("productMap", productCode);
         productService.deleteProduct(productMap);
 
         return ResponseEntity.ok("삭제가 완료되었습니다.");
     }
+
     @GetMapping("/coupon")
-    public void coupon(Model model, @AuthenticationPrincipal MemberDTO member){
+    public void coupon(Model model, @AuthenticationPrincipal MemberDTO member) {
 
         List<CpBoxDTO> couponList = productService.selectCoupon(member.getMemberNo());
 
-        model.addAttribute("couponList",couponList);
+        model.addAttribute("couponList", couponList);
     }
 
     @GetMapping("/deletePremium")
-    public ResponseEntity<String> deletePremium(int code, @AuthenticationPrincipal MemberDTO member){
-        Map<String,Object> map = new HashMap<>();
-        map.put("memberId",member.getMemberNo());
-        map.put("code",code);
+    public ResponseEntity<String> deletePremium(int code, @AuthenticationPrincipal MemberDTO member) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("memberId", member.getMemberNo());
+        map.put("code", code);
         productService.deletePremium(map);
 
         return ResponseEntity.ok("변경 완료");
     }
+
     @GetMapping("/deleteEco")
-    public String deleteEco(int code, @AuthenticationPrincipal MemberDTO member){
-        Map<String,Object> map = new HashMap<>();
-        map.put("memberId",member.getMemberNo());
-        map.put("code",code);
+    public String deleteEco(int code, @AuthenticationPrincipal MemberDTO member) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("memberId", member.getMemberNo());
+        map.put("code", code);
         productService.deleteEco(map);
         return "redirect:/product/cartList";
     }
 
     @GetMapping("/addOption")
-    public void addoption(int code, String option,@AuthenticationPrincipal MemberDTO member){
+    public void addoption(int code, String option, @AuthenticationPrincipal MemberDTO member) {
         System.out.println(code);
         System.out.println(option);
         Map<String, Object> addoption = new HashMap<>();
-        addoption.put("option",option);
-        addoption.put("code",code);
-        addoption.put("memberCode",member.getMemberNo());
+        addoption.put("option", option);
+        addoption.put("code", code);
+        addoption.put("memberCode", member.getMemberNo());
         productService.addOption(addoption);
     }
 
     @GetMapping("/categoryList")
-    public void categoryList(Model model){
-        List<CategoryDTO> category =  productService.selectCategory();
-        model.addAttribute("categoryList",category);
+    public void categoryList(Model model) {
+        List<CategoryDTO> category = productService.selectCategory();
+        model.addAttribute("categoryList", category);
 
     }
+
     @PostMapping("/registCategory")
-    public String registCategory(String name){
+    public String registCategory(String name) {
 
         productService.registCategory(name);
         return "redirect:/product/categoryList";
     }
+
     @PostMapping("/deleteCategory")
-    public String deleteCategory(@RequestParam List<Integer> codeList){
+    public String deleteCategory(@RequestParam List<Integer> codeList) {
 
         productService.deleteCategory(codeList);
 
