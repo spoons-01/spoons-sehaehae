@@ -182,15 +182,15 @@ public class ProductController {
     }
 
     @GetMapping("/updateCart")
-    public ResponseEntity<String> updateCart1(@RequestParam int amount, @RequestParam String productCode, @AuthenticationPrincipal MemberDTO member) {
-        System.out.println("amount : " + amount);
-        System.out.println("productCode : " + productCode);
+    public ResponseEntity<String> updateCart1(@RequestParam int amount,
+                                              @RequestParam String productCode,
+                                              @AuthenticationPrincipal MemberDTO member) {
         Map<String, Object> updateCartMap = new HashMap<>();
         updateCartMap.put("amount", amount);
         updateCartMap.put("productCode", productCode);
         updateCartMap.put("memberId", member.getMemberNo());
         productService.updateCartList(updateCartMap);
-        return ResponseEntity.ok("ddd");
+        return ResponseEntity.ok("변경완료");
     }
 
     @PostMapping("/deleteCart")
