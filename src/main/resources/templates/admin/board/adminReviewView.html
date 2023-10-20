@@ -35,6 +35,9 @@
         </tr>
         <tr class="detail-body">
             <td>
+                <div class="reviewPhoto">
+                    <img th:src="${review.attachment.thumbnail}" alt="게시글사진">
+                </div>
                 <textarea name="body" cols="60" rows="15"
                           readonly th:text="${ review.body }">
                                     </textarea></td>

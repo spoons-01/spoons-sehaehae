@@ -10,7 +10,7 @@
     <link href="/css/usermainstyle.css" rel="stylesheet" type="text/css">
     <link rel="icon" href="/images/favicon.ico">
     <script src="/javaScript/event.js" type="text/javascript"></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- 리셋 CSS 설정 -->
 <!--    <link href="https://unpkg.com/ress/dist/ress.min.css" rel="stylesheet" type="text/css">-->
 </head>
@@ -118,28 +118,25 @@
         <div>후기3</div>
         <p>></p>
     </div>
-<!--    <div class="review-box" >-->
+<!--    <div class="review-box">-->
 <!--        <p id="prev"><</p>-->
-<!--        <th:block th:each="review : ${ reviewList }">-->
-<!--            <input type="hidden" name="no" th:value="${ review.reviewNo }" />-->
-
-<!--        <div class="review">-->
-<!--            <span th:text="${ review.writer.nickname }"></span>-->
-<!--            <span class="ratingReview" th:text="${review.rating}"></span>-->
-<!--            <textarea name="body" cols="60" rows="15" readonly th:text="${ review.body }"></textarea>-->
-<!--        </div>-->
-<!--        <div class="review">-->
-<!--            <span th:text="${ review.writer.nickname }"></span>-->
-<!--            <span class="ratingReview" th:text="${review.rating}"></span>-->
-<!--            <textarea name="body" cols="60" rows="15" readonly th:text="${ review.body }"></textarea>-->
-<!--        </div>-->
-<!--        <div class="review">-->
-<!--            <span th:text="${ review.writer.nickname }"></span>-->
-<!--            <span class="ratingReview" th:text="${review.rating}"></span>-->
-<!--            <textarea name="body" cols="60" rows="15" readonly th:text="${ review.body }"></textarea>-->
+<!--        <ul id="postList">-->
+<!--            <li th:each="review : ${reviewList}">-->
+<!--                <span th:text="${review.title}"></span>-->
+<!--                <span th:text="${review.writer.nickname}"></span>-->
+<!--                <span class="ratingReview" th:text="${review.rating}"></span>-->
+<!--                <textarea name="body" cols="60" rows="15" readonly th:text="${review.body}"></textarea>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--        <div id="postDetails">-->
+<!--            <h2 id="title"></h2>-->
+<!--            <span id="writerNickname"></span>-->
+<!--            <span class="ratingReview"><span id="rating"></span></span>-->
+<!--            <p id="content"></p>-->
 <!--        </div>-->
 <!--        <p id="next">></p>-->
-    </div>
+<!--    </div>-->
+
     <div>
         <div class="reviewcenter">
             <a href="/user/board/userReview" class="button3">후기 더보기</a>
@@ -148,6 +145,60 @@
 </div>
 <!-- footer 불러오기 -->
 <div th:replace="user/common/footer.html"></div>
+
+<!--<script>-->
+<!--    $(document).ready(function () {-->
+<!--        // 페이지 로드 시 초기 게시물 목록을 가져옵니다.-->
+<!--        loadPostList();-->
+
+<!--        // 각 게시물을 클릭할 때 상세 정보를 표시합니다.-->
+<!--        $('#postList').on('click', 'li', function () {-->
+<!--            var postId = $(this).data('reviewNo');-->
+<!--            loadPostDetails(postId);-->
+<!--        });-->
+
+<!--        function loadPostList() {-->
+<!--            // 서버에서 게시물 목록을 가져와 동적으로 목록을 생성합니다.-->
+<!--            $.ajax({-->
+<!--                type: 'GET',-->
+<!--                url: '/userReviewView',-->
+<!--                success: function (data) {-->
+<!--                    var postList = $('#postList');-->
+<!--                    postList.empty(); // 기존 목록 초기화-->
+
+<!--                    // 각 게시물을 목록에 추가-->
+<!--                    data.forEach(function (post) {-->
+<!--                        var li = $('<li>').text(post.title).data('id', post.id);-->
+<!--                        postList.append(li);-->
+<!--                    });-->
+<!--                },-->
+<!--                error: function () {-->
+<!--                    alert('게시물 목록을 불러오는데 문제가 발생했습니다.');-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
+
+<!--        function loadPostDetails(postId) {-->
+<!--            // 서버에서 게시물 상세 정보를 가져와 화면에 표시-->
+<!--            $.ajax({-->
+<!--                type: 'GET',-->
+<!--                url: '/userReviewView',-->
+<!--                data: { postId: postId },-->
+<!--                success: function (data) {-->
+<!--                    $('#title').text(data.title);-->
+<!--                    $('#content').text(data.content);-->
+
+<!--                    // 작성자 닉네임과 평점을 표시-->
+<!--                    $('#writerNickname').text(data.writer.nickname);-->
+<!--                    $('.ratingReview').text(data.rating);-->
+<!--                },-->
+<!--                error: function () {-->
+<!--                    alert('게시물 상세 정보를 불러오는데 문제가 발생했습니다.');-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
 </body>
 
 </html>
