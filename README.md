@@ -21,7 +21,7 @@
 
 |양슬기|이승민|강인선|
 |:----:|:---:|:---:|
-|테스트1|테스트2|테스트3|
+|테스트1|테스트2|<img src="https://github.com/spoons-01/spoons-sehaehae/assets/138549341/25a8a7d5-60cf-4ca5-a73f-602de93a1224" width="100" height="150"/>|
 |https://github.com/asoong2|https://github.com/meen0|https://github.com/popipopipoi|
 |로그인, 마이페이지, 메인페이지|주문하기, 상품 관리|후기관리,게시판관리, 메인페이지|
 
