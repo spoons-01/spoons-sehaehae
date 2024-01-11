@@ -387,7 +387,7 @@
         JOIN TBL_BOARD_CATEGORY D ON (A.CATEGORY_NO = D.CATEGORY_NO)
         JOIN TBL_MEMBER E ON(A.ADMIN_NO = E.MEMBER_NO)
         WHERE A.RNUM >= #{ startRow }
-        ORDER BY 1 DESC
+        ORDER BY 1
     </select>
 
     <select id="selectQnaView" resultMap="qnaBoardResultMap">

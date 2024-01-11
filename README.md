@@ -59,17 +59,9 @@
  <img src="https://img.shields.io/badge/spring-6DB33F?style=flat&logo=spring&logoColor=white"/>
  <img src="https://img.shields.io/badge/springboot-6DB33F?style=flat&logo=springboot&logoColor=white"/>
  <img src="https://img.shields.io/badge/visualstudiocode-007ACC?style=flat&logo=visualstudiocode&logoColor=white"/>
- <img src="https://img.shields.io/badge/mysql-4479A1?style=flat&logo=mysql&logoColor=white"/>
  <img src="https://img.shields.io/badge/jquery-0769AD?style=flat&logo=jquery&logoColor=white"/>
  <img src="https://img.shields.io/badge/thymeleaf-005F0F?style=flat&logo=thymeleaf&logoColor=white"/>
- <img src="https://img.shields.io/badge/mysql-4479A1?style=flat&logo=mysql&logoColor=white"/>
 
- - **Java 8 , JDK11**
-- **IDE** : IntelliJ IDEA  ultimate, Visual Studio
-- **Framework** : Springboot
-- **ORM** : Mybatis
-- **Library** : chart.js, JQuery, Lombok, Thymeleaf, javax
-- **API** : Daum 우편번호 api, 아임포트 결제 api
 
 ---
 

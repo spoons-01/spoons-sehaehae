@@ -198,7 +198,7 @@ td{
 .bottom-button{
     margin: 0;
     border: 1px solid rgba(0, 0, 0, 0.37);
-    width: 90px;
+    width: 95px;
     padding: 10px 12px 10px 12px;
     border-radius: 5px;
     background-color: rgb(57, 125, 246);
@@ -511,3 +511,6 @@ td{
 }
 
 
+#home{
+    margin-left: 1050px;
+}

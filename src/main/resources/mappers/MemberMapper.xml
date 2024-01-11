@@ -363,6 +363,7 @@
                  LEFT JOIN TBL_ORDER B ON (A.MEMBER_NO = B.MEMBER_NO)
         WHERE MEMBER_STATUS = 'Y'
           AND A.ID = #{ memberId }
+        ORDER BY B.ORDER_DATE DESC
     </select>
 
     <select id="findMyCoupon" resultMap="myCouponResultMap">

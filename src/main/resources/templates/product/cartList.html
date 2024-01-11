@@ -131,7 +131,8 @@
     $amount.forEach((amount) => {
         amount.addEventListener("focusout", function () {
             const index = Array.from($amount).indexOf(this);
-            fetch("/product/updateCart?amount=" + Number(this.value) + "&productCode=" + $productCode[index].value)
+            fetch("/product/updateCart?amount=" + Number(this.value) +
+                "&productCode=" + $productCode[index].value)
                 .then(res => res.text())
                 .then(res => console.log(res))
                 .catch(error => console.log(error))
