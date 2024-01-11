@@ -193,8 +193,9 @@ public class BoardService {
         return boardMapper.getCommentCountForReview(reviewNo);
     }
 
-    public List<ReviewDTO> recentlyReview(Long reviewNo, ReviewDTO review) {
+    public List<ReviewDTO> recentlyReview() {
 
-        return boardMapper.recentlyReview(reviewNo,review);
+        return boardMapper.recentlyReview();
     }
+
 }

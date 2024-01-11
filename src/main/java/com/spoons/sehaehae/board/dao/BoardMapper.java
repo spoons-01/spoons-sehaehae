@@ -64,5 +64,5 @@ public interface BoardMapper {
     int getCommentCountForReview(Long reviewNo);
 
 
-    List<ReviewDTO> recentlyReview(Long reviewNo, ReviewDTO review);
+    List<ReviewDTO> recentlyReview();
 }

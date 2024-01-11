@@ -703,24 +703,24 @@
 
     <!-- 메인페이지 노출 -->
     <select id="recentlyReview" resultMap="reviewBoardResultMap">
+        SELECT * FROM (
         SELECT
-                A.REVIEW_NO
-              , A.REVIEW_TITLE
-              , A.REVIEW_BODY
-              , A.REVIEW_CREATED_DATE
-              , B.MEMBER_NO
-              , B.NICKNAME
-              , A.REVIEW_STATUS
-              , C.ORDER_CODE
-              , A.RATING
-          FROM(
-                SELECT * FROM TBL_REVIEW)
-        JOIN TBL_MEMBER B (ON A.MEMBER_NO = B.MEMBER_NO)
-        JOIN TBL_ORDER C (ON A.ORDER_CODE = C.ORDER_CODE)
-        <if test="memberNo != ''">
-            AND B.MEMBER_NO = #{ memberNo }
-        </if>
+        A.REVIEW_NO,
+        A.REVIEW_TITLE,
+        A.REVIEW_BODY,
+        A.REVIEW_CREATED_DATE,
+        B.MEMBER_NO,
+        B.NICKNAME,
+        A.REVIEW_STATUS,
+        C.ORDER_CODE,
+        A.RATING
+        FROM TBL_REVIEW A
+        JOIN TBL_MEMBER B ON A.MEMBER_NO = B.MEMBER_NO
+        JOIN TBL_ORDER C ON A.ORDER_CODE = C.ORDER_CODE
         WHERE A.REVIEW_STATUS = 'Y'
         ORDER BY A.REVIEW_CREATED_DATE DESC
+        )  <![CDATA[
+              WHERE ROWNUM <= 3
+              ]]>
     </select>
 </mapper>

@@ -1,3 +1,5 @@
+
+
 window.onload = function () {
     /*첨부파일 */
     (function (){
@@ -56,40 +58,8 @@ window.onload = function () {
         });
     });
 
-//
-//     /* 클릭시 색상 변경 */
-//
-//     // 모든 categoryList2 요소를 가져옵니다.
-//     var categoryList2Items = document.querySelectorAll('.categoryList2');
-//
-//     // 클릭 이벤트 핸들러 함수
-//     function handleClick(event) {
-//         // 선택된 카테고리의 스타일 변경
-//         categoryList2Items.forEach(function(item) {
-//             item.classList.remove("clicked");
-//         });
-//         event.currentTarget.classList.add("clicked");
-//     }
-//
-//     // 각각의 categoryList2 요소에 클릭 이벤트 리스너 추가
-//     categoryList2Items.forEach(function(item) {
-//         item.addEventListener("click", handleClick);
-//     });
  }
-/* 별점 로드 */
-window.addEventListener("load", function() {
-    const rating = document.querySelectorAll(".ratingView");
 
-    rating.forEach(function (item){
-        const targetScore = item.dataset.rate;
-        console.log(targetScore);
-        item.querySelectorAll('svg').forEach(function (star, index) {
-            if (index < targetScore) {
-                star.style.color = '#FFFF00';
-            }
-        });
-    });
-});
 
 
 

@@ -28,36 +28,15 @@ public class HomeController {
         this.boardService = boardService;
     }
     @GetMapping("/")
-    public String home() {
+    public String home(Model model) {
+
+        // 페이징 처리를 하지 않고 전체 리뷰 리스트를 가져옴
+        List<ReviewDTO> reviewList = boardService.recentlyReview();
+
+        // 모델에 리뷰 리스트 추가
+        model.addAttribute("reviewList", reviewList);
 
         return "user/main/main";
     }
 
-//    @GetMapping("/userReviewView")
-//    public String homeReview(@RequestParam("no") Long no,
-//                             Model model) {
-//
-//        log.info("no: {}", no);
-//        ReviewDTO reviewList = boardService.recentlyReview(no);
-//
-//        log.info("reviewList: {}", reviewList);
-//
-//        model.addAttribute("reviewList", reviewList);
-//        model.addAttribute("writerNickname", reviewList.getWriter().getNickname());
-//        model.addAttribute("rating", reviewList.getRating());
-//
-//
-//        return "user/main/main";
-//    }
-
-//    @GetMapping("/userReviewView")
-//    public ResponseEntity<List<ReviewDTO>> loadReply(@RequestParam("no") Long reviewNo, ReviewDTO review ) {
-//        log.info("-------test");
-//        log.info("loadReply refBoardNo : {}", reviewNo);
-//
-//        List<ReviewDTO> reviewList = boardService.recentlyReview(reviewNo, review);
-//        log.info("loadReply replyList : {}", reviewList);
-//
-//        return ResponseEntity.ok(reviewList);
-//    }
 }
