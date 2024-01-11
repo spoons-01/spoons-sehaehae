@@ -193,4 +193,9 @@ public class BoardService {
         return boardMapper.getCommentCountForReview(reviewNo);
     }
 
+    public List<ReviewDTO> recentlyReview() {
+
+        return boardMapper.recentlyReview();
+    }
+
 }

@@ -242,9 +242,6 @@ img {
 
 .review {
     margin-top: 180px;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
 }
 
 .review h2 {
@@ -252,7 +249,13 @@ img {
     font-family: GANGWON STATE OTF;
 }
 
-.review p {
+.review-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.review-div p {
     color: black;
     font-size: 64px;
     font-family: Poppins;
@@ -261,6 +264,44 @@ img {
     margin-right: 30px;
     margin-top: 65px;
 }
+
+.review-box {
+    margin-top: 40px;
+    width: 344px;
+    height: 217px;
+    background: rgba(75, 147, 255, 0.30);
+    border-radius: 15px;
+    margin-right: 30px;
+}
+
+.ratingView {
+    font-size: 24px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+
+.review-name {
+    font-family: NanumSquareNeo-Variable;
+    color: #767272;
+    font-size: 18px;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.review-body {
+    color: #717171;
+    font-size: 20px;
+    font-family: NanumSquareNeo-Variable;
+    padding: 20px;
+    text-align: center;
+}
+
+.reviewcenter {
+    text-align: center;
+    margin: 60px 0px 140px 0px;
+}
+
 
 /* 수거신청 버튼 */
 .button3 {
@@ -274,22 +315,6 @@ img {
     letter-spacing: 1px;
 }
 
-.reviewcenter {
-    text-align: center;
-    margin: 60px 0px 140px 0px;
-}
-
-.review-box {
-    display: flex;
-    margin-top: 40px;
-}
-.review-box div{
-    width: 344px;
-    height: 217px;
-    background: rgba(75, 147, 255, 0.30);
-    border-radius: 15px;
-    margin-right: 30px;
-}
 
 
 

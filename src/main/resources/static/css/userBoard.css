@@ -623,7 +623,7 @@ h3 {
 
 .reviewTable {
     margin-top: 100px;
-    margin-left: 500px;
+    margin-left: 600px;
     width: 900px;
 }
 
@@ -808,6 +808,8 @@ h3 {
     border-radius: 5px;
 }
 
-
-
+/* 커서 변화 */
+.cursor {
+    cursor: pointer;
+}
 
