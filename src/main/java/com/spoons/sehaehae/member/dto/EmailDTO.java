@@ -16,15 +16,11 @@ import java.util.Date;
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EmailDTO {
-
     private boolean isSuccess;
-
     private String email;
-
     private String content;
-
+    private String subject;
     private int returnCode;
-
     private Date procDate;
-
+    private String tempPassword;
 }

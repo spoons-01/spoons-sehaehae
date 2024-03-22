@@ -229,25 +229,10 @@ select.box {
 
 /* 전화번호 --------------------------------------------------*/
 #phoneInput {
-    width: 350px;
+    width: 450px;
     height: 40px;
     border-radius: 4px;
     border: 1px solid #d9d6d6;
-    margin-right: 13px;
-}
-
-#phonebutton {
-    background-color: #4B93FF;
-    color: #ffffff;
-    font-size: 13px;
-    padding: 10px 10px;
-    border-radius: 7px;
-    border: none;
-    cursor: pointer;
-    font-family: NanumSquareNeo-Variable;
-    letter-spacing: 1px;
-    text-align: center;
-    width: 80px;
 }
 
 .phone-container{

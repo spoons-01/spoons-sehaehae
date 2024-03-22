@@ -50,9 +50,11 @@
             <div class="nav-all">
                 <nav>
                     <ul class="main-nav">
-                        <th:block sec:authorize="${#authentication != null and #authentication.principal.memberRoleList != null}">
+                        <th:block
+                                sec:authorize="${#authentication != null and #authentication.principal.memberRoleList != null}">
                             <th:block th:each="role : ${#authentication.principal.memberRoleList}">
-                                <li><a id="admin" th:if="${role.authorityCode == 1}" href="/admin/member/memberList">관리자</a></li>
+                                <li><a id="admin" th:if="${role.authorityCode == 1}"
+                                       href="/admin/member/memberList">관리자</a></li>
                             </th:block>
                         </th:block>
                         <li><a id="logout" href="/user/member/logout">
@@ -112,14 +114,13 @@
             </div>
 
             <div class="box1">
-                <label>이름</label>
-                <input type="text" th:value="${ #authentication.principal.name }" readonly>
+                <label for="name">이름</label>
+                <input type="text" id="name" name="name" th:value="${ #authentication.principal.name }">
             </div>
             <div class="text-box">
-                <p>이름을 변경하시려면 운영자에게 이메일을 보내주세요.</p>
             </div>
 
-            <div class="box">
+            <div class="box1">
                 <label for="nickname">별명</label>
                 <input type="text" name="nickname" id="nickname" th:value="${ #authentication.principal.nickname }">
             </div>
@@ -131,6 +132,16 @@
             </div>
 
             <div class="box1">
+                <label>성별</label>
+                <div class="wrapper3">
+                    <div class="radio-box wrapper3">
+                        <input type="radio" id="radio-g1" name="gender" value="M"><label for="radio-g1">남성</label>
+                        <input type="radio" id="radio-g2" name="gender" value="F"><label for="radio-g2">여성</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box1">
                 <label for="phone">전화번호</label>
                 <input type="text" name="phone" id="phone" th:value="${ #authentication.principal.phone }">
             </div>
@@ -139,7 +150,7 @@
                 <label for="zipCode">우편번호</label>
                 <input type="text" name="zipCode" id="zipCode" th:value="${ #authentication.principal.zipCode}"
                        readonly>
-                <input type="button" value="검색" id="addressbutton">
+                <input type="button" value="검색" class="address-btn" id="addressbutton">
             </div>
 
             <div class="box1">
@@ -159,9 +170,7 @@
                 <div class="image-area">
                     <img id="profileImage" th:src="${#authentication.principal.profilePhoto}" src="/images/smile.png">
                 </div>
-<!--                <div class="image-area">-->
-<!--                    <img id="profileImage" th:src="${profilePhoto}" src="/images/smile.png">-->
-<!--                </div>-->
+
             </div>
 
             <div style="display: none">
@@ -197,7 +206,6 @@
 
 <script th:inline="javascript">
     var successMessage = '[[${message}]]';
-
     if (successMessage && successMessage.trim().length > 0 && successMessage !== "null") {
         alert(successMessage);
     }

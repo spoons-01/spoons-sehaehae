@@ -2,6 +2,8 @@
 server:
   port: 80
 spring:
+  messages:                                                                 
+    encoding: UTF-8
   mail:
     # Google smtp server 사용
     host: smtp.gmail.com
@@ -50,3 +52,10 @@ logging:
 # image upload dir
 image:
   image-dir: C:/lecture/sub_project/spoons-sehaehae/src/main/resources/upload/
+
+# Kakao Login
+kakao:
+  client:
+    id: 29d5d2de7cf432b23156f32f0c7f232b
+  redirect:
+    uri: http://localhost/oauth/kakao/callback

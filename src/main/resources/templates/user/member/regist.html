@@ -98,7 +98,6 @@
     <!-- 별명 -->
     <div class="wrapper2">
         <h3>별명</h3>
-        <p>다른 유저와 겹치지 않도록 입력해주세요. (2~15자)</p>
     </div>
     <div class="joinbox2">
         <div class="nickname-container">
@@ -106,9 +105,6 @@
             <p id="nicknameCheckMessage"></p>
         </div>
     </div>
-
-
-    </script>
 
     <!-- 전화번호 입력 폼 -->
     <div class="wrapper2">
@@ -119,40 +115,10 @@
         <div class="phone-container">
             <div class="text-button">
                 <input id="phoneInput" type="text" name="phone" placeholder="'-'없이 전화번호를 입력해주세요." required>
-                <input type="button" value="인증" id="phonebutton">
             </div>
             <p id="phoneCheckMessage"></p>
         </div>
     </div>
-
-    <!-- JavaScript (jQuery 사용) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $("#phoneButton").click(function (e) {
-                e.preventDefault();
-
-                var phoneNumber = $("#phoneInput").val();
-
-                // AJAX 요청 보내기
-                $.ajax({
-                    type: "POST",
-                    url: "/phoneAuth", // 서버의 요청 URL
-                    data: {tel: phoneNumber}, // 전화번호를 'tel' 매개변수로 전달
-                    success: function (response) {
-                        if (response) {
-                            $("#phoneCheckMessage").text("이미 가입된 전화번호입니다.");
-                        } else {
-                            $("#phoneCheckMessage").text("인증 코드를 전송했습니다.");
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error("AJAX 오류: " + status, error);
-                    }
-                });
-            });
-        });
-    </script>
 
     <!-- 성별 라디오 버튼 -->
     <div class="wrapper2">

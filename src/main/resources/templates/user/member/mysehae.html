@@ -4,7 +4,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <!--    <script type="text/javascript" src="/js/event.js"></script>-->
     <script type="text/javascript" src="/js/regist.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>나의 세해 | 세탁해병대</title>
@@ -85,11 +84,9 @@
     </div>
 
 
-
     <div class="box-wrapper">
-        <!-- 주문 목록  -->
         <div class="third-bar">
-            <!-- 기간, 주문상태 -->
+            <!-- 주문 목록  -->
             <div class="select-box-wrapper">
                 <div class="third-bar-child">
                     <div class="select">
@@ -115,39 +112,86 @@
                 </div>
             </div>
 
-            <!-- 주문 내역 -->
-            <div class="order-all" th:each="order : ${myOrders}">
-                <hr style="width: 100%; border: 1px solid #c2c2c2; margin: 0;">
-                <div class="order">
-                    <div class="order-child1"> <!-- 왼쪽 박스 -->
-                        <div class="order-num-date">
-                            <p th:text="${order?.orderCode}"></p>
-                            <p>|</p>
-                            <p th:text="${#dates.format(order?.orderDate, 'yyyy.MM.dd E')}"></p>
-                        </div>
-                        <div class="greybox">
-                            <p th:text="${#dates.format(order?.progressDate, 'yyyy.MM.dd E')}"></p>
-                            <p id="orderStatus"th:text="${order?.orderStatus}"></p>
-                        </div>
-                    </div>
-
-                    <div class="order-right-child1">
-                        <div class="more">
-                            <a th:href="@{'/user/member/myOrder/' + ${order.orderCode}}">상세보기</a>
-                        </div>
-                        <div class="button-wrapper">
-                            <a th:if="${order.orderStatus == '구매확정'}" th:href="@{'/user/member/refund/' + ${order.orderCode}}" class="button">환불하기</a>
-                            <a th:unless="${order.orderStatus == '구매확정'}" href="#" class="button disabled">환불하기</a>
-                            <a th:if="${order.orderStatus == '구매확정' && order.reviewStatus != '작성완료'}" class="button2 review-button" th:attr="data-order-code=${order.orderCode}, data-point=${order.memberNo}">후기쓰기</a>
-                            <a th:unless="${order.orderStatus == '구매확정'}" href="#" class="button2 disabled">후기쓰기</a>
-                            <a th:if="${order.orderStatus == '구매확정' && order.reviewStatus == '작성완료'}" class="button2 edit-button" th:attr="data-order-code=${order.orderCode}">수정하기</a>
-                        </div>
-                    </div>
-                </div>
+            <div class="order-none" th:if="${myOrders.isEmpty()}">
+                <p>주문 내역이 없습니다.</p>
             </div>
+
+            <!-- 주문 내역 -->
+            <div class="order-all"></div>
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        function loadOrders() {
+            var dateSearchCondition = $('#date-search-method').val();
+            var orderStatusCondition = $('#search-method').val();
+
+            $.ajax({
+                url: '/user/member/MyOrders',
+                type: 'GET',
+                data: {
+                    searchCondition: dateSearchCondition,
+                    searchStatusCondition: orderStatusCondition
+                },
+                dataType: 'json',
+                success: function (orders) {
+                    $('.order-all').empty();
+
+                    if (orders.length === 0) {
+                        $('.order-all').append('<div class="order-none"><p>주문 내역이 없습니다.</p></div>');
+                    } else {
+                        orders.forEach(function (order) {
+                            var orderDate = order.orderDate ? new Date(order.orderDate).toLocaleDateString() : '';
+                            var progressDate = order.progressDate ? new Date(order.progressDate).toLocaleDateString() : '';
+                            var orderStatus = order.orderStatus || '상태 정보 없음';
+                            var orderCode = order.orderCode || '코드 정보 없음';
+
+                            var orderHtml = `
+                                <hr style="width: 100%; border: 1px solid #c2c2c2; margin: 0;">
+                                <div class="order">
+                                    <div class="order-child1">
+                                        <div class="order-num-date">
+                                            <p>${orderCode}</p>
+                                            <p>|</p>
+                                            <p>${orderDate}</p>
+                                        </div>
+                                        <div class="greybox">
+                                            <p>${progressDate}</p>
+                                            <p id="orderStatus">${orderStatus}</p>
+                                        </div>
+                                    </div>
+                                    <div class="order-right-child1">
+                                        <div class="more">
+                                            <a href="/user/member/myOrder/${orderCode}">상세보기</a>
+                                        </div>
+                                        <div class="button-wrapper">
+                                            ${order.orderStatus === '구매확정' ? `<a href="/user/member/refund/${orderCode}" class="button">환불하기</a>` : '<a href="#" class="button disabled">환불하기</a>'}
+                                            ${order.orderStatus === '구매확정' && order.reviewStatus !== '작성완료' ? `<a href="#" class="button2 review-button" data-order-code="${orderCode}" data-point="${order.memberNo}">후기쓰기</a>` : '<a href="#" class="button2 disabled">후기쓰기</a>'}
+                                            ${order.orderStatus === '구매확정' && order.reviewStatus === '작성완료' ? `<a href="#" class="button2 edit-button" data-order-code="${orderCode}">수정하기</a>` : ''}
+                                        </div>
+                                    </div>
+                                </div>`;
+
+                            // 생성된 HTML을 .order-all div에 추가
+                            $('.order-all').append(orderHtml);
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.error('AJAX 요청 실패:', error);
+                }
+            });
+        }
+
+        // 날짜 선택 또는 주문 상태 선택 시 주문 목록 로드 함수 호출
+        $('#date-search-method, #search-method').change(loadOrders);
+    });
+</script>
+
 
 <!-- 인선 !!!! 후기 작성 모달 창 -->
 <div id="modal" class="modal-overlay">
@@ -156,7 +200,7 @@
         <div class="reviewModalTitle">
             <h3 class="reviewTitle">후기 쓰기</h3>
         </div>
-        <form id="reviewForm" action="/user/member/mysehae" method="post" enctype="multipart/form-data" >
+        <form id="reviewForm" action="/user/member/mysehae" method="post" enctype="multipart/form-data">
             <div class="content">
                 <input type="hidden" name="orderCode">
                 <input type="hidden" name="memberNo">
@@ -180,7 +224,8 @@
                 <h4 class="reviewModal">사진 첨부</h4>
                 <p class="reviewModal-p">사진을 첨부해주세요.(최대 1장)</p>
                 <div class="reviewBox">
-                    <div class="image-area"><img src="/images/camera.png"><p>사진 첨부하기</p></div>
+                    <div class="image-area"><img src="/images/camera.png">
+                        <p>사진 첨부하기</p></div>
                 </div>
             </div>
             <div>

@@ -15,12 +15,16 @@ import com.spoons.sehaehae.member.service.AuthenticationService;
 import com.spoons.sehaehae.member.service.CouponRepository;
 import com.spoons.sehaehae.member.service.MemberService;
 import com.spoons.sehaehae.product.dto.PointDTO;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
+import oracle.ucp.proxy.annotation.Post;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -55,17 +59,19 @@ public class MemberController {
     private final PasswordEncoder passwordEncoder;
     private EmailUtil emailUtil;
     private final CouponRepository couponRepository;
-    private final BoardService boardService; // 인선!!!!
+    private final BoardService boardService;
 
-    public MemberController(MemberService memberService, AuthenticationService authenticationService, MessageSourceAccessor messageSourceAccessor, PasswordEncoder passwordEncoder, EmailUtil emailUtil, CouponRepository couponRepository
-            , BoardService boardService) {
+    public MemberController(MemberService memberService, AuthenticationService authenticationService,
+                            MessageSourceAccessor messageSourceAccessor, PasswordEncoder passwordEncoder,
+                            EmailUtil emailUtil, CouponRepository couponRepository,
+                            BoardService boardService) {
         this.memberService = memberService;
         this.authenticationService = authenticationService;
         this.messageSourceAccessor = messageSourceAccessor;
         this.passwordEncoder = passwordEncoder;
         this.emailUtil = emailUtil;
         this.couponRepository = couponRepository;
-        this.boardService = boardService; // 인선!!!!!
+        this.boardService = boardService;
     }
 
     @GetMapping("/main/main")
@@ -84,7 +90,8 @@ public class MemberController {
     }
 
     @GetMapping("/member/findMyId")
-    public void findMyId() {}
+    public void findMyId() {
+    }
 
     /* 회원가입 */
     @GetMapping("/member/regist")
@@ -113,6 +120,63 @@ public class MemberController {
         return "redirect:/";
     }
 
+    /* 아이디 찾기 */
+    @GetMapping("/member/searchMyId")
+    public void searchMyIdPage() {
+    }
+
+    @GetMapping("/member/findMyIdResult")
+    public void findMyIdResultPage() {
+    }
+
+    @PostMapping("/member/searchMyId")
+    public String searchMyId(@RequestParam("phone") String phoneNumber, Model model) {
+        String memberId = memberService.searchMyId(phoneNumber);
+
+        if(memberId !=null) {
+            model.addAttribute("memberId", memberId);
+            return "/user/member/findMyIdResult";
+        } else {
+            model.addAttribute("error", "해당 번호로 등록된 아이디를 찾을 수 없습니다.");
+            return "/user/member/findMyIdResult";
+        }
+    }
+
+    /* 비밀번호 찾기 */
+    @GetMapping("/member/pwdEmailCheck")
+    public void pwdEmailCheckPage() {}
+
+    @GetMapping("/member/pwdSuccess")
+    public void pwdSuccessPage() {}
+
+    // 가입된 회원인지 확인
+    @PostMapping("/member/idDupCheckForPwd")
+    public ResponseEntity<String> checkDuplicationForPwd(@RequestBody MemberDTO member) {
+        log.info("Request Check ID : {}", member.getMemberId());
+        String result = "가입된 아이디가 존재하지 않습니다. 아이디를 확인해주세요.";
+        if (memberService.selectMemberById(member.getMemberId())) {
+            result = "가입된 아이디가 존재합니다.";
+        }
+        return ResponseEntity.ok(result);
+    }
+
+    // 신규 비밀번호 생성 및 DB 업데이트, 이메일 전송
+    @PostMapping("/member/updatePasswordAndSendEmail")
+    public ResponseEntity<?> updatePasswordSendEmail(@RequestBody EmailDTO emailDTO) {
+        try {
+            String newTempPassword = emailUtil.sendTempPassword(emailDTO);
+            memberService.updateMemberPassword(emailDTO.getEmail(), newTempPassword);
+
+            log.info("업데이트 비밀번호 : {}", newTempPassword);
+
+            return ResponseEntity.ok(Map.of("success", true, "message", "새로운 비밀번호가 이메일로 발송되었습니다."));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("success", false, "message", "비밀번호 업데이트 및 발송 실패 : " + e.getMessage()));
+        }
+    }
+
+
     /* 마이페이지 메인 */
     @GetMapping("/member/mypage")
     public String myPage(Model model, Principal principal) {
@@ -131,11 +195,8 @@ public class MemberController {
     /* 나의 세해 */
     @GetMapping("/member/mysehae")
     public String mySehae(Model model, Principal principal) {
-        // 현재 로그인한 사용자의 아이디 얻기
         String currentUsername = principal.getName();
-        // 현재 사용자의 MemberDTO를 얻어온다
         MemberDTO memberDTO = memberService.findByMemberId(currentUsername);
-        // MemberDTO에서 membershipName을 추출한다
         String membershipName = extractMembershipName(memberDTO);
 
         int memberNo = memberDTO.getMemberNo();
@@ -143,7 +204,6 @@ public class MemberController {
         List<MyOrderDTO> myOrders = memberService.findMyOrder(currentUsername);
         int myPoint = memberService.findMyPoint(memberNo);
 
-        // 5. 주문 상태별 개수를 저장할 맵 초기화
         String[] orderedOrderStatuses = {"결제완료", "수거완료", "세탁완료", "배송준비", "배송중", "구매확정"};
         List<MyOrderDTO> myOrderList = memberService.findMyOrder(currentUsername);
 
@@ -159,7 +219,6 @@ public class MemberController {
             String orderStatus = order.getOrderStatus();
             orderStatusCounts.put(orderStatus, orderStatusCounts.get(orderStatus) + 1);
         }
-
 
         model.addAttribute("membershipName", membershipName);
         model.addAttribute("couponCount", couponCount);
@@ -178,6 +237,15 @@ public class MemberController {
             }
         }
         return "N/A";
+    }
+
+    /* 주문 목록 조회 (기간별 및 상태별) */
+    @GetMapping("/member/MyOrders")
+    public ResponseEntity<List<MyOrderDTO>> handleSearch(
+            @RequestParam(value = "searchCondition", required = false) String searchCondition,
+            @RequestParam(value = "searchStatusCondition", required = false) String searchStatusCondition) {
+        List<MyOrderDTO> myOrders = memberService.findByConditions(searchCondition, searchStatusCondition);
+        return ResponseEntity.ok(myOrders);
     }
 
     /* 쿠폰 목록 조회 */
@@ -220,8 +288,8 @@ public class MemberController {
     }
 
     @GetMapping("/member/update")
-    public void update( @AuthenticationPrincipal MemberDTO loginMember) {
-        if( StringUtils.isBlank(loginMember.getProfilePhoto()) ) {
+    public void update(@AuthenticationPrincipal MemberDTO loginMember) {
+        if (StringUtils.isBlank(loginMember.getProfilePhoto())) {
             loginMember.setProfilePhoto("/images/smile.png");
         }
     }
@@ -237,24 +305,16 @@ public class MemberController {
         log.info("modifyMember attachImage request : {}", attachImage);
 
         String fileUploadDir = IMAGE_DIR + "/original";
-
         File dir = new File(fileUploadDir);
-
         if (!dir.exists()) {
             dir.mkdirs();
         }
 
         try {
             if (attachImage.getSize() > 0) {
-
                 String originalFileName = attachImage.getOriginalFilename();
-                log.info("originalFileName : {}", originalFileName);
-
-                String ext = originalFileName.substring(originalFileName.lastIndexOf(".")); // 원본 이름에서 확장자 추출
-                String savedFileName = UUID.randomUUID() + ext; // 중복을 방지하기 위해 랜덤한 아이디 생성 후 확장자 삽입 후 새로운 이름에 할당
-                log.info("savedFileName : {}", savedFileName);
-
-                /* 서버의 설정 디렉토리에 파일 저장하기 */
+                String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
+                String savedFileName = UUID.randomUUID() + ext;
                 attachImage.transferTo(new File(IMAGE_DIR + File.separator + savedFileName));
                 modifyMember.setProfilePhoto("/upload/" + savedFileName);
             }
@@ -264,9 +324,7 @@ public class MemberController {
 
         memberService.modifyMember(modifyMember);
 
-        SecurityContextHolder.getContext().
-                setAuthentication(createNewAuthentication(loginMember.getMemberId()));
-
+        SecurityContextHolder.getContext().setAuthentication(createNewAuthentication(loginMember.getMemberId()));
         rttr.addFlashAttribute("message", messageSourceAccessor.getMessage("member.modify"));
 
         return "redirect:/user/member/update";
@@ -283,14 +341,6 @@ public class MemberController {
         return newAuth;
     }
 
-    /**
-     * 이메일 인증코드 발송
-     *
-     * @param session
-     * @param emailAuthDTO
-     * @return
-     * @throws MessagingException
-     */
     @PostMapping(value = "/member/regEmailAuth"
             , consumes = MediaType.APPLICATION_JSON_VALUE
             , produces = MediaType.APPLICATION_JSON_VALUE)
@@ -322,25 +372,6 @@ public class MemberController {
         return emailAuthDTO;
     }
 
-
-    /*
-     * JAva WEB 영역
-     *
-     * Request
-     * Response
-     * Session
-     * Apllication
-     * PageContext
-     * */
-
-    /**
-     * 이메일 인증코드 인증
-     *
-     * @param session
-     * @param emailAuthDTO
-     * @return
-     * @throws MessagingException
-     */
     @PostMapping(value = "/member/chkEmailAuth"
             , consumes = MediaType.APPLICATION_JSON_VALUE
             , produces = MediaType.APPLICATION_JSON_VALUE)

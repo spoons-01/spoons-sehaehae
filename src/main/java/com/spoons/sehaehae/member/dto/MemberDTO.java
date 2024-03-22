@@ -44,7 +44,6 @@ public class MemberDTO implements UserDetails {
         return roles;
     }
 
-
     @Override
     public String getPassword() {
         return memberPwd;

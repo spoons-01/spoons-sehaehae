@@ -1,8 +1,6 @@
 package com.spoons.sehaehae.member.service;
 
 
-import com.spoons.sehaehae.admin.dto.OrderDTO;
-import com.spoons.sehaehae.board.dto.AttachmentDTO;
 import com.spoons.sehaehae.board.dto.ReplyDTO;
 import com.spoons.sehaehae.board.dto.ReviewDTO;
 import com.spoons.sehaehae.common.exception.member.MemberModifyException;
@@ -10,14 +8,14 @@ import com.spoons.sehaehae.common.exception.member.MemberRefundException;
 import com.spoons.sehaehae.common.exception.member.MemberRegistException;
 import com.spoons.sehaehae.member.dao.MemberMapper;
 import com.spoons.sehaehae.member.dto.*;
-import com.spoons.sehaehae.member.util.Naver_Sens_V2;
-import com.spoons.sehaehae.product.dto.PointDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
 
 @Slf4j
 @Transactional
@@ -25,9 +23,17 @@ import java.util.Random;
 public class MemberService {
 
     private final MemberMapper memberMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public MemberService(MemberMapper memberMapper) {
+    public MemberService(MemberMapper memberMapper, PasswordEncoder passwordEncoder) {
         this.memberMapper = memberMapper;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    /* 카카오 로그인(이메일 찾기) */
+    public MemberDTO findMemberEmail(String kakaoEmail) {
+        MemberDTO member = memberMapper.findMemberEmail(kakaoEmail);
+        return member;
     }
 
     /* 내 주문 목록 */
@@ -53,6 +59,24 @@ public class MemberService {
         return myProduct;
     }
 
+    /* 주문 목록 조회 (기간별 및 상태별) */
+    public List<MyOrderDTO> findByConditions(String searchCondition, String searchStatusCondition) {
+        log.info("searchCondition : {}, searchStatusCondition : {}", searchCondition, searchStatusCondition);
+        Map<String, String> statusMap = new HashMap<>();
+        statusMap.put("orderStatus1", "결제완료");
+        statusMap.put("orderStatus2", "수거완료");
+        statusMap.put("orderStatus3", "세탁완료");
+        statusMap.put("orderStatus4", "배송준비");
+        statusMap.put("orderStatus5", "배송중");
+        statusMap.put("orderStatus6", "구매확정");
+
+        if (statusMap.containsKey(searchStatusCondition)) {
+            searchStatusCondition = statusMap.get(searchStatusCondition);
+        }
+
+        return memberMapper.findByConditions(searchCondition, searchStatusCondition);
+    }
+
     /* 내 쿠폰 목록 */
     public List<MyCouponDTO> findMyCoupon(int memberNo) {
         List<MyCouponDTO> myCoupons = memberMapper.findMyCoupon(memberNo);
@@ -73,7 +97,7 @@ public class MemberService {
 
     /* 내 덧글 조회 */
     public List<ReplyDTO> findMyReply(int memberNo) {
-        List<ReplyDTO> myReplys =  memberMapper.findMyReply(memberNo);
+        List<ReplyDTO> myReplys = memberMapper.findMyReply(memberNo);
         return myReplys;
     }
 
@@ -83,9 +107,7 @@ public class MemberService {
 
 
     public boolean selectMemberById(String memberId) {
-
         String result = memberMapper.selectMemberById(memberId);
-
         return result != null;
     }
 
@@ -96,13 +118,11 @@ public class MemberService {
         int result2 = memberMapper.insertMemberRole();
         int result3 = memberMapper.insertMemberLevel();
 
-        memberMapper.insertFirstCoupon();                   //첫가입쿠폰 발급
+        memberMapper.insertFirstCoupon();
         memberMapper.insertFirstPoint();
 
         if (!(result1 > 0 && result2 > 0 && result3 > 0)) throw new MemberRegistException("회원 가입에 실패하였습니다.");
-
     }
-
 
     @Transactional
     public void saveRefund(MyRefundDTO refund) {
@@ -111,15 +131,23 @@ public class MemberService {
         if (!(result > 0)) throw new MemberRefundException("환불 신청에 실패하였습니다.");
     }
 
-    // @Transactional => 기본 처리 옵션은 RuntimeException 발생할 때  Rollback COmmit ;  그 외적으로는  COmmit ;
-    // 쿼리만 실행되면 Commit;
-    // => RUntimeException 되어야됨.
+    /* 회원 정보 수정 */
     @Transactional
     public void modifyMember(MemberDTO modifyMember) throws MemberModifyException {
         int result = memberMapper.updateMember(modifyMember);
-        if(!(result > 0)) {throw new MemberModifyException("회원 정보 수정에 실패하였습니다.");}
+        if (!(result > 0)) {
+            throw new MemberModifyException("회원 정보 수정에 실패하였습니다.");
+        }
     }
 
+    /* 아이디 찾기 */
+    public String searchMyId(String phoneNumber) {
+        return memberMapper.findMemberIdByPhoneNumber(phoneNumber);
+    }
 
-
+    /* 비밀번호 재설정 */
+    public void updateMemberPassword(String email, String newTempPassword) {
+        String encodedPassword = passwordEncoder.encode(newTempPassword);
+        memberMapper.updateMemberPassword(email, encodedPassword);
+    }
 }

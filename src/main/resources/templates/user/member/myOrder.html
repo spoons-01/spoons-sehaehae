@@ -61,9 +61,7 @@
 
             <div class="order-detail">
                 <div class="grid">
-                    <div class="container">
-                        <img class="img" src="/images/jjang1.png">
-                    </div>
+                    <img class="img" th:src="${myProduct[0].productPhoto}">
                     <!-- N개의 상품 목록 -->
                     <div class="order-view">
                         <p class="order-name">세탁서비스 이용</p>
@@ -73,7 +71,7 @@
                             <th:block th:each="product : ${myProduct}">
                                 <div class="product-container">
                                     <div class="order-product">
-                                        <p th:text="${product.productName}"></p>
+                                        <p th:text="${product.productName}"></p>&nbsp;
                                         <p th:text="${product.productPrice}"></p>
                                     </div>
                                 </div>
@@ -87,89 +85,88 @@
 
                         <div class="order-progress">
                             <p class="blue-font" th:text="${myOrders.orderStatus}"></p>
-                            <p th:if="${myOrders.orderStatus == '구매확정'}"
-                               th:text="${'('+ myOrders.progressDate + ')'}"></p>
+                            <p th:if="${myOrders.orderStatus == '구매확정' and myOrders.progressDate != null}"
+                               th:text="${'('+ #dates.format(myOrders.progressDate, 'yyyy.MM.dd E')+ ')'}"></p>
                         </div>
                     </div>
-                    <!-- //N개의 상품 목록 -->
                 </div>
+
+                <div class="member1">
+                    <h3>배송지 정보</h3>
+                </div>
+
+                <hr class="line" style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
+
+                <div class="member2">
+                    <div class="member-detail">
+                        <p class="mini-grey">받는 사람</p>
+                        <p th:text="${myOrders.name}"></p>
+                    </div>
+
+                    <div class="member-detail">
+                        <p class="mini-grey">연락처</p>
+                        <p th:text="${myOrders.phone}"></p>
+                    </div>
+
+                    <div class="member-detail">
+                        <p class="mini-grey">주소</p>
+                        <p th:text="${myOrders.inputZipCode}"></p>&nbsp;
+                        <p th:text="${myOrders.inputAddress}"></p>&nbsp;
+                        <p th:text="${myOrders.inputAddress2}"></p>
+                    </div>
+
+                    <div class="member-detail">
+                        <p class="mini-grey">요청사항</p>
+                        <p th:text="${myOrders.orderRequest}"></p>
+                    </div>
+
+                </div>
+
+                <div class="member1">
+                    <h3>요청 날짜</h3>
+                </div>
+
+                <hr class="line" style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
+
+                <div class="member2">
+                    <div class="member-detail">
+                        <p class="mini-grey">수거요청일</p>
+                        <p th:text="${myOrders.collectionDate}"></p>
+                    </div>
+
+                    <div class="member-detail">
+                        <p class="mini-grey">배송요청일</p>
+                        <p th:text="${myOrders.deliveryDate}"></p>
+                    </div>
+                </div>
+
+                <div class="member1">
+                    <h3>결제정보</h3>
+                </div>
+
+                <hr class="line" style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
+
+                <div class="member2">
+                    <div class="member-detail">
+                        <p class="mini-grey">상품금액</p>
+                        <p th:text="${myOrders.orderPrice}"></p>
+                    </div>
+
+                    <div class="member-detail">
+                        <p class="mini-grey">할인금액</p>
+                        <p th:text="${myOrders.orderDiscount}"></p>
+                    </div>
+
+                    <div class="member-detail">
+                        <p class="mini-grey">결제금액</p>
+                        <p th:text="${myOrders.orderTotalPrice}"></p>
+                    </div>
+                </div>
+
+                <div class="none"></div>
+
+
             </div>
-
-            <div class="member1">
-                <h3>배송지 정보</h3>
-            </div>
-
-            <hr class="line" style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
-
-            <div class="member2">
-                <div class="member-detail">
-                    <p class="mini-grey">받는 사람</p>
-                    <p th:text="${myOrders.name}"></p>
-                </div>
-
-                <div class="member-detail">
-                    <p class="mini-grey">연락처</p>
-                    <p th:text="${myOrders.phone}"></p>
-                </div>
-
-                <div class="member-detail">
-                    <p class="mini-grey">주소</p>
-                    <p th:text="${myOrders.inputZipCode}"></p>&nbsp;
-                    <p th:text="${myOrders.inputAddress}"></p>&nbsp;
-                    <p th:text="${myOrders.inputAddress2}"></p>
-                </div>
-
-                <div class="member-detail">
-                    <p class="mini-grey">요청사항</p>
-                    <p th:text="${myOrders.orderRequest}"></p>
-                </div>
-
-            </div>
-
-            <div class="member1">
-                <h3>요청 날짜</h3>
-            </div>
-
-            <hr class="line" style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
-
-            <div class="member2">
-                <div class="member-detail">
-                    <p class="mini-grey">수거요청일</p>
-                    <p th:text="${myOrders.collectionDate}"></p>
-                </div>
-
-                <div class="member-detail">
-                    <p class="mini-grey">배송요청일</p>
-                    <p th:text="${myOrders.deliveryDate}"></p>
-                </div>
-            </div>
-
-            <div class="member1">
-                <h3>결제정보</h3>
-            </div>
-
-            <hr class="line" style="border-width:1px 0 0 0; border-style:solid; border-color:#bbb;">
-
-            <div class="member2">
-                <div class="member-detail">
-                    <p class="mini-grey">상품금액</p>
-                    <p th:text="${myOrders.orderPrice}"></p>
-                </div>
-
-                <div class="member-detail">
-                    <p class="mini-grey">할인금액</p>
-                    <p th:text="${myOrders.orderDiscount}"></p>
-                </div>
-
-                <div class="member-detail">
-                    <p class="mini-grey">결제금액</p>
-                    <p th:text="${myOrders.orderTotalPrice}"></p>
-                </div>
-            </div>
-
-            <div class="none"></div>
-
-
         </div>
     </div>
 </div>

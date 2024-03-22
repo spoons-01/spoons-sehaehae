@@ -4,11 +4,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <!--    <script type="text/javascript" src="/js/event.js"></script>-->
-    <script type="text/javascript" src="/js/regist.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>아이디 찾기 | 세탁해병대</title>
-
     <link href="/css/findMyIInfoStyle.css" rel="stylesheet" type="text/css">
     <link rel="icon" href="/static/images/favicon.ico">
     <link href="https://unpkg.com/ress/dist/ress.min.css" rel="styles heet" type="text/css">
@@ -17,23 +14,22 @@
 </head>
 
 <body>
-<div th:replace="/user/common/header2.html"></div>
+<div th:replace="user/common/header2.html"></div>
 
-<!-- 아이디 찾기 -->
 <div class="wrapper">
     <div class="gap">
         <div class="box-wrapper">
-            <h3>아이디 찾기</h3>
+            <h3>아이디 찾기 결과</h3>
             <div class="box-container">
                 <div class="bigbox">
-                    <p class="find-text">회원 정보에 등록된 휴대전화로 인증</p>
-                    <div th:if="${error}" th:text="${error}"></div>
-                    <form id="searchMyId" action="/user/member/searchMyId" method="post">
-                        <div class="input-box">
-                            <input type="text" name="phone">
-                            <input type="submit" class="btn" th:value="인증">
-                        </div>
-                    </form>
+                    <div th:if="${memberId}">
+                        <p class="find-text">회원님의 아이디는 아래와 같습니다.</p>
+                        <p th:text="${memberId}"></p>
+                    </div>
+
+                    <div th:if="${error}">
+                        <p class="find-text">요청하신 번호에 맞는 아이디를 찾을 수 없습니다. 번호 확인 후 재진행 해주세요.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -49,7 +45,7 @@
         </div>
         <div class="footer2">
 
-            <a href="call"><h3 class="call">고객센터 <img src="/images/Vector%20113.svg"></h3></a>
+            <a href="call"><h3 class="call">고객센터 <img src="/images/Vector%20113.svg"> </h3></a>
             <span class="number">1655-1234</span> <span class="number2">09:00-18:00</span>
             <p class="text">
                 단체문의 : sehaehae@email.com<br>
@@ -62,23 +58,13 @@
             </div>
 
         </div>
-        <div>
+        <div >
             <ul class="footer-nav">
-                <a href="company">
-                    <li>회사소개</li>
-                </a>
-                <a href="hire">
-                    <li>채용정보</li>
-                </a>
-                <a href="terms">
-                    <li>이용약관</li>
-                </a>
-                <a href="personal">
-                    <li class="point">개인정보처리방침</li>
-                </a>
-                <a href="business">
-                    <li class="point">사업자정보확인</li>
-                </a>
+                <a href="company"><li>회사소개</li></a>
+                <a href="hire"><li>채용정보</li></a>
+                <a href="terms"><li>이용약관</li></a>
+                <a href="personal"><li class="point">개인정보처리방침</li></a>
+                <a href="business"><li class="point">사업자정보확인</li></a>
             </ul>
         </div>
         <div class="contact-item1">

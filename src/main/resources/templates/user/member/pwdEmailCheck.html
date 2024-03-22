@@ -4,36 +4,46 @@
 
 <head>
     <meta charset="UTF-8">
-    <!--    <script type="text/javascript" src="/js/event.js"></script>-->
-    <script type="text/javascript" src="/js/regist.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>아이디 찾기 | 세탁해병대</title>
+    <title>비밀번호 찾기 | 세탁해병대</title>
 
-    <link href="/css/findMyIInfoStyle.css" rel="stylesheet" type="text/css">
+    <link href="/css/pwdEmailStyle.css" rel="stylesheet" type="text/css">
     <link rel="icon" href="/static/images/favicon.ico">
     <link href="https://unpkg.com/ress/dist/ress.min.css" rel="styles heet" type="text/css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/pwdEmailCheck.js"></script>
 </head>
 
 <body>
 <div th:replace="/user/common/header2.html"></div>
 
-<!-- 아이디 찾기 -->
+<!-- 비밀번호 재설정 -->
 <div class="wrapper">
     <div class="gap">
         <div class="box-wrapper">
-            <h3>아이디 찾기</h3>
+            <input type="text" id="emailAuthKey" name="emailAuthKey" value="" autocomplete="off" style="display: none";>
+            <h3>비밀번호 재설정</h3>
             <div class="box-container">
                 <div class="bigbox">
-                    <p class="find-text">회원 정보에 등록된 휴대전화로 인증</p>
-                    <div th:if="${error}" th:text="${error}"></div>
-                    <form id="searchMyId" action="/user/member/searchMyId" method="post">
-                        <div class="input-box">
-                            <input type="text" name="phone">
-                            <input type="submit" class="btn" th:value="인증">
+                    <p class="find-text">비밀번호 임시 발급을 위해 회원가입된 이메일을 작성해주세요.</p>
+                    <div class="email-joinbox">
+                        <input type="email" id="memberId" name="memberId" class="input" placeholder="이메일을 입력해주세요."
+                               required>
+                        <input type="button" class="btn" value="확인" id="duplicationCheck">
+                    </div>
+
+                    <div class="email-joinbox">
+                        <div class="btn-wrapper2">
+                            <button type="button" class="btn2" id="btnEmailAuthReg">이메일 인증하기</button>
                         </div>
-                    </form>
+                    </div>
+
+                    <div class="joinbox2">
+                        <input type="text" id="emailAuthVal" name="emailAuthVal" class="input"
+                               placeholder="이메일 인증을 입력해주세요.">
+                        <button type="button" class="btn" id="btnEmailAuthVal">인증 확인</button>
+                    </div>
                 </div>
             </div>
         </div>
