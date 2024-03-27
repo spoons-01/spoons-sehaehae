@@ -36,7 +36,7 @@
 
         <tr th:each="notice : ${ noticeList }">
             <td th:text="${ notice.no }"></td>
-            <td th:onclick="|location.href='/user/board/userNoticeView?no=${notice.no}'|" th:text="${ notice.title }"></td>
+            <td th:onclick="|location.href='/user/board/userNoticeView?no=${notice.no}'|" th:text="${ notice.title }" class="cursor"></td>
             <td th:text="${ notice.count }"></td>
             <td th:text="${ notice.writer.nickname }"></td>
             <td th:text="${ notice.createdDate}"></td>

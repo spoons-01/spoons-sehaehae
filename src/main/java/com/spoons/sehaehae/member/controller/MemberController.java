@@ -78,6 +78,7 @@ public class MemberController {
     public void mainPage() {
     }
 
+
     /* 로그인 */
     @GetMapping("/member/login")
     public void login() {

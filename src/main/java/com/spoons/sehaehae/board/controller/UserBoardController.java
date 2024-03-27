@@ -57,16 +57,18 @@ public class UserBoardController {
         model.addAttribute("paging", noticeListAndPaging.get("paging"));
         model.addAttribute("noticeList", noticeListAndPaging.get("noticeList"));
 
-        return "/user/board/userNotice";
+        return "user/board/userNotice";
     }
     @GetMapping("/userNoticeView")
     public String getNoticeView(@RequestParam Long no, Model model){
 
         NoticeDTO noticeDetail = boardService.selectNoticeDetail(no);
 
+
+
         model.addAttribute("notice", noticeDetail);
 
-        return "/user/board/userNoticeView";
+        return "user/board/userNoticeView";
     }
 
     /* 자주하는 질문 */
@@ -131,7 +133,7 @@ public class UserBoardController {
         model.addAttribute("paging", reviewListAndPaging.get("paging"));
         model.addAttribute("reviewList", reviewList);
 
-        return "/user/board/userReview";
+        return "user/board/userReview";
     }
 
     @GetMapping("/userReviewView")
@@ -144,8 +146,12 @@ public class UserBoardController {
 
         model.addAttribute("review", reviewView);
         model.addAttribute("commentCount", commentCount);
-        return "/user/board/userReviewView";
+        return "user/board/userReviewView";
     }
+
+
+
+    /* 댓글 */
 
     @PostMapping("/userReviewView/registReply")
     public ResponseEntity<String> registReply(@RequestBody ReplyDTO registReply,

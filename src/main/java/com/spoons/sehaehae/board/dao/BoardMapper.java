@@ -62,4 +62,7 @@ public interface BoardMapper {
     void deleteReply(ReplyDTO removeReply);
 
     int getCommentCountForReview(Long reviewNo);
+
+
+    List<ReviewDTO> recentlyReview();
 }

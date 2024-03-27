@@ -58,6 +58,7 @@ public class SecurityConfig {
 
 
                 .antMatchers("/admin/board/**").hasRole("ADMIN")
+
                 .antMatchers("/user/board/userReviewView/**").hasAnyRole("ADMIN", "MEMBER")
 
                 .antMatchers("/orderManagement/list").hasRole("ADMIN")

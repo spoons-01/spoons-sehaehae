@@ -34,7 +34,7 @@
         <tr th:each="qna : ${ qnaList }" >
             <td th:text="${ qna.no }"></td>
             <td th:text="${ qna.category.name }"></td>
-            <td th:text="${ qna.title }" th:onclick="|location.href='/admin/board/adminQnaView?no=${qna.no}'|"></td>
+            <td th:text="${ qna.title }" th:onclick="|location.href='/admin/board/adminQnaView?no=${qna.no}'|" class="cursor"></td>
             <td th:text="${ qna.writer.nickname }"></td>
             <td th:text="${ #dates.format(qna.createdDate, 'yyyy-MM-dd')}"></td>
         </tr>
