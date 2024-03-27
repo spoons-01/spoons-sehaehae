@@ -32,14 +32,14 @@
 
     <div class="id-pwd-join">
         <a href="/user/member/findMyId" class="ipj">아이디 찾기</a>
-        <a href="#" class="ipj">비밀번호 찾기</a>
+        <a href="/user/member/pwdEmailCheck" class="ipj">비밀번호 찾기</a>
         <a id="regist" href="/user/member/regist" class="ipj">회원가입</a>
     </div>
 
     <div class="sns">
         <h>SNS 계정으로 간편 로그인/회원가입</h>
         <br>
-        <a href="#" class="sns-all"><img src="/images/kakao.png"></a>
+        <a th:href="@{/oauth/kakao}" class="sns-all" style="cursor:pointer"><img src="/images/kakao.png"></a>
         <a href="#" class="sns-all"><img src="/images/naver.png"></a>
         <a href="#" class="sns-all"><img src="/images/google.png"></a>
         <a href="#" class="sns-all"><img src="/images/apple.png"></a>

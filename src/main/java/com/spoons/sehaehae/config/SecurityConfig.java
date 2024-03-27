@@ -56,7 +56,9 @@ public class SecurityConfig {
 
                 .antMatchers("/board/**", "/thumbnail/**", "/user/member/update", "/user/member/delete").hasAnyRole("MEMBER", "ADMIN")
 
-//                .antMatchers("/admin/board/**").hasRole("ADMIN")
+
+                .antMatchers("/admin/board/**").hasRole("ADMIN")
+
                 .antMatchers("/user/board/userReviewView/**").hasAnyRole("ADMIN", "MEMBER")
 
                 .antMatchers("/orderManagement/list").hasRole("ADMIN")

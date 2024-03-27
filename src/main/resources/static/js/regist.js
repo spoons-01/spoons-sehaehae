@@ -213,7 +213,6 @@ function emailAuthSnd() {
             console.log("result", result);
             $("#emailAuthKey").val(result.emailAuthKey);
             alert("이메일 발송이 완료되었습니다.");
-            //
         }
         , error: function (error) {
             console.log("error", error);
@@ -221,7 +220,7 @@ function emailAuthSnd() {
         }
     });
 
-    alert("이메일 발송 처리가 완료되었습니다.");
+    alert("이메일 발송 처리가 완료되었습니다. 이메일을 확인해주세요.");
 }
 
 function emailAuthChk() {
@@ -246,44 +245,6 @@ function emailAuthChk() {
         }));
 }
 
-//
-// function emailAuthChk() {
-//     // 인증 코드와 이메일 입력값을 가져옵니다.
-//     const emailAuthKey = $("#emailAuthKey").val();
-//     const emailAuthInVal = $("#emailAuthVal").val();
-//
-//     // AJAX 요청을 보냅니다.
-//     $.ajax({
-//         url: "/user/member/chkEmailAuth",
-//         type: "POST",
-//         contentType: 'application/json;charset=UTF-8',
-//         data: JSON.stringify({
-//             emailAuthKey: emailAuthKey,
-//             emailAuthInVal: emailAuthInVal
-//         }),
-//         success: function (data) {
-//  alert(data.resultMsg);
-//             console.log("인증 성공:", data);
-//             alert("인증이 성공했습니다.");
-//         },
-//         error: function (error) {
-//             console.error("인증 오류:", error);
-//             alert("인증에 실패했습니다. 인증 번호를 다시 확인해주세요.");
-//         }
-//     });
-// }
-
-
-/**
- * Promis => 실행 방법 중
- *  시점 1. 시작 - fetch or ajax
- *  시점 2. 무조건 실행 - Then
- *  시점 3. 성공 - Resolve, Success
- *  시점 4. 실패 - Reject, ERror
- *  시점 5. 완료 - Done
- */
-
-
 $(document).ready(function () {
     $("#btnEmailAuthReg")
         .off("click")
@@ -292,5 +253,4 @@ $(document).ready(function () {
     $("#btnEmailAuthVal")
         .off("click")
         .on("click", emailAuthChk);
-
 });

@@ -63,6 +63,7 @@ h3 {
 
 /* first-bar(유저 서비스) ---------------------------------------------------------*/
 .box-wrapper {
+    flex-direction: column;
     display: flex;
     justify-content: center;
 }
@@ -236,6 +237,13 @@ h3 {
 }
 
 /* select 박스 밑부분 */
+.order-none {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px auto 50px;
+}
+
 .order {
     display: flex;
     justify-content: space-between;

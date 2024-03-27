@@ -81,6 +81,8 @@
         <result property="useEco" column="USE_ECO"/>
         <result property="productName" column="PRODUCT_NAME"/>
         <result property="productPrice" column="PRODUCT_PRICE"/>
+        <result property="productPhoto" column="PRODUCT_PHOTO"/>
+        <result property="progressDate" column="PROGRESS_DATE"/>
     </resultMap>
 
     <select id="findMyProduct" parameterType="String" resultMap="productResultMap">
@@ -90,12 +92,13 @@
                A.USE_PREMIUM,
                A.USE_ECO,
                B.PRODUCT_NAME,
-               B.PRODUCT_PRICE
+               B.PRODUCT_PRICE,
+               B.PRODUCT_PHOTO,
+               C.PROGRESS_DATE
         FROM TBL_ORDER_PRODUCT A
-                 LEFT JOIN TBL_PRODUCT B
-                           ON (A.PRODUCT_CODE = B.PRODUCT_CODE)
-        WHERE 1 = 1
-          AND ORDER_CODE = #{orderCode}
+                 LEFT JOIN TBL_PRODUCT B ON A.PRODUCT_CODE = B.PRODUCT_CODE
+                 LEFT JOIN TBL_ORDER C ON A.ORDER_CODE = C.ORDER_CODE
+        WHERE A.ORDER_CODE = #{orderCode}
     </select>
 
 
@@ -125,7 +128,6 @@
         WHERE 1 = 1
           AND B.ORDER_CODE = #{orderCode}
     </select>
-
 
     <!-- 내 구매내역 -->
     <resultMap id="myOrderResultMap" type="com.spoons.sehaehae.member.dto.MyOrderDTO">
@@ -287,7 +289,6 @@
           AND A.ID = #{ memberId }
     </select>
 
-
     <select id="selectMemberById" resultType="String">
         SELECT ID
         FROM TBL_MEMBER
@@ -295,6 +296,18 @@
           AND ID = #{ memberId }
     </select>
 
+    <select id="findMemberEmail" resultMap="memberResultMap">
+        SELECT ID
+        FROM TBL_MEMBER
+        WHERE MEMBER_STATUS = 'Y'
+          AND ID = #{ kakaoEmail }
+    </select>
+
+    <select id="findMemberIdByPhoneNumber" resultType="string">
+        SELECT ID
+        FROM TBL_MEMBER
+        WHERE PHONE_NUMBER = #{ phoneNumber }
+    </select>
 
     <insert id="insertMember">
         INSERT
@@ -360,11 +373,12 @@
     <select id="findMyOrder" resultMap="myOrderResultMap">
         SELECT B.*
         FROM TBL_MEMBER A
-                 LEFT JOIN TBL_ORDER B ON (A.MEMBER_NO = B.MEMBER_NO)
-        WHERE MEMBER_STATUS = 'Y'
-          AND A.ID = #{ memberId }
+                 INNER JOIN TBL_ORDER B ON A.MEMBER_NO = B.MEMBER_NO
+        WHERE A.MEMBER_STATUS = 'Y'
+          AND A.ID = #{memberId}
         ORDER BY B.ORDER_DATE DESC
     </select>
+
 
     <select id="findMyCoupon" resultMap="myCouponResultMap">
         SELECT A.ID,
@@ -421,23 +435,49 @@
     <update id="updateMember">
         UPDATE
             TBL_MEMBER
-        SET NICKNAME      = #{ nickname }
+        SET NAME          = #{ name }
+          , NICKNAME      = #{ nickname }
           , BIRTHDAY      = #{ birthday }
+          , GENDER        = #{ gender }
           , PHONE_NUMBER  = #{ phone }
           , ZIPCODE       = #{ zipCode }
           , ADDRESS1      = #{ address1 }
           , ADDRESS2      = #{ address2 }
-          , PROFILE_PHOTO = #{profilePhoto}
+          , PROFILE_PHOTO = #{profilePhoto,jdbcType=VARCHAR}
 
         WHERE MEMBER_STATUS = 'Y'
           AND MEMBER_NO = #{ memberNo }
     </update>
 
+    <update id="updateMemberPassword">
+        UPDATE TBL_MEMBER
+        SET PASSWORD = #{password}
+        WHERE ID = #{email}
+    </update>
+
+    <select id="findByConditions" resultMap="myOrderResultMap">
+        SELECT O.*, R.REVIEW_STATUS
+        FROM TBL_ORDER O
+        LEFT JOIN TBL_REVIEW R ON O.ORDER_CODE = R.ORDER_CODE
+        WHERE 1=1
+        <if test="searchCondition != '기간'">
+            AND O.ORDER_DATE >=
+            CASE
+            WHEN #{searchCondition} = '1month' THEN ADD_MONTHS(SYSDATE, -1)
+            WHEN #{searchCondition} = '3month' THEN ADD_MONTHS(SYSDATE, -3)
+            WHEN #{searchCondition} = '6month' THEN ADD_MONTHS(SYSDATE, -6)
+            WHEN #{searchCondition} = '1year' THEN ADD_MONTHS(SYSDATE, -12)
+            ELSE O.ORDER_DATE
+            END
+        </if>
+        <if test="searchStatusCondition != '주문상태'">
+            AND O.ORDER_STATUS = #{searchStatusCondition}
+        </if>
+        ORDER BY O.ORDER_DATE DESC
+    </select>
 
 
     <!-- 동한님 -->
-
-
    <select id="selectMemberList" resultMap="memberResultMap">
         select
             A.*
@@ -537,8 +577,6 @@
         FROM TBL_MEMBER
         where TRUNC((sysdate - BIRTHDAY) / 365, -1) <![CDATA[>=]]> 50
     </select>
-
-
 
 </mapper>
 
