@@ -252,6 +252,11 @@ label:focus-within {
     overflow: hidden;
 }
 
+.image-area {
+    max-width: 200px;
+    max-height: 200px;
+}
+
 /* 수정하기, 탈퇴하기 버튼 -------------------------------------------------------- */
 .button-center {
     text-align: center;

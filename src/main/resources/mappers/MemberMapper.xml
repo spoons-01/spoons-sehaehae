@@ -456,22 +456,24 @@
     </update>
 
     <select id="findByConditions" resultMap="myOrderResultMap">
-        SELECT * FROM TBL_ORDER
+        SELECT O.*, R.REVIEW_STATUS
+        FROM TBL_ORDER O
+        LEFT JOIN TBL_REVIEW R ON O.ORDER_CODE = R.ORDER_CODE
         WHERE 1=1
         <if test="searchCondition != '기간'">
-            AND ORDER_DATE >=
+            AND O.ORDER_DATE >=
             CASE
             WHEN #{searchCondition} = '1month' THEN ADD_MONTHS(SYSDATE, -1)
             WHEN #{searchCondition} = '3month' THEN ADD_MONTHS(SYSDATE, -3)
             WHEN #{searchCondition} = '6month' THEN ADD_MONTHS(SYSDATE, -6)
             WHEN #{searchCondition} = '1year' THEN ADD_MONTHS(SYSDATE, -12)
-            ELSE ORDER_DATE
+            ELSE O.ORDER_DATE
             END
         </if>
         <if test="searchStatusCondition != '주문상태'">
-            AND ORDER_STATUS = #{searchStatusCondition}
+            AND O.ORDER_STATUS = #{searchStatusCondition}
         </if>
-        ORDER BY ORDER_DATE DESC
+        ORDER BY O.ORDER_DATE DESC
     </select>
 
 

@@ -67,18 +67,3 @@ window.addEventListener("load", function() {
     });
 });
 
-/* 후기를 작성하면 후기버튼은 없어지고 수정하기 나타나기 */
-// JavaScript 코드
-// 이 코드는 페이지가 로드될 때 실행되며 후기 상태에 따라 버튼을 조작합니다.
-// document.addEventListener("DOMContentLoaded", function() {
-//     // 이 부분에서 order.reviewStatus 값을 가져오거나 필요한 데이터를 추출할 수 있습니다.
-//
-//     // 만약 order.reviewStatus가 '작성완료'라면 후기 버튼을 숨깁니다.
-//     if (order.reviewStatus === '작성완료') {
-//         const reviewButton = document.querySelector('.review-button');
-//         if (reviewButton) {
-//             reviewButton.style.display = 'none';
-//         }
-//     }
-// });
-
